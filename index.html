@@ -3,229 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina | Global Culture & Intelligence</title>
+    <title>Lumina | Global Culture & News</title>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #fdfbf7; --text: #1a1a1a; --muted: #718096; --accent: #c49b66;
-            --white: #ffffff; --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --white: #ffffff; --transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        * { box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
 
-        /* --- ANA SAYFA TASARIMI --- */
-        nav { background: rgba(253, 251, 247, 0.98); backdrop-filter: blur(15px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .logo { font-family: 'Marcellus', serif; font-size: 1.8rem; letter-spacing: 3px; cursor: pointer; }
-        .admin-trigger { cursor: pointer; opacity: 0.1; font-size: 10px; padding: 10px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; scroll-behavior: smooth; overflow-x: hidden; }
+        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 10001; }
         
-        .main-container { max-width: 1400px; margin: 20px auto; display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 0 20px; }
-        #news-feed { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .sidebar-left h4 { font-family: 'Marcellus'; border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 15px; }
+        /* Navigasyon */
+        nav { background: rgba(253, 251, 247, 0.9); backdrop-filter: blur(15px); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        .logo { font-family: 'Marcellus', serif; font-size: 2rem; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
+        .admin-trigger { cursor: pointer; opacity: 0.05; font-size: 10px; padding: 10px; }
 
-        /* --- ADMİN PANEL (BAĞIMSIZ SAYFA MANTIĞI) --- */
-        #adminView { display: none; position: fixed; inset: 0; background: #f0f2f5; z-index: 99999; overflow-y: auto; padding: 20px; }
-        .dash-wrapper { max-width: 1400px; margin: 0 auto; }
-        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #e1e4e8; padding-bottom: 15px; }
+        /* Yazarlar */
+        .authors-strip { background: var(--white); padding: 30px 0; display: flex; justify-content: center; gap: 40px; border-bottom: 1px solid #f1f1f1; }
+        .author-item { cursor: pointer; text-align: center; width: 90px; transition: var(--transition); }
+        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); padding: 4px; }
+        .author-item span { display: block; font-size: 0.75rem; font-weight: 700; margin-top: 10px; font-family: 'Marcellus'; }
+
+        /* Ana Grid Sistemi (Haberler Yan Yana) */
+        .container { max-width: 1400px; margin: 40px auto; display: grid; grid-template-columns: 250px 1fr; gap: 40px; padding: 0 25px; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+
+        /* Haber Kartı Tasarımı */
+        .news-card { background: var(--white); border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.02); cursor: pointer; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); display: flex; flex-direction: column; height: 100%; }
+        .news-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.06); }
+        .news-img { width: 100%; height: 250px; object-fit: cover; }
+        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-body h2 { font-family: 'Marcellus', serif; font-size: 1.5rem; margin: 15px 0; line-height: 1.3; }
+        .card-body p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
+
+        /* MODAL / OVERLAY */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
+        .close-btn { position: fixed; top: 30px; right: 40px; cursor: pointer; background: var(--text); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+        .article-wrap { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+
+        /* GİZLİ ADMİN PANELİ (TEMA İLE UYUMLU) */
+        #adminView { display: none; position: fixed; inset: 0; background: rgba(253, 251, 247, 0.98); backdrop-filter: blur(20px); z-index: 20000; padding: 40px; overflow-y: auto; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .admin-card { background: #fff; padding: 30px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .admin-card h3 { font-family: 'Marcellus'; color: var(--accent); margin-top: 0; border-bottom: 1px solid #f5f5f5; padding-bottom: 15px; }
         
-        .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; align-items: start; }
-        .cms-card { background: #fff; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e1e4e8; }
-        .cms-card h3 { font-family: 'Marcellus'; color: var(--accent); margin-top: 0; margin-bottom: 20px; }
+        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #eee; border-radius: 12px; font-family: inherit; background: #fafafa; }
+        .btn { padding: 12px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; width: 100%; }
+        .btn-gold { background: var(--accent); color: white; }
+        .btn-dark { background: var(--text); color: white; margin-top: 10px; }
+        .btn-exit { position: absolute; top: 20px; right: 20px; width: auto; background: #ff7675; color: white; }
 
-        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .stat-box { background: var(--accent); color: white; padding: 15px; border-radius: 12px; text-align: center; }
-        .stat-box b { display: block; font-size: 22px; }
+        .mgmt-list { max-height: 150px; overflow-y: auto; font-size: 13px; border-top: 1px solid #eee; margin-top: 15px; padding-top: 10px; }
+        .mgmt-item { display: flex; justify-content: space-between; margin-bottom: 8px; }
 
-        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 14px; }
-        .btn { padding: 12px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        .btn-gold { background: var(--accent); color: white; width: 100%; }
-        .btn-dark { background: #1a1a1a; color: white; }
-        .btn-ai { background: #6c5ce7; color: white; margin-bottom: 15px; width: 100%; }
-
-        .item-list { font-size: 13px; max-height: 150px; overflow-y: auto; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
-        .row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f9f9f9; }
-        .del-x { color: #ff7675; cursor: pointer; font-weight: bold; }
-
-        @media (max-width: 900px) {
-            .main-container { grid-template-columns: 1fr; }
-            .sidebar-left { display: none; }
-            .dash-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .sidebar-left { display: none; } }
     </style>
 </head>
 <body>
 
-<div id="homeView">
-    <nav>
-        <div class="logo" onclick="location.reload()">LUMINA</div>
-        <div style="display:flex; align-items:center; gap:20px;">
-            <div id="local-info" style="font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;">LOCATING...</div>
-            <div class="admin-trigger" onclick="tryAdmin()">[L_CORE]</div>
-        </div>
-    </nav>
+<div id="progress-bar"></div>
 
-    <div class="main-container">
-        <aside class="sidebar-left">
-            <h4 id="ui-cat-title">CATEGORIES</h4>
-            <div id="cat-nav" style="line-height: 2.8; font-size: 0.95rem;"></div>
-            <div id="ad-slot" onclick="track('ad')" style="margin-top:40px; border-radius:20px; overflow:hidden; cursor:pointer; border:1px solid #eee;"></div>
-        </aside>
-        <main id="news-feed"></main>
+<nav>
+    <div class="logo" onclick="location.reload()">LUMINA</div>
+    <div style="display:flex; align-items:center; gap:20px;">
+        <div id="current-city" style="font-size: 0.8rem; letter-spacing: 2px; font-weight: 700;">DETECTING...</div>
+        <div class="admin-trigger" onclick="tryAdmin()">[L_CORE]</div>
     </div>
+</nav>
+
+<div class="authors-strip" id="authors-container"></div>
+
+<div class="container">
+    <aside class="sidebar-left">
+        <div class="side-title" style="font-family:'Marcellus'; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:20px;">KATEGORİLER</div>
+        <div id="cat-list" style="font-size: 0.9rem; line-height: 2.8; cursor: pointer;"></div>
+    </aside>
+
+    <main>
+        <div class="news-grid" id="news-feed"></div>
+    </main>
+</div>
+
+<div id="overlay" class="overlay">
+    <div class="close-btn" onclick="closeAll()">✕</div>
+    <div id="overlay-content" class="article-wrap"></div>
 </div>
 
 <div id="adminView">
-    <div class="dash-wrapper">
-        <div class="dash-header">
-            <h1 style="font-family:'Marcellus'; margin:0;">Lumina Intelligence Dashboard</h1>
-            <button class="btn btn-dark" onclick="exitAdmin()">Geri Dön</button>
+    <button class="btn btn-exit" onclick="exitAdmin()">Paneli Kapat</button>
+    <h1 style="text-align:center; font-family:'Marcellus'; margin-bottom:40px;">Lumina Content Studio</h1>
+    
+    <div class="admin-grid">
+        <div class="admin-card">
+            <h3>Haber Yayınla</h3>
+            <button class="btn btn-dark" style="background:#6c5ce7; margin-bottom:15px;" onclick="generateAI()">AI: Otomatik Haber Üret</button>
+            <input type="text" id="n-title" placeholder="Haber Başlığı">
+            <textarea id="n-text" placeholder="Haber İçeriği..." rows="4"></textarea>
+            <select id="n-cat-select"></select>
+            <button class="btn btn-gold" onclick="saveNews()">Sisteme Yükle</button>
+            <div id="news-mgmt" class="mgmt-list"></div>
         </div>
 
-        <div class="dash-grid">
-            <div class="cms-card">
-                <h3>Analiz & Trafik</h3>
-                <div class="stat-grid">
-                    <div class="stat-box"><small>Ziyaret</small><b id="st-total">0</b></div>
-                    <div class="stat-box"><small>Haber</small><b id="st-news">0</b></div>
-                    <div class="stat-box"><small>Reklam</small><b id="st-ad">0</b></div>
-                </div>
-                <div id="log-list" class="item-list" style="font-family: monospace;"></div>
+        <div class="admin-card">
+            <h3>Kategori & Reklam</h3>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="cat-in" placeholder="Yeni Kategori" style="margin:0;">
+                <button class="btn btn-gold" style="width:auto;" onclick="addCat()">+</button>
             </div>
+            <div id="cat-mgmt" class="mgmt-list"></div>
+            
+            <h4 style="margin-top:20px;">Reklam Linki</h4>
+            <input type="text" id="ad-url" placeholder="Reklam Görsel URL">
+            <button class="btn btn-dark" onclick="saveAd()">Güncelle</button>
+        </div>
 
-            <div class="cms-card">
-                <h3>İçerik Yönetimi</h3>
-                <button class="btn btn-ai" onclick="generateAI()">AI Haber Üret (Brezilya-Mardin)</button>
-                <input type="hidden" id="edit-id">
-                <input type="text" id="n-title" placeholder="Haber Başlığı">
-                <textarea id="n-content" placeholder="Haber İçeriği..." rows="3"></textarea>
-                <select id="n-cat"></select>
-                <button class="btn btn-gold" onclick="saveNews()">Yayınla / Güncelle</button>
-                <div id="news-mgmt" class="item-list"></div>
-            </div>
-
-            <div class="cms-card">
-                <h3>Kategori & Reklam</h3>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="cat-in" placeholder="Yeni Kategori" style="margin:0;">
-                    <button class="btn btn-gold" style="width:auto;" onclick="addCat()">+</button>
-                </div>
-                <div id="cat-mgmt" class="item-list"></div>
-                
-                <h4 style="margin:20px 0 10px;">Reklam Ayarları</h4>
-                <input type="text" id="ad-img-url" placeholder="Görsel URL">
-                <input type="text" id="ad-link-url" placeholder="Hedef Link">
-                <button class="btn btn-dark" style="width:100%" onclick="saveAd()">Reklamı Güncelle</button>
-            </div>
-
-            <div class="cms-card">
-                <h3>Yazarlar</h3>
-                <input type="text" id="auth-n" placeholder="Yazar Adı">
-                <textarea id="auth-b" placeholder="Yazar Biyografisi..." rows="2"></textarea>
-                <button class="btn btn-gold" onclick="addAuthor()">Yazar Ekle</button>
-                <div id="auth-mgmt" class="item-list"></div>
-            </div>
+        <div class="admin-card">
+            <h3>Yazar Kadrosu</h3>
+            <input type="text" id="auth-n" placeholder="Yazar Adı">
+            <textarea id="auth-b" placeholder="Kısa Biyografi" rows="2"></textarea>
+            <button class="btn btn-gold" onclick="addAuthor()">Yazarı Ekle</button>
+            <div id="auth-mgmt" class="mgmt-list"></div>
         </div>
     </div>
 </div>
 
 <script>
     const PASS = "47";
-    let db = JSON.parse(localStorage.getItem('lumina_v18')) || {
-        news: [{id:1, title: "Mardin Gümüşü", text: "Telkari sanatı canlanıyor...", img: "https://via.placeholder.com/800", cat: "Kültür", clicks: 0}],
-        authors: [{id:1, name: "VEDAT M.", bio: "Kültür Yazarı."}],
-        cats: ['Mardin', 'Brezilya', 'Tasarım'],
-        ad: { img: 'https://via.placeholder.com/300x400?text=Lumina+Ad', url: '#', clicks: 0 },
-        stats: { total: 0, nClick: 0, aClick: 0, logs: [] }
+    let db = JSON.parse(localStorage.getItem('lumina_v19')) || {
+        news: [{id:1, title: "Mardin'in Gümüş İşlemeli Geceleri", text: "Telkari sanatı artık Sao Paulo podyumlarında. Eski bir geleneğin modern tasarımla buluşması...", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800", cat: "Kültür"}],
+        authors: [{id:1, name: "VEDAT M.", bio: "Tarihçi & Kültür Yazarı", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200"}],
+        cats: ['Mardin Ekspres', 'Sao Paulo Night', 'Gastronomi', 'Sanat'],
+        ad: "https://via.placeholder.com/300x500"
     };
 
     const userLang = navigator.language || 'en';
 
-    // --- STATE MANAGEMENT (SAYFA YENİLEME KORUMASI) ---
-    function checkState() {
-        if(window.location.hash === "#admin") {
-            document.getElementById('homeView').style.display = 'none';
-            document.getElementById('adminView').style.display = 'block';
-            renderAdmin();
-        } else {
-            document.getElementById('homeView').style.display = 'block';
-            document.getElementById('adminView').style.display = 'none';
-        }
-    }
+    // Sayfa Yenileme Koruması (Admin modundaysa orada kalır)
+    window.onload = () => {
+        if(window.location.hash === "#admin") { document.getElementById('adminView').style.display = 'block'; renderAdmin(); }
+        renderApp();
+    };
 
-    function tryAdmin() {
-        if(prompt("Giriş Şifresi:") === PASS) {
-            window.location.hash = "admin";
-            checkState();
-        }
-    }
+    function tryAdmin() { if(prompt("Sistem Şifresi:") === PASS) { window.location.hash = "admin"; location.reload(); } }
+    function exitAdmin() { window.location.hash = ""; location.reload(); }
 
-    function exitAdmin() {
-        window.location.hash = "";
-        checkState();
-    }
+    function sync() { localStorage.setItem('lumina_v19', JSON.stringify(db)); renderApp(); renderAdmin(); }
 
-    window.addEventListener('hashchange', checkState);
-
-    // --- ANALYTICS ---
-    function initVisit() {
-        db.stats.total++;
-        db.stats.logs.unshift({t: new Date().toLocaleTimeString(), loc: userLang.toUpperCase()});
-        if(db.stats.logs.length > 20) db.stats.logs.pop();
-        sync();
-    }
-
-    function track(type, id) {
-        if(type==='news') { db.stats.nClick++; const n = db.news.find(x=>x.id==id); if(n) n.clicks++; }
-        if(type==='ad') { db.stats.aClick++; db.ad.clicks++; if(db.ad.url !== '#') window.open(db.ad.url); }
-        sync();
-    }
-
-    // --- CMS CORE ---
-    function sync() { localStorage.setItem('lumina_v18', JSON.stringify(db)); renderApp(); renderAdmin(); }
-
+    // --- CMS FONKSİYONLARI ---
     function saveNews() {
-        const id = document.getElementById('edit-id').value;
-        const data = { id: id ? Number(id) : Date.now(), title: document.getElementById('n-title').value, text: document.getElementById('n-content').value, img: "https://via.placeholder.com/800", cat: document.getElementById('n-cat').value, clicks: 0 };
-        if(id) { const i = db.news.findIndex(x=>x.id==id); db.news[i]=data; } else db.news.unshift(data);
-        document.getElementById('edit-id').value=''; sync();
+        const data = { id: Date.now(), title: document.getElementById('n-title').value, text: document.getElementById('n-text').value, img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800", cat: document.getElementById('n-cat-select').value };
+        db.news.unshift(data); sync();
     }
+    function generateAI() {
+        db.news.unshift({id: Date.now(), title: "AI: Brezilya Kahvesi Mardin'de", text: "Yapay zeka analizlerine göre iki şehrin aroma haritası eşleşti...", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800", cat: "Gastronomi"});
+        sync();
+    }
+    function addCat() { const v = document.getElementById('cat-in').value; if(v){ db.cats.push(v); sync(); } }
+    function addAuthor() { db.authors.push({id:Date.now(), name: document.getElementById('auth-n').value.toUpperCase(), bio: document.getElementById('auth-b').value, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200"}); sync(); }
 
-    function addCat() { const v = document.getElementById('cat-in').value; if(v){ db.cats.push(v); document.getElementById('cat-in').value=''; sync(); } }
-    function addAuthor() { const n = document.getElementById('auth-n').value; if(n){ db.authors.push({id:Date.now(), name: n.toUpperCase(), bio: document.getElementById('auth-b').value}); sync(); } }
-    function saveAd() { db.ad.img = document.getElementById('ad-img-url').value; db.ad.url = document.getElementById('ad-link-url').value; sync(); }
-    function generateAI() { db.news.unshift({id:Date.now(), title:"AI: Kültür Köprüsü", text:"Brezilya ve Mardin arasındaki sanatsal bağlar...", img:"https://via.placeholder.com/800", cat:"AI Analiz", clicks:0}); sync(); }
-
-    // --- RENDERS ---
+    // --- RENDER SİSTEMİ ---
     function renderApp() {
-        document.getElementById('local-info').innerText = userLang.includes('tr') ? "MARDİN • YEREL" : "SAO PAULO • LOCAL";
-        document.getElementById('ui-cat-title').innerText = userLang.includes('tr') ? "KATEGORİLER" : "CATEGORIES";
-        document.getElementById('cat-nav').innerHTML = db.cats.map(c => `<div>• ${c}</div>`).join('');
-        document.getElementById('ad-slot').innerHTML = `<img src="${db.ad.img}" style="width:100%; display:block;">`;
+        document.getElementById('current-city').innerText = userLang.includes('tr') ? "MARDİN • YEREL" : "SAO PAULO • LOCAL";
+        
+        // Yazarlar
+        document.getElementById('authors-container').innerHTML = db.authors.map(a => `
+            <div class="author-item" onclick="openAuthor('${a.name}', '${a.bio}', '${a.img}')">
+                <img src="${a.img}"><span>${a.name}</span>
+            </div>`).join('');
+
+        // Kategoriler
+        document.getElementById('cat-list').innerHTML = db.cats.map(c => `<div>• ${c}</div>`).join('');
+
+        // Haber Grid (YANYANA)
         document.getElementById('news-feed').innerHTML = db.news.map(n => `
-            <article class="cms-card" style="cursor:pointer; padding:15px;" onclick="track('news', ${n.id})">
-                <img src="${n.img}" style="width:100%; height:180px; object-fit:cover; border-radius:12px;">
-                <small style="color:var(--accent); font-weight:bold; display:block; margin-top:10px;">${n.cat.toUpperCase()}</small>
-                <h2 style="font-family:'Marcellus'; font-size:1.2rem; margin:10px 0;">${n.title}</h2>
-                <p style="font-size:0.85rem; color:var(--muted);">${n.text.substring(0,80)}...</p>
+            <article class="news-card" onclick="openNews('${n.title.replace(/'/g,"")}', '${n.text.replace(/'/g,"")}', '${n.img}')">
+                <img src="${n.img}" class="news-img">
+                <div class="card-body">
+                    <small style="color:var(--accent); font-weight:bold;">${n.cat.toUpperCase()}</small>
+                    <h2>${n.title}</h2>
+                    <p>${n.text.substring(0,100)}...</p>
+                </div>
             </article>`).join('');
     }
 
     function renderAdmin() {
-        document.getElementById('st-total').innerText = db.stats.total;
-        document.getElementById('st-news').innerText = db.stats.nClick;
-        document.getElementById('st-ad').innerText = db.stats.aClick;
-        document.getElementById('n-cat').innerHTML = db.cats.map(c => `<option value="${c}">${c}</option>`).join('');
-        document.getElementById('log-list').innerHTML = db.stats.logs.map(l => `<div class="row"><span>${l.t}</span><span>${l.loc} - Giriş</span></div>`).join('');
-        document.getElementById('news-mgmt').innerHTML = db.news.map(n => `<div class="row"><span>${n.title.substring(0,20)}.. (${n.clicks})</span> <span class="del-x" onclick="del('news',${n.id})">X</span></div>`).join('');
-        document.getElementById('cat-mgmt').innerHTML = db.cats.map((c,i) => `<div class="row"><span>${c}</span> <span class="del-x" onclick="db.cats.splice(${i},1);sync()">X</span></div>`).join('');
-        document.getElementById('auth-mgmt').innerHTML = db.authors.map(a => `<div class="row"><span>${a.name}</span> <span class="del-x" onclick="del('authors',${a.id})">X</span></div>`).join('');
+        document.getElementById('n-cat-select').innerHTML = db.cats.map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('news-mgmt').innerHTML = db.news.map(n => `<div class="mgmt-item"><span>${n.title.substring(0,20)}..</span> <b style="cursor:pointer;color:red" onclick="del('news',${n.id})">Sil</b></div>`).join('');
+        document.getElementById('cat-mgmt').innerHTML = db.cats.map((c,i) => `<div class="mgmt-item"><span>${c}</span> <b style="cursor:pointer;color:red" onclick="db.cats.splice(${i},1);sync()">Sil</b></div>`).join('');
+        document.getElementById('auth-mgmt').innerHTML = db.authors.map(a => `<div class="mgmt-item"><span>${a.name}</span> <b style="cursor:pointer;color:red" onclick="del('authors',${a.id})">Sil</b></div>`).join('');
     }
 
-    function del(type, id) { db[type] = db[type].filter(x=>x.id!==id); sync(); }
+    function del(type, id) { db[type] = db[type].filter(x => x.id !== id); sync(); }
 
-    // Başlat
-    checkState();
-    initVisit();
-    renderApp();
+    // Haber ve Yazar Açılış Modalları
+    function openNews(title, text, img) {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('overlay-content').innerHTML = `
+            <h1 style="font-family:'Marcellus'; font-size:3rem; margin-bottom:30px;">${title}</h1>
+            <img src="${img}" style="width:100%; border-radius:30px; margin-bottom:30px;">
+            <p style="font-size:1.3rem; line-height:2; color:#333;">${text}</p>
+        `;
+    }
+
+    function openAuthor(name, bio, img) {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('overlay-content').innerHTML = `
+            <div style="text-align:center;">
+                <img src="${img}" style="width:150px; height:150px; border-radius:50%; margin-bottom:20px; border:3px solid var(--accent); padding:5px;">
+                <h1 style="font-family:'Marcellus';">${name}</h1>
+                <p style="font-size:1.2rem; color:var(--muted);">${bio}</p>
+            </div>
+        `;
+    }
+
+    function closeAll() { document.getElementById('overlay').style.display = 'none'; }
+
+    // Scroll Progress
+    window.onscroll = () => {
+        let winScroll = document.documentElement.scrollTop;
+        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
+    };
 </script>
+
 </body>
 </html>
