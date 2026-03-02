@@ -3,148 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin Sao Paulo Portalı</title>
+    <title>MSP Global | Mardin - Sao Paulo Bridge</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
+        :root { --msp-blue: #0f172a; --msp-accent: #dc2626; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; overflow-x: hidden; }
         .msp-title { font-family: 'Playfair Display', serif; }
-        body { font-family: 'Inter', sans-serif; background: #fcfcfc; }
-        .page-view { display: none; }
-        .active-view { display: block; animation: fadeIn 0.3s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page-node { display: none; }
+        .active-node { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .admin-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
     </style>
 </head>
 <body>
 
-    <header class="bg-white border-b-4 border-blue-900 sticky top-0 z-50 shadow-sm">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div onclick="showPage('home')" class="cursor-pointer">
-                <h1 class="text-2xl font-black text-blue-900 uppercase tracking-tighter leading-none">MSP PORTAL<span class="text-red-600">.</span></h1>
-                <p class="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">Mardin - Sao Paulo</p>
+    <nav class="glass border-b sticky top-0 z-[100] py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div onclick="router('home')" class="cursor-pointer group">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tighter uppercase italic">MSP<span class="text-red-600">.</span>PORTAL</h1>
+                <p id="nav-slogan" class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Mardin - Sao Paulo News Bridge</p>
             </div>
-            <nav class="flex gap-4">
-                <button onclick="showPage('home')" class="text-[10px] font-bold uppercase text-slate-600 hover:text-blue-900">Ana Sayfa</button>
-                <button onclick="showPage('admin')" class="text-[10px] font-bold bg-blue-900 text-white px-3 py-1.5 rounded-full hover:bg-red-600 transition">ADMİN PANELİ</button>
-            </nav>
+            <div class="flex items-center gap-6">
+                <button onclick="router('admin')" class="bg-slate-900 text-white text-[10px] font-black px-4 py-2 rounded-full hover:bg-red-600 transition shadow-lg">ADMİN DASHBOARD</button>
+                <div id="lang-indicator" class="text-[10px] font-black text-blue-600 border border-blue-200 px-2 py-1 rounded italic uppercase">TR</div>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main id="page-home" class="page-view active-view container mx-auto px-4 py-8">
+    <main id="view-home" class="page-node active-node container mx-auto px-6 py-8">
         <div class="grid grid-cols-12 gap-8">
-            <div class="col-span-12 lg:col-span-9 space-y-10">
-                <div onclick="showPage('news-detail')" class="relative h-[450px] rounded-[2.5rem] overflow-hidden shadow-2xl cursor-pointer group border-4 border-white">
-                    <img src="https://images.unsplash.com/photo-1552035509-b63909772545?auto=format&fit=crop&w=1200" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-blue-950 p-8 flex flex-col justify-end">
-                        <h2 class="msp-title text-white text-4xl leading-tight">Mardin ve Sao Paulo: Tarih Yeniden Yazılıyor</h2>
-                        <p class="text-slate-300 mt-4 text-sm">İki kadim şehir arasındaki ticaret ve kültür köprüsü güçleniyor.</p>
+            <div class="col-span-12 lg:col-span-8 space-y-12">
+                <div onclick="openNews(0)" class="relative h-[550px] rounded-[3rem] overflow-hidden shadow-2xl cursor-pointer group border-8 border-white">
+                    <img id="top-img" src="https://images.unsplash.com/photo-1552035509-b63909772545?auto=format&fit=crop&w=1200" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent p-12 flex flex-col justify-end">
+                        <span class="bg-red-600 text-white text-[10px] font-black px-4 py-1 rounded-full w-max mb-6 uppercase tracking-widest">Kültürel Köprü</span>
+                        <h2 id="top-title" class="msp-title text-white text-5xl font-black leading-tight mb-4">Mezopotamya'dan Amazon'a Uzanan Hikaye</h2>
+                        <p class="text-slate-300 max-w-xl text-sm leading-relaxed">Mardin'in taş sokaklarından Sao Paulo'nun renkli caddelerine bir kültür yolculuğu.</p>
                     </div>
                 </div>
 
-                <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
-                    <h3 class="text-sm font-black text-blue-900 uppercase mb-6 tracking-widest border-l-4 border-red-600 pl-3">Yazarlar Modülü</h3>
-                    <div id="author-list" class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div onclick="showPage('author-detail')" class="text-center cursor-pointer group">
-                            <img src="https://ui-avatars.com/api/?name=Ahmet+Mardin&background=1e293b&color=fff" class="w-16 h-16 rounded-full mx-auto border-2 group-hover:border-blue-500 transition">
-                            <p class="text-xs font-bold mt-2 uppercase">Ahmet Mardinî</p>
+                <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-4 space-y-8">
+                <div id="sidebar-ad" class="bg-blue-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-2xl group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">☕</div>
+                    <span class="text-[10px] font-black uppercase tracking-[0.3em] opacity-50">Sponsorlu Reklam</span>
+                    <h3 class="msp-title text-3xl mt-4 italic font-bold">Mardin Kahvesi</h3>
+                    <p class="text-xs mt-2 opacity-80 leading-loose">Şimdi Brezilya'nın her yerinde. Gerçek mırra deneyimini keşfedin.</p>
+                    <button class="mt-8 w-full bg-white text-blue-900 py-4 rounded-2xl font-black text-xs uppercase hover:bg-red-600 hover:text-white transition shadow-xl">Hemen Sipariş Ver</button>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] p-8 border shadow-sm">
+                    <h4 class="text-xs font-black uppercase text-slate-400 mb-8 border-b pb-4 tracking-widest">Elit Yazarlarımız</h4>
+                    <div id="authors-list" class="space-y-6">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="view-detail" class="page-node container mx-auto px-6 py-12 max-w-4xl">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="router('home')" class="text-xs font-black uppercase bg-white border px-6 py-2 rounded-full shadow-sm hover:bg-slate-50">← Geri Dön</button>
+            <div class="flex gap-2">
+                <button onclick="changeFontSize(-2)" class="p-2 bg-slate-100 rounded-lg text-xs font-bold">A-</button>
+                <button onclick="changeFontSize(2)" class="p-2 bg-slate-100 rounded-lg text-xs font-bold">A+</button>
+                <button onclick="toggleSpeech()" id="btn-speech" class="bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-black"><i class="fas fa-volume-up mr-2"></i>DİNLE</button>
+            </div>
+        </div>
+
+        <article id="article-body">
+            <h1 id="det-title" class="msp-title text-5xl md:text-7xl font-black text-slate-900 mb-8 leading-[1.1]"></h1>
+            <div class="flex items-center gap-4 mb-12 border-y py-6">
+                <img id="det-author-img" src="" class="w-14 h-14 rounded-2xl shadow-lg">
+                <div>
+                    <p id="det-author-name" class="text-sm font-black text-blue-900 uppercase"></p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 italic">Yayınlanma: 2 Mart 2026</p>
+                </div>
+            </div>
+            <img id="det-img" src="" class="w-full rounded-[3rem] mb-12 shadow-2xl">
+            <div id="det-content" class="text-lg leading-relaxed text-slate-700 space-y-6"></div>
+        </article>
+    </main>
+
+    <main id="view-admin" class="page-node min-h-screen">
+        <div class="admin-gradient min-h-screen text-white p-6 lg:p-12">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex justify-between items-center mb-12">
+                    <h2 class="text-3xl font-black italic tracking-tighter uppercase">MSP Global Dashboard</h2>
+                    <button onclick="router('home')" class="bg-blue-600 px-6 py-3 rounded-xl font-black text-xs uppercase shadow-2xl">SİTEYİ GÖR</button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    <div class="lg:col-span-2 space-y-6 bg-white/5 p-8 rounded-[3rem] border border-white/10 backdrop-blur-xl">
+                        <h3 class="font-bold text-blue-400 uppercase tracking-widest text-xs mb-4">İçerik Oluşturucu</h3>
+                        <input id="in-title" type="text" placeholder="Haber veya Köşe Yazısı Başlığı" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl outline-none focus:ring-2 ring-blue-500">
+                        <div class="grid grid-cols-2 gap-4">
+                            <select id="in-cat" class="bg-slate-900 border border-slate-700 p-4 rounded-2xl outline-none">
+                                <option>Mardin Haberleri</option>
+                                <option>Brezilya Gündem</option>
+                                <option>Kültürel Yazılar</option>
+                                <option>Ekonomi</option>
+                            </select>
+                            <input id="in-author" type="text" placeholder="Yazar Adı" class="bg-slate-900 border border-slate-700 p-4 rounded-2xl outline-none">
+                        </div>
+                        <textarea id="in-text" rows="8" placeholder="İçerik Metni..." class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl outline-none"></textarea>
+                        
+                        <div class="p-6 border-2 border-dashed border-slate-700 rounded-2xl text-center hover:border-blue-500 transition cursor-pointer relative">
+                            <input type="file" id="in-file" class="absolute inset-0 opacity-0 cursor-pointer">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-slate-500 mb-2"></i>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Görsel Dosyası Seç (Bilgisayardan)</p>
+                        </div>
+
+                        <button onclick="saveContent()" class="w-full bg-emerald-600 py-5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-2xl hover:bg-emerald-500 transition">SİSTEME GÖNDER VE YAYINLA</button>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-white/5 p-8 rounded-[3rem] border border-white/10 shadow-xl">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Toplam Okunma</p>
+                            <h4 class="text-5xl font-black mt-2">1.2M</h4>
+                            <div class="mt-4 h-1 bg-slate-800 rounded-full overflow-hidden"><div class="w-3/4 h-full bg-blue-500"></div></div>
+                        </div>
+                        <div class="bg-red-600/10 p-8 rounded-[3rem] border border-red-600/20 shadow-xl">
+                            <p class="text-xs font-bold text-red-400 uppercase tracking-widest italic">Aktif Haber Sayısı</p>
+                            <h4 id="stat-count" class="text-5xl font-black mt-2 text-red-500">0</h4>
                         </div>
                     </div>
                 </div>
-
-                <div id="news-feed" class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-                    </div>
-            </div>
-
-            <div class="col-span-12 lg:col-span-3 space-y-6">
-                <div class="bg-blue-900 p-6 rounded-3xl text-white">
-                    <h4 class="text-[10px] font-bold uppercase opacity-50 mb-3">Sponsorlu</h4>
-                    <img id="adv-img" src="https://images.unsplash.com/photo-1512418490979-92798ccc13b0?auto=format&fit=crop&w=300" class="rounded-xl mb-4 w-full h-32 object-cover">
-                    <p class="text-xs font-bold italic">Mardin Kahvesi Şimdi Brezilya'da!</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <main id="page-news-detail" class="page-view container mx-auto px-4 py-12 max-w-3xl">
-        <button onclick="showPage('home')" class="text-xs font-bold text-blue-600 mb-6 uppercase tracking-widest">← Geri Dön</button>
-        <h1 class="msp-title text-4xl font-black mb-6">Mardin ve Sao Paulo Arasındaki Tarihi Bağlar</h1>
-        <img src="https://images.unsplash.com/photo-1552035509-b63909772545?auto=format&fit=crop&w=1200" class="rounded-[2rem] mb-8 shadow-xl">
-        <p class="text-lg leading-relaxed text-slate-700">Mardin'in dar sokaklarından Brezilya'nın dev meydanlarına uzanan bu hikaye, ticaretin ötesinde bir gönül köprüsü kuruyor...</p>
-    </main>
-
-    <main id="page-author-detail" class="page-view container mx-auto px-4 py-12 max-w-3xl">
-        <div class="bg-white p-10 rounded-[3rem] shadow-xl text-center border">
-            <img src="https://ui-avatars.com/api/?name=Ahmet+Mardin&background=1e293b&color=fff" class="w-32 h-32 rounded-full mx-auto mb-6 shadow-lg border-4 border-white">
-            <h2 class="msp-title text-3xl font-black mb-2">Ahmet Mardinî</h2>
-            <p class="text-blue-600 font-bold text-xs uppercase mb-6 tracking-widest">Kıdemli Kültür Yazarı</p>
-            <p class="text-slate-500">Mardin tarihini ve Brezilya kültürünü harmanlayan yazılarıyla MSP Portal'da.</p>
-            <button onclick="showPage('home')" class="mt-8 bg-slate-900 text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest">Geri Dön</button>
-        </div>
-    </main>
-
-    <main id="page-admin" class="page-view container mx-auto px-4 py-12 max-w-4xl">
-        <div class="bg-slate-900 text-white p-8 lg:p-12 rounded-[3rem] shadow-2xl">
-            <h2 class="text-2xl font-black mb-10 text-center uppercase tracking-tighter">İçerik Yönetim Merkezi</h2>
-            
-            <div class="grid grid-cols-1 gap-6">
-                <input id="in-title" type="text" placeholder="Haber Başlığı" class="w-full bg-slate-800 p-4 rounded-2xl outline-none focus:ring-2 ring-blue-500">
-                <textarea id="in-text" rows="4" placeholder="Haber İçeriği..." class="w-full bg-slate-800 p-4 rounded-2xl outline-none"></textarea>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 italic text-xs">
-                    <div class="p-4 border-2 border-dashed border-slate-700 rounded-2xl text-center">
-                        <p class="mb-2">Haber Fotoğrafı (Yerelden)</p>
-                        <input type="file" id="in-img" class="text-[10px]">
-                    </div>
-                    <div class="p-4 border-2 border-dashed border-slate-700 rounded-2xl text-center">
-                        <p class="mb-2">Reklam Görseli (Yerelden)</p>
-                        <input type="file" id="in-adv" class="text-[10px]">
-                    </div>
-                </div>
-
-                <button onclick="publishContent()" class="w-full bg-blue-600 hover:bg-red-600 text-white font-black py-4 rounded-2xl transition-all uppercase tracking-widest">İÇERİĞİ YAYINLA</button>
             </div>
         </div>
     </main>
 
     <script>
-        // SAYFA YÖNETİMİ
-        function showPage(pageId) {
-            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-view'));
-            document.getElementById('page-' + pageId).classList.add('active-view');
+        // VERİ TABANI SİMÜLASYONU (LOCAL STORAGE)
+        let mspData = JSON.parse(localStorage.getItem('msp_global_v1')) || [
+            {
+                id: 0,
+                title: "Mardin ve Sao Paulo Arasında Kültür Köprüsü",
+                text: "İki kıta arasındaki tarihi bağlar, günümüzde ticaret ve sanatla yeniden canlanıyor. Mardin'in dar sokaklarındaki Telkari sanatı, Sao Paulo'nun modern butiklerinde sergileniyor. Bu etkileşim sadece ekonomik değil, aynı zamanda iki halkın birbirini tanımasını sağlayan derin bir bağ oluşturuyor.",
+                cat: "Kültürel Yazılar",
+                author: "Ahmet Mardinî",
+                img: "https://images.unsplash.com/photo-1552035509-b63909772545?auto=format&fit=crop&w=800",
+                date: "02.03.2026"
+            }
+        ];
+
+        // DİL ALGILAMA VE YERELLEŞTİRME
+        const userLang = navigator.language || navigator.userLanguage;
+        const isTR = userLang.startsWith('tr');
+
+        function updateLang() {
+            document.getElementById('lang-indicator').innerText = isTR ? 'TR' : 'PT/EN';
+            if(!isTR) {
+                document.getElementById('nav-slogan').innerText = "Mardin - Sao Paulo News Bridge (Global)";
+                // Diğer statik metinler de burada çevrilebilir
+            }
+        }
+
+        // ROUTER (SAYFA YÖNETİMİ)
+        function router(pageId) {
+            document.querySelectorAll('.page-node').forEach(p => p.classList.remove('active-node'));
+            document.getElementById('view-' + pageId).classList.add('active-node');
             window.scrollTo(0,0);
+            if(speechSynthesis.speaking) speechSynthesis.cancel();
         }
 
-        // İÇERİK YAYINLAMA (Local Storage)
-        function publishContent() {
-            const title = document.getElementById('in-title').value;
-            const text = document.getElementById('in-text').value;
+        // HABERLERİ LİSTELE
+        function renderNews() {
+            const grid = document.getElementById('news-grid');
+            const list = document.getElementById('authors-list');
+            grid.innerHTML = "";
+            list.innerHTML = "";
 
-            if(!title || !text) { alert("Lütfen alanları doldurun!"); return; }
-
-            const newPost = { title, text, date: new Date().toLocaleDateString('tr-TR') };
-            let posts = JSON.parse(localStorage.getItem('msp_posts')) || [];
-            posts.push(newPost);
-            localStorage.setItem('msp_posts', JSON.stringify(posts));
-
-            alert("Haber Yayınlandı!");
-            location.reload(); // Sayfayı yenileyerek veriyi çekmesini sağla
-        }
-
-        // VERİLERİ YÜKLE
-        window.onload = function() {
-            const newsFeed = document.getElementById('news-feed');
-            const posts = JSON.parse(localStorage.getItem('msp_posts')) || [];
-            
-            posts.reverse().forEach(post => {
-                newsFeed.innerHTML += `
-                    <div class="bg-white p-6 rounded-[2rem] border shadow-sm border-slate-100">
-                        <span class="text-[9px] font-black text-blue-600 uppercase mb-2 block">Yeni Haber</span>
-                        <h3 class="font-bold text-xl mb-3">${post.title}</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">${post.text.substring(0, 150)}...</p>
-                        <div class="mt-4 pt-4 border-t text-[10px] font-bold text-slate-400 uppercase">${post.date}</div>
+            mspData.forEach((item, index) => {
+                // Ana Grid
+                grid.innerHTML += `
+                    <div onclick="openNews(${index})" class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl transition-all cursor-pointer group">
+                        <span class="text-[9px] font-black text-red-600 uppercase tracking-widest">${item.cat}</span>
+                        <h3 class="msp-title text-2xl font-black mt-4 group-hover:text-blue-900 transition">${item.title}</h3>
+                        <p class="text-xs text-slate-500 mt-4 line-clamp-2 leading-relaxed">${item.text}</p>
+                        <div class="mt-6 flex justify-between items-center italic">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">${item.author}</span>
+                            <span class="text-[9px] font-black text-slate-300">${item.date}</span>
+                        </div>
                     </div>
                 `;
+                // Yazar Listesi (Sadece ilk 4 farklı yazar)
+                if(index < 4) {
+                    list.innerHTML += `
+                        <div class="flex items-center gap-4 cursor-pointer hover:translate-x-2 transition">
+                            <img src="https://ui-avatars.com/api/?name=${item.author}&background=random&color=fff" class="w-10 h-10 rounded-xl">
+                            <div><p class="text-xs font-black uppercase text-slate-800">${item.author}</p><p class="text-[9px] text-slate-400 font-bold italic">Köşe Yazısı</p></div>
+                        </div>
+                    `;
+                }
             });
-        };
+            document.getElementById('stat-count').innerText = mspData.length;
+        }
+
+        // HABER DETAYI AÇ
+        function openNews(index) {
+            const item = mspData[index];
+            document.getElementById('det-title').innerText = item.title;
+            document.getElementById('det-content').innerText = item.text;
+            document.getElementById('det-author-name').innerText = item.author;
+            document.getElementById('det-author-img').src = `https://ui-avatars.com/api/?name=${item.author}&background=1e293b&color=fff`;
+            document.getElementById('det-img').src = item.img;
+            router('detail');
+        }
+
+        // ADMİN: İÇERİK KAYDET
+        function saveContent() {
+            const title = document.getElementById('in-title').value;
+            const text = document.getElementById('in-text').value;
+            const author = document.getElementById('in-author').value;
+            const cat = document.getElementById('in-cat').value;
+
+            if(!title || !text || !author) { alert("Lütfen tüm alanları doldurun!"); return; }
+
+            const newItem = {
+                id: Date.now(),
+                title, text, author, cat,
+                img: "https://images.unsplash.com/photo-1590272456521-1bbe160a18ce?auto=format&fit=crop&w=800",
+                date: new Date().toLocaleDateString('tr-TR')
+            };
+
+            mspData.unshift(newItem);
+            localStorage.setItem('msp_global_v1', JSON.stringify(mspData));
+            renderNews();
+            alert("İçerik başarıyla yayınlandı!");
+            router('home');
+        }
+
+        // TEXT TO SPEECH (SESLENDİRME)
+        function toggleSpeech() {
+            if(speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                document.getElementById('btn-speech').innerHTML = '<i class="fas fa-volume-up mr-2"></i>DİNLE';
+            } else {
+                const text = document.getElementById('det-content').innerText;
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = isTR ? 'tr-TR' : 'pt-BR';
+                speechSynthesis.speak(utterance);
+                document.getElementById('btn-speech').innerHTML = '<i class="fas fa-stop mr-2"></i>DURDUR';
+                utterance.onend = () => document.getElementById('btn-speech').innerHTML = '<i class="fas fa-volume-up mr-2"></i>DİNLE';
+            }
+        }
+
+        // TEXT SIZE (YAZI BOYUTU)
+        let currentSize = 18;
+        function changeFontSize(delta) {
+            currentSize += delta;
+            document.getElementById('det-content').style.fontSize = currentSize + 'px';
+        }
+
+        // BAŞLANGIÇ
+        updateLang();
+        renderNews();
     </script>
 </body>
 </html>
