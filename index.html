@@ -3,35 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin & Brazil Global Portal</title>
+    <title>Global Portal | Mardin & Brazil</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         [x-cloak] { display: none !important; }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .page-fade { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        /* İtalik yazı tiplerini tamamen devre dışı bırakma */
+        .glass { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); }
+        .page-fade { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        /* İtalik yazıları tamamen kaldırır */
         * { font-style: normal !important; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans" x-data="portalControl()" x-init="init()">
 
-    <nav class="sticky top-0 z-[100] glass border-b border-slate-200 shadow-md">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+    <nav class="sticky top-0 z-[100] glass border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div @click="page = 'home'" class="text-3xl font-black tracking-tighter uppercase cursor-pointer text-blue-800">ASC PORTAL</div>
             
-            <div class="hidden md:flex space-x-10 text-[12px] font-black uppercase tracking-[0.1em]">
-                <button @click="page = 'home'" :class="page === 'home' ? 'text-blue-600' : 'text-slate-500 hover:text-blue-600'">Ana Sayfa</button>
-                <button @click="page = 'haberler'" :class="page === 'haberler' ? 'text-blue-600' : 'text-slate-500 hover:text-blue-600'">Haber Arşivi</button>
-                <button @click="page = 'yazarlar'" :class="page === 'yazarlar' ? 'text-blue-600' : 'text-slate-500 hover:text-blue-600'">Yazarlar</button>
-                <button @click="page = 'iletisim'" :class="page === 'iletisim' ? 'text-blue-600' : 'text-slate-500 hover:text-blue-600'">İletişim</button>
+            <div class="hidden md:flex space-x-8 text-[11px] font-black uppercase tracking-widest">
+                <button @click="page = 'home'" class="hover:text-blue-600 transition">Ana Sayfa</button>
+                <button @click="page = 'haberler'" class="hover:text-blue-600 transition">Arşiv</button>
+                <button @click="page = 'iletisim'" class="hover:text-blue-600 transition">İletişim</button>
             </div>
 
-            <div class="flex space-x-6 text-[11px] font-bold border-l pl-6 border-slate-200 text-slate-500">
-                <div class="text-right leading-tight tracking-tighter uppercase">Mardin<br><span class="text-blue-600 text-sm" x-text="mTime"></span></div>
-                <div class="text-left leading-tight tracking-tighter uppercase">Brazil<br><span class="text-emerald-600 text-sm" x-text="bTime"></span></div>
+            <div class="flex space-x-6 text-[10px] font-bold border-l pl-6 border-slate-200 text-slate-500 uppercase">
+                <div class="text-right">Mardin<br><span class="text-blue-600 text-sm" x-text="mTime"></span></div>
+                <div class="text-left">Brazil<br><span class="text-emerald-600 text-sm" x-text="bTime"></span></div>
             </div>
         </div>
     </nav>
@@ -39,27 +38,48 @@
     <main class="min-h-screen">
 
         <div x-show="page === 'home'" class="page-fade">
-            <header class="relative h-[55vh] flex items-center justify-center bg-slate-900 text-white overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1590424744295-827054f76785?auto=format&fit=crop&q=80&w=1600" class="absolute w-full h-full object-cover opacity-50">
-                <div class="relative text-center">
-                    <h1 class="text-6xl md:text-8xl font-black tracking-tight uppercase">DÜNYA HABER</h1>
-                    <p class="mt-4 text-emerald-400 tracking-[0.5em] uppercase font-bold text-sm">Mardin ve Brezilya Hattı</p>
+            
+            <section class="bg-slate-900 py-12 border-b border-slate-800">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="flex items-center space-x-4 mb-8">
+                        <span class="h-[2px] w-12 bg-blue-500"></span>
+                        <h2 class="text-white text-xs font-black uppercase tracking-[0.3em]">Kıdemli Köşe Yazarları</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <template x-for="author in authors">
+                            <div @click="showAuthor(author)" class="bg-slate-800 p-6 rounded-2xl flex items-center space-x-6 cursor-pointer hover:bg-slate-700 transition border border-slate-700 hover:border-blue-500 group">
+                                <img :src="author.photo" class="w-16 h-16 rounded-full object-cover border-2 border-slate-600 group-hover:border-blue-500 transition">
+                                <div>
+                                    <h3 class="text-white font-black uppercase text-lg" x-text="author.name"></h3>
+                                    <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest" x-text="author.role"></span>
+                                </div>
+                                <div class="ml-auto text-slate-500 group-hover:text-white transition">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <header class="relative h-[45vh] flex items-center justify-center bg-black overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1590424744295-827054f76785?auto=format&fit=crop&q=80&w=1600" class="absolute w-full h-full object-cover opacity-60">
+                <div class="relative text-center px-4">
+                    <h1 class="text-white text-5xl md:text-7xl font-black uppercase tracking-tighter">KÜRESEL AKIŞ</h1>
+                    <p class="text-emerald-400 font-bold tracking-[0.4em] uppercase text-sm mt-2">Mardin / Brazil Portalı</p>
                 </div>
             </header>
             
             <section class="max-w-7xl mx-auto px-6 py-20">
-                <div class="flex items-center justify-between mb-12">
-                    <h2 class="text-3xl font-black uppercase tracking-tighter border-l-8 border-blue-700 pl-5">Günün Manşetleri</h2>
-                    <button @click="page = 'haberler'" class="text-xs font-black uppercase text-blue-600 hover:underline">Tümünü Gör</button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <h2 class="text-3xl font-black uppercase tracking-tighter mb-12 border-l-8 border-blue-700 pl-5">Günün Manşetleri</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                     <template x-for="news in newsData">
-                        <div @click="showNews(news)" class="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all cursor-pointer border border-slate-100 group">
-                            <div class="h-60 overflow-hidden"><img :src="news.img" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div>
+                        <div @click="showNews(news)" class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all cursor-pointer border border-slate-100 group">
+                            <div class="h-60 overflow-hidden"><img :src="news.img" class="w-full h-full object-cover group-hover:scale-105 transition duration-700"></div>
                             <div class="p-8">
-                                <span class="bg-slate-100 text-slate-600 text-[10px] font-black uppercase px-3 py-1 rounded-full" x-text="news.tag"></span>
+                                <span class="text-blue-600 text-[10px] font-black uppercase tracking-widest" x-text="news.tag"></span>
                                 <h3 class="font-black text-xl my-4 leading-tight group-hover:text-blue-700 transition" x-text="news.title"></h3>
-                                <p class="text-slate-500 text-sm line-clamp-2 leading-relaxed" x-text="news.desc"></p>
+                                <p class="text-slate-500 text-sm line-clamp-2" x-text="news.desc"></p>
                             </div>
                         </div>
                     </template>
@@ -67,24 +87,29 @@
             </section>
         </div>
 
-        <div x-show="page === 'haberler'" class="page-fade max-w-7xl mx-auto px-6 py-20" x-cloak>
-            <h2 class="text-4xl font-black uppercase tracking-widest text-center mb-16">Tüm Haberler</h2>
-            <div class="space-y-8">
-                <template x-for="news in newsData">
-                    <div @click="showNews(news)" class="flex flex-col md:flex-row bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 cursor-pointer hover:shadow-lg transition">
-                        <img :src="news.img" class="w-full md:w-80 h-52 object-cover">
-                        <div class="p-8">
-                            <span class="text-blue-600 font-black text-[10px] uppercase tracking-widest" x-text="news.tag"></span>
-                            <h3 class="text-2xl font-black my-2" x-text="news.title"></h3>
-                            <p class="text-slate-500" x-text="news.desc"></p>
-                        </div>
+        <div x-show="page === 'author-detail'" class="page-fade max-w-4xl mx-auto px-6 py-20" x-cloak>
+            <button @click="page = 'home'" class="mb-10 text-xs font-black uppercase tracking-widest text-blue-600 flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Ana Sayfa
+            </button>
+            <div class="bg-white rounded-[3rem] p-12 shadow-2xl text-center border border-slate-100">
+                <img :src="activeAuthor?.photo" class="w-40 h-40 rounded-full mx-auto border-8 border-slate-50 shadow-xl mb-8 object-cover">
+                <h1 class="text-4xl font-black uppercase mb-2" x-text="activeAuthor?.name"></h1>
+                <span class="text-blue-600 font-black uppercase text-sm tracking-[0.2em] mb-8 block" x-text="activeAuthor?.role"></span>
+                <div class="h-[1px] w-20 bg-slate-200 mx-auto mb-8"></div>
+                <p class="text-slate-600 text-lg leading-relaxed max-w-2xl mx-auto" x-text="activeAuthor?.bio"></p>
+                
+                <div class="mt-12 pt-12 border-t border-slate-50 text-left">
+                    <h4 class="font-black uppercase text-xs mb-6 tracking-widest text-slate-400">Son Yazıları</h4>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-xl font-bold hover:bg-blue-50 cursor-pointer transition">Mardin'den Rio'ya Kültürel Mirasın İzleri</div>
+                        <div class="p-4 bg-slate-50 rounded-xl font-bold hover:bg-blue-50 cursor-pointer transition">Geleceğin Şehirleri: Taş ve Orman Uyumu</div>
                     </div>
-                </template>
+                </div>
             </div>
         </div>
 
         <div x-show="page === 'detail'" class="page-fade max-w-4xl mx-auto px-6 py-20" x-cloak>
-            <button @click="page = 'home'" class="mb-10 text-xs font-black uppercase tracking-[0.2em] text-blue-600 flex items-center gap-2">
+            <button @click="page = 'home'" class="mb-10 text-xs font-black uppercase tracking-widest text-blue-600 italic flex items-center gap-2">
                 <i class="fas fa-arrow-left"></i> Geri Dön
             </button>
             <img :src="activeNews?.img" class="w-full h-[50vh] object-cover rounded-[3rem] shadow-2xl mb-12">
@@ -92,28 +117,29 @@
             <div class="text-slate-800 text-xl leading-relaxed space-y-6 font-medium" x-html="activeNews?.body"></div>
         </div>
 
-        <div x-show="page === 'yazarlar'" class="page-fade max-w-7xl mx-auto px-6 py-20" x-cloak>
-            <h2 class="text-5xl font-black text-center mb-20 uppercase tracking-tighter">Yazarlarımız</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <template x-for="author in authors">
-                    <div class="bg-white border border-slate-200 p-12 rounded-[3rem] shadow-sm flex flex-col items-center text-center group hover:bg-slate-900 hover:text-white transition-all duration-500">
-                        <img :src="author.photo" class="w-32 h-32 rounded-full border-4 border-blue-500 mb-8 object-cover group-hover:scale-110 transition">
-                        <h3 class="text-3xl font-black mb-2 uppercase" x-text="author.name"></h3>
-                        <span class="text-blue-600 font-black uppercase text-xs tracking-widest mb-6" x-text="author.role"></span>
-                        <p class="text-slate-500 group-hover:text-slate-300 leading-relaxed font-medium" x-text="author.bio"></p>
+        <div x-show="page === 'haberler'" class="page-fade max-w-7xl mx-auto px-6 py-20" x-cloak>
+            <h2 class="text-4xl font-black uppercase tracking-widest text-center mb-16">Tüm Arşiv</h2>
+            <div class="grid grid-cols-1 gap-6">
+                <template x-for="news in newsData">
+                    <div @click="showNews(news)" class="flex flex-col md:flex-row bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 cursor-pointer hover:shadow-lg transition">
+                        <img :src="news.img" class="w-full md:w-80 h-52 object-cover">
+                        <div class="p-8">
+                            <span class="text-blue-600 font-black text-[10px] uppercase tracking-widest" x-text="news.tag"></span>
+                            <h3 class="text-2xl font-black my-2 uppercase" x-text="news.title"></h3>
+                            <p class="text-slate-500" x-text="news.desc"></p>
+                        </div>
                     </div>
                 </template>
             </div>
         </div>
 
         <div x-show="page === 'iletisim'" class="page-fade max-w-2xl mx-auto px-6 py-20" x-cloak>
-            <h2 class="text-4xl font-black mb-12 uppercase text-center tracking-tighter">İletişim Formu</h2>
+            <h2 class="text-3xl font-black mb-12 uppercase text-center tracking-tighter">Bize Ulaşın</h2>
             <div class="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100">
                 <div class="space-y-6">
                     <div><label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Ad Soyad</label><input type="text" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 ring-blue-600 transition"></div>
-                    <div><label class="block text-[10px] font-black uppercase text-slate-400 mb-2">E-Posta</label><input type="email" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 ring-blue-600 transition"></div>
-                    <div><label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Konu</label><textarea rows="4" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 ring-blue-600 transition"></textarea></div>
-                    <button class="w-full bg-blue-700 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-black transition shadow-xl">Mesajı Gönder</button>
+                    <div><label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Mesajınız</label><textarea rows="4" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 ring-blue-600 transition"></textarea></div>
+                    <button class="w-full bg-blue-700 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-black transition">Gönder</button>
                 </div>
             </div>
         </div>
@@ -121,7 +147,7 @@
     </main>
 
     <footer class="bg-white border-t border-slate-200 py-16 text-center">
-        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-slate-300 uppercase">ASC GLOBAL PORTAL &copy; 2026</p>
+        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-slate-300">ASC GLOBAL PORTAL &copy; 2026</p>
     </footer>
 
     <script>
@@ -129,16 +155,17 @@
             return {
                 page: 'home',
                 activeNews: null,
+                activeAuthor: null,
                 mTime: '',
                 bTime: '',
                 newsData: [
-                    { tag: 'Mardin', title: 'Artuklu Sarayı Restorasyonu Tamamlandı', desc: 'Binlerce yıllık saray, modern bir müze konseptiyle kapılarını ziyaretçilere açtı.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=1200', body: 'Artuklu mimarisinin en nadide örneklerinden biri olan saray, 4 yıl süren titiz bir çalışmanın ardından eski görkemine kavuştu. Müzede Mardin tarihine ışık tutan 500 adet yeni eser sergilenecek. Açılış törenine uluslararası pek çok arkeolog katılım sağladı.' },
-                    { tag: 'Brazil', title: 'Amazonlarda Yenilenebilir Enerji Devrimi', desc: 'Brezilya, Amazon bölgesindeki köylere güneş enerjisi sağlamak için dev bir proje başlattı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=1200', body: 'Proje kapsamında uzak bölgelerdeki yerleşim yerlerine 50.000 adet güneş paneli kurulacak. Bu sayede bölgenin doğal yapısı korunurken, enerji ihtiyacı %100 temiz kaynaklardan karşılanmış olacak. Brezilya bu adımıyla iklim zirvesinde büyük takdir topladı.' },
-                    { tag: 'Ticaret', title: 'Mardin Tekstili Rio Moda Haftasında', desc: 'Mardin’in yerel ipek dokumaları, Brezilya’nın en prestijli moda etkinliğinde podyuma çıktı.', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200', body: 'Yerel zanaatkarların el emeği ürünleri, modern tasarımlarla harmanlanarak Rio podyumlarında sergilendi. Brezilyalı tasarımcılar, Mardin desenlerinin Latin Amerika modasına yeni bir soluk getirdiğini belirtti. İki bölge arasında kalıcı bir tasarım ofisi kurulması kararlaştırıldı.' }
+                    { tag: 'Mardin', title: 'Artuklu Sarayı Restorasyonu Tamamlandı', desc: 'Binlerce yıllık saray, modern bir müze konseptiyle kapılarını ziyaretçilere açtı.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=1200', body: 'Artuklu mimarisinin en nadide örneklerinden biri olan saray, 4 yıl süren titiz bir çalışmanın ardından eski görkemine kavuştu. Müzede Mardin tarihine ışık tutan 500 adet yeni eser sergilenecek.' },
+                    { tag: 'Brazil', title: 'Amazonlarda Yenilenebilir Enerji Devrimi', desc: 'Brezilya, Amazon bölgesindeki köylere güneş enerjisi sağlamak için dev bir proje başlattı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=1200', body: 'Proje kapsamında uzak bölgelerdeki yerleşim yerlerine 50.000 adet güneş paneli kurulacak. Bu sayede bölgenin doğal yapısı korunurken, enerji ihtiyacı %100 temiz kaynaklardan karşılanmış olacak.' },
+                    { tag: 'Ticaret', title: 'Mardin Tekstili Rio Moda Haftasında', desc: 'Mardin’in yerel ipek dokumaları, Brezilya’nın en prestijli moda etkinliğinde podyuma çıktı.', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200', body: 'Yerel zanaatkarların el emeği ürünleri, modern tasarımlarla harmanlanarak Rio podyumlarında sergilendi. Brezilyalı tasarımcılar, Mardin desenlerinin Latin Amerika modasına yeni bir soluk getirdiğini belirtti.' }
                 ],
                 authors: [
-                    { name: 'Prof. Dr. Ahmet Salim', role: 'Kurucu Editör / Tarihçi', bio: 'Mezopotamya ve Latin Amerika medeniyetleri üzerine 25 yıllık akademik kariyere sahiptir.', photo: 'https://i.pravatar.cc/150?u=asalim' },
-                    { name: 'Dr. Isabella Mendes', role: 'Uluslararası Analist', bio: 'Kültürlerarası diplomasi ve küresel ticaret stratejileri üzerine uzmanlaşmış kıdemli yazar.', photo: 'https://i.pravatar.cc/150?u=isabella' }
+                    { name: 'Prof. Dr. Ahmet Salim', role: 'Kurucu Editör / Tarihçi', bio: 'Mezopotamya medeniyetleri ve dünya mirası üzerine 25 yıllık akademik kariyere sahiptir. Mardin ve Brezilya arasındaki kültürel bağların güçlendirilmesi için çalışmaktadır.', photo: 'https://i.pravatar.cc/150?u=asalim' },
+                    { name: 'Dr. Isabella Mendes', role: 'Uluslararası Analist', bio: 'Brezilya ve Ortadoğu ticaret stratejileri üzerine uzmanlaşmış kıdemli yazar. Sao Paulo Üniversitesi’nde misafir öğretim üyesidir.', photo: 'https://i.pravatar.cc/150?u=isabella' }
                 ],
                 init() {
                     this.updateTime();
@@ -152,6 +179,11 @@
                 showNews(news) {
                     this.activeNews = news;
                     this.page = 'detail';
+                    window.scrollTo(0, 0);
+                },
+                showAuthor(author) {
+                    this.activeAuthor = author;
+                    this.page = 'author-detail';
                     window.scrollTo(0, 0);
                 }
             }
