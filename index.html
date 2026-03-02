@@ -3,168 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSP Global | Mardin - Sao Paulo</title>
+    <title>MSP Global | Professional Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --msp-blue: #0f172a; --msp-red: #ef4444; }
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+        :root { --msp-dark: #0f172a; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; overflow-x: hidden; }
         .msp-title { font-family: 'Playfair Display', serif; }
-        .view-node { display: none; }
-        .active-view { display: block; animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.5); }
-        .admin-nav-item.active { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border-right: 4px solid #3b82f6; }
-        ::-webkit-scrollbar { width: 6px; }
+        .view-node { display: none; min-height: 100vh; }
+        .active-view { display: block; }
+        
+        /* Taşma Engelleyici Kilitler */
+        .ad-box-fixed { aspect-ratio: 4 / 5; position: relative; overflow: hidden; border-radius: 2.5rem; }
+        .ad-img-fixed { width: 100%; height: 100%; object-fit: cover; }
+        .news-img-fixed { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 2rem; }
+        
+        /* Admin Sidebar Sabitleyici */
+        .admin-sidebar { height: 100vh; position: sticky; top: 0; background: var(--msp-dark); }
+        
+        /* Scroll */
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        /* Resim Önizleme */
+        #img-preview { width: 100%; height: 200px; object-fit: cover; border-radius: 1.5rem; display: none; border: 2px solid #e2e8f0; }
     </style>
 </head>
-<body>
+<body class="text-slate-900">
 
-    <div class="bg-slate-900 text-white text-[10px] font-bold py-2 overflow-hidden">
+    <header class="h-20 bg-white border-b sticky top-0 z-[100] flex items-center shadow-sm">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <div class="flex gap-6 animate-pulse">
-                <span><i class="fas fa-sun mr-2 text-amber-400"></i> MARDİN: 18°C</span>
-                <span><i class="fas fa-cloud mr-2 text-slate-400"></i> SAO PAULO: 24°C</span>
-                <span class="hidden md:inline"><i class="fas fa-dollar-sign mr-2 text-emerald-400"></i> USD/BRL: 4.95</span>
-            </div>
-            <div id="live-clock" class="opacity-50"></div>
-        </div>
-    </div>
-
-    <nav class="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b">
-        <div class="container mx-auto px-4 h-20 flex justify-between items-center">
-            <div onclick="router('home')" class="cursor-pointer group">
-                <h1 class="text-2xl font-black tracking-tighter italic">MSP<span class="text-red-600">.</span>GLOBAL</h1>
+            <div onclick="router('home')" class="cursor-pointer">
+                <h1 class="text-2xl font-black tracking-tighter italic uppercase">MSP<span class="text-red-600">.</span>GLOBAL</h1>
                 <p class="text-[8px] font-black uppercase tracking-[0.3em] text-slate-400">Intelligence Bridge</p>
             </div>
-            <div class="flex items-center gap-6">
-                <button onclick="router('home')" class="hidden md:block text-xs font-black uppercase hover:text-red-600 transition">Ana Sayfa</button>
-                <button onclick="router('admin')" class="bg-blue-600 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase shadow-lg shadow-blue-500/30 hover:scale-105 transition active:scale-95">Yönetim Paneli</button>
+            <div class="flex items-center gap-4">
+                <button onclick="router('home')" class="text-xs font-black uppercase px-4 py-2 hover:text-red-600 transition">Ana Sayfa</button>
+                <button onclick="router('admin')" class="bg-blue-600 text-white text-[10px] font-black px-6 py-3 rounded-full shadow-xl hover:bg-blue-700 transition uppercase">Yönetim Paneli</button>
             </div>
         </div>
-    </nav>
+    </header>
 
     <main id="view-home" class="view-node active-view container mx-auto px-4 py-10">
         <div class="grid grid-cols-12 gap-8">
-            <div class="col-span-12 lg:col-span-8 space-y-12">
-                <div id="news-feed" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    </div>
-            </div>
+            <div class="col-span-12 lg:col-span-8 space-y-10" id="news-grid">
+                </div>
 
             <aside class="col-span-12 lg:col-span-4 space-y-8">
-                <div id="home-ad-area" class="min-h-[400px]"></div>
-                
-                <div class="bg-white rounded-[3rem] p-8 shadow-sm border border-slate-100">
-                    <h3 class="text-xs font-black uppercase text-slate-400 mb-8 border-l-4 border-blue-600 pl-4">Köşe Yazarları</h3>
-                    <div id="home-authors-area" class="space-y-6"></div>
+                <div id="ad-container" class="ad-box-fixed bg-slate-200 shadow-2xl">
+                    <div class="absolute inset-0 flex items-center justify-center text-slate-400 italic">Reklam Yükleniyor...</div>
                 </div>
-            </div>
+                
+                <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100">
+                    <h3 class="text-[10px] font-black uppercase text-slate-400 mb-8 border-l-4 border-blue-600 pl-4 tracking-widest">Köşe Yazarları</h3>
+                    <div id="author-sidebar" class="space-y-6"></div>
+                </div>
+            </aside>
         </div>
     </main>
 
     <main id="view-detail" class="view-node container mx-auto px-4 py-12 max-w-4xl">
-        <div class="flex items-center justify-between mb-10">
-            <button onclick="router('home')" class="text-xs font-black uppercase text-slate-400 hover:text-black"><i class="fas fa-arrow-left mr-2"></i> Geri</button>
-            <div class="flex gap-2">
-                <button onclick="changeFontSize(-1)" class="w-10 h-10 bg-white border rounded-full flex items-center justify-center text-sm shadow-sm">-</button>
-                <button onclick="changeFontSize(1)" class="w-10 h-10 bg-white border rounded-full flex items-center justify-center text-sm shadow-sm">+</button>
-                <button onclick="toggleSpeech()" id="speech-control" class="px-6 h-10 bg-red-600 text-white rounded-full text-[10px] font-black uppercase shadow-lg shadow-red-500/20">Sesli Dinle</button>
-            </div>
-        </div>
-
-        <article>
-            <span id="det-cat" class="text-blue-600 text-[10px] font-black uppercase tracking-widest bg-blue-50 px-4 py-1 rounded-full">Kategori</span>
-            <h1 id="det-title" class="msp-title text-4xl lg:text-7xl font-black mt-6 mb-8 leading-[1.1]"></h1>
-            
-            <div class="flex items-center gap-4 mb-10 pb-10 border-b">
-                <img id="det-auth-img" src="" class="w-14 h-14 rounded-2xl object-cover shadow-md">
-                <div>
-                    <p id="det-auth-name" class="font-black text-sm uppercase"></p>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 italic">Yayın: 02.03.2026</p>
-                </div>
-            </div>
-
-            <img id="det-img" src="" class="w-full rounded-[3rem] shadow-2xl mb-12 border-8 border-white">
-            <div id="det-body" class="text-xl leading-[1.8] text-slate-700 space-y-8"></div>
-        </article>
+        <button onclick="router('home')" class="text-xs font-black uppercase text-slate-400 mb-8 hover:text-black">← Geri Dön</button>
+        <article id="full-article">
+            </article>
     </main>
 
-    <main id="view-admin" class="view-node min-h-screen bg-slate-50">
-        <div class="flex flex-col lg:flex-row min-h-screen">
-            <nav class="w-full lg:w-72 bg-white border-r p-8 flex flex-col gap-2">
-                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Yönetim Merkezi</h2>
-                <button onclick="setMod('haber')" class="admin-nav-item flex items-center gap-4 p-4 rounded-2xl text-sm font-bold transition active" id="btn-haber"><i class="fas fa-newspaper w-5"></i> Haberler</button>
-                <button onclick="setMod('yazar')" class="admin-nav-item flex items-center gap-4 p-4 rounded-2xl text-sm font-bold transition" id="btn-yazar"><i class="fas fa-pen-nib w-5"></i> Yazarlar</button>
-                <button onclick="setMod('reklam')" class="admin-nav-item flex items-center gap-4 p-4 rounded-2xl text-sm font-bold transition" id="btn-reklam"><i class="fas fa-ad w-5"></i> Reklamlar</button>
-                <div class="mt-auto border-t pt-6">
-                    <button onclick="router('home')" class="w-full p-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase">Siteden Çık</button>
-                </div>
+    <main id="view-admin" class="view-node bg-slate-100">
+        <div class="flex flex-col lg:flex-row">
+            <nav class="w-full lg:w-72 admin-sidebar p-8 flex flex-col gap-2 text-slate-400">
+                <p class="text-[10px] font-black uppercase mb-6 tracking-widest">Menu</p>
+                <button onclick="setMod('haber')" id="m-haber" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:bg-white/5 hover:text-white transition">Haberler</button>
+                <button onclick="setMod('yazar')" id="m-yazar" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:bg-white/5 hover:text-white transition">Yazarlar</button>
+                <button onclick="setMod('reklam')" id="m-reklam" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:bg-white/5 hover:text-white transition">Reklamlar</button>
+                <hr class="my-6 border-slate-800">
+                <button onclick="router('home')" class="p-4 bg-red-600/10 text-red-500 rounded-2xl font-black text-xs uppercase">Siteden Çık</button>
             </nav>
 
-            <section class="flex-1 p-8 lg:p-16 overflow-y-auto">
-                <div class="flex justify-between items-center mb-12">
-                    <div>
-                        <h3 id="admin-mod-title" class="text-4xl font-black italic uppercase tracking-tighter">İçerik Yönetimi</h3>
-                        <p class="text-slate-400 text-xs mt-2 font-bold uppercase tracking-widest">Global Veri Merkezi</p>
-                    </div>
-                    <button onclick="openModal()" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase shadow-xl hover:bg-blue-700 transition">+ YENİ KAYIT EKLE</button>
+            <section class="flex-1 p-8 lg:p-12">
+                <div class="flex justify-between items-center mb-10">
+                    <h2 id="admin-title" class="text-3xl font-black italic uppercase">Yönetim</h2>
+                    <button onclick="openModal()" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black text-xs shadow-xl">+ EKLE</button>
                 </div>
-
-                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
+                
+                <div class="bg-white rounded-[2.5rem] shadow-sm border overflow-hidden">
                     <table class="w-full text-left">
-                        <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 border-b">
-                            <tr><th class="p-6">Medya</th><th class="p-6">Başlık / Detay</th><th class="p-6 text-right">Aksiyon</th></tr>
+                        <thead class="bg-slate-50 border-b text-[10px] font-black uppercase text-slate-400">
+                            <tr><th class="p-6">Görsel</th><th class="p-6">Başlık</th><th class="p-6 text-right">İşlem</th></tr>
                         </thead>
-                        <tbody id="admin-data-list" class="divide-y divide-slate-50">
-                            </tbody>
+                        <tbody id="admin-table-body" class="divide-y"></tbody>
                     </table>
                 </div>
             </section>
         </div>
     </main>
 
-    <div id="modal" class="fixed inset-0 z-[200] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="bg-white w-full max-w-2xl rounded-[3rem] p-10 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <h4 id="modal-title" class="text-3xl font-black italic mb-8">Yeni İçerik</h4>
-            
-            <div class="space-y-6">
-                <div class="relative group">
-                    <div id="preview-box" class="w-full h-48 bg-slate-100 rounded-3xl border-4 border-dashed border-slate-200 flex items-center justify-center overflow-hidden">
-                        <img id="img-preview" src="" class="hidden w-full h-full object-cover">
-                        <div id="preview-placeholder" class="text-center">
-                            <i class="fas fa-camera text-3xl text-slate-300 mb-2"></i>
-                            <p class="text-[10px] font-black text-slate-400 uppercase">Görsel Seç</p>
-                        </div>
-                    </div>
-                    <input type="file" onchange="processFile(event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                </div>
-
-                <input id="in-title" type="text" placeholder="Ana Başlık / İsim" class="w-full bg-slate-50 p-5 rounded-2xl border-none outline-none focus:ring-2 ring-blue-500 font-bold">
-                <textarea id="in-text" rows="6" placeholder="Detaylı İçerik Metni..." class="w-full bg-slate-50 p-5 rounded-2xl border-none outline-none focus:ring-2 ring-blue-500"></textarea>
-                <input id="in-sub" type="text" placeholder="Alt Bilgi (Yazar adı, Kategori veya Link)" class="w-full bg-slate-50 p-5 rounded-2xl border-none outline-none focus:ring-2 ring-blue-500 text-xs font-bold uppercase">
+    <div id="modal" class="fixed inset-0 z-[200] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-xl rounded-[3rem] p-10 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <h3 id="modal-head" class="text-2xl font-black italic mb-8">İçerik Formu</h3>
+            <div class="space-y-4">
+                <img id="img-preview" src="">
+                <label class="block w-full p-6 border-2 border-dashed rounded-2xl text-center cursor-pointer hover:bg-slate-50 transition">
+                    <span class="text-xs font-bold text-slate-400 uppercase">Resim Seç (PC'den)</span>
+                    <input type="file" class="hidden" onchange="encodeImg(event)">
+                </label>
+                <input id="in-title" type="text" placeholder="Ana Başlık / İsim" class="w-full p-5 bg-slate-100 rounded-2xl border-none outline-none font-bold">
+                <textarea id="in-text" placeholder="İçerik Metni..." class="w-full p-5 bg-slate-100 rounded-2xl border-none outline-none h-32"></textarea>
+                <input id="in-sub" type="text" placeholder="Alt Başlık (Yazar veya Link)" class="w-full p-5 bg-slate-100 rounded-2xl border-none outline-none text-xs font-bold">
             </div>
-
-            <div class="mt-10 flex gap-4">
-                <button onclick="closeModal()" class="flex-1 p-5 font-black text-[10px] uppercase text-slate-400">Vazgeç</button>
-                <button onclick="commitData()" class="flex-[2] bg-blue-600 text-white p-5 rounded-2xl font-black text-[10px] uppercase shadow-xl hover:bg-blue-700">Değişiklikleri Kaydet</button>
+            <div class="mt-8 flex gap-4">
+                <button onclick="closeModal()" class="flex-1 font-bold text-slate-400">İptal</button>
+                <button onclick="saveData()" class="flex-[2] bg-blue-600 text-white p-5 rounded-2xl font-black uppercase text-xs">Kaydet</button>
             </div>
         </div>
     </div>
 
     <script>
-        // VERİ SİSTEMİ
-        let mspStorage = JSON.parse(localStorage.getItem('msp_global_db_v3')) || { haber: [], yazar: [], reklam: [] };
-        let currentMod = 'haber';
-        let editTargetId = null;
-        let base64Buffer = "";
+        // SİSTEM HAFIZASI (Varsayılan Verilerle)
+        const initialDB = {
+            haber: [{id: 1, title: "Mardin'den Sao Paulo'ya Sanat Köprüsü", text: "İki kadim kültür arasındaki bağlar güçleniyor...", sub: "Haber Ekibi", img: "https://images.unsplash.com/photo-1552035509-b63909772545?w=800"}],
+            yazar: [{id: 1, title: "Ahmet Mardinli", text: "Kültür Yazarı", sub: "Başyazar", img: "https://ui-avatars.com/api/?name=Ahmet+Mardinli&bg=0f172a&color=fff"}],
+            reklam: [{id: 1, title: "Artuklu Kahvesi", text: "Sao Paulo'da Mardin Tadı", sub: "#", img: "https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=800"}]
+        };
 
-        // SAAT
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('live-clock').innerText = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-        }, 1000);
+        let db = JSON.parse(localStorage.getItem('msp_locked_db')) || initialDB;
+        let currentMod = 'haber';
+        let editId = null;
+        let tempBase64 = "";
 
         // ROUTER
         function router(view) {
@@ -175,197 +140,152 @@
             window.scrollTo(0,0);
         }
 
-        // DOSYA İŞLEME (Base64)
-        function processFile(e) {
+        // RESİM ŞİFRELEME
+        function encodeImg(e) {
             const file = e.target.files[0];
             const reader = new FileReader();
             reader.onloadend = () => {
-                base64Buffer = reader.result;
-                const img = document.getElementById('img-preview');
-                img.src = base64Buffer;
-                img.classList.remove('hidden');
-                document.getElementById('preview-placeholder').classList.add('hidden');
+                tempBase64 = reader.result;
+                const p = document.getElementById('img-preview');
+                p.src = tempBase64; p.style.display = 'block';
             };
             if(file) reader.readAsDataURL(file);
         }
 
-        // ADMIN FONKSİYONLARI
-        function setMod(mod) {
-            currentMod = mod;
-            document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('btn-' + mod).classList.add('active');
-            document.getElementById('admin-mod-title').innerText = mod.toUpperCase() + " YÖNETİMİ";
+        // ADMIN CRUD
+        function setMod(m) {
+            currentMod = m;
+            document.querySelectorAll('.admin-sidebar button').forEach(b => b.classList.remove('bg-white/10', 'text-white'));
+            document.getElementById('m-'+m).classList.add('bg-white/10', 'text-white');
+            document.getElementById('admin-title').innerText = m.toUpperCase() + " YÖNETİMİ";
             renderAdmin();
         }
 
         function renderAdmin() {
-            const list = document.getElementById('admin-data-list');
-            list.innerHTML = '';
-            mspStorage[currentMod].forEach(item => {
-                list.innerHTML += `
-                    <tr class="group hover:bg-slate-50 transition">
-                        <td class="p-6 w-24"><img src="${item.img}" class="w-16 h-12 rounded-xl object-cover shadow-sm"></td>
-                        <td class="p-6">
-                            <p class="font-bold text-slate-900">${item.title}</p>
-                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">${item.sub}</p>
-                        </td>
-                        <td class="p-6 text-right space-x-3">
-                            <button onclick="editItem('${item.id}')" class="text-blue-500 p-2 hover:bg-blue-50 rounded-lg"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteItem('${item.id}')" class="text-red-500 p-2 hover:bg-red-50 rounded-lg"><i class="fas fa-trash"></i></button>
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = '';
+            db[currentMod].forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-6 w-20"><img src="${item.img}" class="w-12 h-12 rounded-xl object-cover bg-slate-100"></td>
+                        <td class="p-6 font-bold text-sm">${item.title}</td>
+                        <td class="p-6 text-right space-x-4">
+                            <button onclick="editItem(${item.id})" class="text-blue-500"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteItem(${item.id})" class="text-red-500"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        function commitData() {
-            const title = document.getElementById('in-title').value;
-            const text = document.getElementById('in-text').value;
-            const sub = document.getElementById('in-sub').value;
-
-            const entry = {
-                id: editTargetId || 'ID_' + Date.now(),
-                title, text, sub,
-                img: base64Buffer || 'https://via.placeholder.com/800x600',
-                date: new Date().toLocaleDateString('tr-TR')
+        function saveData() {
+            const obj = {
+                id: editId || Date.now(),
+                title: document.getElementById('in-title').value,
+                text: document.getElementById('in-text').value,
+                sub: document.getElementById('in-sub').value,
+                img: tempBase64 || "https://via.placeholder.com/800"
             };
-
-            if(editTargetId) {
-                const idx = mspStorage[currentMod].findIndex(x => x.id === editTargetId);
-                mspStorage[currentMod][idx] = entry;
+            if(editId) {
+                const i = db[currentMod].findIndex(x => x.id === editId);
+                db[currentMod][i] = obj;
             } else {
-                mspStorage[currentMod].unshift(entry);
+                db[currentMod].unshift(obj);
             }
-
-            localStorage.setItem('msp_global_db_v3', JSON.stringify(mspStorage));
+            localStorage.setItem('msp_locked_db', JSON.stringify(db));
             closeModal();
             renderAdmin();
         }
 
         function deleteItem(id) {
-            if(confirm('Bu veriyi kalıcı olarak silmek istediğine emin misin?')) {
-                mspStorage[currentMod] = mspStorage[currentMod].filter(x => x.id !== id);
-                localStorage.setItem('msp_global_db_v3', JSON.stringify(mspStorage));
+            if(confirm('Veriyi silmek istediğine emin misin?')) {
+                db[currentMod] = db[currentMod].filter(x => x.id !== id);
+                localStorage.setItem('msp_locked_db', JSON.stringify(db));
                 renderAdmin();
             }
         }
 
         function editItem(id) {
-            editTargetId = id;
-            const itm = mspStorage[currentMod].find(x => x.id === id);
-            document.getElementById('in-title').value = itm.title;
-            document.getElementById('in-text').value = itm.text;
-            document.getElementById('in-sub').value = itm.sub;
-            base64Buffer = itm.img;
-            document.getElementById('img-preview').src = itm.img;
-            document.getElementById('img-preview').classList.remove('hidden');
-            document.getElementById('preview-placeholder').classList.add('hidden');
+            editId = id;
+            const item = db[currentMod].find(x => x.id === id);
+            document.getElementById('in-title').value = item.title;
+            document.getElementById('in-text').value = item.text;
+            document.getElementById('in-sub').value = item.sub;
+            tempBase64 = item.img;
+            document.getElementById('img-preview').src = item.img;
+            document.getElementById('img-preview').style.display = 'block';
             document.getElementById('modal').classList.remove('hidden');
         }
 
-        // PORTAL FONKSİYONLARI
+        // PORTAL RENDER
         function renderHome() {
-            const feed = document.getElementById('news-feed');
-            const authArea = document.getElementById('home-authors-area');
-            const adArea = document.getElementById('home-ad-area');
+            const newsGrid = document.getElementById('news-grid');
+            const authSide = document.getElementById('author-sidebar');
+            const adBox = document.getElementById('ad-container');
 
-            feed.innerHTML = '';
-            mspStorage.haber.forEach((h, i) => {
-                feed.innerHTML += `
-                    <div onclick="openDetail('${h.id}')" class="bg-white rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-slate-100 cursor-pointer group">
-                        <div class="h-64 overflow-hidden relative">
-                            <img src="${h.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                            <div class="absolute top-6 left-6 bg-white/90 backdrop-blur px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">${h.sub}</div>
-                        </div>
-                        <div class="p-8">
-                            <h3 class="msp-title text-2xl font-black mb-4 leading-tight group-hover:text-blue-600 transition">${h.title}</h3>
-                            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed mb-6">${h.text}</p>
-                            <div class="flex justify-between items-center border-t pt-6 opacity-50 text-[10px] font-bold">
-                                <span>${h.date}</span>
-                                <span><i class="fas fa-eye mr-2"></i> ${Math.floor(Math.random() * 5000) + 100}</span>
-                            </div>
-                        </div>
+            newsGrid.innerHTML = '';
+            db.haber.forEach(h => {
+                newsGrid.innerHTML += `
+                    <div onclick="openDetail(${h.id})" class="bg-white p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl transition cursor-pointer group">
+                        <img src="${h.img}" class="news-img-fixed mb-6 group-hover:scale-[0.98] transition duration-500">
+                        <h2 class="msp-title text-3xl font-black mb-3 leading-tight">${h.title}</h2>
+                        <p class="text-xs font-black text-red-600 uppercase tracking-widest">${h.sub}</p>
                     </div>
                 `;
             });
 
-            authArea.innerHTML = '';
-            mspStorage.yazar.forEach(a => {
-                authArea.innerHTML += `
-                    <div class="flex items-center gap-4 group cursor-pointer hover:translate-x-2 transition">
-                        <img src="${a.img}" class="w-12 h-12 rounded-2xl object-cover shadow-sm border-2 border-white group-hover:border-blue-500 transition">
-                        <div>
-                            <p class="text-[10px] font-black uppercase text-slate-900 leading-none">${a.title}</p>
-                            <p class="text-[9px] font-bold text-slate-400 mt-1 uppercase italic">${a.sub}</p>
-                        </div>
+            authSide.innerHTML = '';
+            db.yazar.forEach(y => {
+                authSide.innerHTML += `
+                    <div class="flex items-center gap-4 p-2 hover:bg-slate-50 rounded-2xl transition">
+                        <img src="${y.img}" class="w-12 h-12 rounded-full object-cover shadow-sm">
+                        <div><p class="text-xs font-black uppercase">${y.title}</p><p class="text-[9px] text-slate-400 font-bold">${y.sub}</p></div>
                     </div>
                 `;
             });
 
-            if(mspStorage.reklam.length > 0) {
-                const ad = mspStorage.reklam[0];
-                adArea.innerHTML = `
-                    <div class="relative h-[450px] rounded-[3rem] overflow-hidden shadow-2xl group">
-                        <img src="${ad.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
-                        <div class="absolute inset-0 bg-gradient-to-t from-blue-950 p-10 flex flex-col justify-end text-white">
-                            <span class="text-[9px] font-black uppercase opacity-50 mb-4 tracking-widest italic">Sponsorlu İçerik</span>
-                            <h4 class="msp-title text-3xl font-black italic mb-2">${ad.title}</h4>
-                            <p class="text-xs opacity-80 leading-relaxed mb-6">${ad.text}</p>
-                            <button class="bg-white text-blue-950 py-4 rounded-2xl font-black text-[10px] uppercase shadow-xl hover:bg-red-600 hover:text-white transition">Detaylı Bilgi</button>
-                        </div>
+            if(db.reklam.length > 0) {
+                const ad = db.reklam[0];
+                adBox.innerHTML = `
+                    <img src="${ad.img}" class="ad-img-fixed">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-10 flex flex-col justify-end text-white">
+                        <span class="text-[9px] font-black uppercase opacity-60 mb-2">Sponsorlu</span>
+                        <h4 class="msp-title text-3xl italic">${ad.title}</h4>
+                        <p class="text-xs opacity-80 mt-2">${ad.text}</p>
                     </div>
                 `;
             }
         }
 
         function openDetail(id) {
-            const h = mspStorage.haber.find(x => x.id === id);
-            document.getElementById('det-title').innerText = h.title;
-            document.getElementById('det-body').innerText = h.text;
-            document.getElementById('det-img').src = h.img;
-            document.getElementById('det-cat').innerText = h.sub;
-            
-            const randomAuth = mspStorage.yazar[0] || {title: 'MSP Global', img: 'https://via.placeholder.com/100'};
-            document.getElementById('det-auth-name').innerText = randomAuth.title;
-            document.getElementById('det-auth-img').src = randomAuth.img;
-            
+            const h = db.haber.find(x => x.id === id);
+            const art = document.getElementById('full-article');
+            art.innerHTML = `
+                <h1 class="msp-title text-5xl lg:text-7xl font-black leading-tight mb-8">${h.title}</h1>
+                <div class="flex items-center gap-4 mb-10 pb-10 border-b">
+                    <span class="text-xs font-black uppercase px-4 py-1 bg-red-600 text-white rounded-full">${h.sub}</span>
+                </div>
+                <img src="${h.img}" class="w-full rounded-[3rem] shadow-2xl mb-12">
+                <div class="text-xl leading-relaxed text-slate-700 space-y-6">${h.text}</div>
+            `;
             router('detail');
-        }
-
-        // SES VE BOYUT
-        function changeFontSize(d) {
-            let b = document.getElementById('det-body');
-            let s = window.getComputedStyle(b).fontSize;
-            b.style.fontSize = (parseInt(s) + d) + 'px';
-        }
-
-        function toggleSpeech() {
-            if(speechSynthesis.speaking) {
-                speechSynthesis.cancel();
-                document.getElementById('speech-control').innerText = "Sesli Dinle";
-            } else {
-                let msg = new SpeechSynthesisUtterance(document.getElementById('det-body').innerText);
-                msg.lang = 'tr-TR';
-                speechSynthesis.speak(msg);
-                document.getElementById('speech-control').innerText = "Durdur";
-                msg.onend = () => document.getElementById('speech-control').innerText = "Sesli Dinle";
-            }
         }
 
         // YARDIMCI
         function openModal() { 
-            editTargetId = null; 
-            base64Buffer = "";
-            document.getElementById('in-title').value = '';
-            document.getElementById('in-text').value = '';
-            document.getElementById('in-sub').value = '';
-            document.getElementById('img-preview').classList.add('hidden');
-            document.getElementById('preview-placeholder').classList.remove('hidden');
+            editId = null; tempBase64 = ""; 
+            document.getElementById('img-preview').style.display='none';
+            document.getElementById('in-title').value=''; 
+            document.getElementById('in-text').value='';
+            document.getElementById('in-sub').value='';
             document.getElementById('modal').classList.remove('hidden'); 
         }
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
-        window.onload = () => renderHome();
+        window.onload = () => {
+            renderHome();
+            setMod('haber');
+        };
     </script>
 </body>
 </html>
