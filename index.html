@@ -3,104 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin & Brazil Global Portal</title>
+    <title>Mardin & Brazil Global Portal | Canlı</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        [x-cloak] { display: none !important; }
         .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); }
-        .hero-bg { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1590424744295-827054f76785?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; }
-        .gradient-text { background: linear-gradient(90deg, #3b82f6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text { background: linear-gradient(90deg, #2563eb, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .page-enter { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-900" x-data="portalApp()" x-init="init()">
 
-    <nav class="sticky top-0 z-50 glass border-b border-slate-200">
+    <nav class="sticky top-0 z-[100] glass border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-3xl font-black tracking-tighter uppercase italic gradient-text">Mardin / Brazil</div>
+            <div @click="currentPage = 'home'" class="text-3xl font-black tracking-tighter uppercase italic gradient-text cursor-pointer">Mardin / Brazil</div>
             
-            <div class="flex space-x-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
-                <div class="flex flex-col items-end">
-                    <span class="text-slate-400">Mardin</span>
-                    <span class="text-blue-600 text-base font-mono" x-text="mardinTime">--:--:--</span>
+            <div class="hidden md:flex space-x-6 text-[11px] font-bold uppercase tracking-widest">
+                <button @click="currentPage = 'home'" class="hover:text-blue-600 transition">Ana Sayfa</button>
+                <button @click="currentPage = 'news'" class="hover:text-blue-600 transition">Haberler</button>
+                <button @click="currentPage = 'authors'" class="hover:text-blue-600 transition">Yazarlar</button>
+            </div>
+
+            <div class="flex space-x-4 text-[10px] font-mono">
+                <div class="text-right border-r pr-4 border-slate-200">
+                    <span class="block text-slate-400 uppercase">Mardin</span>
+                    <span class="text-blue-600 font-bold" x-text="mardinTime"></span>
                 </div>
-                <div class="w-[1px] bg-slate-200"></div>
-                <div class="flex flex-col items-start">
-                    <span class="text-slate-400">Brazil</span>
-                    <span class="text-emerald-600 text-base font-mono" x-text="brazilTime">--:--:--</span>
+                <div>
+                    <span class="block text-slate-400 uppercase">Brazil</span>
+                    <span class="text-emerald-600 font-bold" x-text="brazilTime"></span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="hero-bg h-[50vh] flex items-center justify-center text-center px-4">
-        <div class="max-w-4xl">
-            <h1 class="text-white text-5xl md:text-7xl font-black mb-4 uppercase tracking-tight">İki Dünya Tek Vizyon</h1>
-            <p class="text-blue-100 text-lg md:text-xl font-light italic tracking-widest">Mezopotamya'dan Amazonlar'a uzanan en hızlı haber portalı.</p>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-6 py-16">
-        
-        <div class="flex items-center mb-10">
-            <h2 class="text-2xl font-black uppercase tracking-widest border-l-8 border-blue-600 pl-4">Son Dakika</h2>
-            <div class="ml-4 flex-1 h-[1px] bg-slate-200"></div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-24">
-            <template x-for="news in newsList">
-                <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition duration-500 border border-slate-100 group">
-                    <div class="relative h-52 overflow-hidden">
-                        <img :src="news.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black uppercase" x-text="news.tag"></div>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="font-bold text-xl mb-3 leading-tight group-hover:text-blue-600 transition" x-text="news.title"></h3>
-                        <p class="text-slate-500 text-sm leading-relaxed" x-text="news.desc"></p>
-                    </div>
+    <template x-if="currentPage === 'home'">
+        <div class="page-enter">
+            <header class="relative h-[60vh] flex items-center justify-center bg-black overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1590424744295-827054f76785?auto=format&fit=crop&q=80&w=1600" class="absolute w-full h-full object-cover opacity-60">
+                <div class="relative text-center px-4">
+                    <h1 class="text-white text-6xl md:text-8xl font-black mb-4 uppercase tracking-tighter italic">GLOBAL PORT</h1>
+                    <p class="text-blue-300 text-xl tracking-[0.3em] uppercase font-light">Mistik Mardin & Egzotik Brezilya</p>
                 </div>
-            </template>
-        </div>
+            </header>
 
-        <section class="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-white shadow-2xl overflow-hidden relative">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
-            <h2 class="text-3xl font-black text-center mb-16 uppercase tracking-[0.3em]">Köşe Yazarlarımız</h2>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-                <template x-for="author in authors">
-                    <div class="bg-slate-800/50 backdrop-blur border border-slate-700 p-8 rounded-2xl flex flex-col md:flex-row gap-8 items-center hover:border-blue-500 transition duration-500">
-                        <img :src="author.photo" class="w-24 h-24 rounded-full border-4 border-slate-600 object-cover shadow-xl">
-                        <div>
-                            <h4 class="text-2xl font-bold mb-1" x-text="author.name"></h4>
-                            <span class="text-blue-400 text-xs font-black uppercase tracking-widest block mb-4" x-text="author.role"></span>
-                            <p class="text-slate-400 text-sm italic leading-relaxed" x-text="author.bio"></p>
+            <section class="max-w-7xl mx-auto px-6 py-20">
+                <h2 class="text-2xl font-black uppercase mb-12 border-l-8 border-blue-600 pl-4">Öne Çıkan Haberler</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <template x-for="news in newsList.slice(0, 3)">
+                        <div @click="openNews(news)" class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all cursor-pointer group">
+                            <div class="h-64 overflow-hidden"><img :src="news.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
+                            <div class="p-8">
+                                <span class="text-blue-600 text-[10px] font-black uppercase" x-text="news.tag"></span>
+                                <h3 class="font-bold text-xl my-3 group-hover:text-blue-600 transition" x-text="news.title"></h3>
+                                <p class="text-slate-500 text-sm line-clamp-2" x-text="news.desc"></p>
+                            </div>
                         </div>
+                    </template>
+                </div>
+                <div class="text-center mt-12">
+                    <button @click="currentPage = 'news'" class="bg-slate-900 text-white px-10 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-blue-600 transition">Tüm Haberleri Gör</button>
+                </div>
+            </section>
+        </div>
+    </template>
+
+    <template x-if="currentPage === 'news-detail'">
+        <div class="page-enter max-w-4xl mx-auto px-6 py-20">
+            <button @click="currentPage = 'home'" class="text-xs font-bold uppercase text-slate-400 mb-8 hover:text-blue-600">&larr; Geri Dön</button>
+            <img :src="selectedNews.img" class="w-full h-[50vh] object-cover rounded-[3rem] shadow-2xl mb-12">
+            <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase" x-text="selectedNews.tag"></span>
+            <h1 class="text-4xl md:text-6xl font-black my-6 leading-tight" x-text="selectedNews.title"></h1>
+            <div class="prose prose-lg text-slate-600 leading-relaxed" x-html="selectedNews.content"></div>
+        </div>
+    </template>
+
+    <template x-if="currentPage === 'authors'">
+        <div class="page-enter max-w-7xl mx-auto px-6 py-20">
+            <h2 class="text-4xl font-black text-center mb-20 uppercase tracking-widest">Kıdemli Yazarlarımız</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <template x-for="author in authors">
+                    <div class="bg-slate-900 text-white p-12 rounded-[3rem] shadow-2xl flex flex-col items-center text-center">
+                        <img :src="author.photo" class="w-32 h-32 rounded-full border-4 border-blue-500 mb-6 object-cover">
+                        <h3 class="text-3xl font-bold mb-2" x-text="author.name"></h3>
+                        <span class="text-blue-400 font-bold uppercase text-xs tracking-widest mb-6" x-text="author.role"></span>
+                        <p class="text-slate-400 italic leading-relaxed" x-text="author.bio"></p>
                     </div>
                 </template>
             </div>
-        </section>
+        </div>
+    </template>
 
-    </main>
-
-    <footer class="bg-white border-t border-slate-100 py-12 text-center">
-        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-slate-400">
-            &copy; 2026 ASC GLOBAL PORTAL - MARDIN / BRAZIL
-        </p>
+    <footer class="bg-white border-t border-slate-200 py-12 text-center">
+        <p class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">&copy; 2026 ASC GLOBAL PORTAL - MARDIN / BRAZIL</p>
     </footer>
 
     <script>
         function portalApp() {
             return {
+                currentPage: 'home',
+                selectedNews: null,
                 mardinTime: '',
                 brazilTime: '',
                 newsList: [
-                    { tag: 'Mardin', title: 'Artuklu Kültür Festivali Başlıyor', desc: 'Mardin sokakları bu hafta sonu binlerce yıllık dans ve müzikle şenlenecek.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=600' },
-                    { tag: 'Brazil', title: 'Amazonlarda Sürdürülebilir Ekonomi', desc: 'Brezilya hükümeti doğa dostu yeni ticaret paketini dünyaya duyurdu.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=600' },
-                    { tag: 'Global', title: 'Kültürlerin Kesişme Noktası', desc: 'Mardin mimarisi ve Brezilya sanatı arasındaki şaşırtıcı benzerlikler bir sergide buluştu.', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600' }
+                    { tag: 'Mardin', title: 'Antik Kentte Gece Turları Başladı', desc: 'Dara Antik Kenti, yeni ışıklandırma sistemiyle artık gece de ziyaret edilebilecek.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=1000', content: 'Mardin’in gözbebeği Dara, dünya standartlarında bir ışıklandırma projesiyle geceleri de hayat buluyor. Turizm Bakanlığı desteğiyle tamamlanan proje, Mezopotamya’nın Efes’i olarak bilinen antik kenti dev bir açık hava müzesine dönüştürdü...' },
+                    { tag: 'Brazil', title: 'Rio Karnavalı’nda Bu Yıl Rekor Bekleniyor', desc: 'Brezilya turizm ofisi, bu yılki karnaval için 5 milyon turist beklendiğini açıkladı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=1000', content: 'Rio de Janeiro sokakları, dünyanın en büyük festivaline hazırlanıyor. Bu yılki tema "Dünya Barışı ve Kültürel Kardeşlik" olarak belirlendi. Şehirdeki otellerde doluluk oranı şimdiden %98’e ulaştı...' },
+                    { tag: 'Ekonomi', title: 'Mardin Tekstil Ürünleri Brezilya Pazarında', desc: 'Mardinli yerel üreticiler, özel tasarım kumaşlarını Sao Paulo moda haftasında sergiledi.', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1000', content: 'Kültürel ticaret köprüsü meyvelerini veriyor. Mardin’in eşsiz dokumaları, Latin Amerika’nın moda başkenti Sao Paulo’da büyük ilgi gördü. İki ülke arasında yıllık 500 milyon dolarlık yeni bir ticaret hacmi hedefleniyor...' }
                 ],
                 authors: [
-                    { name: 'Prof. Dr. Ahmet Salim', role: 'Tarih & Medeniyet', bio: 'Mezopotamya medeniyetleri üzerine 30 yıllık araştırmaları olan kıdemli tarihçi.', photo: 'https://i.pravatar.cc/150?u=asalim' },
-                    { name: 'Dr. Isabella Santos', role: 'Uluslararası İlişkiler', bio: 'Latin Amerika ve Türkiye arasındaki stratejik köprülerin mimarı olan ödüllü analist.', photo: 'https://i.pravatar.cc/150?u=isabella' }
+                    { name: 'Prof. Dr. Ahmet Salim', role: 'Tarih & Strateji', bio: 'Mezopotamya ve Latin medeniyetleri arasındaki benzerlikler üzerine 5 adet uluslararası yayını bulunmaktadır. Portalın kurucu editörüdür.', photo: 'https://i.pravatar.cc/150?u=asalim' },
+                    { name: 'Dr. Isabella Santos', role: 'Kültür Analisti', bio: 'Brezilya Dış İşleri Bakanlığı eski danışmanı. Türk kahvesi ve Brezilya sanatı üzerine karşılaştırmalı çalışmalar yürütmektedir.', photo: 'https://i.pravatar.cc/150?u=isabella' }
                 ],
                 init() {
                     this.updateClocks();
@@ -108,10 +123,13 @@
                 },
                 updateClocks() {
                     const now = new Date();
-                    // Türkiye Saati
                     this.mardinTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Istanbul' }).format(now);
-                    // Brezilya (Sao Paulo) Saati
                     this.brazilTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' }).format(now);
+                },
+                openNews(news) {
+                    this.selectedNews = news;
+                    this.currentPage = 'news-detail';
+                    window.scrollTo(0, 0);
                 }
             }
         }
