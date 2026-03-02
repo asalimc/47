@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC GLOBAL | v37 Absolute Authority</title>
+    <title>ASC GLOBAL | v39 Imperial Edition</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -15,12 +15,12 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #111; overflow-x: hidden; }
         .font-serif { font-family: 'Crimson Pro', serif; }
         
-        /* ANA SAYFA STİLİ (image_0ab09a & image_0ba45b referanslı) */
-        .giant-title { font-size: clamp(2.5rem, 8vw, 6.5rem); line-height: 1.05; letter-spacing: -0.04em; font-weight: 900; }
+        /* ANA SAYFA DEVASA MANŞET (image_0ab09a & image_0ba45b) */
+        .giant-title { font-size: clamp(2.5rem, 8.5vw, 7rem); line-height: 1.05; letter-spacing: -0.04em; font-weight: 900; }
         
-        /* ADMIN DASHBOARD (image_0abf5c referanslı) */
-        .sidebar-nav { @apply flex items-center gap-4 px-8 py-4 text-sm font-bold transition-all cursor-pointer border-l-4 border-transparent text-gray-400; }
-        .sidebar-nav.active { @apply bg-orange-50 text-orange-700 border-orange-700; }
+        /* ADMIN DASHBOARD (image_0abf5c) */
+        .sidebar-item { @apply flex items-center gap-4 px-8 py-5 text-sm font-bold transition-all cursor-pointer border-l-4 border-transparent text-gray-400; }
+        .sidebar-item.active { @apply bg-orange-50/50 text-orange-700 border-orange-700; }
         
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -28,22 +28,22 @@
 </head>
 <body x-data="ascApp()" x-init="init()">
 
-    <div x-show="!adminOpen" class="min-h-screen flex flex-col items-center pt-24 px-6 bg-white">
+    <div x-show="!adminOpen" class="min-h-screen flex flex-col items-center pt-28 px-6">
         <header class="text-center mb-40 relative w-full max-w-7xl">
-            <h1 class="font-serif text-8xl italic font-black tracking-tighter">ASC <span class="text-orange-700 not-italic uppercase text-4xl">Global</span></h1>
-            <p class="text-[10px] font-black uppercase tracking-[0.7em] mt-5 text-gray-300">Intelligence Syndicate</p>
+            <h1 class="font-serif text-[90px] italic font-black tracking-tighter leading-none">ASC <span class="text-orange-700 not-italic uppercase text-4xl ml-2">Global</span></h1>
+            <p class="text-[11px] font-black uppercase tracking-[0.8em] mt-6 text-gray-300">Intelligence Syndicate</p>
             
             <button @click="authModal = true" class="absolute right-0 top-0 text-gray-100 hover:text-black transition-all">
-                <i class="fas fa-fingerprint text-xl"></i>
+                <i class="fas fa-lock-open text-xl"></i>
             </button>
         </header>
 
-        <main class="w-full max-w-6xl text-center space-y-48 pb-60">
+        <main class="w-full max-w-6xl text-center space-y-56 pb-60">
             <template x-for="news in newsData" :key="news.id">
                 <article class="group">
-                    <span class="text-orange-700 font-black text-[10px] uppercase tracking-[0.5em] mb-10 block" x-text="news.region"></span>
-                    <h2 class="giant-title font-serif italic mb-10 group-hover:text-orange-800 transition-all duration-700" x-text="news.title"></h2>
-                    <p class="text-2xl text-gray-400 font-light max-w-2xl mx-auto leading-relaxed mb-16" x-text="news.body"></p>
+                    <span class="text-orange-700 font-black text-[11px] uppercase tracking-[0.6em] mb-12 block" x-text="news.tag"></span>
+                    <h2 class="giant-title font-serif italic mb-12 group-hover:text-orange-800 transition-all duration-1000" x-text="news.title"></h2>
+                    <p class="text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed mb-20" x-text="news.body"></p>
                     <div class="w-24 h-[1px] bg-gray-100 mx-auto"></div>
                 </article>
             </template>
@@ -51,81 +51,85 @@
     </div>
 
     <template x-if="authModal">
-        <div class="fixed inset-0 z-[9000] bg-white flex items-center justify-center p-8">
+        <div class="fixed inset-0 z-[9000] bg-white/98 flex items-center justify-center p-10">
             <div class="w-full max-w-md text-center">
-                <h2 class="font-serif italic text-5xl mb-16">Terminal Login</h2>
-                <input x-model="passInput" type="password" @keyup.enter="verify()" placeholder="········" 
-                       class="w-full text-center text-3xl border-b-2 border-black py-6 mb-10 outline-none tracking-[0.5em] font-bold">
-                <button @click="verify()" class="w-full bg-[#CC4F26] text-white py-6 font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-black transition-all">Authorize Access</button>
-                <p @click="authModal = false" class="mt-12 text-[10px] font-black text-gray-300 uppercase cursor-pointer tracking-widest">Abort Mission</p>
+                <h2 class="font-serif italic text-6xl mb-20 tracking-tighter">Terminal Login</h2>
+                <input x-model="passCode" type="password" @keyup.enter="verify()" placeholder="· · · · · ·" 
+                       class="w-full text-center text-3xl border-b-2 border-black py-6 mb-12 outline-none tracking-[0.6em] font-bold">
+                <button @click="verify()" class="w-full bg-[#CC4F26] text-white py-8 font-black uppercase tracking-widest shadow-2xl hover:bg-black transition-all">Grant Authority</button>
+                <p @click="authModal = false" class="mt-14 text-[10px] font-black text-gray-300 uppercase cursor-pointer tracking-widest">Cancel Mission</p>
             </div>
         </div>
     </template>
 
-    <div x-show="adminOpen" x-cloak class="fixed inset-0 z-[9999] bg-[#F8F9FC] flex overflow-hidden">
+    <div x-show="adminOpen" x-cloak class="fixed inset-0 z-[9999] bg-[#F4F7FE] flex overflow-hidden">
+        
         <aside class="w-80 bg-white border-r border-gray-100 flex flex-col shadow-2xl">
-            <div class="p-12 border-b border-gray-50">
-                <div class="font-serif italic text-3xl font-black">Atelier <span class="text-orange-700 not-italic text-[10px] font-black uppercase block">Authority v37</span></div>
+            <div class="p-12 border-b border-gray-50 flex items-center gap-4">
+                <div class="w-10 h-10 bg-orange-700 rounded-xl flex items-center justify-center text-white font-black italic shadow-lg shadow-orange-200">A</div>
+                <div class="font-serif italic text-3xl font-black">Atelier <span class="text-[10px] font-black uppercase block text-gray-300 tracking-tighter">Imperial v39</span></div>
             </div>
+            
             <nav class="flex-1 py-10">
-                <div class="sidebar-nav" :class="activeTab === 'news' ? 'active' : ''" @click="activeTab = 'news'">
-                    <i class="fas fa-newspaper w-6"></i> <span>Haber Akışı</span>
+                <div class="sidebar-item" :class="tab === 'news' ? 'active' : ''" @click="tab = 'news'">
+                    <i class="fas fa-feather w-5"></i> <span>Haber Masası</span>
                 </div>
-                <div class="sidebar-nav" :class="activeTab === 'authors' ? 'active' : ''" @click="activeTab = 'authors'">
-                    <i class="fas fa-users-cog w-6"></i> <span>Yazarlar Kurulu</span>
+                <div class="sidebar-item" :class="tab === 'team' ? 'active' : ''" @click="tab = 'team'">
+                    <i class="fas fa-user-shield w-5"></i> <span>Yazar Kadrosu</span>
                 </div>
-                <div class="sidebar-nav" :class="activeTab === 'ads' ? 'active' : ''" @click="activeTab = 'ads'">
-                    <i class="fas fa-shield-alt w-6"></i> <span>Sponsorluk</span>
+                <div class="sidebar-item" :class="tab === 'media' ? 'active' : ''" @click="tab = 'media'">
+                    <i class="fas fa-photo-video w-5"></i> <span>Reklam Materyalleri</span>
                 </div>
             </nav>
-            <div class="p-10 border-t border-gray-50">
-                <button @click="logout()" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-600 transition-all">Güvenli Çıkış</button>
+
+            <div class="p-8">
+                <button @click="logout()" class="w-full bg-red-50 text-red-600 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all">Güvenli Çıkış</button>
             </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto p-20 no-scrollbar">
-            <div class="max-w-5xl mx-auto">
+        <main class="flex-1 overflow-y-auto p-16 no-scrollbar">
+            <div class="max-w-6xl mx-auto">
                 <header class="flex justify-between items-end mb-20 border-b border-gray-100 pb-12">
                     <div>
-                        <h2 class="text-4xl font-black uppercase tracking-tighter" x-text="activeTab === 'news' ? 'Intelligence Desk' : 'Syndicate Board'"></h2>
-                        <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.3em] mt-2">Active Operations Terminal</p>
+                        <h2 class="text-4xl font-black uppercase tracking-tighter" x-text="tab === 'news' ? 'Article Management' : 'Board Control'"></h2>
+                        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em] mt-2">Intelligence Syndicate Terminal</p>
                     </div>
-                    <div class="flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-sm border border-gray-50">
-                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                        <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">System Online</span>
+                    <div class="bg-white px-8 py-4 rounded-3xl shadow-sm border border-gray-50 flex items-center gap-4">
+                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Authority Verified</span>
                     </div>
                 </header>
 
                 <div class="grid grid-cols-12 gap-12">
-                    <div class="col-span-8 space-y-10">
-                        <div class="bg-white p-16 rounded-[50px] shadow-sm border border-gray-50 space-y-10">
-                            <div x-show="activeTab !== 'ads'">
-                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Giriş Başlığı</label>
-                                <input x-model="form.main" type="text" class="w-full text-2xl font-bold border-b-2 border-gray-50 focus:border-orange-700 outline-none py-4 transition-all" placeholder="...">
+                    <div class="col-span-8">
+                        <div class="bg-white p-16 rounded-[50px] shadow-sm border border-gray-100 space-y-12">
+                            <div>
+                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Haber Başlığı</label>
+                                <input x-model="form.title" type="text" class="w-full text-3xl font-bold border-b-2 border-gray-50 focus:border-orange-700 outline-none py-4 transition-all" placeholder="Manşeti buraya girin...">
                             </div>
-                            <div x-show="activeTab !== 'ads'">
-                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Kategori / Ünvan</label>
-                                <input x-model="form.sub" type="text" class="w-full text-sm border-b border-gray-50 focus:border-orange-700 outline-none py-3 transition-all" placeholder="...">
+                            <div>
+                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Kategori / Bölge</label>
+                                <input x-model="form.tag" type="text" class="w-full text-sm border-b border-gray-50 focus:border-orange-700 outline-none py-3 transition-all" placeholder="STRATEJİ, KÜLTÜR, DÜNYA...">
                             </div>
-                            <div x-show="activeTab !== 'ads'">
-                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Detaylı İçerik</label>
-                                <textarea x-model="form.content" class="w-full h-80 text-lg outline-none border-none resize-none no-scrollbar font-light leading-relaxed" placeholder="Veri girişine başlayın..."></textarea>
+                            <div>
+                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">İçerik Analizi</label>
+                                <textarea x-model="form.body" class="w-full h-80 text-lg outline-none border-none resize-none no-scrollbar font-light leading-relaxed text-gray-500" placeholder="Analiz raporunu yazın..."></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-span-4 space-y-10">
+                    <div class="col-span-4 space-y-12">
                         <div class="bg-white p-10 rounded-[50px] shadow-sm border border-gray-100 text-center">
-                            <input type="file" @change="handleFile" id="v37up" class="hidden">
-                            <label for="v37up" class="cursor-pointer group block">
+                            <input type="file" @change="upload" id="impV39" class="hidden">
+                            <label for="impV39" class="cursor-pointer group block">
                                 <div class="w-full aspect-square rounded-[40px] bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden group-hover:border-orange-700 transition-all">
-                                    <img x-show="form.media" :src="form.media" class="w-full h-full object-cover">
-                                    <div x-show="!form.media" class="text-gray-300 font-black text-[10px] uppercase tracking-widest">Görsel Yükle</div>
+                                    <img x-show="form.img" :src="form.img" class="w-full h-full object-cover">
+                                    <div x-show="!form.img" class="text-gray-300 font-black text-[10px] uppercase tracking-widest">Görsel Seç</div>
                                 </div>
                             </label>
                         </div>
-                        <button @click="publish()" class="w-full bg-black text-white py-10 rounded-[50px] font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-orange-700 transition-all">
-                            Sisteme İşle
+                        <button @click="save()" class="w-full bg-black text-white py-12 rounded-[50px] font-black uppercase tracking-[0.5em] shadow-2xl hover:bg-orange-700 transition-all">
+                            Yayınla
                         </button>
                     </div>
                 </div>
@@ -136,52 +140,47 @@
     <script>
         function ascApp() {
             return {
-                adminOpen: false, authModal: false, activeTab: 'news',
-                passInput: '',
-                form: { main: '', sub: '', content: '', media: '' },
-                newsData: JSON.parse(localStorage.getItem('asc_v37_news')) || [
-                    { id: 1, title: 'Brezilya Ormanlarından Mardin Sokaklarına', region: 'STRATEJİ', body: 'Küresel ticaretin yeni rotası üzerine derinlemesine bir analiz.' }
+                adminOpen: false, authModal: false, tab: 'news',
+                passCode: '',
+                form: { title: '', tag: '', body: '', img: '' },
+                newsData: JSON.parse(localStorage.getItem('asc_v39_db')) || [
+                    { id: 1, title: 'Brezilya Ormanlarından Mardin Sokaklarına', tag: 'STRATEJİ', body: 'Küresel ticaretin yeni rotası üzerine derinlemesine bir analiz.' }
                 ],
-                
+
                 init() {
-                    if(localStorage.getItem('asc_session') === 'active') this.adminOpen = true;
+                    if(localStorage.getItem('asc_auth_v39') === 'imperial') this.adminOpen = true;
                 },
 
                 verify() {
-                    // ŞİFRE GÜNCELLEMESİ: Mardin47**
-                    if(this.passInput === "Mardin47**") {
-                        localStorage.setItem('asc_session', 'active');
+                    // Şifre: Mardin47**
+                    if(this.passCode === "Mardin47**") {
+                        localStorage.setItem('asc_auth_v39', 'imperial');
                         this.adminOpen = true;
                         this.authModal = false;
-                        this.passInput = '';
+                        this.passCode = '';
                     } else {
-                        alert("YETKİSİZ ERİŞİM: Şifre Hatalı.");
-                        this.passInput = '';
+                        alert("ERİŞİM REDDEDİLDİ: Geçersiz Kod.");
+                        this.passCode = '';
                     }
                 },
 
-                handleFile(e) {
+                upload(e) {
                     const reader = new FileReader();
-                    reader.onload = (f) => { this.form.media = f.target.result; };
+                    reader.onload = (f) => { this.form.img = f.target.result; };
                     reader.readAsDataURL(e.target.files[0]);
                 },
 
-                publish() {
-                    const payload = {
-                        id: Date.now(),
-                        title: this.form.main,
-                        region: this.form.sub,
-                        body: this.form.content,
-                        img: this.form.media
-                    };
-                    this.newsData.unshift(payload);
-                    localStorage.setItem('asc_v37_news', JSON.stringify(this.newsData));
-                    this.form = { main: '', sub: '', content: '', media: '' };
-                    alert("Yayın Başarılı.");
+                save() {
+                    if(!this.form.title) return alert("Başlık zorunludur.");
+                    const item = { id: Date.now(), ...this.form };
+                    this.newsData.unshift(item);
+                    localStorage.setItem('asc_v39_db', JSON.stringify(this.newsData));
+                    this.form = { title: '', tag: '', body: '', img: '' };
+                    alert("Veri Merkeze Gönderildi.");
                 },
 
                 logout() {
-                    localStorage.removeItem('asc_session');
+                    localStorage.removeItem('asc_auth_v39');
                     this.adminOpen = false;
                 }
             }
