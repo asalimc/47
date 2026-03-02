@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kültür & Magazin Portal - Yeni Nesil</title>
+    <title>Kültür & Magazin | Global Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-light: #fdfbf7; /* Krem/Fildişi tonu */
+            --bg-light: #fdfbf7;
             --text-dark: #2d3436;
-            --accent-mardin: #c49b66; /* Mardin Altını */
-            --accent-sp: #4b7bec; /* Sao Paulo Mavisi */
+            --accent-mardin: #c49b66;
+            --accent-sp: #4b7bec;
             --white: #ffffff;
             --soft-gray: #f1f2f6;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         body {
@@ -20,191 +21,212 @@
             color: var(--text-dark);
             font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0;
-            line-height: 1.7;
+            overflow-x: hidden;
         }
 
-        /* --- ÜST YAZAR ŞERİDİ (Olmazsa Olmaz) --- */
+        /* --- NAVIGATION --- */
+        nav {
+            padding: 20px 5%;
+            background: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* --- ÜST YAZAR ŞERİDİ --- */
         .top-authors-bar {
             background: var(--white);
             padding: 20px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            overflow-x: auto;
-            white-space: nowrap;
             display: flex;
             justify-content: center;
             gap: 40px;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
         }
 
-        .top-author-item {
+        .author-item {
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-decoration: none;
-            color: inherit;
-            transition: 0.3s;
+            transition: var(--transition);
         }
 
-        .top-author-item:hover { transform: translateY(-5px); }
+        .author-item:hover { transform: scale(1.05); }
 
         .author-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 3px solid var(--accent-mardin);
-            padding: 3px;
-            margin-bottom: 10px;
-            background: var(--white);
+            width: 70px; height: 70px; border-radius: 50%;
+            border: 2px solid var(--accent-mardin);
+            padding: 3px; margin-bottom: 8px;
         }
 
-        .author-circle img {
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-        }
+        .author-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #eee; }
 
-        .top-author-item span { font-size: 0.85rem; font-weight: 600; font-family: 'Marcellus', serif; }
-
-        /* --- ANA YAPI --- */
+        /* --- ANA GRID --- */
         .main-container {
             max-width: 1300px;
             margin: 40px auto;
             display: grid;
-            grid-template-columns: 250px 1fr 300px; /* Etkinlikler | Haberler | Reklam */
+            grid-template-columns: 250px 1fr 300px;
             gap: 30px;
             padding: 0 20px;
         }
 
-        /* --- ETKİNLİKLER (SOL) --- */
-        .events-sidebar { background: var(--white); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
-        .event-item {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--soft-gray);
-        }
-        .event-date { color: var(--accent-mardin); font-weight: bold; font-size: 0.8rem; }
-        .event-title { font-size: 0.95rem; margin: 5px 0; font-weight: 600; }
-
-        /* --- HABERLER (ORTA) --- */
+        /* --- HABER KARTLARI --- */
         .news-card {
             background: var(--white);
-            border-radius: 24px;
+            border-radius: 20px;
             margin-bottom: 30px;
+            cursor: pointer;
             overflow: hidden;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.03);
             border: 1px solid rgba(0,0,0,0.02);
-        }
-        .news-img { width: 100%; height: 400px; background: #eee; object-fit: cover; }
-        .news-content { padding: 30px; }
-        .news-content h2 { font-family: 'Marcellus', serif; font-size: 2rem; margin: 0 0 15px 0; }
-
-        /* --- REKLAM ALANI (SAĞ) --- */
-        .ad-space {
-            position: sticky;
-            top: 20px;
-        }
-        .ad-box {
-            background: #f8f9fa;
-            border: 2px dashed #ddd;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            height: 400px;
-            color: #aaa;
-            margin-bottom: 30px;
+            transition: var(--transition);
         }
 
-        /* --- ADMIN PANEL EKLEMESİ --- */
-        .admin-quick-add {
-            position: fixed; bottom: 30px; right: 30px;
-            background: var(--accent-sp);
-            color: white; padding: 15px 25px; border-radius: 50px;
-            box-shadow: 0 10px 20px rgba(75, 123, 236, 0.3);
-            cursor: pointer; font-weight: bold; z-index: 1000;
+        .news-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+
+        .news-img { width: 100%; height: 350px; background: #eee; object-fit: cover; }
+
+        .news-content { padding: 25px; }
+
+        /* --- MODAL (DETAY SAYFALARI) --- */
+        .page-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-light);
+            z-index: 2000;
+            display: none; /* JS ile açılacak */
+            overflow-y: auto;
+            padding: 50px 0;
         }
 
-        @media (max-width: 1100px) {
-            .main-container { grid-template-columns: 1fr; }
-            .events-sidebar, .ad-space { display: none; }
+        .close-btn {
+            position: fixed; top: 30px; right: 50px;
+            font-size: 2rem; cursor: pointer; z-index: 2101;
+            background: var(--white); width: 50px; height: 50px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
+        .detail-container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        .detail-header-img { width: 100%; height: 500px; border-radius: 30px; object-fit: cover; margin-bottom: 40px; }
+
+        .detail-title { font-family: 'Marcellus', serif; font-size: 3rem; margin-bottom: 20px; color: var(--text-dark); }
+
+        .detail-body { font-size: 1.15rem; line-height: 1.8; color: #444; }
+
+        /* Yazar Detay Özel */
+        .author-profile-header { text-align: center; margin-bottom: 50px; }
+        .author-profile-img { width: 150px; height: 150px; border-radius: 50%; border: 5px solid var(--white); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        /* Reklam Alanı */
+        .ad-box { background: #f1f2f6; border-radius: 15px; height: 300px; display: flex; align-items: center; justify-content: center; color: #aaa; border: 1px dashed #ccc; margin-bottom: 20px; }
+
+        @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; } .ad-space, .events-sidebar { display: none; } }
     </style>
 </head>
 <body>
 
+<nav>
+    <div style="font-family: 'Marcellus', serif; font-size: 1.5rem; font-weight: bold;">LUMINA <span style="color: var(--accent-mardin);">GAZETTE</span></div>
+    <div style="font-size: 0.8rem; letter-spacing: 2px;">MARDIN • SAO PAULO</div>
+</nav>
+
 <div class="top-authors-bar">
-    <a href="#" class="top-author-item">
-        <div class="author-circle"><img src="https://i.pravatar.cc/100?u=1" alt=""></div>
-        <span>Mardinli Vedat</span>
-    </a>
-    <a href="#" class="top-author-item">
-        <div class="author-circle" style="border-color: var(--accent-sp);"><img src="https://i.pravatar.cc/100?u=2" alt=""></div>
-        <span>Ricardo Paul</span>
-    </a>
-    <a href="#" class="top-author-item">
-        <div class="author-circle"><img src="https://i.pravatar.cc/100?u=3" alt=""></div>
-        <span>Elif Sanat</span>
-    </a>
-    <a href="#" class="top-author-item">
-        <div class="author-circle" style="border-color: var(--accent-sp);"><img src="https://i.pravatar.cc/100?u=4" alt=""></div>
-        <span>Joao Gomes</span>
-    </a>
+    <div class="author-item" onclick="openAuthor('Vedat Mardinli', 'Kültür ve Tarih Uzmanı', 'https://i.pravatar.cc/300?u=1')">
+        <div class="author-circle"><img src="https://i.pravatar.cc/100?u=1"></div>
+        <span>Vedat M.</span>
+    </div>
+    <div class="author-item" onclick="openAuthor('Adriana Silva', 'Sao Paulo Magazin Editörü', 'https://i.pravatar.cc/300?u=2')">
+        <div class="author-circle" style="border-color: var(--accent-sp);"><img src="https://i.pravatar.cc/100?u=2"></div>
+        <span>Adriana S.</span>
+    </div>
 </div>
 
 <div class="main-container">
-    
     <aside class="events-sidebar">
         <h3 style="font-family: 'Marcellus'; border-bottom: 2px solid var(--accent-mardin); padding-bottom: 10px;">AJANDA</h3>
-        <div class="event-item">
-            <span class="event-date">12 Mart | Mardin</span>
-            <div class="event-title">Uluslararası Uçurtma Festivali</div>
-        </div>
-        <div class="event-item">
-            <span class="event-date">15 Mart | Sao Paulo</span>
-            <div class="event-title">Samba Modern Sanat Sergisi</div>
-        </div>
-        <div class="event-item">
-            <span class="event-date">20 Mart | Online</span>
-            <div class="event-title">Dijital Kültür Paneli</div>
+        <div style="margin-top:20px;">
+            <p><strong>12 Mart</strong><br>Mardin Film Festivali</p>
+            <p><strong>18 Mart</strong><br>Samba Karnavalı Gala</p>
         </div>
     </aside>
 
     <main>
-        <article class="news-card">
-            <img src="https://images.unsplash.com/photo-1548107116-76ec56873523?q=80&w=1000" class="news-img" alt="Mardin">
+        <article class="news-card" onclick="openNews('Mardin\'in Saklı Bahçeleri', 'Kültür', 'https://images.unsplash.com/photo-1548107116-76ec56873523?q=80&w=1000')">
+            <img src="https://images.unsplash.com/photo-1548107116-76ec56873523?q=80&w=1000" class="news-img">
             <div class="news-content">
-                <small style="color: var(--accent-mardin); font-weight: bold; text-transform: uppercase;">Mardin Kültür</small>
-                <h2>Mezopotamya'nın Kalbinde Bir Gastronomi Yolculuğu</h2>
-                <p>Eski çarşının dar sokaklarında kaybolurken burnunuza gelen baharat kokuları, Mardin'in binlerce yıllık mutfak sırlarını fısıldıyor...</p>
-                <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                    <span style="font-size: 0.8rem; color: #999;">5 dk okuma</span>
-                    <button style="background: none; border: 1px solid var(--accent-mardin); padding: 8px 20px; border-radius: 50px; cursor:pointer;">Devamını Oku</button>
-                </div>
+                <small style="color:var(--accent-mardin)">MARDİN / KÜLTÜR</small>
+                <h2 style="font-family:'Marcellus';">Mardin'in Saklı Bahçeleri: Bir Tarih Yeniden Doğuyor</h2>
+                <p>Eski şehrin teraslarında başlayan bu yeni proje, unutulmuş Mezopotamya bitkilerini gün yüzüne çıkarıyor...</p>
             </div>
         </article>
 
-        <article class="news-card">
-            <img src="https://images.unsplash.com/photo-1512356181113-853a150f1aa7?q=80&w=1000" class="news-img" alt="Sao Paulo">
+        <article class="news-card" onclick="openNews('Sao Paulo\'da Moda Haftası', 'Magazin', 'https://images.unsplash.com/photo-1512356181113-853a150f1aa7?q=80&w=1000')">
+            <img src="https://images.unsplash.com/photo-1512356181113-853a150f1aa7?q=80&w=1000" class="news-img">
             <div class="news-content">
-                <small style="color: var(--accent-sp); font-weight: bold; text-transform: uppercase;">Sao Paulo Magazin</small>
-                <h2>Paulista Bulvarı'nda Karnaval Esintileri</h2>
-                <p>Brezilya'nın en büyük metropolü, bu hafta sonu dünyaca ünlü modacıların katıldığı bir gala gecesine ev sahipliği yaptı...</p>
+                <small style="color:var(--accent-sp)">SAO PAULO / MAGAZİN</small>
+                <h2 style="font-family:'Marcellus';">Işıkların Altında: Sao Paulo Moda Haftası Başladı</h2>
+                <p>Güney Amerika'nın en büyük moda etkinliği, bu yıl sürdürülebilirlik temasıyla kapılarını açtı...</p>
             </div>
         </article>
     </main>
 
     <aside class="ad-space">
-        <div class="ad-box">
-            REKLAM ALANI<br>(300x400 px)
-        </div>
-        <div class="ad-box" style="height: 200px;">
-            SPONSORLU İÇERİK
-        </div>
+        <div class="ad-box">REKLAM ALANI</div>
+        <div class="ad-box" style="height:150px;">SPONSORLU</div>
     </aside>
 </div>
 
-<div class="admin-quick-add" onclick="alert('Yönetim Paneline Yönlendiriliyorsunuz...')">
-    + İÇERİK EKLE
+<div id="pageOverlay" class="page-overlay">
+    <div class="close-btn" onclick="closeOverlay()">✕</div>
+    <div id="overlayContent" class="detail-container">
+        </div>
 </div>
+
+<script>
+    const overlay = document.getElementById('pageOverlay');
+    const content = document.getElementById('overlayContent');
+
+    function openNews(title, category, img) {
+        overlay.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        content.innerHTML = `
+            <img src="${img}" class="detail-header-img">
+            <small style="color:var(--accent-mardin)">${category} • 2 Mart 2026</small>
+            <h1 class="detail-title">${title}</h1>
+            <div class="detail-body">
+                <p>Buraya yönetim panelinden gelen tam haber metni gelecek. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id nisl eget nisi scelerisque dictum. <strong>Mardin</strong> ve <strong>Sao Paulo</strong> arasındaki bu kültürel köprü, sadece sanatı değil, aynı zamanda insanların yaşam tarzlarını da birbirine bağlıyor.</p>
+                <p>Yüzyıllardır süregelen gelenekler, modern dünyanın hızıyla birleştiğinde ortaya çıkan bu eşsiz doku, portalımızın temelini oluşturuyor.</p>
+            </div>
+        `;
+    }
+
+    function openAuthor(name, bio, img) {
+        overlay.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        content.innerHTML = `
+            <div class="author-profile-header">
+                <img src="${img}" class="author-profile-img">
+                <h1 class="detail-title" style="margin-top:20px;">${name}</h1>
+                <p style="color:var(--accent-mardin)">${bio}</p>
+            </div>
+            <hr style="border:0; border-top:1px solid #eee; margin:40px 0;">
+            <h3 style="font-family:'Marcellus'">Yazarın Son Yazıları</h3>
+            <div class="news-card" style="display:flex; height:120px; align-items:center;">
+                <div style="padding:20px;">
+                    <h4 style="margin:0">Mezopotamya'da Zaman Kavramı</h4>
+                    <small>15 Şubat 2026</small>
+                </div>
+            </div>
+        `;
+    }
+
+    function closeOverlay() {
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+</script>
 
 </body>
 </html>
