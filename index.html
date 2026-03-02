@@ -3,333 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC GLOBAL | Yeni Nesil Medya Portalı</title>
+    <title>ASC GLOBAL | Mardin & Sao Paulo News</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
         
-        .premium-card { 
-            background: white; border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .premium-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-
-        .admin-input {
-            width: 100%; background: #f8fafc; border: 1px solid #e2e8f0; padding: 0.85rem; border-radius: 0.75rem;
-            outline: none; transition: all 0.2s; font-size: 0.875rem;
-        }
-        .admin-input:focus { border-color: #3b82f6; ring: 2px; ring-color: #3b82f6; background: white; }
-
-        .ticker-wrap { overflow: hidden; background: #0f172a; color: white; padding: 8px 0; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-        .ticker { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .news-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .news-card:hover { transform: translateY(-8px); border-color: #3b82f6; }
+        
+        .ticker-wrap { background: #3b82f6; color: white; padding: 10px 0; font-weight: 800; font-size: 12px; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
+        
         [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
-<body x-data="portalApp()" x-init="init()" class="min-h-screen">
+<body x-data="portalApp()" x-init="init()">
 
-    <div class="ticker-wrap fixed top-0 w-full z-[110]">
+    <div class="ticker-wrap fixed top-0 w-full z-[150] shadow-lg">
         <div class="ticker">
-            <span class="mx-4">USD/TRY: 31.45 <i class="fas fa-caret-up text-green-400"></i></span>
-            <span class="mx-4">EUR/TRY: 34.12 <i class="fas fa-caret-up text-green-400"></i></span>
-            <span class="mx-4">BTC/USD: 64,250 <i class="fas fa-caret-down text-red-400"></i></span>
-            <span class="mx-4">MARDIN/WEATHER: 18°C <i class="fas fa-sun text-yellow-400"></i></span>
-            <span class="mx-4">RIO/WEATHER: 29°C <i class="fas fa-cloud-sun text-orange-400"></i></span>
+            <span class="mx-8">MARDİN: 18°C <i class="fas fa-sun ml-1"></i></span>
+            <span class="mx-8">SAO PAULO: 27°C <i class="fas fa-cloud-rain ml-1"></i></span>
+            <span class="mx-8">USD/TRY: 31.52 <i class="fas fa-arrow-up text-green-300"></i></span>
+            <span class="mx-8">BTC: $67,400 <i class="fas fa-chart-line ml-1"></i></span>
+            <span class="mx-8 text-yellow-300">SON DAKİKA: GLOBAL EKONOMİDE YENİ DÖNEM BAŞLIYOR...</span>
         </div>
     </div>
 
-    <nav class="fixed top-7 w-full z-[100] bg-white/90 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-[1600px] mx-auto px-6 py-4 flex justify-between items-center">
-            <div @click="currentPage = 'home'" class="flex items-center gap-3 cursor-pointer">
-                <div class="bg-blue-600 text-white font-black px-4 py-1 rounded-lg text-xl">ASC</div>
-                <span class="text-2xl font-black tracking-tighter uppercase italic">Global Portal</span>
+    <nav class="fixed top-10 w-full z-[100] px-6">
+        <div class="max-w-7xl mx-auto glass rounded-2xl px-8 py-4 flex justify-between items-center">
+            <div @click="currentPage = 'home'" class="flex items-center gap-2 cursor-pointer">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-xl">A</div>
+                <span class="text-xl font-bold tracking-tighter uppercase italic">ASC GLOBAL</span>
             </div>
             
-            <div class="hidden lg:flex gap-8 text-[11px] font-bold uppercase tracking-widest text-slate-500">
-                <template x-for="cat in categories.slice(0, 5)">
-                    <a href="#" class="hover:text-blue-600 transition" x-text="cat"></a>
-                </template>
+            <div class="hidden md:flex gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                <a href="#" class="hover:text-blue-500 transition">Mardin Haberleri</a>
+                <a href="#" class="hover:text-blue-500 transition">Brezilya Hattı</a>
+                <a href="#" class="hover:text-blue-500 transition">Teknoloji</a>
             </div>
 
-            <div class="flex items-center gap-4">
-                <span class="hidden md:block text-[10px] font-bold text-slate-400" x-text="todayDate"></span>
-                <button @click="loginAdmin()" class="bg-slate-900 text-white px-5 py-2 rounded-full text-xs font-bold hover:bg-blue-600 transition shadow-xl">YÖNETİM</button>
-            </div>
+            <button @click="loginAdmin()" class="bg-white text-black px-6 py-2 rounded-full text-xs font-bold hover:bg-blue-500 hover:text-white transition">ADMİN</button>
         </div>
     </nav>
 
-    <main class="pt-32">
-        <div x-show="currentPage === 'home'" class="max-w-[1600px] mx-auto px-6 animate-in fade-in duration-700">
-            
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-16">
-                <div @click="openNews(newsData.find(n => n.region === 'Mardin'))" class="lg:col-span-7 relative group rounded-[2.5rem] overflow-hidden shadow-2xl h-[600px] cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1544830154-1505c215f79a?q=80&w=2000" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-10 left-10 right-10">
-                        <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase mb-4 inline-block tracking-widest">Mardin Odaklı Haberler</span>
-                        <h2 class="text-5xl font-extrabold text-white tracking-tighter italic leading-none" x-text="newsData.find(n => n.region === 'Mardin')?.title || 'Mardin Haberleri'"></h2>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-5 flex flex-col gap-6">
-                    <div @click="openNews(newsData.find(n => n.region === 'Rio'))" class="relative group rounded-[2.5rem] overflow-hidden shadow-xl h-[285px] cursor-pointer">
-                        <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=2000" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent"></div>
-                        <div class="absolute bottom-6 left-8">
-                            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-[9px] font-black uppercase mb-2 inline-block">Rio News</span>
-                            <h3 class="text-2xl font-bold text-white tracking-tight" x-text="newsData.find(n => n.region === 'Rio')?.title || 'Rio Dosyası'"></h3>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-100 flex-1">
-                        <h4 class="text-xs font-black uppercase text-blue-600 mb-6 tracking-widest flex items-center gap-2">
-                            <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span> Son Dakika
-                        </h4>
-                        <div class="space-y-4">
-                            <template x-for="n in newsData.slice(0, 4)">
-                                <div @click="openNews(n)" class="flex items-start gap-4 cursor-pointer group border-b border-slate-50 pb-4 last:border-0">
-                                    <div class="bg-slate-100 text-[10px] font-bold p-2 rounded-lg text-slate-400 group-hover:bg-blue-600 group-hover:text-white transition" x-text="n.tag"></div>
-                                    <p class="text-sm font-bold leading-snug group-hover:text-blue-600" x-text="n.title"></p>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
+    <main x-show="currentPage === 'home'" class="pt-40 pb-20 px-6 max-w-7xl mx-auto animate-in fade-in duration-500">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
+            <div @click="openNews(getFeatureNews('Mardin'))" class="lg:col-span-8 relative rounded-[2rem] overflow-hidden group cursor-pointer h-[550px] shadow-2xl border border-white/5">
+                <img :src="getFeatureNews('Mardin').img" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                <div class="absolute bottom-10 left-10 p-4">
+                    <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase mb-4 inline-block tracking-tighter">Mardin Özel Akışı</span>
+                    <h2 class="text-4xl md:text-6xl font-bold leading-tight" x-text="getFeatureNews('Mardin').title"></h2>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between mb-12">
-                <h3 class="text-3xl font-black uppercase italic tracking-tighter">Gündem <span class="text-blue-600">Arşivi</span></h3>
-                <div class="h-px flex-1 bg-slate-200 mx-10"></div>
-                <div class="flex gap-2">
-                    <button class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-50">Tümü</button>
-                    <button class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-50 text-slate-400">Analiz</button>
+            <div @click="openNews(getFeatureNews('Sao Paulo'))" class="lg:col-span-4 relative rounded-[2rem] overflow-hidden group cursor-pointer h-[550px] shadow-2xl border border-white/5">
+                <img :src="getFeatureNews('Sao Paulo').img" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                <div class="absolute inset-0 bg-gradient-to-t from-blue-950/90 to-transparent"></div>
+                <div class="absolute bottom-10 left-8">
+                    <span class="bg-yellow-500 text-black px-4 py-1 rounded-full text-[10px] font-bold uppercase mb-4 inline-block tracking-tighter">Sao Paulo News</span>
+                    <h2 class="text-3xl font-bold leading-tight" x-text="getFeatureNews('Sao Paulo').title"></h2>
                 </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-32">
-                <template x-for="(news, index) in newsData" :key="index">
-                    <div @click="openNews(news)" class="premium-card rounded-[2.5rem] overflow-hidden group cursor-pointer">
-                        <div class="h-60 overflow-hidden relative">
-                            <img :src="news.img || 'https://via.placeholder.com/800x600'" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                            <div class="absolute top-4 left-4 flex gap-2">
-                                <span class="bg-white/95 backdrop-blur px-3 py-1 rounded-lg text-[9px] font-black uppercase text-blue-600 shadow-md" x-text="news.tag"></span>
-                            </div>
-                        </div>
-                        <div class="p-8">
-                            <h4 class="text-xl font-bold mb-6 leading-tight group-hover:text-blue-600 transition" x-text="news.title"></h4>
-                            <div class="flex items-center justify-between pt-6 border-t border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                <span x-text="news.date"></span>
-                                <span><i class="fas fa-eye text-blue-500 mr-2"></i><span x-text="news.views"></span></span>
-                            </div>
-                        </div>
-                    </div>
-                </template>
             </div>
         </div>
 
-        <div x-show="currentPage === 'news-detail'" class="max-w-4xl mx-auto px-6 py-20" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-10 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600">← Geri Dön</button>
-            <div class="relative rounded-[3rem] overflow-hidden shadow-2xl mb-12">
-                <img :src="selectedNews?.img" class="w-full h-[500px] object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div class="absolute bottom-8 left-8">
-                    <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase mb-4 inline-block" x-text="selectedNews?.tag"></span>
-                    <h1 class="text-4xl md:text-6xl font-black text-white leading-none tracking-tighter" x-text="selectedNews?.title"></h1>
-                </div>
-            </div>
-            <div class="prose max-w-none text-xl text-slate-600 leading-relaxed font-light italic border-l-4 border-blue-600 pl-8 mb-10" x-html="selectedNews?.body"></div>
-        </div>
+        <h3 class="text-2xl font-bold mb-10 flex items-center gap-4">
+            <span class="w-12 h-1 bg-blue-600 rounded"></span> Gündemdeki Diğer Haberler
+        </h3>
 
-        <div x-show="currentPage === 'admin'" class="max-w-[1500px] mx-auto px-6 py-20" x-cloak>
-            <div class="flex items-center justify-between mb-16">
-                <h2 class="text-4xl font-black uppercase italic tracking-tighter">İçerik <span class="text-blue-600">Terminali</span></h2>
-                <button @click="currentPage = 'home'" class="bg-red-50 text-red-600 px-6 py-3 rounded-2xl text-xs font-bold uppercase hover:bg-red-600 hover:text-white transition">Paneli Kilitle</button>
-            </div>
-
-            <div class="grid grid-cols-1 xl:grid-cols-12 gap-10">
-                <div class="xl:col-span-5">
-                    <div class="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 sticky top-40">
-                        <div class="flex gap-2 mb-8 bg-slate-50 p-1 rounded-2xl">
-                            <button @click="formMode = 'news'" :class="formMode === 'news' ? 'bg-white shadow text-blue-600' : 'text-slate-400'" class="flex-1 py-3 rounded-xl text-xs font-bold uppercase transition">Haber</button>
-                            <button @click="formMode = 'author'" :class="formMode === 'author' ? 'bg-white shadow text-blue-600' : 'text-slate-400'" class="flex-1 py-3 rounded-xl text-xs font-bold uppercase transition">Yazar</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <template x-for="(news, index) in newsData" :key="index">
+                <div @click="openNews(news)" class="news-card glass rounded-3xl overflow-hidden cursor-pointer">
+                    <img :src="news.img" class="w-full h-56 object-cover border-b border-white/5">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase" x-text="news.region"></span>
+                            <span class="text-[10px] text-slate-500" x-text="news.date"></span>
                         </div>
-
-                        <div class="space-y-4">
-                            <template x-if="formMode === 'news'">
-                                <div class="space-y-4">
-                                    <input x-model="formData.title" type="text" placeholder="Haber Başlığı" class="admin-input">
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <select x-model="formData.tag" class="admin-input">
-                                            <option value="">Kategori Seç</option>
-                                            <template x-for="cat in categories">
-                                                <option :value="cat" x-text="cat"></option>
-                                            </template>
-                                        </select>
-                                        <select x-model="formData.region" class="admin-input">
-                                            <option value="Global">Bölge: Global</option>
-                                            <option value="Mardin">Bölge: Mardin</option>
-                                            <option value="Rio">Bölge: Rio</option>
-                                        </select>
-                                    </div>
-                                    <textarea x-model="formData.body" placeholder="Haber İçeriği (HTML Kullanabilirsiniz)" class="admin-input h-40"></textarea>
-                                </div>
-                            </template>
-
-                            <template x-if="formMode === 'author'">
-                                <div class="space-y-4">
-                                    <input x-model="formData.name" type="text" placeholder="Yazar İsim Soyisim" class="admin-input">
-                                    <input x-model="formData.title" type="text" placeholder="Ünvan (Örn: Ekonomist)" class="admin-input">
-                                    <textarea x-model="formData.bio" placeholder="Kısa Biyografi" class="admin-input h-32"></textarea>
-                                </div>
-                            </template>
-
-                            <div class="bg-blue-50 border-2 border-dashed border-blue-200 p-6 rounded-2xl text-center relative hover:bg-blue-100 transition">
-                                <input type="file" @change="handleUpload($event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                                <p class="text-[10px] font-black text-blue-600 uppercase">Görsel Seç / Güncelle</p>
-                            </div>
-
-                            <button @click="saveData()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-slate-900 transition-all shadow-xl shadow-blue-200">
-                                <span x-text="isEdit ? 'DEĞİŞİKLİKLERİ KAYDET' : 'SİSTEME YAYINLA'"></span>
-                            </button>
-                            <button x-show="isEdit" @click="resetForm()" class="w-full text-slate-400 text-[10px] font-bold uppercase mt-2 hover:underline">Düzenlemeyi İptal Et</button>
+                        <h4 class="text-lg font-bold mb-4 line-clamp-2" x-text="news.title"></h4>
+                        <div class="flex items-center gap-2 text-slate-400 text-xs italic">
+                            <i class="fas fa-bolt text-yellow-500"></i> <span x-text="news.tag"></span>
                         </div>
                     </div>
                 </div>
-
-                <div class="xl:col-span-7 space-y-8">
-                    <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
-                        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-50">
-                            <h4 class="text-xl font-black uppercase italic">Aktif Haber Akışı</h4>
-                            <span class="bg-slate-100 px-3 py-1 rounded-lg text-[10px] font-black text-slate-500 uppercase" x-text="'TOPLAM: ' + newsData.length"></span>
-                        </div>
-                        
-                        <div class="space-y-3 h-[700px] overflow-y-auto pr-4">
-                            <template x-for="(n, idx) in newsData" :key="idx">
-                                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-white border border-transparent hover:border-blue-100 transition group">
-                                    <div class="flex items-center gap-4">
-                                        <img :src="n.img" class="w-14 h-14 rounded-xl object-cover shadow-md">
-                                        <div>
-                                            <p class="font-bold text-sm text-slate-900 group-hover:text-blue-600 transition" x-text="n.title"></p>
-                                            <div class="flex gap-2 mt-1">
-                                                <span class="text-[8px] font-black uppercase px-2 py-0.5 bg-blue-100 text-blue-600 rounded" x-text="n.tag"></span>
-                                                <span class="text-[8px] font-black uppercase px-2 py-0.5 bg-slate-200 text-slate-500 rounded" x-text="n.region"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition translate-x-2 group-hover:translate-x-0">
-                                        <button @click="editData('news', idx)" class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition"><i class="fas fa-edit"></i></button>
-                                        <button @click="deleteData('news', idx)" class="w-10 h-10 rounded-xl bg-red-100 text-red-600 hover:bg-red-600 hover:text-white transition"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </template>
         </div>
     </main>
+
+    <div x-show="currentPage === 'news-detail'" class="pt-40 pb-20 px-6 max-w-4xl mx-auto" x-cloak>
+        <button @click="currentPage = 'home'" class="text-blue-500 font-bold mb-8 hover:underline">← ANA SAYFAYA DÖN</button>
+        <img :src="selectedNews?.img" class="w-full h-96 object-cover rounded-[3rem] shadow-2xl mb-10">
+        <h1 class="text-5xl font-bold mb-8" x-text="selectedNews?.title"></h1>
+        <div class="text-xl text-slate-300 leading-relaxed space-y-6" x-html="selectedNews?.body"></div>
+    </div>
+
+    <div x-show="currentPage === 'admin'" class="pt-40 pb-20 px-6 max-w-7xl mx-auto" x-cloak>
+        <div class="flex justify-between items-center mb-12">
+            <h2 class="text-3xl font-bold italic">Panel <span class="text-blue-500">Yönetimi</span></h2>
+            <button @click="currentPage = 'home'" class="bg-red-500/20 text-red-500 px-6 py-2 rounded-xl border border-red-500/50 font-bold">Çıkış Yap</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div class="lg:col-span-5">
+                <div class="glass p-8 rounded-[2rem] sticky top-40">
+                    <h3 class="text-xl font-bold mb-6" x-text="isEdit ? 'Haberi Düzenle' : 'Yeni Haber Ekle'"></h3>
+                    <div class="space-y-4">
+                        <input x-model="formData.title" type="text" placeholder="Haber Başlığı" class="w-full bg-slate-800 border border-white/10 p-4 rounded-xl focus:border-blue-500 outline-none">
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <select x-model="formData.region" class="w-full bg-slate-800 border border-white/10 p-4 rounded-xl">
+                                <option value="Global">Bölge: Global</option>
+                                <option value="Mardin">Bölge: Mardin</option>
+                                <option value="Sao Paulo">Bölge: Sao Paulo</option>
+                            </select>
+                            <input x-model="formData.tag" type="text" placeholder="Kategori (Örn: Siyaset)" class="w-full bg-slate-800 border border-white/10 p-4 rounded-xl">
+                        </div>
+
+                        <textarea x-model="formData.body" placeholder="Haber İçeriği..." class="w-full bg-slate-800 border border-white/10 p-4 rounded-xl h-40"></textarea>
+                        
+                        <div class="relative bg-blue-600/10 border-2 border-dashed border-blue-500/30 p-8 rounded-xl text-center">
+                            <input type="file" @change="handleUpload" class="absolute inset-0 opacity-0 cursor-pointer">
+                            <p class="text-sm font-bold">Görsel Yükle (JPG/PNG)</p>
+                            <p class="text-[10px] text-slate-500 mt-2">Dosya seçmek için tıklayın veya sürükleyin</p>
+                        </div>
+
+                        <button @click="saveData()" class="w-full bg-blue-600 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition shadow-lg shadow-blue-600/20">
+                            <span x-text="isEdit ? 'DEĞİŞİKLİKLERİ KAYDET' : 'HABERİ YAYINLA'"></span>
+                        </button>
+                        <button x-show="isEdit" @click="resetForm()" class="w-full text-slate-500 text-sm mt-2">İptal Et</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7">
+                <div class="glass p-8 rounded-[2rem]">
+                    <h3 class="text-xl font-bold mb-6">Yayındaki Haberler</h3>
+                    <div class="space-y-4 max-h-[700px] overflow-y-auto pr-2">
+                        <template x-for="(n, idx) in newsData" :key="idx">
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 group">
+                                <div class="flex items-center gap-4">
+                                    <img :src="n.img" class="w-16 h-16 rounded-xl object-cover">
+                                    <div>
+                                        <p class="font-bold text-sm" x-text="n.title"></p>
+                                        <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded" x-text="n.region"></span>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                                    <button @click="editData(idx)" class="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white transition"><i class="fas fa-edit"></i></button>
+                                    <button @click="deleteData(idx)" class="w-10 h-10 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function portalApp() {
             return {
-                currentPage: 'home', formMode: 'news', isEdit: false, editIdx: null,
-                selectedNews: null, todayDate: '',
-                categories: ['Ekonomi', 'Kültür', 'Teknoloji', 'Siyaset', 'Analiz', 'Yaşam'],
-                formData: { title:'', tag:'', body:'', img:'', name:'', bio:'', region:'Global', photo:'' },
-
-                // Yerel Depolama ile Verileri Getir
-                newsData: JSON.parse(localStorage.getItem('asc_v15_news')) || [
-                    { title: 'Mardin de Arkeolojik Sensation: Kayıp Şehir Bulundu', tag: 'Kültür', region: 'Mardin', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=800', body: 'Detaylı arkeoloji haberi...', views: 4200, date: '02.03.2026' },
-                    { title: 'Rio Carnival 2026: Teknolojik Devrim Kapıda', tag: 'Analiz', region: 'Rio', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=800', body: 'Rio hazırlıkları tam gaz...', views: 8900, date: '01.03.2026' },
-                    { title: 'Yapay Zeka Portalları Ele Geçiriyor mu?', tag: 'Teknoloji', region: 'Global', img: 'https://images.unsplash.com/photo-1518186239717-2e9b1bd67b9b?w=800', body: 'AI üzerine büyük dosya...', views: 12500, date: '28.02.2026' }
-                ],
+                currentPage: 'home',
+                isEdit: false,
+                editIdx: null,
+                selectedNews: null,
+                formData: { title:'', region:'Global', tag:'', body:'', img:'' },
                 
-                authors: JSON.parse(localStorage.getItem('asc_v15_authors')) || [],
+                // HABERLERİ LOCALSTORAGE'DAN YÜKLE
+                newsData: JSON.parse(localStorage.getItem('asc_global_data')) || [
+                    { title: 'Mardin Tarihi Dokusu Modern Teknolojiyle Korunuyor', region: 'Mardin', tag: 'Kültür', body: 'Mardin valiliği yeni bir proje başlattı...', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=1200', date: '02.03.2026' },
+                    { title: 'Sao Paulo Sokak Festivali Rekor Katılımla Başladı', region: 'Sao Paulo', tag: 'Yaşam', body: 'Brezilya nın kalbi Sao Paulo da dev festival...', img: 'https://images.unsplash.com/photo-1543059180-87383af5bd1f?w=1200', date: '02.03.2026' }
+                ],
 
                 init() {
-                    this.updateDate();
-                    setInterval(() => this.updateDate(), 60000);
+                    this.saveToStorage();
                 },
 
-                updateDate() {
-                    const n = new Date();
-                    this.todayDate = n.toLocaleDateString('tr-TR', { day:'numeric', month:'long', year:'numeric', weekday:'long' });
+                // OTOMATİK MANŞET SEÇİCİ (Bölgeye göre en son haberi getirir)
+                getFeatureNews(region) {
+                    const filtered = this.newsData.filter(n => n.region === region);
+                    return filtered.length > 0 ? filtered[0] : { title: `${region} İçin Haber Bekleniyor...`, img: 'https://via.placeholder.com/1200x800' };
                 },
 
                 handleUpload(e) {
                     const file = e.target.files[0];
                     const reader = new FileReader();
-                    reader.onloadend = () => { 
-                        if(this.formMode === 'news') this.formData.img = reader.result;
-                        else this.formData.photo = reader.result;
-                    }
+                    reader.onloadend = () => { this.formData.img = reader.result; };
                     if(file) reader.readAsDataURL(file);
                 },
 
                 loginAdmin() {
-                    if (prompt("Giriş Şifresi:") === "Mardin47**") this.currentPage = 'admin';
+                    if (prompt("Erişim Şifresi:") === "Mardin47**") this.currentPage = 'admin';
                 },
 
                 saveData() {
-                    if(this.formMode === 'news') {
-                        if(this.isEdit) {
-                            this.newsData[this.editIdx] = {...this.formData};
-                        } else {
-                            this.newsData.unshift({...this.formData, views: 0, date: new Date().toLocaleDateString('tr-TR')});
-                        }
+                    if(!this.formData.title || !this.formData.img) return alert("Başlık ve görsel zorunludur!");
+
+                    if(this.isEdit) {
+                        this.newsData[this.editIdx] = { ...this.formData, date: new Date().toLocaleDateString('tr-TR') };
                     } else {
-                        if(this.isEdit) {
-                            this.authors[this.editIdx] = {...this.formData};
-                        } else {
-                            this.authors.push({...this.formData, reads: 0});
-                        }
+                        this.newsData.unshift({ ...this.formData, date: new Date().toLocaleDateString('tr-TR') });
                     }
-                    this.sync();
+                    
+                    this.saveToStorage();
                     this.resetForm();
-                    alert("Sistem başarıyla güncellendi!");
+                    alert("Başarıyla kaydedildi!");
                 },
 
-                editData(type, idx) {
-                    this.formMode = type;
+                editData(idx) {
                     this.isEdit = true;
                     this.editIdx = idx;
-                    this.formData = type === 'news' ? {...this.newsData[idx]} : {...this.authors[idx]};
-                    window.scrollTo({top: 0, behavior: 'smooth'});
+                    this.formData = { ...this.newsData[idx] };
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 },
 
-                deleteData(type, idx) {
-                    if(confirm("Bu içeriği kalıcı olarak silmek istediğinize emin misiniz?")) {
-                        if(type === 'news') this.newsData.splice(idx, 1);
-                        else this.authors.splice(idx, 1);
-                        this.sync();
+                deleteData(idx) {
+                    if(confirm("Bu haberi kalıcı olarak silmek istiyor musunuz?")) {
+                        this.newsData.splice(idx, 1);
+                        this.saveToStorage();
                     }
-                },
-
-                resetForm() {
-                    this.formData = { title:'', tag:'', body:'', img:'', name:'', bio:'', region:'Global', photo:'' };
-                    this.isEdit = false;
-                    this.editIdx = null;
-                },
-
-                sync() {
-                    localStorage.setItem('asc_v15_news', JSON.stringify(this.newsData));
-                    localStorage.setItem('asc_v15_authors', JSON.stringify(this.authors));
                 },
 
                 openNews(news) {
-                    if(!news) return;
-                    news.views++;
+                    if(news.title.includes("Bekleniyor")) return;
                     this.selectedNews = news;
                     this.currentPage = 'news-detail';
-                    this.sync();
                     window.scrollTo(0,0);
+                },
+
+                saveToStorage() {
+                    localStorage.setItem('asc_global_data', JSON.stringify(this.newsData));
+                },
+
+                resetForm() {
+                    this.formData = { title:'', region:'Global', tag:'', body:'', img:'' };
+                    this.isEdit = false;
+                    this.editIdx = null;
                 }
             }
         }
