@@ -12,8 +12,11 @@
         .glass { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); }
         .page-fade { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        /* Tüm italik stilleri devre dışı bırakma */
-        * { font-style: normal !important; }
+        
+        /* Tüm italik (eğik) yazı stillerini küresel olarak kaldırır */
+        * { 
+            font-style: normal !important; 
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans" x-data="portalApp()" x-init="init()">
@@ -62,16 +65,16 @@
                 </div>
             </section>
 
-            <header class="relative h-[45vh] bg-black flex items-center justify-center overflow-hidden">
+            <header class="relative h-[45vh] bg-black flex items-center justify-center overflow-hidden border-b border-slate-200">
                 <img src="https://images.unsplash.com/photo-1590424744295-827054f76785?auto=format&fit=crop&q=80&w=1600" class="absolute w-full h-full object-cover opacity-50">
                 <div class="relative text-center px-4">
-                    <h1 class="text-white text-5xl md:text-7xl font-black uppercase tracking-tighter">GLOBAL HABER</h1>
-                    <p class="text-emerald-400 font-bold tracking-[0.4em] uppercase text-xs mt-3">Mardin ve Brezilya'nın Sesi</p>
+                    <h1 class="text-white text-5xl md:text-7xl font-black uppercase tracking-tighter">KÜRESEL VİZYON</h1>
+                    <p class="text-emerald-400 font-bold tracking-[0.4em] uppercase text-xs mt-3">Mardin ve Brezilya'nın Dijital Köprüsü</p>
                 </div>
             </header>
             
             <section class="max-w-7xl mx-auto px-6 py-16">
-                <h2 class="text-2xl font-black uppercase tracking-tighter mb-10 border-l-4 border-blue-700 pl-4">Öne Çıkanlar</h2>
+                <h2 class="text-2xl font-black uppercase tracking-tighter mb-10 border-l-4 border-blue-700 pl-4">Öne Çıkan Haberler</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <template x-for="news in newsData" :key="news.id">
                         <div @click="openNews(news)" class="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer border border-slate-100 group">
@@ -88,8 +91,8 @@
         </div>
 
         <div x-show="currentPage === 'author-detail'" class="page-fade max-w-4xl mx-auto px-6 py-16" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-8 text-[10px] font-black uppercase tracking-widest text-blue-600 flex items-center gap-2">
-                <i class="fas fa-chevron-left"></i> Ana Sayfaya Dön
+            <button @click="currentPage = 'home'" class="mb-8 text-[10px] font-black uppercase tracking-widest text-blue-600 flex items-center gap-2 hover:bg-blue-50 px-4 py-2 rounded-full w-fit transition">
+                <i class="fas fa-chevron-left"></i> Geri Dön
             </button>
             <div class="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border border-slate-100 text-center">
                 <img :src="selectedAuthor?.photo" class="w-40 h-40 rounded-full mx-auto border-8 border-slate-50 shadow-2xl mb-8 object-cover">
@@ -99,17 +102,17 @@
                 <p class="text-slate-700 text-lg leading-loose font-medium max-w-2xl mx-auto" x-text="selectedAuthor?.bio"></p>
                 
                 <div class="mt-16 pt-12 border-t border-slate-100 text-left">
-                    <h4 class="font-black uppercase text-xs mb-8 tracking-[0.2em] text-slate-400">Yazarın Makaleleri</h4>
+                    <h4 class="font-black uppercase text-xs mb-8 tracking-[0.2em] text-slate-400 uppercase">Yazarın Son Makaleleri</h4>
                     <div class="space-y-4">
-                        <div class="p-6 bg-slate-50 rounded-2xl font-bold hover:bg-blue-50 transition border border-transparent hover:border-blue-100 cursor-pointer">Mezopotamya ve Amazonlar: Kültürel Paralellikler</div>
-                        <div class="p-6 bg-slate-50 rounded-2xl font-bold hover:bg-blue-50 transition border border-transparent hover:border-blue-100 cursor-pointer">Geleceğin Mimarisi: Doğal Taşın Dönüşü</div>
+                        <div class="p-6 bg-slate-50 rounded-2xl font-bold hover:bg-blue-50 transition border border-transparent hover:border-blue-100 cursor-pointer uppercase text-sm tracking-tight">İki Coğrafya Tek Ruh: Mardin ve Rio</div>
+                        <div class="p-6 bg-slate-50 rounded-2xl font-bold hover:bg-blue-50 transition border border-transparent hover:border-blue-100 cursor-pointer uppercase text-sm tracking-tight">Modern Zamanda Geleneksel Mimari</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div x-show="currentPage === 'news-detail'" class="page-fade max-w-4xl mx-auto px-6 py-16" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-8 text-[10px] font-black uppercase tracking-widest text-blue-600 flex items-center gap-2">
+            <button @click="currentPage = 'home'" class="mb-8 text-[10px] font-black uppercase tracking-widest text-blue-600 flex items-center gap-2 hover:bg-blue-50 px-4 py-2 rounded-full w-fit transition">
                 <i class="fas fa-chevron-left"></i> Geri Dön
             </button>
             <img :src="selectedNews?.img" class="w-full h-[50vh] object-cover rounded-[3rem] shadow-2xl mb-10 border-4 border-white">
@@ -119,8 +122,8 @@
 
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-12 text-center">
-        <p class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-300">ASC GLOBAL PORTAL © 2026</p>
+    <footer class="bg-white border-t border-slate-200 py-12 text-center mt-12">
+        <p class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">ASC GLOBAL PORTAL © 2026 | MARDIN - BRAZIL</p>
     </footer>
 
     <script>
@@ -132,12 +135,12 @@
                 mardinTime: '',
                 brazilTime: '',
                 authors: [
-                    { id: 1, name: 'Prof. Dr. Ahmet Salim', title: 'Kurucu Editör / Tarihçi', bio: 'Mezopotamya ve Latin Amerika medeniyetleri üzerine 25 yıllık akademik kariyere sahiptir. Mardin ve Brezilya arasındaki kültürel bağların güçlendirilmesi için çalışmaktadır.', photo: 'https://i.pravatar.cc/150?u=asalim' },
-                    { id: 2, name: 'Dr. Isabella Mendes', title: 'Uluslararası Analist', bio: 'Kültürlerarası diplomasi ve küresel ticaret stratejileri üzerine uzmanlaşmış kıdemli yazar. Sao Paulo Üniversitesi’nde misafir öğretim üyesidir.', photo: 'https://i.pravatar.cc/150?u=isabella' }
+                    { id: 1, name: 'Prof. Dr. Ahmet Salim', title: 'Kurucu Editör / Tarihçi', bio: 'Mezopotamya medeniyetleri ve dünya mirası üzerine 25 yıllık akademik kariyere sahiptir. Mardin ve Brezilya arasındaki kültürel bağların güçlendirilmesi için çalışmaktadır. Birçok uluslararası makalesi bulunmaktadır.', photo: 'https://i.pravatar.cc/150?u=asalim' },
+                    { id: 2, name: 'Dr. Isabella Mendes', title: 'Uluslararası Analist', bio: 'Kültürlerarası diplomasi ve küresel ticaret stratejileri üzerine uzmanlaşmış kıdemli yazar. Sao Paulo Üniversitesi’nde misafir öğretim üyesidir ve Latin Amerika perspektifini temsil eder.', photo: 'https://i.pravatar.cc/150?u=isabella' }
                 ],
                 newsData: [
-                    { id: 101, tag: 'Mardin', title: 'Artuklu Sarayı Restorasyonu Tamamlandı', desc: 'Binlerce yıllık saray, modern bir müze konseptiyle kapılarını ziyaretçilere açtı.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=1200', body: 'Artuklu mimarisinin en nadide örneklerinden biri olan saray, 4 yıl süren titiz bir çalışmanın ardından eski görkemine kavuştu. Müzede Mardin tarihine ışık tutan 500 adet yeni eser sergilenecek.' },
-                    { id: 102, tag: 'Brazil', title: 'Amazonlarda Yenilenebilir Enerji Devrimi', desc: 'Brezilya, Amazon bölgesindeki köylere güneş enerjisi sağlamak için dev bir proje başlattı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=1200', body: 'Proje kapsamında uzak bölgelerdeki yerleşim yerlerine 50.000 adet güneş paneli kurulacak. Bu sayede bölgenin doğal yapısı korunurken, enerji ihtiyacı %100 temiz kaynaklardan karşılanmış olacak.' }
+                    { id: 101, tag: 'Mardin', title: 'Artuklu Sarayı Restorasyonu Tamamlandı', desc: 'Binlerce yıllık saray, modern bir müze konseptiyle kapılarını ziyaretçilere açtı.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=1200', body: 'Artuklu mimarisinin en nadide örneklerinden biri olan saray, 4 yıl süren titiz bir çalışmanın ardından eski görkemine kavuştu. Müzede Mardin tarihine ışık tutan 500 adet yeni eser sergilenecek. Ziyaretçiler tarihi dokuyu koruyan modern bir sunumla geçmişe yolculuk yapacak.' },
+                    { id: 102, tag: 'Brazil', title: 'Amazonlarda Yenilenebilir Enerji Devrimi', desc: 'Brezilya, Amazon bölgesindeki köylere güneş enerjisi sağlamak için dev bir proje başlattı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=1200', body: 'Proje kapsamında uzak bölgelerdeki yerleşim yerlerine 50.000 adet güneş paneli kurulacak. Bu sayede bölgenin doğal yapısı korunurken, enerji ihtiyacı %100 temiz kaynaklardan karşılanmış olacak. Brezilya hükümeti bu projeyle sürdürülebilir enerji alanında dünyaya örnek olmayı hedefliyor.' }
                 ],
                 init() {
                     this.updateClocks();
