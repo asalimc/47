@@ -3,112 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Port: Mardin & Brazil | Haber & Köşe Yazıları</title>
+    <title>Mardin & Brazil | Canlı Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        [x-cloak] { display: none !important; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
-        .gradient-text { background: linear-gradient(90deg, #1e3a8a, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); }
+        .gradient-text { background: linear-gradient(90deg, #2563eb, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body class="bg-slate-50 font-sans" x-data="portalApp()">
+<body class="bg-slate-50 font-sans" x-data="portalApp()" x-init="init()">
 
-    <nav class="sticky top-0 z-50 glass border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-black gradient-text uppercase tracking-tighter">Mardin <span class="text-gray-400">/</span> Brazil</div>
-            <div class="hidden md:flex space-x-8 font-semibold text-sm uppercase">
-                <a href="#haberler" class="hover:text-blue-600 transition">Haber Akışı</a>
-                <a href="#yazarlar" class="hover:text-blue-600 transition">Köşe Yazarları</a>
-                <a href="#kesfet" class="hover:text-blue-600 transition">Şehir Rehberi</a>
+    <nav class="sticky top-0 z-50 glass border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-3xl font-black tracking-tighter uppercase italic gradient-text">Mardin / Brazil</div>
+            <div class="flex space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                <div class="text-right">
+                    <span class="block text-slate-800 uppercase">Mardin Saat</span>
+                    <span class="text-blue-600 text-sm font-mono" x-text="mardinTime"></span>
+                </div>
+                <div class="text-left border-l pl-8 border-slate-200">
+                    <span class="block text-slate-800 uppercase">Brazil Saat</span>
+                    <span class="text-emerald-600 text-sm font-mono" x-text="brazilTime"></span>
+                </div>
             </div>
         </div>
     </nav>
 
-    <header class="relative h-[60vh] flex items-center justify-center overflow-hidden bg-black">
-        <img src="https://images.unsplash.com/photo-1590424744295-827054f76785?auto=format&fit=crop&q=80&w=1600" class="absolute w-full h-full object-cover opacity-60">
-        <div class="relative text-center text-white p-6">
-            <h1 class="text-5xl md:text-7xl font-extrabold mb-4">İki Dünya, Tek Portal</h1>
-            <p class="text-xl md:text-2xl font-light italic">Mezopotamya'nın Kalbinden Amazonların Ruhuna...</p>
+    <header class="relative h-[40vh] bg-slate-900 flex items-center justify-center overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1590424744295-827054f76785?auto=format&fit=crop&q=80&w=1600" class="absolute w-full h-full object-cover opacity-50">
+        <div class="relative text-center px-4 text-white">
+            <h1 class="text-5xl md:text-7xl font-black mb-2 uppercase tracking-tighter">GLOBAL PORTAL</h1>
+            <p class="text-blue-200 text-lg font-light tracking-widest italic uppercase">Tarihten Geleceğe Akış</p>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-12">
-        
-        <section id="haberler" class="mb-20">
-            <div class="flex justify-between items-end mb-8">
-                <h2 class="text-3xl font-bold border-l-4 border-blue-600 pl-4 uppercase">Dünyadan Son Dakika</h2>
-                <span class="text-xs bg-red-600 text-white px-2 py-1 animate-pulse rounded">CANLI AKIŞ</span>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <template x-for="news in newsList" :key="news.id">
-                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group">
-                        <div class="relative overflow-hidden">
-                            <img :src="news.image" class="w-full h-52 object-cover group-hover:scale-110 transition duration-500">
-                            <div class="absolute top-2 left-2 bg-blue-600 text-white text-[10px] px-2 py-1 rounded" x-text="news.category"></div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-lg mb-2 leading-snug hover:text-blue-600 cursor-pointer" x-text="news.title"></h3>
-                            <p class="text-gray-500 text-sm line-clamp-2" x-text="news.desc"></p>
-                        </div>
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <h2 class="text-2xl font-black uppercase mb-8 border-l-8 border-blue-600 pl-4">Canlı Haber Akışı</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            <template x-for="news in newsList">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-slate-100">
+                    <img :src="news.img" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-blue-600 text-[10px] font-bold uppercase" x-text="news.tag"></span>
+                        <h3 class="font-bold text-lg my-2 leading-tight" x-text="news.title"></h3>
+                        <p class="text-slate-500 text-sm" x-text="news.desc"></p>
                     </div>
-                </template>
-            </div>
-        </section>
+                </div>
+            </template>
+        </div>
 
-        <section id="yazarlar" class="bg-slate-900 -mx-4 px-4 py-20 text-white rounded-[3rem] mb-20">
-            <h2 class="text-3xl font-bold text-center mb-16 uppercase tracking-widest">Seçkin Köşe Yazarlarımız</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-                <template x-for="author in authors" :key="author.name">
-                    <div class="bg-slate-800 p-8 rounded-3xl flex flex-col md:flex-row gap-6 items-center md:items-start border border-slate-700 hover:border-blue-500 transition">
-                        <img :src="author.photo" class="w-24 h-24 rounded-full border-4 border-blue-600 object-cover shadow-2xl">
+        <section class="bg-slate-900 rounded-[2rem] p-10 text-white shadow-2xl">
+            <h2 class="text-3xl font-black text-center mb-12 uppercase">Köşe Yazarlarımız</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <template x-for="author in authors">
+                    <div class="bg-slate-800 p-6 rounded-xl flex gap-6 items-center border border-slate-700">
+                        <img :src="author.photo" class="w-20 h-20 rounded-full border-2 border-blue-500 object-cover">
                         <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-xl font-bold" x-text="author.name"></h4>
-                                <span class="text-blue-400 text-xs font-mono" x-text="author.title"></span>
-                            </div>
-                            <p class="text-slate-400 text-sm italic mb-4" x-text="author.bio"></p>
-                            <div class="bg-slate-700 p-4 rounded-xl">
-                                <span class="text-[10px] text-blue-400 uppercase font-bold block mb-1">Son Yazı:</span>
-                                <p class="text-sm font-semibold hover:text-blue-300 cursor-pointer" x-text="author.lastPost"></p>
-                            </div>
+                            <h4 class="text-xl font-bold" x-text="author.name"></h4>
+                            <p class="text-blue-400 text-xs font-bold uppercase mb-2" x-text="author.title"></p>
+                            <p class="text-slate-400 text-xs italic" x-text="author.bio"></p>
                         </div>
                     </div>
                 </template>
             </div>
         </section>
-
     </main>
 
-    <footer class="bg-white border-t py-12 text-center text-gray-500 text-sm">
-        <p>&copy; 2026 ASC Portal. Tüm Hakları Saklıdır. | Mardin - Brezilya Hattı</p>
+    <footer class="py-10 text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+        &copy; 2026 ASC GLOBAL PORTAL - MARDIN / BRAZIL
     </footer>
 
     <script>
         function portalApp() {
             return {
+                mardinTime: '',
+                brazilTime: '',
                 newsList: [
-                    { id: 1, category: 'MARDİN', title: 'Antik Kentte Yeni Keşifler', desc: 'Dara Antik Kenti arkeolojik kazılarda dünyayı şaşırtacak yeni bir galeri bulundu.', image: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?auto=format&fit=crop&q=80&w=400' },
-                    { id: 2, category: 'BRAZİL', title: 'Rio Karnavalı Hazırlıkları', desc: 'Rio de Janeiro sokakları bu yılki dev festivale rekor katılımla hazırlanıyor.', image: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?auto=format&fit=crop&q=80&w=400' },
-                    { id: 3, category: 'GLOBAL', title: 'Sürdürülebilir Turizm', desc: 'Mardin ve Brezilya arasında kültürel bir turizm köprüsü kuruluyor.', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=400' }
+                    { tag: 'Mardin', title: 'Tarihi Kentte Büyük Buluşma', desc: 'Mezopotamya turizm zirvesi bu hafta Mardin’de kapılarını açıyor.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=600' },
+                    { tag: 'Brazil', title: 'Rio Sokakları Karnavala Hazır', desc: 'Brezilya bu yıl rekor sayıda turist ağırlamaya hazırlanıyor.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=600' },
+                    { tag: 'Global', title: 'Yeni Ticaret Köprüsü', desc: 'Mardin ve Brezilya arasında kültürel ihracat anlaşması imzalandı.', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600' }
                 ],
                 authors: [
-                    { 
-                        name: 'Doç. Dr. Ahmet Mardini', 
-                        title: 'Tarih & Kültür', 
-                        bio: 'Mezopotamya tarihi üzerine 20 yıllık araştırma ve onlarca kitap sahibi.',
-                        lastPost: 'Taşların Dili: Mardin Mimarisi Neden Eşsiz?',
-                        photo: 'https://i.pravatar.cc/150?u=ahmet'
-                    },
-                    { 
-                        name: 'Isabella Rodrigues', 
-                        title: 'Yaşam & Seyahat', 
-                        bio: 'Brezilya kıyılarını ve Latin kültürünü dünyaya tanıtan profesyonel gezgin.',
-                        lastPost: 'Sao Paulo Sokak Sanatı: Bir Direniş Hikayesi',
-                        photo: 'https://i.pravatar.cc/150?u=isabella'
-                    }
-                ]
+                    { name: 'Prof. Dr. Ahmet Salim', title: 'Tarih & Strateji', bio: 'Mezopotamya medeniyetleri üzerine uzmanlaşmış kıdemli akademisyen.', photo: 'https://i.pravatar.cc/150?u=asalim' },
+                    { name: 'Isabella Mendes', title: 'Kültür & Yaşam', bio: 'Brezilya kültürünü Ortadoğu’ya tanıtan ödüllü yazar.', photo: 'https://i.pravatar.cc/150?u=isabella' }
+                ],
+                init() {
+                    this.updateClocks();
+                    setInterval(() => this.updateClocks(), 1000);
+                },
+                updateClocks() {
+                    const now = new Date();
+                    this.mardinTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Istanbul' }).format(now);
+                    this.brazilTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' }).format(now);
+                }
             }
         }
     </script>
