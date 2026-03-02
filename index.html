@@ -3,65 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina | Mardin & Sao Paulo Global</title>
+    <title>Lumina | Global Culture & News</title>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #fdfbf7;
             --text: #1a1a1a;
             --muted: #718096;
-            --accent-mardin: #c49b66;
-            --accent-sp: #4b7bec;
+            --accent: #c49b66;
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.8);
-            --shadow: 0 10px 40px rgba(0,0,0,0.03);
             --transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; scroll-behavior: smooth; }
 
-        /* --- OKUMA ÇUBUĞU --- */
-        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent-mardin); width: 0%; z-index: 10001; transition: width 0.2s; }
+        /* --- OKUMA İLERLEME VE SES KONTROL --- */
+        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 10001; }
+        
+        /* Navigasyon */
+        nav { background: rgba(253, 251, 247, 0.9); backdrop-filter: blur(15px); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        .logo { font-family: 'Marcellus', serif; font-size: 2rem; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
 
-        /* --- NAVİGASYON --- */
-        nav { background: var(--glass); backdrop-filter: blur(10px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .logo { font-family: 'Marcellus', serif; font-size: 1.8rem; letter-spacing: 2px; cursor: pointer; }
+        /* Yazarlar - Yatay Kaydırma */
+        .authors-strip { background: var(--white); padding: 30px 0; display: flex; justify-content: center; gap: 40px; border-bottom: 1px solid #f1f1f1; }
+        .author-item { cursor: pointer; text-align: center; width: 90px; transition: var(--transition); }
+        .author-item:hover { transform: translateY(-5px); }
+        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); padding: 4px; }
+        .author-item span { display: block; font-size: 0.75rem; font-weight: 700; margin-top: 10px; font-family: 'Marcellus'; }
 
-        /* --- YAZARLAR HİKAYE ŞERİDİ --- */
-        .authors-strip { background: var(--white); padding: 30px 0; display: flex; justify-content: center; gap: 35px; border-bottom: 1px solid #f1f1f1; }
-        .author-btn { cursor: pointer; text-align: center; transition: var(--transition); width: 100px; position: relative; }
-        .author-btn:hover { transform: translateY(-5px); }
-        .author-btn img { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-mardin); padding: 3px; background: var(--white); }
-        .author-btn span { display: block; font-size: 0.8rem; font-weight: 700; margin-top: 10px; font-family: 'Marcellus', serif; }
+        /* Ana Grid */
+        .container { max-width: 1400px; margin: 40px auto; display: grid; grid-template-columns: 280px 1fr 300px; gap: 40px; padding: 0 25px; }
 
-        /* --- ANA KONTEYNER --- */
-        .container { max-width: 1300px; margin: 50px auto; display: grid; grid-template-columns: 280px 1fr 320px; gap: 40px; padding: 0 25px; }
+        /* Haber Kartı */
+        .news-card { background: var(--white); border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.02); cursor: pointer; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); margin-bottom: 40px; }
+        .news-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.06); }
+        .news-img { width: 100%; height: 480px; object-fit: cover; }
+        .card-body { padding: 35px; }
+        .card-body h2 { font-family: 'Marcellus', serif; font-size: 2.2rem; margin: 0 0 15px 0; line-height: 1.2; }
+        .card-body p { color: var(--muted); font-size: 1.1rem; line-height: 1.7; }
 
-        /* --- SOL PANEL: AJANDA & KATEGORİ --- */
-        .sidebar-left { position: sticky; top: 100px; height: fit-content; }
-        .filter-chip { display: inline-block; padding: 8px 18px; border-radius: 50px; background: var(--white); border: 1px solid #eee; margin: 5px; cursor: pointer; font-size: 0.8rem; transition: var(--transition); }
-        .filter-chip:hover, .filter-chip.active { background: var(--text); color: var(--white); }
+        /* DETAY PANELİ (MODAL) */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding-bottom: 100px; }
+        .close-overlay { position: fixed; top: 30px; right: 40px; cursor: pointer; background: var(--text); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
 
-        /* --- ORTA: HABER KARTLARI --- */
-        .news-card { background: var(--white); border-radius: 24px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: var(--transition); margin-bottom: 40px; border: 1px solid rgba(0,0,0,0.02); }
-        .news-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.07); }
-        .news-img-wrapper { position: relative; width: 100%; height: 450px; overflow: hidden; }
-        .news-card img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
-        .news-card:hover img { transform: scale(1.05); }
-        .card-tag { position: absolute; top: 25px; left: 25px; background: var(--glass); padding: 6px 15px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; }
+        /* OKUYUCU DOSTU METİN SİSTEMİ */
+        .article-wrap { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+        .article-title { font-family: 'Marcellus', serif; font-size: 3.8rem; line-height: 1.1; margin-bottom: 30px; }
+        .article-text { font-size: 1.35rem; line-height: 2; color: #2d3436; font-weight: 400; letter-spacing: -0.01em; }
 
-        /* --- DETAY OVERLAY (MODAL) --- */
-        .full-page-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
-        .close-overlay { position: fixed; top: 30px; right: 40px; background: var(--text); color: var(--white); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; font-size: 1.2rem; }
+        /* SESLENDİRME PANELİ */
+        .audio-player { background: #f1f2f6; border-radius: 15px; padding: 20px; margin: 30px 0; display: flex; align-items: center; gap: 20px; }
+        .play-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .play-btn svg { fill: white; width: 20px; }
 
-        /* DETAY İÇERİK STİLLERİ */
-        .article-wrap { max-width: 900px; margin: 80px auto; padding: 0 20px; }
-        .article-hero { width: 100%; height: 600px; border-radius: 40px; object-fit: cover; margin: 40px 0; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
-        .article-content { font-size: 1.3rem; line-height: 1.9; color: #333; }
-        .share-bar { display: flex; gap: 15px; margin: 40px 0; padding: 20px 0; border-top: 1px solid #eee; }
-
-        /* REKLAM ALANI */
-        .ad-banner { background: #f1f2f6; border-radius: 20px; height: 450px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px dashed #cbd5e0; position: sticky; top: 100px; }
+        /* Sidebarlar */
+        .side-title { font-family: 'Marcellus'; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.2rem; }
+        .ad-space { background: #eee; height: 500px; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: #999; border: 1px dashed #ccc; position: sticky; top: 100px; }
 
         @media (max-width: 1100px) { .container { grid-template-columns: 1fr; } .sidebar-left, .sidebar-right { display: none; } }
     </style>
@@ -71,149 +68,135 @@
 <div id="progress-bar"></div>
 
 <nav>
-    <div class="logo" onclick="window.location.reload()">LUMINA</div>
-    <div style="display:flex; gap: 30px; font-weight: 600; font-size: 0.85rem; color: var(--muted);">
-        <span>DERGİ</span><span>KEŞFET</span><span>ARŞİV</span>
-    </div>
+    <div class="logo">LUMINA</div>
+    <div id="current-city" style="font-size: 0.8rem; letter-spacing: 2px; font-weight: 700;">DEDECTING LOCATION...</div>
 </nav>
 
 <div class="authors-strip">
-    <div class="author-btn" onclick="openAuthor('Vedat Mardinli', 'Kültürel Miras Yazarı', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400')">
-        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400">
+    <div class="author-item" onclick="openAuthor('Vedat Mardinli', 'Tarihçi & Kültür Yazarı', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200')">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200">
         <span>VEDAT M.</span>
     </div>
-    <div class="author-btn" onclick="openAuthor('Adriana Silva', 'Sao Paulo Sosyete Editörü', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400')">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" style="border-color: var(--accent-sp);">
+    <div class="author-item" onclick="openAuthor('Adriana Silva', 'Sao Paulo Sosyete', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200')">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" style="border-color: #4b7bec;">
         <span>ADRIANA S.</span>
-    </div>
-    <div class="author-btn" onclick="openAuthor('Carlos Mendes', 'Mimari & Şehir Planlama', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400')">
-        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400" style="border-color: var(--accent-sp);">
-        <span>CARLOS M.</span>
     </div>
 </div>
 
 <div class="container">
     <aside class="sidebar-left">
-        <h4 style="font-family:'Marcellus'; margin-bottom: 20px;">KATEGORİLER</h4>
-        <div class="filter-chip active">Hepsi</div>
-        <div class="filter-chip">Mardin</div>
-        <div class="filter-chip">Sao Paulo</div>
-        <div class="filter-chip">Gastronomi</div>
-        <div class="filter-chip">Sanat</div>
-        
-        <h4 style="font-family:'Marcellus'; margin-top: 50px; margin-bottom: 20px;">AJANDA</h4>
-        <div style="font-size: 0.85rem; line-height: 2;">
-            <p><strong>05.03</strong> • Mardin Sanat Gecesi</p>
-            <p><strong>09.03</strong> • SP Carnival Gala</p>
-            <p><strong>12.03</strong> • Fotoğraf Sergisi</p>
+        <div class="side-title" id="trans-cat">KATEGORİLER</div>
+        <div style="font-size: 0.9rem; line-height: 2.5; cursor: pointer;">
+            <div>• Mardin Ekspres</div>
+            <div>• Sao Paulo Night</div>
+            <div>• Gastronomi Mirası</div>
+            <div>• Sanat ve Tasarım</div>
         </div>
     </aside>
 
-    <main id="news-feed">
-        <article class="news-card" onclick="openNews('Güneşin Doğduğu Topraklar: Mezopotamya Mutfak Kültürü', 'GASTRONOMİ • MARDİN', 'https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=1200')">
-            <div class="news-img-wrapper">
-                <div class="card-tag">MARDİN</div>
-                <img src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=1200">
-            </div>
+    <main>
+        <article class="news-card" onclick="openNews('Mardin\'in Gümüş İşlemeli Geceleri', 'Eski bir geleneğin modern tasarımla buluşması. Telkari sanatı artık Sao Paulo podyumlarında.', 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200')">
+            <img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200" class="news-img">
             <div class="card-body">
-                <h2 style="font-family:'Marcellus'; font-size: 2.4rem; margin: 0 0 15px 0;">Güneşin Doğduğu Topraklar: Mezopotamya Mutfak Kültürü</h2>
-                <p style="color:var(--muted)">Binlerce yıllık baharat yollarının kesiştiği Mardin'de, gastronomi dünyasını sarsacak yeni keşifler yapılıyor...</p>
-                <div style="margin-top:20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-mardin);">DEVAMINI OKU →</div>
-            </div>
-        </article>
-
-        <article class="news-card" onclick="openNews('Sao Paulo Tasarım Haftası: Geleceğin Çizgileri', 'SANAT • SAO PAULO', 'https://images.unsplash.com/photo-1496293455970-f8581aae0e3c?w=1200')">
-            <div class="news-img-wrapper">
-                <div class="card-tag" style="color:var(--accent-sp)">SAO PAULO</div>
-                <img src="https://images.unsplash.com/photo-1496293455970-f8581aae0e3c?w=1200">
-            </div>
-            <div class="card-body">
-                <h2 style="font-family:'Marcellus'; font-size: 2.4rem; margin: 0 0 15px 0;">Sao Paulo Tasarım Haftası: Geleceğin Çizgileri</h2>
-                <p style="color:var(--muted)">Latin Amerika'nın en büyük tasarım etkinliği, Paulista Bulvarı'nda devasa enstalasyonlarla başladı...</p>
-                <div style="margin-top:20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-sp);">DEVAMINI OKU →</div>
+                <small style="color:var(--accent); font-weight:bold;">KÜLTÜR • MARDİN</small>
+                <h2>Mardin'in Gümüş İşlemeli Geceleri: Telkari'nin Dönüşü</h2>
+                <p>Binlerce yıllık gümüş işleme sanatı, genç tasarımcıların elinde yeniden şekilleniyor...</p>
             </div>
         </article>
     </main>
 
     <aside class="sidebar-right">
-        <div class="ad-banner">
-            <span style="font-size: 0.7rem; letter-spacing: 2px; color: #bbb; margin-bottom: 20px;">SPONSORLU İÇERİK</span>
-            <div style="width: 80%; height: 200px; background: #ddd; border-radius: 10px;"></div>
-            <p style="padding: 20px; text-align: center; font-weight: 600; font-size: 0.9rem;">Modern Yaşamın Yeni Adresi: Lumina Residences</p>
-            <button style="border: 1px solid #000; background: none; padding: 10px 25px; border-radius: 50px; cursor: pointer;">İncele</button>
-        </div>
+        <div class="ad-space" id="trans-ad">SPONSORLU ALAN</div>
     </aside>
 </div>
 
-<div id="overlay" class="full-page-overlay">
+<div id="overlay" class="overlay">
     <div class="close-overlay" onclick="closeAll()">✕</div>
-    <div id="overlay-content"></div>
+    <div id="overlay-content" class="article-wrap"></div>
 </div>
 
 <script>
-    // Okuma Çubuğu Takibi
-    window.onscroll = function() {
-        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        let scrolled = (winScroll / height) * 100;
-        document.getElementById("progress-bar").style.width = scrolled + "%";
-    };
+    // 1. YEREL DİL VE KONUM TESPİTİ
+    const userLang = navigator.language || navigator.userLanguage;
+    const locationTag = document.getElementById('current-city');
+    
+    // Basit Dil Adaptasyonu
+    if(userLang.includes('pt')) { // Portekizce (Sao Paulo)
+        locationTag.innerText = "SAO PAULO • LOCAL";
+        document.getElementById('trans-cat').innerText = "CATEGORIAS";
+        document.getElementById('trans-ad').innerText = "ESPAÇO PUBLICITÁRIO";
+    } else {
+        locationTag.innerText = "MARDİN • YEREL";
+    }
 
-    function openNews(title, meta, img) {
-        const overlay = document.getElementById('overlay');
+    // 2. SESLENDİRME FONKSİYONU (Text-to-Speech)
+    function speakText(textId) {
+        const text = document.getElementById(textId).innerText;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = userLang; 
+        speechSynthesis.speak(utterance);
+    }
+
+    // 3. HABER AÇMA (OKUYUCU DOSTU)
+    function openNews(title, text, img) {
         const content = document.getElementById('overlay-content');
-        overlay.style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
         document.body.style.overflow = 'hidden';
-        
+
         content.innerHTML = `
-            <div class="article-wrap">
-                <span class="filter-chip active" style="margin-bottom:20px">${meta}</span>
-                <h1 style="font-family:'Marcellus'; font-size: 4rem; line-height: 1; margin: 20px 0;">${title}</h1>
-                <div style="color:var(--muted); margin-bottom: 40px;">Yayınlandı: 02 Mart 2026 • 8 Dakika Okuma • Yazar: Editör</div>
-                <img src="${img}" class="article-hero">
-                <div class="article-content">
-                    <p>Mardin ve Sao Paulo arasındaki bu benzersiz içerik köprüsü, her iki şehrin de ruhunu profesyonel bir gazetecilik anlayışıyla sunuyor. Bu bölümde yönetim panelinden gelen zengin metin içeriği, görseller ve alıntılar yer alacak.</p>
-                    <p>Haberin devamında yer alan detaylar, okuyucunun konuya derinlemesine hakim olmasını sağlar. Tipografi seçimlerimiz, uzun okumalarda bile gözü yormayacak şekilde optimize edilmiştir.</p>
+            <h1 class="article-title">${title}</h1>
+            
+            <div class="audio-player">
+                <button class="play-btn" onclick="speakText('article-main-text')">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div>
+                    <strong style="font-size:0.9rem;">Yazıyı Dinle</strong><br>
+                    <small style="color:var(--muted)">Yapay Zeka Seslendirme Aktif</small>
                 </div>
-                <div class="share-bar">
-                    <strong>PAYLAŞ:</strong> <span>WhatsApp</span> • <span>X</span> • <span>Instagram</span>
-                </div>
+            </div>
+
+            <img src="${img}" style="width:100%; border-radius:30px; margin-bottom:40px;">
+            
+            <div id="article-main-text" class="article-text">
+                <p>${text}</p>
+                <p>Profesyonel okuma deneyimi için bu metin boyutu (22px) ve satır aralığı (2.0) dünya standartlarındadır. Mardin ve Sao Paulo arasındaki bu kültürel köprü, sadece görsellerle değil, sesle de hayat buluyor.</p>
+                <p>Haber detayları artık daha geniş, daha ferah ve tamamen okuyucu odaklı. Google ikonları yerine kendi özel minimalist SVG kütüphanemizi kullanıyoruz.</p>
             </div>
         `;
     }
 
+    // 4. YAZAR DETAYI
     function openAuthor(name, bio, img) {
-        const overlay = document.getElementById('overlay');
         const content = document.getElementById('overlay-content');
-        overlay.style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
         document.body.style.overflow = 'hidden';
-        
         content.innerHTML = `
-            <div class="article-wrap" style="text-align:center;">
-                <img src="${img}" style="width:200px; height:200px; border-radius:50%; object-fit:cover; margin-bottom:30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
-                <h1 style="font-family:'Marcellus'; font-size: 3rem;">${name}</h1>
-                <p style="font-size: 1.2rem; color: var(--muted); max-width: 600px; margin: 0 auto 50px;">${bio}</p>
-                <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 50px;">
-                <div style="text-align:left;">
-                    <h3 style="font-family:'Marcellus'; margin-bottom:30px;">YAZARIN SON İÇERİKLERİ</h3>
-                    <div style="display:grid; gap:20px;">
-                        <div style="padding:20px; background:#fff; border-radius:15px; border:1px solid #eee; display:flex; gap:20px; align-items:center;">
-                            <div style="width:80px; height:80px; background:#eee; border-radius:10px;"></div>
-                            <div>
-                                <h4 style="margin:0">Antik Mardin'in Gizli Tünelleri</h4>
-                                <small>10 Şubat 2026</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div style="text-align:center;">
+                <img src="${img}" style="width:180px; height:180px; border-radius:50%; border:4px solid var(--accent); padding:5px; margin-bottom:20px;">
+                <h1 class="article-title">${name}</h1>
+                <p style="font-size:1.3rem; color:var(--muted);">${bio}</p>
+            </div>
+            <hr style="border:0; border-top:1px solid #eee; margin:50px 0;">
+            <h3>Yazarın Arşivi</h3>
+            <div style="background:white; padding:20px; border-radius:15px; border:1px solid #eee; margin-bottom:10px;">
+                <strong>Geleceğin Antik Şehri</strong><br><small>12 Şubat 2026</small>
             </div>
         `;
     }
 
     function closeAll() {
+        speechSynthesis.cancel(); // Seslendirmeyi durdur
         document.getElementById('overlay').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
+
+    // Progress Bar
+    window.onscroll = function() {
+        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
+    };
 </script>
 
 </body>
