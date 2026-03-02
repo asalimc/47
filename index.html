@@ -3,263 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC GLOBAL | Executive Full Edition v27</title>
+    <title>ASC GLOBAL | The Global Editor v28</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700;1,900&family=Instrument+Sans:wght@400;500;700&display=swap');
         
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; color: #000; scroll-behavior: smooth; overflow-x: hidden; }
+        :root { --accent: #c2410c; --bg: #ffffff; --text: #000000; }
+
+        body { font-family: 'Instrument Sans', sans-serif; background-color: var(--bg); color: var(--text); }
         .font-serif { font-family: 'Playfair Display', serif; }
 
-        /* DOLU DOLU GRID SİSTEMİ */
-        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
-        .bento-large { grid-column: span 2; grid-row: span 2; }
-        .bento-medium { grid-column: span 2; }
-
-        /* OKUMA ODAKLI HABER DETAY */
-        .article-headline { font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.9; tracking: -0.05em; }
-        .drop-cap::first-letter {
-            float: left; font-family: 'Playfair Display'; font-size: 5rem;
-            line-height: 1; padding: 0.5rem 0.75rem 0 0; font-weight: 900;
+        /* MAGASIN GRID SYSTEM */
+        .magazine-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2.5rem;
         }
 
-        /* ADMIN INPUTLARI (PURE WHITE) */
-        .admin-input {
-            border: 1px solid #eee !important;
+        /* TYPOGRAPHY RULES */
+        .headline-xl { font-size: 5rem; line-height: 0.9; letter-spacing: -0.05em; font-weight: 900; }
+        .article-body { font-size: 1.3rem; line-height: 1.85; color: #1a1a1a; }
+        .drop-cap-luxury::first-letter {
+            float: left; font-family: 'Playfair Display'; font-size: 6rem;
+            line-height: 0.7; padding: 0.5rem 1rem 0 0; font-weight: 900; color: var(--accent);
+        }
+
+        /* ADMIN PURE STYLE */
+        .luxury-field {
             background: #fff !important;
-            color: #000 !important;
-            padding: 1.25rem;
-            border-radius: 12px;
+            border: 1px solid #e5e7eb !important;
+            border-radius: 0;
+            border-bottom: 2px solid #000 !important;
+            padding: 1.5rem 1rem;
+            font-size: 1.1rem;
             width: 100%;
-            font-size: 1rem;
             transition: 0.3s;
         }
-        .admin-input:focus { border-color: #000 !important; box-shadow: 0 10px 25px rgba(0,0,0,0.05); outline: none; }
+        .luxury-field:focus { background: #fafafa !important; outline: none; border-bottom-color: var(--accent) !important; }
 
-        /* AKAN HABER */
-        .ticker-wrap { background: #000; color: #fff; padding: 10px 0; overflow: hidden; }
-        .ticker { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        /* HOVER EFFECTS */
+        .img-reveal { overflow: hidden; position: relative; }
+        .img-reveal img { transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .group:hover .img-reveal img { transform: scale(1.08); }
 
         [x-cloak] { display: none !important; }
     </style>
 </head>
 <body x-data="ascEngine()" x-init="init()">
 
-    <div class="ticker-wrap border-b border-zinc-800">
-        <div class="ticker font-bold text-[10px] uppercase tracking-[0.3em]">
-            +++ Brezilya Ticaret Heyeti Mardin'e Geliyor • Küresel Lojistik Rotaları Yeniden Şekilleniyor • Enerji Protokolü İmzalandı • ASC GLOBAL Özel Raporu Yayında +++
-        </div>
-    </div>
-
-    <nav class="sticky top-0 z-[1000] bg-white/95 backdrop-blur-md border-b border-gray-100 px-10 py-6 flex justify-between items-center">
-        <div @click="currentPage = 'home'" class="cursor-pointer">
-            <h1 class="font-serif text-3xl font-black italic tracking-tighter">ASC <span class="text-orange-700 not-italic uppercase">Global</span></h1>
-        </div>
-        <div class="flex items-center gap-8">
-            <button @click="openAdmin()" class="bg-black text-white px-8 py-3 rounded-full font-extrabold text-[10px] tracking-widest uppercase hover:scale-105 transition-all shadow-lg">
-                <i class="fas fa-lock-open mr-2"></i> KONTROL PANELİ
-            </button>
-        </div>
-    </nav>
-
-    <main x-show="currentPage === 'home'" x-cloak class="max-w-[1500px] mx-auto px-10 py-12">
-        
-        <div class="flex justify-between items-end mb-12 border-b-2 border-black pb-6">
-            <h2 class="text-6xl font-serif font-black italic">Güncel Stratejiler</h2>
-            <p class="text-[10px] font-black uppercase text-gray-400 tracking-[0.5em]">Global Intelligence Network</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <header class="border-b border-black py-8 px-10 sticky top-0 bg-white/90 backdrop-blur-md z-[1000]">
+        <div class="flex justify-between items-center">
+            <div class="flex gap-6 text-[10px] font-bold uppercase tracking-[0.3em] hidden lg:flex">
+                <a href="#" class="hover:text-orange-700">Dünya</a>
+                <a href="#" class="hover:text-orange-700">Strateji</a>
+                <a href="#" class="hover:text-orange-700">Kültür</a>
+            </div>
             
-            <div class="lg:col-span-9">
-                <div class="bento-grid">
-                    <template x-for="(news, index) in newsData" :key="news.id">
-                        <article @click="viewItem(news)" 
-                                 :class="index === 0 ? 'bento-large' : (index === 1 ? 'bento-medium' : '')"
-                                 class="group cursor-pointer border border-gray-50 p-4 rounded-[30px] hover:shadow-2xl transition-all bg-white">
-                            <div class="relative overflow-hidden rounded-[25px] mb-6">
-                                <img :src="news.img" class="w-full h-full object-cover aspect-video group-hover:scale-110 transition-transform duration-1000">
-                                <div class="absolute top-4 left-4 bg-orange-700 text-white text-[9px] font-black px-3 py-1 rounded-full uppercase" x-text="news.region"></div>
-                            </div>
-                            <h3 :class="index === 0 ? 'text-5xl' : 'text-2xl'" class="font-serif font-black leading-tight mb-4 group-hover:underline" x-text="news.title"></h3>
-                            <p class="text-gray-500 text-sm line-clamp-2 leading-relaxed" x-text="news.body"></p>
-                        </article>
-                    </template>
-                </div>
+            <div @click="currentPage = 'home'" class="cursor-pointer text-center">
+                <h1 class="font-serif text-5xl font-black italic tracking-tighter leading-none">ASC <span class="text-orange-700 not-italic uppercase">Global</span></h1>
+                <p class="text-[8px] font-bold tracking-[0.6em] mt-2 opacity-40">INTELLIGENCE & EDITORIAL</p>
             </div>
 
-            <div class="lg:col-span-3 space-y-12">
-                <div class="bg-gray-50 p-8 rounded-[40px] border border-gray-100 shadow-sm">
-                    <h3 class="font-serif italic text-2xl mb-8 border-b border-gray-200 pb-4">Meridien Portal</h3>
-                    <div class="space-y-8">
+            <div class="flex items-center gap-6">
+                <button @click="openAdmin()" class="bg-black text-white px-8 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-orange-700 transition-all">
+                    Açık İstihbarat
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main x-show="currentPage === 'home'" x-cloak class="max-w-[1500px] mx-auto px-10 py-16">
+        
+        <div class="magazine-grid">
+            
+            <div class="col-span-12 lg:col-span-8 space-y-24">
+                
+                <template x-for="(news, index) in newsData" :key="news.id">
+                    <article @click="viewItem(news)" class="group cursor-pointer border-b border-gray-100 pb-20">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                            <div class="md:col-span-5 space-y-6 order-2 md:order-1">
+                                <span class="text-orange-700 font-black text-xs uppercase tracking-widest" x-text="news.region"></span>
+                                <h2 :class="index === 0 ? 'text-5xl lg:text-7xl' : 'text-4xl lg:text-5xl'" 
+                                    class="font-serif font-black italic tracking-tighter leading-[0.9] group-hover:text-orange-800 transition-colors" 
+                                    x-text="news.title"></h2>
+                                <p class="text-gray-500 line-clamp-3 italic leading-relaxed text-lg" x-text="news.body"></p>
+                                <div class="pt-4 flex items-center gap-4">
+                                    <div class="w-8 h-px bg-black"></div>
+                                    <span class="text-[10px] font-black uppercase tracking-widest">Okumaya Devam Et</span>
+                                </div>
+                            </div>
+                            <div class="md:col-span-7 order-1 md:order-2">
+                                <div class="img-reveal aspect-[4/3] bg-gray-100 shadow-2xl">
+                                    <img :src="news.img" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </template>
+
+            </div>
+
+            <div class="col-span-12 lg:col-span-4 space-y-20">
+                
+                <section class="bg-[#fafafa] p-10">
+                    <h3 class="font-serif text-3xl font-black italic mb-10 border-b border-black pb-4">Köşe Yazarları</h3>
+                    <div class="space-y-12">
                         <template x-for="author in authors" :key="author.id">
-                            <div @click="viewItem(author)" class="flex items-center gap-4 group cursor-pointer">
-                                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-md">
-                                    <img :src="author.photo" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
+                            <div @click="viewItem(author)" class="group cursor-pointer flex items-center gap-6">
+                                <div class="w-20 h-20 rounded-full overflow-hidden border border-gray-200 p-1 group-hover:border-orange-700 transition-all">
+                                    <img :src="author.photo" class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0">
                                 </div>
                                 <div>
-                                    <span class="text-[9px] font-black text-orange-700 uppercase" x-text="author.title"></span>
-                                    <h4 class="font-bold text-sm" x-text="author.name"></h4>
+                                    <p class="text-[9px] font-black uppercase text-orange-700 tracking-widest mb-1" x-text="author.title"></p>
+                                    <h4 class="text-xl font-bold group-hover:underline" x-text="author.name"></h4>
                                 </div>
                             </div>
                         </template>
                     </div>
-                </div>
+                </section>
 
-                <div class="sticky top-32">
-                    <p class="text-[9px] font-black text-center text-gray-300 uppercase mb-4 tracking-widest">Sponsor</p>
-                    <div class="w-[300px] h-[300px] mx-auto bg-gray-50 border border-dashed border-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
-                        <img x-show="adImage" :src="adImage" class="w-full h-full object-contain">
-                        <i x-show="!adImage" class="fas fa-image text-gray-200 text-4xl"></i>
+                <div class="sticky top-40 text-center">
+                    <p class="text-[9px] font-black text-gray-300 uppercase tracking-[0.4em] mb-4 text-center">Reklam / İş Birliği</p>
+                    <div class="w-[300px] h-[300px] mx-auto border border-gray-100 flex items-center justify-center bg-white shadow-lg overflow-hidden relative group">
+                        <img x-show="adImage" :src="adImage" class="w-full h-full object-cover">
+                        <div x-show="!adImage" class="p-8 border-2 border-dashed border-gray-50 flex flex-col items-center">
+                            <i class="fas fa-plus text-gray-100 text-5xl mb-4"></i>
+                            <span class="text-[9px] font-black text-gray-200">REKLAM ALANI</span>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </main>
 
-    <div x-show="currentPage === 'reader'" class="fixed inset-0 z-[2000] bg-white overflow-y-auto" x-cloak>
-        <div class="sticky top-0 bg-white/90 backdrop-blur-xl p-6 border-b border-gray-100 flex justify-between items-center">
-            <button @click="currentPage = 'home'" class="font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:text-orange-700 transition-colors">
-                <i class="fas fa-times text-lg"></i> Kapat
+    <div x-show="currentPage === 'reader'" class="fixed inset-0 z-[2000] bg-white overflow-y-auto" x-cloak x-transition:enter="transition duration-500" x-transition:enter-start="opacity-0 translate-y-20">
+        <nav class="sticky top-0 bg-white/95 border-b border-gray-100 p-6 flex justify-between items-center z-[2001]">
+            <button @click="currentPage = 'home'" class="text-[10px] font-black uppercase tracking-widest hover:text-orange-700 transition-colors">
+                <i class="fas fa-times mr-2"></i> Kapat
             </button>
-            <div class="font-serif italic font-black text-2xl">ASC <span class="text-orange-700">G.</span></div>
-            <button @click="window.print()" class="text-gray-400 hover:text-black"><i class="fas fa-print"></i></button>
-        </div>
-
-        <article class="max-w-6xl mx-auto py-20 px-10">
-            <div class="text-center mb-16 space-y-6">
-                <span class="text-orange-700 font-black text-xs uppercase tracking-[0.5em]" x-text="selectedItem?.region || 'ANALİZ'"></span>
-                <h1 class="article-headline font-serif font-black italic" x-text="selectedItem?.title || selectedItem?.name"></h1>
+            <div class="font-serif italic font-black text-2xl">ASC <span class="text-orange-700">Global</span></div>
+            <div class="flex gap-4">
+                <i class="fab fa-twitter text-gray-400 cursor-pointer hover:text-sky-500"></i>
+                <i class="fab fa-facebook text-gray-400 cursor-pointer hover:text-blue-600"></i>
             </div>
+        </nav>
 
-            <div class="w-full h-[650px] rounded-[50px] overflow-hidden mb-20 shadow-2xl">
+        <article class="max-w-[1400px] mx-auto py-24 px-10">
+            <header class="max-w-4xl mx-auto text-center mb-24">
+                <span class="text-orange-700 font-black text-xs uppercase tracking-[0.5em] block mb-10" x-text="selectedItem?.region || 'ANALİZ'"></span>
+                <h1 class="headline-xl font-serif italic mb-12" x-text="selectedItem?.title || selectedItem?.name"></h1>
+                <div class="flex items-center justify-center gap-4 text-gray-400 font-bold text-[10px] uppercase tracking-widest">
+                    <span>Yayın Kurulu</span>
+                    <div class="w-1 h-1 bg-gray-200 rounded-full"></div>
+                    <span x-text="new Date().toLocaleDateString('tr-TR')"></span>
+                </div>
+            </header>
+
+            <div class="w-full h-[80vh] bg-gray-100 mb-24 overflow-hidden shadow-2xl">
                 <img :src="selectedItem?.img || selectedItem?.photo" class="w-full h-full object-cover">
             </div>
 
-            <div class="max-w-3xl mx-auto drop-cap leading-[1.8] text-xl text-gray-800" x-html="selectedItem?.body || selectedItem?.bio"></div>
+            <div class="max-w-3xl mx-auto article-body drop-cap-luxury" x-html="selectedItem?.body || selectedItem?.bio"></div>
         </article>
     </div>
 
-    <div x-show="currentPage === 'admin'" class="fixed inset-0 z-[3000] bg-[#fafafa] overflow-y-auto" x-cloak>
-        <div class="max-w-4xl mx-auto py-16 px-6">
-            <div class="bg-white rounded-[50px] shadow-2xl border border-gray-100 p-12">
-                <div class="flex justify-between items-center mb-12">
-                    <h2 class="text-4xl font-serif font-black italic">Workspace <span class="text-orange-700">v27</span></h2>
-                    <div class="flex gap-2 bg-gray-50 p-2 rounded-2xl">
-                        <button @click="adminTab = 'news'" :class="adminTab === 'news' ? 'bg-black text-white' : 'text-gray-400'" class="px-6 py-3 rounded-xl font-bold text-[10px] uppercase transition-all">Haberler</button>
-                        <button @click="adminTab = 'authors'" :class="adminTab === 'authors' ? 'bg-black text-white' : 'text-gray-400'" class="px-6 py-3 rounded-xl font-bold text-[10px] uppercase transition-all">Yazarlar</button>
-                        <button @click="adminTab = 'ads'" :class="adminTab === 'ads' ? 'bg-orange-700 text-white' : 'text-gray-400'" class="px-6 py-3 rounded-xl font-bold text-[10px] uppercase transition-all">Reklam</button>
-                        <button @click="currentPage = 'home'" class="px-4 text-red-500 font-black">X</button>
-                    </div>
+    <div x-show="currentPage === 'admin'" class="fixed inset-0 z-[3000] bg-white overflow-y-auto" x-cloak>
+        <div class="max-w-5xl mx-auto py-24 px-10">
+            <div class="flex justify-between items-end mb-20 border-b border-black pb-10">
+                <div>
+                    <h2 class="text-6xl font-serif font-black italic tracking-tighter">Editör Masası</h2>
+                    <p class="text-[10px] font-black text-orange-700 uppercase tracking-[0.4em] mt-2">v28 Content Intelligence</p>
                 </div>
-
-                <div x-show="adminTab !== 'ads'" class="space-y-8">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase text-gray-400 ml-2">Başlık / İsim</label>
-                            <input x-model="form.main" type="text" class="admin-input font-bold" placeholder="Ana başlığı buraya girin...">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase text-gray-400 ml-2">Etiket / Kategori</label>
-                            <input x-model="form.sub" type="text" class="admin-input" placeholder="Örn: Mardin / Strateji">
-                        </div>
-                        <div class="col-span-2 space-y-2">
-                            <label class="text-[10px] font-black uppercase text-gray-400 ml-2">İçerik Metni</label>
-                            <textarea x-model="form.content" class="admin-input h-64 leading-relaxed" placeholder="Makalenizi buraya yazın..."></textarea>
-                        </div>
-                        <div class="col-span-2">
-                            <input type="file" @change="handleFile" id="fUpload" class="hidden">
-                            <label for="fUpload" class="flex flex-col items-center justify-center border-2 border-dashed border-gray-100 py-12 rounded-3xl cursor-pointer hover:bg-gray-50 transition-all">
-                                <i class="fas fa-cloud-upload-alt text-3xl text-gray-300 mb-2"></i>
-                                <span class="text-[10px] font-black uppercase text-gray-400">Görsel Yükle</span>
-                            </label>
-                        </div>
-                    </div>
-                    <button @click="save()" class="w-full bg-black text-white py-6 rounded-full font-black text-lg uppercase tracking-widest hover:bg-orange-700 transition-all shadow-xl">Hemen Yayınla</button>
-                </div>
-
-                <div x-show="adminTab === 'ads'" class="text-center space-y-10">
-                    <div class="w-[300px] h-[300px] mx-auto border-2 border-dashed border-gray-100 rounded-2xl flex items-center justify-center overflow-hidden">
-                        <img :src="adImage">
-                    </div>
-                    <input type="file" @change="handleAdUpload" id="adUp" class="hidden">
-                    <label for="adUp" class="inline-block bg-black text-white px-12 py-5 rounded-2xl font-bold cursor-pointer hover:bg-orange-700">Görseli Güncelle</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function ascEngine() {
-            return {
-                currentPage: 'home', adminTab: 'news', selectedItem: null,
-                form: { main: '', sub: '', content: '', media: '' },
-                adImage: localStorage.getItem('asc_ad_v27') || '',
-                
-                newsData: JSON.parse(localStorage.getItem('asc_news_v27')) || [
-                    { id: 1, title: 'Brezilya ve Türkiye Arasında Yeni Dijital Lojistik Koridoru', region: 'GEO-POLITICS', body: 'Küresel ticaretin yeni kalbi olan bu hat bugün resmi törenle hizmete girdi. Mardin’in tarihi taş evlerinde artık Amazon esintileri yankılanıyor. İki uzak coğrafya arasındaki ticaret sadece rakamlardan ibaret değil, artık bir yaşam tarzı haline geldi.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600' },
-                    { id: 2, title: 'Mardin Stratejik Analiz Raporu Yayınlandı', region: 'STRATEGY', body: 'Bölgesel kalkınma ve uluslararası ticaret yolları üzerine hazırlanan kapsamlı rapor, yatırımcılar için yeni fırsatlar sunuyor.', img: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=800' },
-                    { id: 3, title: 'Lojistikte Yeni Dönem: Verimlilik %40 Arttı', region: 'LOGISTICS', body: 'Yeni veri altyapısı sayesinde São Paulo ve Mardin arasındaki sevkiyat takibi artık anlık yapılabiliyor.', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800' }
-                ],
-                authors: JSON.parse(localStorage.getItem('asc_authors_v27')) || [
-                    { id: 1, name: 'Ahmet Çınarbaş', title: 'Siyaset Bilimci', bio: 'Küresel jeopolitik analizler uzmanı.', photo: 'https://i.ibb.co/LhqZz4H/ahmet.jpg' },
-                    { id: 2, name: 'M. Beşir Ayanoğlu', title: 'Hukukçu', bio: 'Uluslararası hukuk uzmanı.', photo: 'https://i.ibb.co/vYm6D6T/besir.jpg' }
-                ],
-
-                init() { 
-                    // Sayfa yüklenince verileri senkronize et ama admin panelini hemen açma
-                    this.newsData = JSON.parse(localStorage.getItem('asc_news_v27')) || this.newsData;
-                    this.authors = JSON.parse(localStorage.getItem('asc_authors_v27')) || this.authors;
-                },
-                
-                openAdmin() { 
-                    let pass = prompt("Yönetici Şifresi:");
-                    if(pass === "47") {
-                        this.currentPage = 'admin'; 
-                    } else {
-                        alert("Hatalı Şifre!");
-                    }
-                },
-                
-                handleFile(e) {
-                    const reader = new FileReader();
-                    reader.onload = (f) => this.form.media = f.target.result;
-                    reader.readAsDataURL(e.target.files[0]);
-                },
-
-                handleAdUpload(e) {
-                    const reader = new FileReader();
-                    reader.onload = (f) => {
-                        this.adImage = f.target.result;
-                        localStorage.setItem('asc_ad_v27', this.adImage);
-                    };
-                    reader.readAsDataURL(e.target.files[0]);
-                },
-
-                save() {
-                    const isNews = this.adminTab === 'news';
-                    const payload = isNews ? 
-                        { id: Date.now(), title: this.form.main, region: this.form.sub, body: this.form.content, img: this.form.media } :
-                        { id: Date.now(), name: this.form.main, title: this.form.sub, bio: this.form.content, photo: this.form.media };
-
-                    if (isNews) this.newsData.unshift(payload);
-                    else this.authors.push(payload);
-                    
-                    localStorage.setItem('asc_news_v27', JSON.stringify(this.newsData)); 
-                    localStorage.setItem('asc_authors_v27', JSON.stringify(this.authors));
-                    
-                    this.form = { main: '', sub: '', content: '', media: '' };
-                    alert("Yayınlandı!");
-                },
-
-                viewItem(item) { this.selectedItem = item; this.currentPage = 'reader'; window.scrollTo(0,0); }
-            }
-        }
-    </script>
-</body>
-</html>
+                <div class="flex gap-4">
+                    <button @click="adminTab = 'news'" :class="adminTab === 'news' ? 'bg-black text-white' : 'bg-gray-50'" class="px-8 py-3 text-[10px] font-black uppercase tracking-widest transition-all">Makale</button>
+                    <button @click="adminTab = 'authors'" :class="adminTab === 'authors' ? 'bg-black text-white' : 'bg-gray-50'" class="px-8 py-3 text-[10px] font-black uppercase tracking-widest transition-all">Yazar</button>
+                    <button @click="adminTab = 'ads'" :class
