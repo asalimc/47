@@ -4,89 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>Mardin - Sao Paulo Portalı | MSP</title>
-    <script src="https://cdn.tailwindcss.com?v=3.1"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>MSP Portal | Mardin - Sao Paulo</title>
+    <script src="https://cdn.tailwindcss.com?v=3.4.1"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         .msp-title { font-family: 'Playfair Display', serif; }
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .page { display: none; }
+        .active-page { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-[#fcfcfc]">
+<body class="bg-[#fcfcfc] text-slate-900">
 
-    <header class="bg-white border-b-4 border-blue-900 sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center">
-            <div class="text-center md:text-left mb-4 md:mb-0">
-                <h1 class="text-4xl font-black tracking-tighter text-blue-900 leading-none">MSP PORTAL<span class="text-red-600">.</span></h1>
-                <p class="text-[10px] font-bold tracking-[0.3em] text-slate-500 uppercase mt-1">Mardin <span class="text-blue-500">/</span> Sao Paulo Connection</p>
+    <header class="bg-white border-b-4 border-blue-900 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div onclick="showPage('home')" class="cursor-pointer">
+                <h1 class="text-3xl font-black tracking-tighter text-blue-900 leading-none">MSP PORTAL<span class="text-red-600">.</span></h1>
+                <p class="text-[9px] font-bold tracking-[0.2em] text-slate-500 uppercase mt-1">Mardin - Sao Paulo Connection</p>
             </div>
-            <nav class="flex space-x-6 text-xs font-black uppercase tracking-widest text-slate-600">
-                <a href="#" class="hover:text-blue-900">Mardin</a>
-                <a href="#" class="hover:text-blue-900">Sao Paulo</a>
-                <a href="#" class="hover:text-blue-900">Ticaret</a>
-                <a href="#" class="hover:text-blue-900">Kültür</a>
+            <nav class="hidden md:flex space-x-6 text-[11px] font-black uppercase tracking-widest text-slate-600">
+                <a href="javascript:void(0)" onclick="showPage('home')" class="hover:text-blue-900 border-b-2 border-transparent hover:border-blue-900 pb-1">Ana Sayfa</a>
+                <a href="#" class="hover:text-blue-900 border-b-2 border-transparent hover:border-blue-900 pb-1">Mardin</a>
+                <a href="#" class="hover:text-blue-900 border-b-2 border-transparent hover:border-blue-900 pb-1">Sao Paulo</a>
             </nav>
+            <div class="flex items-center gap-4">
+                <span class="text-[10px] font-bold bg-slate-100 px-3 py-1 rounded-full text-blue-900">CANLI 🔴</span>
+            </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
+    <main id="home" class="page active-page container mx-auto px-4 py-8">
         <div class="grid grid-cols-12 gap-8">
-            
-            <div class="col-span-12 lg:col-span-9 space-y-10">
-                <div class="relative rounded-[2.5rem] overflow-hidden shadow-2xl h-[500px] group">
+            <div class="col-span-12 lg:col-span-9">
+                <div onclick="showPage('news-detail')" class="relative rounded-[2.5rem] overflow-hidden shadow-2xl h-[500px] group cursor-pointer">
                     <img src="https://images.unsplash.com/photo-1552035509-b63909772545?auto=format&fit=crop&w=1200" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
-                    <div class="absolute inset-0 bg-gradient-to-t from-blue-950 via-transparent to-transparent p-8 flex flex-col justify-end">
-                        <span class="bg-white text-blue-900 text-[10px] font-black px-3 py-1 rounded-full w-max mb-4">GÜNDEM</span>
+                    <div class="absolute inset-0 bg-gradient-to-t from-blue-950 via-transparent p-8 flex flex-col justify-end">
+                        <span class="bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-full w-max mb-4 uppercase">Kültür Köprüsü</span>
                         <h2 class="msp-title text-white text-4xl md:text-6xl leading-tight">Mardin'den Sao Paulo'ya Baharat Yolu Yeniden Doğuyor</h2>
+                        <p class="text-slate-300 mt-4 text-sm max-w-xl">İki kadim kültür arasındaki ticari ve sanatsal bağlar podyumlardan mutfaklara kadar her yerde...</p>
                     </div>
                 </div>
 
-                <section class="bg-white border border-slate-100 p-8 rounded-[2rem] shadow-sm">
-                    <h3 class="text-xl font-black mb-8 border-l-4 border-red-600 pl-4 uppercase tracking-tighter">Köşe Yazarları</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                        <div class="group cursor-pointer">
-                            <img src="https://ui-avatars.com/api/?name=Ahmet+Mardin&background=1e293b&color=fff" class="w-20 h-20 rounded-full mx-auto border-4 border-slate-50 group-hover:border-blue-500 transition">
-                            <h4 class="font-bold text-sm mt-3 uppercase">Ahmet Mardinî</h4>
-                            <p class="text-[11px] text-slate-500 italic mt-1 line-clamp-2">"Taşların Dili ve Mezopotamya..."</p>
-                        </div>
-                        <div class="group cursor-pointer">
-                            <img src="https://ui-avatars.com/api/?name=Luiz+Silva&background=047857&color=fff" class="w-20 h-20 rounded-full mx-auto border-4 border-slate-50 group-hover:border-green-500 transition">
-                            <h4 class="font-bold text-sm mt-3 uppercase">Luiz Silva</h4>
-                            <p class="text-[11px] text-slate-500 italic mt-1 line-clamp-2">"Brezilya Ekonomisi ve Türkiye..."</p>
+                <section class="mt-12 bg-white border border-slate-100 p-8 rounded-[2rem] shadow-sm">
+                    <h3 class="text-xl font-black mb-8 border-l-4 border-red-600 pl-4 uppercase tracking-tighter text-blue-900">Köşe Yazarlarımız</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div onclick="showPage('author-detail')" class="group cursor-pointer text-center">
+                            <img src="https://ui-avatars.com/api/?name=Ahmet+Mardin&background=1e293b&color=fff" class="w-20 h-20 rounded-full mx-auto border-4 border-slate-50 group-hover:border-blue-500 transition shadow-lg">
+                            <h4 class="font-bold text-sm mt-3 uppercase text-slate-800">Ahmet Mardinî</h4>
+                            <p class="text-[10px] text-slate-400 font-medium italic mt-1">Sosyoloji & Kültür</p>
                         </div>
                         </div>
                 </section>
             </div>
 
             <div class="col-span-12 lg:col-span-3 space-y-8">
-                <div class="bg-slate-100 rounded-3xl p-2 border-2 border-dashed border-slate-300">
-                    <div class="bg-white h-64 rounded-2xl flex flex-col items-center justify-center p-6 text-center shadow-inner overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1512418490979-92798ccc13b0?auto=format&fit=crop&w=400" class="absolute inset-0 w-full h-full object-cover opacity-20">
-                        <span class="text-[10px] font-bold text-slate-400 mb-2 relative">SPONSORLU İÇERİK</span>
-                        <h4 class="font-black text-blue-900 relative">Mardin Artuklu Kahvesi</h4>
-                        <p class="text-xs text-slate-600 mt-2 relative">Gerçek Mezopotamya lezzeti şimdi Brezilya'da!</p>
-                        <button class="mt-4 bg-blue-900 text-white text-[10px] font-bold px-4 py-2 rounded-full relative">SİPARİŞ VER</button>
-                    </div>
-                </div>
-
                 <div class="bg-blue-900 text-white p-6 rounded-3xl shadow-xl">
-                    <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
-                        <span class="text-[10px] font-bold">MARDİN</span>
-                        <span class="font-black">22°C ☀️</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-bold">SAO PAULO</span>
-                        <span class="font-black">28°C ⛈️</span>
-                    </div>
+                    <h4 class="text-[10px] font-black tracking-widest uppercase mb-4 opacity-70">Hava Durumu</h4>
+                    <div class="flex justify-between items-center mb-2"><span>Mardin</span><span class="font-black italic">22°C ☀️</span></div>
+                    <div class="flex justify-between items-center"><span>Sao Paulo</span><span class="font-black italic">28°C ⛈️</span></div>
+                </div>
+                <div class="bg-slate-100 rounded-3xl p-6 border-2 border-dashed border-slate-300">
+                    <p class="text-[10px] font-black text-slate-400 mb-2 uppercase">Sponsor</p>
+                    <h5 class="font-bold text-blue-900">Artuklu Gümüşçülük</h5>
+                    <p class="text-xs text-slate-600 mt-2">Brezilya'ya özel kargo seçenekleriyle şimdi online!</p>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <footer class="bg-white border-t py-12 text-center">
-        <p class="text-[11px] font-bold text-slate-400 tracking-widest uppercase">MSP Portal v5.0 - Mardin & Sao Paulo Global Haber Yazılımı</p>
+    <main id="news-detail" class="page container mx-auto px-4 max-w-4xl py-12">
+        <button onclick="showPage('home')" class="mb-8 text-xs font-black text-blue-600 uppercase tracking-widest hover:text-red-600 transition">← Ana Sayfaya Dön</button>
+        <header class="text-center">
+            <h1 class="msp-title text-4xl md:text-6xl font-black text-slate-900 mb-8 leading-tight">Mezopotamya'nın Baharatları Sao Paulo Mutfaklarında</h1>
+            <div class="flex items-center justify-center space-x-4 mb-10">
+                <img src="https://ui-avatars.com/api/?name=Ahmet+Mardin&background=1e293b&color=fff" class="w-10 h-10 rounded-full">
+                <span class="text-sm font-bold text-slate-600">Yazar: <span class="text-blue-900 cursor-pointer" onclick="showPage('author-detail')">Ahmet Mardinî</span></span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1506485338423-2cb71744dcc3?auto=format&fit=crop&w=1200" class="w-full rounded-[2.5rem] shadow-2xl mb-12">
+        </header>
+        <div class="text-lg leading-relaxed text-slate-700 space-y-6">
+            <p class="font-bold text-xl italic text-slate-900">Mardin'den yola çıkan kadim tatlar, bugün Brezilya'nın kalbinde yeni bir akım başlattı.</p>
+            <p>İki kıta arasındaki binlerce kilometrelik mesafe, lezzetlerin ve sanatın gücüyle birleşiyor. Mardinli ustaların hazırladığı özel sumak ve pul biber harmanları, Sao Paulo'daki şeflerin elinde sanata dönüşüyor...</p>
+            <div class="bg-blue-50 border-l-8 border-blue-900 p-8 rounded-r-[2rem] my-10 italic text-blue-900 text-2xl msp-title">
+                "Kültürler birbirine dokunduğunda dünya daha güzel bir yer haline gelir."
+            </div>
+        </div>
+    </main>
+
+    <main id="author-detail" class="page container mx-auto px-4 max-w-4xl py-16">
+        <div class="bg-white rounded-[3rem] p-10 shadow-2xl border border-slate-100 flex flex-col md:flex-row items-center gap-10">
+            <img src="https://ui-avatars.com/api/?name=Ahmet+Mardin&size=400&background=1e293b&color=fff" class="w-40 h-40 rounded-[2rem] shadow-xl rotate-3">
+            <div class="text-center md:text-left">
+                <h2 class="msp-title text-5xl font-black text-slate-900 italic">Ahmet Mardinî</h2>
+                <p class="text-blue-600 font-bold uppercase text-[10px] tracking-widest mt-2 mb-4">MSP Portal Kıdemli Yazarı</p>
+                <p class="text-slate-500 leading-relaxed">Mardin'in tarihini ve Sao Paulo'nun modern yüzünü birleştiren hikayelerin peşinde bir araştırmacı gazeteci.</p>
+                <button onclick="showPage('home')" class="mt-6 bg-slate-900 text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-blue-600 transition">ANA SAYFAYA DÖN</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t py-12 text-center mt-20">
+        <p class="text-[10px] font-black text-slate-400 tracking-[0.3em] uppercase">MSP News Global © 2026</p>
     </footer>
 
+    <script>
+        function showPage(pageId) {
+            // Tüm sayfaları gizle
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            // İstenen sayfayı göster
+            document.getElementById(pageId).classList.add('active-page');
+            // Sayfa başına kaydır
+            window.scrollTo(0, 0);
+        }
+    </script>
 </body>
 </html>
