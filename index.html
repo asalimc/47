@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina | Executive CMS</title>
+    <title>Lumina | Professional CMS</title>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,10 +13,13 @@
         * { box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
         
-        /* Arayüz Elemanları (Bozulmadı) */
+        /* Nav & Progress */
+        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 11000; }
         nav { background: var(--glass); backdrop-filter: blur(15px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .logo { font-family: 'Marcellus', serif; font-size: 1.8rem; letter-spacing: 3px; cursor: pointer; }
-        .admin-entry { cursor: pointer; opacity: 0.03; font-size: 0.7rem; }
+        .admin-entry { cursor: pointer; opacity: 0.02; font-size: 0.7rem; }
+
+        /* ARAYÜZ (Değişmedi) */
         .authors-strip { background: var(--white); padding: 20px 0; display: flex; justify-content: flex-start; gap: 25px; border-bottom: 1px solid #f1f1f1; overflow-x: auto; scrollbar-width: none; padding-left: 5%; }
         .author-item { flex: 0 0 auto; text-align: center; width: 80px; cursor: pointer; }
         .author-item img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); padding: 2px; }
@@ -28,19 +31,22 @@
         .slide-img { width: 100%; height: 55%; object-fit: cover; }
         .slide-content { padding: 40px; }
 
-        /* Admin Paneli (Geliştirildi) */
-        .admin-panel { display: none; position: fixed; inset: 0; background: #f4f4f2; z-index: 11001; padding: 30px; overflow-y: auto; }
-        .admin-card { background: #fff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #ddd; }
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; }
-        .btn { padding: 10px 20px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; }
-        .btn-gold { background: var(--accent); color: white; }
-        .btn-edit { background: #3498db; color: white; margin-right: 5px; }
-        .btn-del { background: #e74c3c; color: white; }
+        /* ADMİN PANELİ (Gelişmiş CMS Yapısı) */
+        .admin-panel { display: none; position: fixed; inset: 0; background: #f0f0ed; z-index: 11001; padding: 30px; overflow-y: auto; }
+        .cms-section { background: #fff; padding: 25px; border-radius: 20px; margin-bottom: 30px; border: 1px solid #ddd; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .cms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
-        .mgmt-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .mgmt-table td { padding: 10px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 10px; font-family: inherit; }
+        .btn { padding: 10px 20px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-gold { background: var(--accent); color: white; }
+        .btn-dark { background: #000; color: white; }
+        .btn-edit { background: #3498db; color: white; padding: 5px 12px; font-size: 0.8rem; }
+        .btn-del { background: #e74c3c; color: white; padding: 5px 12px; font-size: 0.8rem; }
 
-        /* Overlay */
+        .mgmt-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .mgmt-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
+
+        /* Detay Overlay */
         .overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10005; display: none; overflow-y: auto; padding: 40px 20px; }
         .close-btn { position: fixed; top: 20px; right: 20px; background: #000; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
@@ -48,6 +54,8 @@
     </style>
 </head>
 <body>
+
+<div id="progress-bar"></div>
 
 <nav>
     <div class="logo" onclick="location.reload()">LUMINA</div>
@@ -57,38 +65,76 @@
 <div id="authors-view" class="authors-strip"></div>
 
 <div class="container">
-    <aside class="sidebar-left"><div id="cat-view"></div></aside>
+    <aside class="sidebar-left">
+        <h3 style="font-family:'Marcellus'">Kategoriler</h3>
+        <div id="cat-view" style="line-height: 2.5; cursor: pointer;"></div>
+    </aside>
     <main class="main-stage" id="slider-view"></main>
-    <aside class="sidebar-right"><div id="ad-view" style="height:500px; background:#eee; border-radius:25px; overflow:hidden;"></div></aside>
+    <aside class="sidebar-right">
+        <div id="ad-view" style="height:550px; border-radius:30px; overflow:hidden;"></div>
+    </aside>
 </div>
 
 <div id="adminPanel" class="admin-panel">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2 style="font-family:'Marcellus'">Lumina Yönetim Merkezi</h2>
-        <button class="btn" onclick="closeAdmin()" style="background:#000; color:#fff;">Paneli Kapat</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+        <h1 style="font-family:'Marcellus'; margin:0;">Lumina CMS Panel</h1>
+        <button class="btn btn-dark" onclick="closeAdmin()">Sistemden Çık</button>
     </div>
 
-    <div class="admin-card" id="form-container">
-        <h3 id="form-title">Yeni İçerik Ekle</h3>
-        <input type="hidden" id="editId">
-        <select id="dataType">
-            <option value="news">Haber (Slider)</option>
-            <option value="articles">Makale</option>
-            <option value="columns">Köşe Yazısı</option>
-        </select>
-        <input type="text" id="dataTitle" placeholder="Başlık / Yazar Adı">
-        <textarea id="dataContent" placeholder="İçerik / Biyografi" rows="4"></textarea>
-        <select id="dataCatSelect"></select>
-        <input type="file" id="dataImg" accept="image/*">
-        <div style="display:flex; gap:10px;">
-            <button class="btn btn-gold" id="saveBtn" onclick="processData()">Sisteme Kaydet</button>
-            <button class="btn" id="cancelBtn" onclick="resetForm()" style="display:none; background:#95a5a6; color:white;">İptal</button>
+    <div class="cms-section">
+        <h3>1. Haber ve Makale Yönetimi</h3>
+        <div class="cms-grid">
+            <div>
+                <input type="hidden" id="editId">
+                <select id="dataType">
+                    <option value="news">Haber (Slider)</option>
+                    <option value="articles">Makale</option>
+                </select>
+                <input type="text" id="dataTitle" placeholder="Başlık">
+                <textarea id="dataContent" placeholder="İçerik..." rows="4"></textarea>
+                <select id="dataCatSelect"></select>
+                <input type="file" id="dataImg" accept="image/*">
+                <button class="btn btn-gold" onclick="saveContent()">Haber/Makale Kaydet</button>
+            </div>
+            <div id="list-content" style="max-height:300px; overflow-y:auto;"></div>
         </div>
     </div>
 
-    <div class="admin-card">
-        <h3>İçerik & Yazar Listesi (Düzenle / Sil)</h3>
-        <div id="management-view"></div>
+    <div class="cms-section">
+        <h3>2. Yazarlar ve Köşe Yazıları</h3>
+        <div class="cms-grid">
+            <div>
+                <h4>Yazar Ekle/Düzenle</h4>
+                <input type="text" id="authName" placeholder="Yazar Adı Soyadı">
+                <textarea id="authBio" placeholder="Biyografi..." rows="2"></textarea>
+                <input type="file" id="authImg" accept="image/*">
+                <button class="btn btn-gold" onclick="saveAuthor()">Yazar Kaydet</button>
+                <hr>
+                <h4>Köşe Yazısı Ekle</h4>
+                <select id="authSelect"></select> <input type="text" id="colTitle" placeholder="Yazı Başlığı">
+                <textarea id="colContent" placeholder="Köşe Yazısı Metni..." rows="3"></textarea>
+                <button class="btn btn-gold" onclick="saveColumn()">Köşe Yazısı Yayınla</button>
+            </div>
+            <div id="list-authors" style="max-height:400px; overflow-y:auto;"></div>
+        </div>
+    </div>
+
+    <div class="cms-section">
+        <div class="cms-grid">
+            <div>
+                <h3>3. Reklam Yönetimi</h3>
+                <input type="text" id="adLink" placeholder="Link (http...)">
+                <input type="file" id="adFile" accept="image/*">
+                <button class="btn btn-gold" onclick="saveAd()">Reklamı Güncelle</button>
+                <div id="ad-status" style="margin-top:10px; font-size:12px; color:var(--accent);"></div>
+            </div>
+            <div>
+                <h3>4. Kategori Yönetimi</h3>
+                <input type="text" id="newCatName" placeholder="Yeni Kategori Adı">
+                <button class="btn btn-gold" onclick="addCategory()">Ekle</button>
+                <div id="list-cats" style="margin-top:10px;"></div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -98,103 +144,136 @@
 </div>
 
 <script>
-    const _K = "NzQ=";
-    function authAdmin() { if(prompt("Kod:") === atob(_K).split("").reverse().join("")) { document.getElementById('adminPanel').style.display='block'; renderAdmin(); } }
+    const _S = "NzQ=";
+    function authAdmin() { if(prompt("CMS PIN:") === atob(_S).split("").reverse().join("")) { document.getElementById('adminPanel').style.display='block'; renderAdmin(); } }
 
-    let db = JSON.parse(localStorage.getItem('lumina_v4')) || {
-        news: [{id:1, title: 'Antik Tasarımlar', content: 'Geçmişin izleri bugünle buluşuyor.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2', cat: 'Tasarım'}],
-        articles: [], columns: [],
-        authors: [{id:1, name: 'Vedat M.', bio: 'Yazar', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e'}],
-        categories: ['Kültür', 'Tasarım', 'Gastronomi'],
+    let db = JSON.parse(localStorage.getItem('lumina_v6')) || {
+        news: [], articles: [], columns: [],
+        authors: [{id:1, name: 'Lumina Editor', bio: 'Baş Yazar', img: '', views: 0}],
+        categories: ['Kültür', 'Seyahat'],
         ad: {img: '', link: '#'}
     };
 
-    function sync() { localStorage.setItem('lumina_v4', JSON.stringify(db)); renderApp(); renderAdmin(); }
+    function sync() { localStorage.setItem('lumina_v6', JSON.stringify(db)); renderApp(); renderAdmin(); }
     function toB64(file) { return new Promise(r => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => r(reader.result); }); }
 
-    // --- CORE İŞLEMLER ---
-    async function processData() {
+    // --- CMS İŞLEMLERİ ---
+    async function saveContent() {
         const id = document.getElementById('editId').value;
         const type = document.getElementById('dataType').value;
-        const title = document.getElementById('dataTitle').value;
-        const content = document.getElementById('dataContent').value;
-        const cat = document.getElementById('dataCatSelect').value;
         const file = document.getElementById('dataImg').files[0];
-
-        let img = id ? (db[type].find(x => x.id == id).img) : "https://via.placeholder.com/800";
+        let img = id ? db[type].find(x=>x.id==id).img : "";
         if(file) img = await toB64(file);
 
-        if(id) { // DÜZENLEME
-            let index = db[type].findIndex(x => x.id == id);
-            db[type][index] = { id: Number(id), title, content, cat, img };
-            alert("Güncellendi!");
-        } else { // YENİ EKLEME
-            db[type].push({ id: Date.now(), title, content, cat, img });
-            alert("Eklendi!");
-        }
-        resetForm(); sync();
+        const data = {
+            id: id ? Number(id) : Date.now(),
+            title: document.getElementById('dataTitle').value,
+            content: document.getElementById('dataContent').value,
+            cat: document.getElementById('dataCatSelect').value,
+            img: img, views: 0
+        };
+
+        if(id) { let idx = db[type].findIndex(x=>x.id==id); db[type][idx] = data; }
+        else { db[type].push(data); }
+        sync(); alert("İçerik Güncellendi.");
     }
 
-    function editItem(type, id) {
-        const item = db[type].find(x => x.id == id);
-        document.getElementById('editId').value = item.id;
-        document.getElementById('dataType').value = type;
-        document.getElementById('dataTitle').value = item.title || item.name;
-        document.getElementById('dataContent').value = item.content || item.bio;
-        document.getElementById('dataCatSelect').value = item.cat || "";
-        document.getElementById('form-title').innerText = "İçeriği Düzenle";
-        document.getElementById('saveBtn').innerText = "Değişiklikleri Kaydet";
-        document.getElementById('cancelBtn').style.display = "block";
-        window.scrollTo({top: 0, behavior: 'smooth'});
+    async function saveAuthor() {
+        const file = document.getElementById('authImg').files[0];
+        let img = ""; if(file) img = await toB64(file);
+        db.authors.push({ id: Date.now(), name: document.getElementById('authName').value, bio: document.getElementById('authBio').value, img: img, views: 0 });
+        sync();
     }
 
-    function resetForm() {
-        document.getElementById('editId').value = "";
-        document.getElementById('dataTitle').value = "";
-        document.getElementById('dataContent').value = "";
-        document.getElementById('form-title').innerText = "Yeni İçerik Ekle";
-        document.getElementById('saveBtn').innerText = "Sisteme Kaydet";
-        document.getElementById('cancelBtn').style.display = "none";
+    function saveColumn() {
+        const authId = document.getElementById('authSelect').value;
+        db.columns.push({
+            id: Date.now(),
+            authId: authId,
+            title: document.getElementById('colTitle').value,
+            content: document.getElementById('colContent').value,
+            views: 0
+        });
+        sync(); alert("Yazı Yazara Bağlandı ve Yayınlandı.");
     }
 
-    function deleteItem(type, id) { if(confirm("Silmek istediğinize emin misiniz?")) { db[type] = db[type].filter(x => x.id != id); sync(); } }
+    async function saveAd() {
+        const file = document.getElementById('adFile').files[0];
+        if(file) db.ad.img = await toB64(file);
+        db.ad.link = document.getElementById('adLink').value;
+        sync(); alert("Reklam Yayında.");
+    }
+
+    function addCategory() {
+        db.categories.push(document.getElementById('newCatName').value);
+        sync();
+    }
+
+    function deleteItem(type, id) { if(confirm("Siliniyor?")) { db[type] = db[type].filter(x=>x.id!=id); sync(); } }
 
     // --- RENDER ---
     function renderApp() {
-        document.getElementById('authors-view').innerHTML = db.authors.map(a => `<div class="author-item" onclick="openDetail('authors', ${a.id})"><img src="${a.img}"><span>${a.name}</span></div>`).join('');
-        document.getElementById('slider-view').innerHTML = db.news.map((n, i) => `<div class="slide ${i===0?'active':''}" onclick="openDetail('news', ${n.id})"><img src="${n.img}" class="slide-img"><div class="slide-content"><h2>${n.title}</h2><p>Okumak için tıklayın...</p></div></div>`).join('');
-        document.getElementById('cat-view').innerHTML = db.categories.map(c => `<div style="padding:10px 0;">• ${c}</div>`).join('');
-        document.getElementById('dataCatSelect').innerHTML = db.categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('authors-view').innerHTML = db.authors.map(a => `<div class="author-item" onclick="openAuthorDetail(${a.id})"><img src="${a.img || 'https://via.placeholder.com/60'}"><span>${a.name}</span></div>`).join('');
+        document.getElementById('slider-view').innerHTML = db.news.map((n, i) => `<div class="slide ${i===0?'active':''}" onclick="openContentDetail('news', ${n.id})"><img src="${n.img}" class="slide-img"><div class="slide-content"><h2>${n.title}</h2></div></div>`).join('');
+        document.getElementById('cat-view').innerHTML = db.categories.map(c => `<div style="padding:5px 0;">• ${c}</div>`).join('');
+        document.getElementById('ad-view').innerHTML = `<a href="${db.ad.link}" target="_blank" style="display:block; height:100%; background:url('${db.ad.img}') center/cover #eee;"></a>`;
     }
 
     function renderAdmin() {
-        const sections = ['news', 'articles', 'columns', 'authors'];
-        let html = '<table class="mgmt-table">';
-        sections.forEach(s => {
-            db[s].forEach(item => {
-                html += `<tr><td><b>[${s.toUpperCase()}]</b> ${item.title || item.name}</td>
-                <td style="text-align:right;">
-                    <button class="btn btn-edit" onclick="editItem('${s}', ${item.id})">Düzenle</button>
-                    <button class="btn btn-del" onclick="deleteItem('${s}', ${item.id})">Sil</button>
-                </td></tr>`;
-            });
-        });
-        html += '</table>';
-        document.getElementById('management-view').innerHTML = html;
+        // Haber Listesi
+        let contentHtml = '<table class="mgmt-table">';
+        ['news', 'articles'].forEach(t => db[t].forEach(i => {
+            contentHtml += `<tr><td>[${t.toUpperCase()}] ${i.title}</td><td><button class="btn btn-del" onclick="deleteItem('${t}', ${i.id})">Sil</button></td></tr>`;
+        }));
+        document.getElementById('list-content').innerHTML = contentHtml + '</table>';
+
+        // Yazar Listesi
+        document.getElementById('list-authors').innerHTML = db.authors.map(a => `
+            <div style="border-bottom:1px solid #eee; padding:10px;">
+                <b>${a.name}</b> (Okunma: ${a.views}) 
+                <button class="btn btn-del" onclick="deleteItem('authors', ${a.id})">Sil</button>
+            </div>
+        `).join('');
+
+        // Seçenekleri Güncelle
+        document.getElementById('authSelect').innerHTML = db.authors.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+        document.getElementById('dataCatSelect').innerHTML = db.categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('list-cats').innerHTML = db.categories.map((c, idx) => `<div>${c} <span style="color:red; cursor:pointer;" onclick="db.categories.splice(${idx},1); sync();"> (x)</span></div>`).join('');
     }
 
-    function openDetail(type, id) {
-        const item = db[type].find(x => x.id == id);
+    function openAuthorDetail(id) {
+        const a = db.authors.find(x=>x.id==id);
+        a.views++; sync();
+        const posts = db.columns.filter(c => c.authId == id);
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('overlay-content').innerHTML = `
-            <h1>${item.title || item.name}</h1>
-            <img src="${item.img}" style="width:100%; border-radius:20px; margin:20px 0;">
-            <p style="font-size:1.3rem; line-height:1.8;">${item.content || item.bio}</p>
+            <div style="text-align:center;">
+                <img src="${a.img}" style="width:120px; border-radius:50%;">
+                <h1>${a.name}</h1>
+                <p>${a.bio}</p>
+                <hr>
+                <h3>Yazarın Köşe Yazıları (${posts.length})</h3>
+                ${posts.map(p => `<div style="text-align:left; background:#fff; padding:15px; border-radius:10px; margin-bottom:10px;">
+                    <h4>${p.title}</h4>
+                    <p>${p.content}</p>
+                </div>`).join('')}
+            </div>
         `;
     }
 
-    function closeOverlay() { document.getElementById('overlay').style.display = 'none'; }
-    function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
+    function openContentDetail(type, id) {
+        const item = db[type].find(x=>x.id==id);
+        item.views++; sync();
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('overlay-content').innerHTML = `
+            <img src="${item.img}" style="width:100%; border-radius:20px;">
+            <h1>${item.title}</h1>
+            <p style="font-size:1.2rem; line-height:1.8;">${item.content}</p>
+        `;
+    }
+
+    function closeOverlay() { document.getElementById('overlay').style.display='none'; }
+    function closeAdmin() { document.getElementById('adminPanel').style.display='none'; }
 
     renderApp();
     setInterval(() => {
