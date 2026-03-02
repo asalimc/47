@@ -3,335 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC GLOBAL | Ultimate Media Engine</title>
+    <title>ASC GLOBAL | Enterprise CMS & Media Engine</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@300;400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bormioli:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
         
-        body { font-family: 'Inter', sans-serif; background-color: #030408; color: #f1f5f9; scroll-behavior: smooth; }
-        .serif-title { font-family: 'Cinzel', serif; letter-spacing: -1px; }
+        :root { --accent: #3b82f6; --dark: #020617; --card: #0f172a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--dark); color: #f8fafc; overflow-x: hidden; }
         
-        .premium-glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); }
-        .author-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .author-card:hover { transform: scale(1.02); border-color: #3b82f6; box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.5); }
+        .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
+        .hero-title { font-size: clamp(2rem, 8vw, 5rem); line-height: 0.9; font-weight: 800; letter-spacing: -2px; }
         
-        .admin-field { background: #0f172a; border: 1px solid #1e293b; color: white; padding: 12px; border-radius: 10px; width: 100%; outline: none; }
-        .admin-field:focus { border-color: #3b82f6; ring: 2px; ring-color: #3b82f6; }
+        /* Dashboard Styles */
+        .dash-card { background: #1e293b; border-radius: 24px; padding: 24px; border: 1px solid rgba(255,255,255,0.03); transition: 0.3s; }
+        .dash-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        
+        /* Custom Scroll */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
 
         [x-cloak] { display: none !important; }
-        .marquee { white-space: nowrap; animation: marquee 30s linear infinite; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .bg-mesh { background: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(30, 58, 138, 0.2) 0, transparent 50%); }
     </style>
 </head>
-<body x-data="ultimateCMS()" x-init="init()">
+<body x-data="ascApp()" x-init="init()" class="bg-mesh">
 
-    <div class="fixed top-0 w-full z-[200] bg-blue-700 text-white py-2 text-[10px] font-black uppercase overflow-hidden border-b border-white/10">
-        <div class="flex marquee">
-            <template x-for="i in 10">
-                <div class="flex items-center gap-10 pr-10">
-                    <span>MARDİN/BİST: 12,450 <i class="fas fa-caret-up text-green-300"></i></span>
-                    <span>SAO PAULO/REAL: 5.12 <i class="fas fa-caret-down text-red-300"></i></span>
-                    <span>ASC GLOBAL: LIVE FEED <i class="fas fa-signal animate-pulse text-red-400"></i></span>
+    <nav class="fixed top-0 w-full z-[100] px-6 py-4">
+        <div class="max-w-[1800px] mx-auto glass rounded-[2rem] px-8 py-4 flex justify-between items-center shadow-2xl">
+            <div @click="currentPage = 'home'" class="flex items-center gap-4 cursor-pointer">
+                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center font-black text-2xl italic shadow-lg shadow-blue-600/30">A</div>
+                <div class="leading-none">
+                    <span class="text-xl font-extrabold uppercase tracking-tighter">ASC GLOBAL</span>
+                    <p class="text-[9px] text-blue-400 font-bold tracking-[0.3em]">INTELLIGENCE NETWORK</p>
                 </div>
-            </template>
-        </div>
-    </div>
+            </div>
 
-    <nav class="fixed top-9 w-full z-[150] px-6">
-        <div class="max-w-[1700px] mx-auto premium-glass rounded-2xl p-5 flex justify-between items-center shadow-2xl">
-            <div @click="currentPage = 'home'" class="flex items-center gap-3 cursor-pointer">
-                <div class="bg-white text-black px-3 py-1 rounded font-black text-2xl tracking-tighter italic">ASC</div>
-                <h1 class="serif-title text-xl hidden lg:block uppercase tracking-widest">GLOBAL <span class="text-blue-500">NEWS</span></h1>
+            <div class="hidden lg:flex gap-8 text-[11px] font-black uppercase tracking-widest text-slate-400">
+                <a href="#" class="hover:text-blue-500 transition">Mardin</a>
+                <a href="#" class="hover:text-blue-500 transition">Sao Paulo</a>
+                <a href="#" class="hover:text-blue-500 transition">Analytics</a>
             </div>
-            <div class="flex items-center gap-4">
-                <button @click="loginAdmin()" class="bg-blue-600 hover:bg-white hover:text-black text-white px-8 py-2.5 rounded-xl text-xs font-black transition-all shadow-lg shadow-blue-600/20 uppercase tracking-widest">ADMİN PANEL</button>
-            </div>
+
+            <button @click="openAdmin()" class="bg-white text-black px-6 py-2.5 rounded-xl text-xs font-black hover:scale-105 transition-all shadow-xl">
+                <i class="fas fa-lock-open mr-2"></i> DASHBOARD
+            </button>
         </div>
     </nav>
 
-    <main x-show="currentPage === 'home'" class="pt-48 pb-20 px-6 max-w-[1700px] mx-auto animate-in fade-in duration-500">
+    <main x-show="currentPage === 'home'" class="pt-32 pb-20 px-6 max-w-[1800px] mx-auto" x-cloak>
         
-        <div class="flex items-center justify-between mb-16 border-b border-white/10 pb-6">
-            <h2 class="serif-title text-4xl italic">Günün <span class="text-blue-500">Analizi</span></h2>
-            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.4em]" x-text="new Date().toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })"></p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             
-            <div class="lg:col-span-3 space-y-8">
-                <h3 class="text-xs font-black uppercase tracking-[0.5em] text-blue-500 mb-6 flex items-center gap-3">
-                    <span class="w-8 h-[1px] bg-blue-500"></span> YAZARLARIMIZ
-                </h3>
-                <div class="space-y-6">
-                    <template x-for="author in authors" :key="author.id">
-                        <div class="author-card premium-glass p-6 rounded-3xl border border-white/5 group cursor-pointer">
-                            <div class="flex items-center gap-4 mb-4">
-                                <img :src="author.photo" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-blue-600/20 group-hover:ring-blue-600 transition-all">
-                                <div>
-                                    <h4 class="font-bold text-sm text-white" x-text="author.name"></h4>
-                                    <p class="text-[9px] text-blue-400 font-black uppercase tracking-tighter" x-text="author.title"></p>
-                                </div>
-                            </div>
-                            <p class="text-xs text-slate-400 italic line-clamp-3 leading-relaxed" x-text="author.bio"></p>
-                        </div>
-                    </template>
+            <div class="lg:col-span-3 space-y-10">
+                <div class="flex items-center gap-4 mb-6">
+                    <h3 class="text-xs font-black uppercase tracking-[0.4em] text-blue-500">Yazarlar</h3>
+                    <div class="h-px flex-1 bg-white/10"></div>
                 </div>
+                
+                <template x-for="author in authors" :key="author.id">
+                    <div class="group cursor-pointer border-b border-white/5 pb-6 hover:border-blue-500/30 transition-all">
+                        <div class="flex items-center gap-4 mb-3">
+                            <img :src="author.photo" class="w-12 h-12 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                            <div>
+                                <h4 class="font-bold text-sm text-white" x-text="author.name"></h4>
+                                <p class="text-[9px] text-slate-500 font-bold uppercase" x-text="author.title"></p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed italic line-clamp-2" x-text="author.bio"></p>
+                    </div>
+                </template>
             </div>
 
             <div class="lg:col-span-6 space-y-10">
-                <div @click="openNews(getNews('Mardin'))" class="relative group cursor-pointer rounded-[2.5rem] overflow-hidden h-[500px] shadow-2xl">
-                    <img :src="getNews('Mardin').img" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-                    <div class="absolute bottom-10 left-10 right-10">
-                        <span class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] font-bold uppercase mb-4 inline-block">MARDİN ÖZEL</span>
-                        <h2 class="serif-title text-4xl text-white mb-4" x-text="getNews('Mardin').title"></h2>
+                <div @click="viewNews(getNews('Mardin'))" class="relative rounded-[3rem] overflow-hidden group cursor-pointer h-[600px] shadow-2xl">
+                    <img :src="getNews('Mardin').img" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-12 left-12 right-12">
+                        <span class="bg-blue-600 px-4 py-1 rounded text-[10px] font-bold uppercase mb-4 inline-block">Mardin / TR</span>
+                        <h2 class="hero-title text-white mb-6" x-text="getNews('Mardin').title"></h2>
                     </div>
                 </div>
-                
-                <div @click="openNews(getNews('Sao Paulo'))" class="relative group cursor-pointer rounded-[2.5rem] overflow-hidden h-[300px] shadow-2xl border border-white/5">
-                    <img :src="getNews('Sao Paulo').img" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                    <div class="absolute inset-0 bg-gradient-to-t from-blue-900 to-transparent"></div>
-                    <div class="absolute bottom-8 left-8">
-                        <span class="bg-yellow-500 text-black px-3 py-1 rounded text-[10px] font-black uppercase mb-3 inline-block">SAO PAULO RAPORU</span>
-                        <h3 class="serif-title text-2xl text-white" x-text="getNews('Sao Paulo').title"></h3>
+
+                <div @click="viewNews(getNews('Sao Paulo'))" class="relative rounded-[3rem] overflow-hidden group cursor-pointer h-[350px] border border-white/5">
+                    <img :src="getNews('Sao Paulo').img" class="w-full h-full object-cover group-hover:rotate-1 transition duration-700">
+                    <div class="absolute inset-0 bg-blue-900/40 backdrop-blur-[2px] group-hover:backdrop-blur-0 transition"></div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-10">
+                        <span class="text-yellow-400 font-black text-xs uppercase mb-2">Sao Paulo / BR</span>
+                        <h3 class="text-3xl font-bold text-white" x-text="getNews('Sao Paulo').title"></h3>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-3">
-                <h3 class="text-xs font-black uppercase tracking-[0.5em] text-red-500 mb-6 flex items-center gap-3">
-                    <span class="w-8 h-[1px] bg-red-500"></span> SON DAKİKA
-                </h3>
-                <div class="space-y-4">
-                    <template x-for="n in newsData.slice(0, 5)">
-                        <div @click="openNews(n)" class="p-4 border-b border-white/5 hover:bg-white/5 cursor-pointer transition rounded-xl">
-                            <span class="text-[9px] font-bold text-slate-500 uppercase block mb-1" x-text="n.region"></span>
-                            <p class="text-sm font-bold leading-snug group-hover:text-blue-500" x-text="n.title"></p>
-                        </div>
-                    </template>
+            <div class="lg:col-span-3 space-y-10">
+                <div class="glass p-8 rounded-[2rem] border-blue-500/20">
+                    <h4 class="text-xs font-black uppercase text-blue-500 mb-6 flex items-center justify-between">
+                        Canlı Akış <i class="fas fa-circle text-red-500 animate-pulse"></i>
+                    </h4>
+                    <div class="space-y-6">
+                        <template x-for="n in newsData.slice(0, 4)">
+                            <div @click="viewNews(n)" class="group cursor-pointer">
+                                <span class="text-[9px] text-slate-500 font-bold uppercase" x-text="n.region"></span>
+                                <p class="text-sm font-bold group-hover:text-blue-500 transition leading-snug mt-1" x-text="n.title"></p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="p-8 rounded-[2rem] bg-gradient-to-br from-blue-600 to-indigo-900 shadow-2xl">
+                    <h4 class="text-white font-black text-xl mb-4 italic">Global Report 2026</h4>
+                    <p class="text-blue-100 text-xs leading-relaxed mb-6 opacity-80">Mardin ve Sao Paulo arasındaki yeni ticaret koridoru bugün resmi olarak açıldı.</p>
+                    <button class="w-full bg-white text-black py-3 rounded-xl font-black text-[10px] uppercase">Raporu İndir</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <div x-show="currentPage === 'news-detail'" class="pt-48 pb-20 px-6 max-w-4xl mx-auto" x-cloak>
-        <button @click="currentPage = 'home'" class="text-blue-500 font-black mb-10 text-xs uppercase tracking-widest hover:underline">← Geri Dön</button>
-        <div class="mb-10">
-            <h1 class="serif-title text-5xl md:text-7xl mb-8 leading-tight" x-text="selectedNews?.title"></h1>
-            <img :src="selectedNews?.img" class="w-full h-[500px] object-cover rounded-[3rem] shadow-2xl mb-10">
-            <div class="text-2xl text-slate-300 italic leading-relaxed border-l-4 border-blue-600 pl-8" x-html="selectedNews?.body"></div>
+    <div x-show="currentPage === 'admin'" class="pt-32 pb-20 px-6 max-w-[1800px] mx-auto" x-cloak>
+        
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
+            <div>
+                <h2 class="text-5xl font-black tracking-tighter italic uppercase">Admin <span class="text-blue-600">Console</span></h2>
+                <p class="text-slate-500 font-bold text-xs uppercase tracking-[0.4em] mt-2">Haber & Yazar Yönetim Merkezi</p>
+            </div>
+            <div class="flex gap-4">
+                <button @click="currentPage = 'home'" class="bg-red-500/10 text-red-500 px-8 py-3 rounded-2xl border border-red-500/30 font-black text-xs uppercase">Sistemi Kapat</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="dash-card flex items-center gap-6">
+                <div class="w-14 h-14 bg-blue-600/20 rounded-2xl flex items-center justify-center text-blue-500 text-2xl"><i class="fas fa-newspaper"></i></div>
+                <div><p class="text-xs text-slate-400 font-bold uppercase">Haberler</p><h4 class="text-3xl font-black" x-text="newsData.length"></h4></div>
+            </div>
+            <div class="dash-card flex items-center gap-6">
+                <div class="w-14 h-14 bg-yellow-600/20 rounded-2xl flex items-center justify-center text-yellow-500 text-2xl"><i class="fas fa-users"></i></div>
+                <div><p class="text-xs text-slate-400 font-bold uppercase">Yazarlar</p><h4 class="text-3xl font-black" x-text="authors.length"></h4></div>
+            </div>
+            <div class="dash-card flex items-center gap-6">
+                <div class="w-14 h-14 bg-green-600/20 rounded-2xl flex items-center justify-center text-green-500 text-2xl"><i class="fas fa-eye"></i></div>
+                <div><p class="text-xs text-slate-400 font-bold uppercase">Hit</p><h4 class="text-3xl font-black">12.4K</h4></div>
+            </div>
+            <div class="dash-card flex items-center gap-6">
+                <div class="w-14 h-14 bg-purple-600/20 rounded-2xl flex items-center justify-center text-purple-500 text-2xl"><i class="fas fa-server"></i></div>
+                <div><p class="text-xs text-slate-400 font-bold uppercase">Status</p><h4 class="text-xl font-black text-green-400 tracking-tighter uppercase">Online</h4></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-10">
+            
+            <div class="xl:col-span-4">
+                <div class="glass p-10 rounded-[3rem] sticky top-32">
+                    <div class="flex gap-2 mb-8 bg-black/30 p-1.5 rounded-2xl">
+                        <button @click="editorType = 'news'; resetForms()" :class="editorType === 'news' ? 'bg-blue-600' : ''" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all">Haber Ekle</button>
+                        <button @click="editorType = 'author'; resetForms()" :class="editorType === 'author' ? 'bg-blue-600' : ''" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all">Yazar Ekle</button>
+                    </div>
+
+                    <div class="space-y-5">
+                        <template x-if="editorType === 'news'">
+                            <div class="space-y-4">
+                                <input x-model="newsForm.title" type="text" placeholder="Haber Başlığı" class="w-full bg-slate-900 border border-white/5 p-4 rounded-xl outline-none focus:border-blue-500">
+                                <select x-model="newsForm.region" class="w-full bg-slate-900 border border-white/5 p-4 rounded-xl outline-none">
+                                    <option value="Global">Bölge: Global</option>
+                                    <option value="Mardin">Bölge: Mardin</option>
+                                    <option value="Sao Paulo">Bölge: Sao Paulo</option>
+                                </select>
+                                <textarea x-model="newsForm.body" placeholder="Haber Metni..." class="w-full bg-slate-900 border border-white/5 p-4 rounded-xl h-40 outline-none"></textarea>
+                            </div>
+                        </template>
+
+                        <template x-if="editorType === 'author'">
+                            <div class="space-y-4">
+                                <input x-model="authorForm.name" type="text" placeholder="Yazar Adı" class="w-full bg-slate-900 border border-white/5 p-4 rounded-xl outline-none focus:border-blue-500">
+                                <input x-model="authorForm.title" type="text" placeholder="Ünvan" class="w-full bg-slate-900 border border-white/5 p-4 rounded-xl outline-none">
+                                <textarea x-model="authorForm.bio" placeholder="Yazar Biyografisi..." class="w-full bg-slate-900 border border-white/5 p-4 rounded-xl h-32 outline-none"></textarea>
+                            </div>
+                        </template>
+
+                        <div class="relative border-2 border-dashed border-slate-800 p-8 rounded-2xl text-center hover:bg-white/5 cursor-pointer">
+                            <input type="file" @change="handleUpload" class="absolute inset-0 opacity-0 cursor-pointer">
+                            <i class="fas fa-image text-2xl text-slate-600 mb-2"></i>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase">Medya Dosyası Seç</p>
+                        </div>
+
+                        <button @click="saveData()" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-xs uppercase shadow-2xl shadow-blue-600/40 hover:scale-[1.02] active:scale-95 transition-all">
+                            SİSTEMİ GÜNCELLE
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xl:col-span-8 space-y-8">
+                <div class="glass p-8 rounded-[3rem]">
+                    <h3 class="text-xl font-black mb-6 italic uppercase tracking-widest text-blue-500">İçerik Arşivi</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-4">
+                        <template x-for="(n, idx) in newsData" :key="n.id">
+                            <div class="p-4 bg-slate-900/50 rounded-2xl border border-white/5 flex items-center justify-between group">
+                                <div class="flex items-center gap-4">
+                                    <img :src="n.img" class="w-12 h-12 rounded-lg object-cover">
+                                    <div class="max-w-[150px]">
+                                        <p class="text-[10px] font-bold truncate text-white" x-text="n.title"></p>
+                                        <span class="text-[8px] text-blue-400 font-bold uppercase" x-text="n.region"></span>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button @click="editNews(idx)" class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 text-xs transition hover:bg-blue-500 hover:text-white"><i class="fas fa-edit"></i></button>
+                                    <button @click="deleteNews(idx)" class="w-8 h-8 rounded-lg bg-red-500/10 text-red-500 text-xs transition hover:bg-red-500 hover:text-white"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-[3rem]">
+                    <h3 class="text-xl font-black mb-6 italic uppercase tracking-widest text-yellow-500">Yazar Kadrosu</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <template x-for="(a, idx) in authors" :key="a.id">
+                            <div class="p-4 bg-slate-900/50 rounded-2xl border border-white/5 flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <img :src="a.photo" class="w-12 h-12 rounded-full object-cover">
+                                    <div>
+                                        <p class="text-[10px] font-bold text-white uppercase" x-text="a.name"></p>
+                                        <span class="text-[8px] text-slate-500 font-bold" x-text="a.title"></span>
+                                    </div>
+                                </div>
+                                <button @click="deleteAuthor(idx)" class="w-8 h-8 rounded-lg bg-red-500/10 text-red-500 text-xs transition hover:bg-red-500 hover:text-white"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div x-show="currentPage === 'admin'" class="pt-40 pb-20 px-6 max-w-[1700px] mx-auto" x-cloak>
-        
-        <div class="flex justify-between items-center mb-16">
-            <h2 class="serif-title text-5xl">GELİŞMİŞ <span class="text-blue-500 italic">CMS V6</span></h2>
-            <button @click="currentPage = 'home'" class="bg-red-600/20 text-red-500 px-10 py-3 rounded-xl border border-red-600/30 font-black text-xs uppercase">Sistemi Kilitle</button>
-        </div>
-
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-16">
-            
-            <div class="space-y-10">
-                <div class="premium-glass p-8 rounded-[2.5rem]">
-                    <h3 class="text-2xl font-black mb-8 text-blue-500 uppercase italic underline underline-offset-8">Haber Editörü</h3>
-                    <div class="space-y-4">
-                        <input x-model="newsForm.title" type="text" placeholder="Haber Başlığı" class="admin-field">
-                        <div class="grid grid-cols-2 gap-4">
-                            <select x-model="newsForm.region" class="admin-field">
-                                <option value="Global">Global</option>
-                                <option value="Mardin">Mardin</option>
-                                <option value="Sao Paulo">Sao Paulo</option>
-                            </select>
-                            <input x-model="newsForm.tag" type="text" placeholder="Kategori" class="admin-field">
-                        </div>
-                        <textarea x-model="newsForm.body" placeholder="Haber Detayı..." class="admin-field h-32"></textarea>
-                        <div class="relative bg-blue-600/5 p-6 rounded-xl border-2 border-dashed border-blue-600/20 text-center">
-                            <input type="file" @change="handleUpload($event, 'news')" class="absolute inset-0 opacity-0 cursor-pointer">
-                            <p class="text-xs font-bold text-blue-500 uppercase tracking-widest">HABER GÖRSELİ YÜKLE</p>
-                        </div>
-                        <button @click="saveNews()" class="w-full bg-blue-600 py-4 rounded-xl font-black text-sm uppercase shadow-xl shadow-blue-600/20" x-text="isEditNews ? 'HABERİ GÜNCELLE' : 'YENİ HABER YAYINLA'"></button>
-                    </div>
-                </div>
-
-                <div class="premium-glass p-8 rounded-[2.5rem] max-h-[500px] overflow-y-auto">
-                    <h3 class="font-bold mb-6 text-slate-500 uppercase text-xs tracking-widest">Aktif Haber Listesi</h3>
-                    <div class="space-y-3">
-                        <template x-for="(n, idx) in newsData" :key="n.id">
-                            <div class="flex items-center justify-between p-4 bg-black/40 rounded-2xl border border-white/5">
-                                <p class="text-sm font-bold truncate pr-4" x-text="n.title"></p>
-                                <div class="flex gap-2 shrink-0">
-                                    <button @click="editNews(idx)" class="bg-blue-600/20 text-blue-500 w-10 h-10 rounded-lg transition-all hover:bg-blue-600 hover:text-white"><i class="fas fa-edit"></i></button>
-                                    <button @click="deleteNews(idx)" class="bg-red-600/20 text-red-500 w-10 h-10 rounded-lg transition-all hover:bg-red-600 hover:text-white"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-10">
-                <div class="premium-glass p-8 rounded-[2.5rem]">
-                    <h3 class="text-2xl font-black mb-8 text-yellow-500 uppercase italic underline underline-offset-8">Yazar Editörü</h3>
-                    <div class="space-y-4">
-                        <input x-model="authorForm.name" type="text" placeholder="Yazar İsim Soyisim" class="admin-field">
-                        <input x-model="authorForm.title" type="text" placeholder="Ünvan (Örn: Ekonomist)" class="admin-field">
-                        <textarea x-model="authorForm.bio" placeholder="Yazar Biyografisi..." class="admin-field h-32"></textarea>
-                        <div class="relative bg-yellow-600/5 p-6 rounded-xl border-2 border-dashed border-yellow-600/20 text-center">
-                            <input type="file" @change="handleUpload($event, 'author')" class="absolute inset-0 opacity-0 cursor-pointer">
-                            <p class="text-xs font-bold text-yellow-500 uppercase tracking-widest">YAZAR FOTOĞRAFI YÜKLE</p>
-                        </div>
-                        <button @click="saveAuthor()" class="w-full bg-yellow-600 py-4 rounded-xl font-black text-sm uppercase text-black" x-text="isEditAuthor ? 'YAZARI GÜNCELLE' : 'YENİ YAZAR EKLE'"></button>
-                    </div>
-                </div>
-
-                <div class="premium-glass p-8 rounded-[2.5rem] max-h-[500px] overflow-y-auto">
-                    <h3 class="font-bold mb-6 text-slate-500 uppercase text-xs tracking-widest">Kadro Yönetimi</h3>
-                    <div class="space-y-3">
-                        <template x-for="(a, idx) in authors" :key="a.id">
-                            <div class="flex items-center justify-between p-4 bg-black/40 rounded-2xl border border-white/5">
-                                <div class="flex items-center gap-3">
-                                    <img :src="a.photo" class="w-10 h-10 rounded-full object-cover">
-                                    <p class="text-sm font-bold" x-text="a.name"></p>
-                                </div>
-                                <div class="flex gap-2 shrink-0">
-                                    <button @click="editAuthor(idx)" class="bg-blue-600/20 text-blue-500 w-10 h-10 rounded-lg transition-all hover:bg-blue-600 hover:text-white"><i class="fas fa-edit"></i></button>
-                                    <button @click="deleteAuthor(idx)" class="bg-red-600/20 text-red-500 w-10 h-10 rounded-lg transition-all hover:bg-red-600 hover:text-white"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-            </div>
-
+    <div x-show="currentPage === 'reader'" class="fixed inset-0 z-[250] glass flex items-center justify-center p-6" x-cloak>
+        <div class="bg-slate-950 w-full max-w-5xl max-h-[90vh] rounded-[3rem] overflow-y-auto p-12 relative shadow-full">
+            <button @click="currentPage = 'home'" class="absolute top-8 right-8 text-slate-500 text-2xl hover:text-white"><i class="fas fa-times"></i></button>
+            <span class="bg-blue-600 px-4 py-1 rounded text-[10px] font-bold uppercase mb-6 inline-block" x-text="selectedNews?.region"></span>
+            <h1 class="text-5xl md:text-7xl font-black mb-10 leading-none" x-text="selectedNews?.title"></h1>
+            <img :src="selectedNews?.img" class="w-full h-[500px] object-cover rounded-[2.5rem] mb-12 shadow-2xl">
+            <div class="text-2xl text-slate-400 leading-relaxed italic" x-html="selectedNews?.body"></div>
         </div>
     </div>
 
     <script>
-        function ultimateCMS() {
+        function ascApp() {
             return {
                 currentPage: 'home',
-                isEditNews: false, editNewsIdx: null,
-                isEditAuthor: false, editAuthorIdx: null,
+                editorType: 'news',
                 selectedNews: null,
-                
-                newsForm: { title: '', region: 'Global', tag: '', body: '', img: '' },
+                isEdit: false,
+                editIdx: null,
+
+                newsForm: { title: '', region: 'Global', body: '', img: '' },
                 authorForm: { name: '', title: '', bio: '', photo: '' },
 
-                newsData: [],
-                authors: [],
+                newsData: JSON.parse(localStorage.getItem('asc_news')) || [
+                    { id: 1, title: 'Mardin Dijital İpekyolu Projesi Başlatıldı', region: 'Mardin', body: 'Kadim kent Mardin, teknoloji yatırımlarıyla dijital çağın ticaret merkezi oluyor...', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=1200' },
+                    { id: 2, title: 'Sao Paulo Finans Zirvesi 2026 Kararları', region: 'Sao Paulo', body: 'Brezilya ekonomisinin kalbinde alınan kararlar global piyasaları hareketlendirdi...', img: 'https://images.unsplash.com/photo-1543059180-87383af5bd1f?w=1200' }
+                ],
+                
+                authors: JSON.parse(localStorage.getItem('asc_authors')) || [
+                    { id: 1, name: 'Dr. Kerem Mardinli', title: 'Ekonomi Analisti', bio: 'Mezopotamya ve Ortadoğu ekonomileri üzerine 20 yıllık saha tecrübesi.', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400' },
+                    { id: 2, name: 'Juliana Mendes', title: 'Global Muhabir', bio: 'Sao Paulo ve Latin Amerika hattındaki tüm gelişmeleri yerinden aktarıyor.', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400' }
+                ],
 
-                init() {
-                    // Verileri Yükle veya Örnek Veri Ata
-                    const savedNews = JSON.parse(localStorage.getItem('asc_news_v6'));
-                    const savedAuthors = JSON.parse(localStorage.getItem('asc_authors_v6'));
-
-                    if (savedNews && savedNews.length > 0) {
-                        this.newsData = savedNews;
-                    } else {
-                        this.newsData = [
-                            { id: 1, title: 'Mardin Mezopotamya Güneşiyle Teknoloji Üssü Oluyor', region: 'Mardin', tag: 'Strateji', body: 'Kadim kent Mardin, son 10 yılın en büyük teknoloji yatırımını alıyor...', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=1200', date: '02.03.2026' },
-                            { id: 2, title: 'Sao Paulo Finans Merkezi: Yeni Latin Amerika Hamlesi', region: 'Sao Paulo', tag: 'Ekonomi', body: 'Brezilya nın ekonomik motoru Sao Paulo da devrim başlıyor...', img: 'https://images.unsplash.com/photo-1543059180-87383af5bd1f?w=1200', date: '02.03.2026' }
-                        ];
-                    }
-
-                    if (savedAuthors && savedAuthors.length > 0) {
-                        this.authors = savedAuthors;
-                    } else {
-                        this.authors = [
-                            { id: 1, name: 'Dr. Ahmet Mardini', title: 'Baş Analist', bio: 'Küresel ekonomi ve Mezopotamya stratejileri üzerine uzman 20 yıllık gazeteci.', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400' },
-                            { id: 2, name: 'Luiza Santos', title: 'Latin Amerika Temsilcisi', bio: 'Brezilya iç siyaseti ve Sao Paulo finans piyasası üzerine çalışan bağımsız analist.', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400' }
-                        ];
-                    }
-                    this.sync();
-                },
+                init() { this.sync(); },
 
                 getNews(region) {
-                    return this.newsData.find(n => n.region === region) || { title: 'Lütfen ' + region + ' için haber ekleyin.', img: 'https://via.placeholder.com/1200x800' };
+                    return this.newsData.find(n => n.region === region) || { title: region + ' İçeriği Hazırlanıyor...', img: 'https://via.placeholder.com/1200x800' };
                 },
 
-                handleUpload(e, type) {
+                handleUpload(e) {
                     const file = e.target.files[0];
                     const reader = new FileReader();
                     reader.onloadend = () => {
-                        if(type === 'news') this.newsForm.img = reader.result;
+                        if(this.editorType === 'news') this.newsForm.img = reader.result;
                         else this.authorForm.photo = reader.result;
                     };
                     if(file) reader.readAsDataURL(file);
                 },
 
-                loginAdmin() {
-                    if (prompt("Security Key:") === "Mardin47**") this.currentPage = 'admin';
+                openAdmin() {
+                    const pass = prompt("Sistem Anahtarı:");
+                    if(pass === "Mardin47**") this.currentPage = 'admin';
                 },
 
-                // HABER FONKSİYONLARI
-                saveNews() {
-                    if(this.isEditNews) {
-                        this.newsData[this.editNewsIdx] = {...this.newsForm};
-                    } else {
-                        this.newsData.unshift({...this.newsForm, id: Date.now(), date: new Date().toLocaleDateString('tr-TR')});
-                    }
-                    this.sync();
-                    this.resetNewsForm();
-                    alert("Haber Veritabanı Güncellendi!");
-                },
-                editNews(idx) {
-                    this.isEditNews = true;
-                    this.editNewsIdx = idx;
-                    this.newsForm = {...this.newsData[idx]};
-                },
-                deleteNews(idx) {
-                    if(confirm("Haberi silmek istiyor musunuz?")) {
-                        this.newsData.splice(idx, 1);
-                        this.sync();
-                    }
-                },
-                resetNewsForm() {
-                    this.newsForm = { title: '', region: 'Global', tag: '', body: '', img: '' };
-                    this.isEditNews = false;
-                },
-
-                // YAZAR FONKSİYONLARI
-                saveAuthor() {
-                    if(this.isEditAuthor) {
-                        this.authors[this.editAuthorIdx] = {...this.authorForm};
+                saveData() {
+                    if(this.editorType === 'news') {
+                        if(this.isEdit) { this.newsData[this.editIdx] = {...this.newsForm}; }
+                        else { this.newsData.unshift({...this.newsForm, id: Date.now()}); }
                     } else {
                         this.authors.push({...this.authorForm, id: Date.now()});
                     }
                     this.sync();
-                    this.resetAuthorForm();
-                    alert("Yazar Kadrosu Güncellendi!");
-                },
-                editAuthor(idx) {
-                    this.isEditAuthor = true;
-                    this.editAuthorIdx = idx;
-                    this.authorForm = {...this.authors[idx]};
-                },
-                deleteAuthor(idx) {
-                    if(confirm("Yazarı silmek istiyor musunuz?")) {
-                        this.authors.splice(idx, 1);
-                        this.sync();
-                    }
-                },
-                resetAuthorForm() {
-                    this.authorForm = { name: '', title: '', bio: '', photo: '' };
-                    this.isEditAuthor = false;
+                    this.resetForms();
+                    alert("Veritabanı Senkronize Edildi!");
                 },
 
-                openNews(news) {
-                    if(!news.id) return;
+                editNews(idx) {
+                    this.editorType = 'news';
+                    this.isEdit = true;
+                    this.editIdx = idx;
+                    this.newsForm = {...this.newsData[idx]};
+                },
+
+                deleteNews(idx) {
+                    if(confirm("Siliniyor?")) { this.newsData.splice(idx, 1); this.sync(); }
+                },
+
+                deleteAuthor(idx) {
+                    if(confirm("Siliniyor?")) { this.authors.splice(idx, 1); this.sync(); }
+                },
+
+                viewNews(news) {
                     this.selectedNews = news;
-                    this.currentPage = 'news-detail';
-                    window.scrollTo(0,0);
+                    this.currentPage = 'reader';
                 },
 
                 sync() {
-                    localStorage.setItem('asc_news_v6', JSON.stringify(this.newsData));
-                    localStorage.setItem('asc_authors_v6', JSON.stringify(this.authors));
+                    localStorage.setItem('asc_news', JSON.stringify(this.newsData));
+                    localStorage.setItem('asc_authors', JSON.stringify(this.authors));
+                },
+
+                resetForms() {
+                    this.newsForm = { title: '', region: 'Global', body: '', img: '' };
+                    this.authorForm = { name: '', title: '', bio: '', photo: '' };
+                    this.isEdit = false;
                 }
             }
         }
