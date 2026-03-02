@@ -3,198 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Kültür: Mardin & Sao Paulo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
+    <title>Kültür & Magazin Portal - Yeni Nesil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --mardin-gold: #d4a373;
-            --sp-green: #009c3b;
-            --dark-glass: rgba(15, 23, 42, 0.8);
-            --neon-blue: #00f2ff;
+            --bg-light: #fdfbf7; /* Krem/Fildişi tonu */
+            --text-dark: #2d3436;
+            --accent-mardin: #c49b66; /* Mardin Altını */
+            --accent-sp: #4b7bec; /* Sao Paulo Mavisi */
+            --white: #ffffff;
+            --soft-gray: #f1f2f6;
         }
 
         body {
-            background: #020617;
-            color: #f8fafc;
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0;
-            overflow-x: hidden;
+            line-height: 1.7;
         }
 
-        /* Arka Plan Efekti */
-        .bg-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
-            z-index: -1;
+        /* --- ÜST YAZAR ŞERİDİ (Olmazsa Olmaz) --- */
+        .top-authors-bar {
+            background: var(--white);
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            overflow-x: auto;
+            white-space: nowrap;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
         }
 
-        header {
-            height: 100vh;
+        .top-author-item {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1590766948510-5302e039c1af?auto=format&fit=crop&q=80&w=2000'); /* Temsili Şehir Mix */
-            background-size: cover;
-            background-attachment: fixed;
-        }
-
-        h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 5vw;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 15px;
-            background: linear-gradient(to right, var(--mardin-gold), #fff, var(--sp-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: -100px auto 50px;
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 40px;
-            padding: 0 20px;
-        }
-
-        /* Haber Akışı */
-        .news-stream { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-
-        .news-card {
-            background: var(--dark-glass);
-            border-radius: 30px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .news-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            border-color: var(--neon-blue);
-            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
-        }
-
-        .card-img { width: 100%; height: 280px; background: #1e293b; object-fit: cover; }
-
-        .tag {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 10px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-
-        .tag-mardin { background: var(--mardin-gold); color: #000; }
-        .tag-sp { background: var(--sp-green); color: #fff; }
-
-        /* Yazarlar Bölümü (Sticky & Animated) */
-        .author-panel {
-            position: sticky;
-            top: 20px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 40px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .author-card {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.02);
+            text-decoration: none;
+            color: inherit;
             transition: 0.3s;
         }
 
-        .author-card:hover { background: rgba(255,255,255,0.1); }
+        .top-author-item:hover { transform: translateY(-5px); }
 
-        .avatar {
-            width: 65px;
-            height: 65px;
-            border-radius: 22px;
-            rotate: -5deg;
-            border: 2px solid var(--neon-blue);
+        .author-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-mardin);
+            padding: 3px;
+            margin-bottom: 10px;
+            background: var(--white);
         }
 
-        /* Admin Bildirim Balonu */
-        .live-indicator {
-            display: flex; align-items: center; gap: 8px; font-size: 12px; color: #10b981; margin-bottom: 20px;
+        .author-circle img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
         }
-        .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
 
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .top-author-item span { font-size: 0.85rem; font-weight: 600; font-family: 'Marcellus', serif; }
+
+        /* --- ANA YAPI --- */
+        .main-container {
+            max-width: 1300px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 250px 1fr 300px; /* Etkinlikler | Haberler | Reklam */
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        /* --- ETKİNLİKLER (SOL) --- */
+        .events-sidebar { background: var(--white); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .event-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--soft-gray);
+        }
+        .event-date { color: var(--accent-mardin); font-weight: bold; font-size: 0.8rem; }
+        .event-title { font-size: 0.95rem; margin: 5px 0; font-weight: 600; }
+
+        /* --- HABERLER (ORTA) --- */
+        .news-card {
+            background: var(--white);
+            border-radius: 24px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .news-img { width: 100%; height: 400px; background: #eee; object-fit: cover; }
+        .news-content { padding: 30px; }
+        .news-content h2 { font-family: 'Marcellus', serif; font-size: 2rem; margin: 0 0 15px 0; }
+
+        /* --- REKLAM ALANI (SAĞ) --- */
+        .ad-space {
+            position: sticky;
+            top: 20px;
+        }
+        .ad-box {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            height: 400px;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        /* --- ADMIN PANEL EKLEMESİ --- */
+        .admin-quick-add {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--accent-sp);
+            color: white; padding: 15px 25px; border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(75, 123, 236, 0.3);
+            cursor: pointer; font-weight: bold; z-index: 1000;
+        }
+
+        @media (max-width: 1100px) {
+            .main-container { grid-template-columns: 1fr; }
+            .events-sidebar, .ad-space { display: none; }
+        }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
 
-    <header>
-        <p style="letter-spacing: 5px;">MEZOPOTAMYA'DAN AMAZONLAR'A</p>
-        <h1>MARDIN & SP</h1>
-        <div style="margin-top: 20px;">↓ Haberleri Keşfet ↓</div>
-    </header>
+<div class="top-authors-bar">
+    <a href="#" class="top-author-item">
+        <div class="author-circle"><img src="https://i.pravatar.cc/100?u=1" alt=""></div>
+        <span>Mardinli Vedat</span>
+    </a>
+    <a href="#" class="top-author-item">
+        <div class="author-circle" style="border-color: var(--accent-sp);"><img src="https://i.pravatar.cc/100?u=2" alt=""></div>
+        <span>Ricardo Paul</span>
+    </a>
+    <a href="#" class="top-author-item">
+        <div class="author-circle"><img src="https://i.pravatar.cc/100?u=3" alt=""></div>
+        <span>Elif Sanat</span>
+    </a>
+    <a href="#" class="top-author-item">
+        <div class="author-circle" style="border-color: var(--accent-sp);"><img src="https://i.pravatar.cc/100?u=4" alt=""></div>
+        <span>Joao Gomes</span>
+    </a>
+</div>
 
-    <div class="container">
-        <main class="news-stream" id="news-container">
-            <article class="news-card">
-                <div class="card-img" style="background: url('https://images.unsplash.com/photo-1548107116-76ec56873523?auto=format&fit=crop&q=80&w=800'); background-size: cover;"></div>
-                <div style="padding: 30px;">
-                    <span class="tag tag-mardin">MARDİN / KÜLTÜR</span>
-                    <h3>Eski Mardin Evlerinde Restorasyon Seferberliği</h3>
-                    <p style="color: #94a3b8; font-size: 14px;">Taş işçiliğinin şahane örnekleri gelecek nesillere aktarılıyor...</p>
-                </div>
-            </article>
+<div class="main-container">
+    
+    <aside class="events-sidebar">
+        <h3 style="font-family: 'Marcellus'; border-bottom: 2px solid var(--accent-mardin); padding-bottom: 10px;">AJANDA</h3>
+        <div class="event-item">
+            <span class="event-date">12 Mart | Mardin</span>
+            <div class="event-title">Uluslararası Uçurtma Festivali</div>
+        </div>
+        <div class="event-item">
+            <span class="event-date">15 Mart | Sao Paulo</span>
+            <div class="event-title">Samba Modern Sanat Sergisi</div>
+        </div>
+        <div class="event-item">
+            <span class="event-date">20 Mart | Online</span>
+            <div class="event-title">Dijital Kültür Paneli</div>
+        </div>
+    </aside>
 
-            <article class="news-card">
-                <div class="card-img" style="background: url('https://images.unsplash.com/photo-1512356181113-853a150f1aa7?auto=format&fit=crop&q=80&w=800'); background-size: cover;"></div>
-                <div style="padding: 30px;">
-                    <span class="tag tag-sp">SAO PAULO / MAGAZİN</span>
-                    <h3>Carnaval Hazırlıkları: Paulista Caddesi'nde Coşku</h3>
-                    <p style="color: #94a3b8; font-size: 14px;">Brezilya'nın kalbinde sanat ve eğlence bir araya geliyor...</p>
-                </div>
-            </article>
-        </main>
-
-        <aside>
-            <div class="author-panel">
-                <div class="live-indicator"><div class="dot"></div> CANLI VERİ AKIŞI AKTİF</div>
-                <h2 style="font-family: 'Syncopate'; font-size: 1.2rem;">YAZARLAR</h2>
-                
-                <div class="author-card">
-                    <img src="https://i.pravatar.cc/150?u=a" class="avatar">
-                    <div>
-                        <h4 style="margin:0">Can Kozanoğlu</h4>
-                        <small style="color:var(--mardin-gold)">Sosyoloji & Şehir</small>
-                    </div>
-                </div>
-
-                <div class="author-card">
-                    <img src="https://i.pravatar.cc/150?u=b" class="avatar">
-                    <div>
-                        <h4 style="margin:0">Adriana Lima</h4>
-                        <small style="color:var(--sp-green)">Moda & Kültür</small>
-                    </div>
+    <main>
+        <article class="news-card">
+            <img src="https://images.unsplash.com/photo-1548107116-76ec56873523?q=80&w=1000" class="news-img" alt="Mardin">
+            <div class="news-content">
+                <small style="color: var(--accent-mardin); font-weight: bold; text-transform: uppercase;">Mardin Kültür</small>
+                <h2>Mezopotamya'nın Kalbinde Bir Gastronomi Yolculuğu</h2>
+                <p>Eski çarşının dar sokaklarında kaybolurken burnunuza gelen baharat kokuları, Mardin'in binlerce yıllık mutfak sırlarını fısıldıyor...</p>
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <span style="font-size: 0.8rem; color: #999;">5 dk okuma</span>
+                    <button style="background: none; border: 1px solid var(--accent-mardin); padding: 8px 20px; border-radius: 50px; cursor:pointer;">Devamını Oku</button>
                 </div>
             </div>
-        </aside>
-    </div>
+        </article>
 
-    <script>
-        // Örnek: NewsAPI veya benzeri bir servisten Mardin/Sao Paulo verisi çekmek için temel yapı
-        async function fetchGlobalNews() {
-            // Buraya kendi API key'ini ve endpoint'ini ekleyebilirsin
-            console.log("Haberler güncelleniyor...");
-            // fetch('API_URL').then(res => res.json()).then(data => { ... })
-        }
-        setInterval(fetchGlobalNews, 600000); // Her 10 dakikada bir güncelle
-    </script>
+        <article class="news-card">
+            <img src="https://images.unsplash.com/photo-1512356181113-853a150f1aa7?q=80&w=1000" class="news-img" alt="Sao Paulo">
+            <div class="news-content">
+                <small style="color: var(--accent-sp); font-weight: bold; text-transform: uppercase;">Sao Paulo Magazin</small>
+                <h2>Paulista Bulvarı'nda Karnaval Esintileri</h2>
+                <p>Brezilya'nın en büyük metropolü, bu hafta sonu dünyaca ünlü modacıların katıldığı bir gala gecesine ev sahipliği yaptı...</p>
+            </div>
+        </article>
+    </main>
+
+    <aside class="ad-space">
+        <div class="ad-box">
+            REKLAM ALANI<br>(300x400 px)
+        </div>
+        <div class="ad-box" style="height: 200px;">
+            SPONSORLU İÇERİK
+        </div>
+    </aside>
+</div>
+
+<div class="admin-quick-add" onclick="alert('Yönetim Paneline Yönlendiriliyorsunuz...')">
+    + İÇERİK EKLE
+</div>
+
 </body>
 </html>
