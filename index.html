@@ -3,108 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewsPro | Dünyadan Haberiniz Olsun</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>NewsPro | Dünyanın Haber Merkezi</title>
+
+    <script src="https://cdn.tailwindcss.com?v=2.1"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
         .news-title { font-family: 'Playfair Display', serif; }
         body { font-family: 'Inter', sans-serif; }
+        /* Pürüzsüz geçişler için */
+        .hover-scale { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hover-scale:hover { transform: scale(1.03); }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-[#1e293b]">
+<body class="bg-[#fdfdfd] text-[#0f172a]">
 
-    <div class="hidden lg:block bg-black text-white py-2 text-[11px] font-bold uppercase tracking-widest px-6">
-        <div class="container mx-auto flex justify-between">
-            <span>2 MART 2026, PAZARTESİ</span>
-            <div class="space-x-4">
-                <a href="#" class="hover:text-blue-400">Canlı Yayın</a>
-                <a href="#" class="hover:text-blue-400">Hava Durumu</a>
-                <a href="#" class="hover:text-blue-400">Borsa</a>
+    <div class="bg-slate-900 text-white py-1.5 text-[11px] font-medium border-b border-white/10 overflow-hidden">
+        <div class="container mx-auto px-4 flex items-center">
+            <div class="flex space-x-6 whitespace-nowrap animate-marquee">
+                <span><b class="text-green-400">USD/TRY:</b> 34.12 ↑</span>
+                <span><b class="text-red-400">EUR/TRY:</b> 37.05 ↓</span>
+                <span><b class="text-green-400">ALTIN:</b> 2.450 ↑</span>
+                <span><b class="text-blue-400">BIST100:</b> 9.230 ↑</span>
             </div>
         </div>
     </div>
 
-    <header class="sticky top-0 z-50 bg-white border-b border-slate-200">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <button class="lg:hidden text-2xl"><i class="fas fa-bars"></i> ☰</button>
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="container mx-auto px-4 py-3 lg:py-5 flex items-center justify-between">
+            <button class="lg:hidden text-2xl p-2">☰</button>
             
-            <a href="/" class="text-3xl lg:text-4xl font-black tracking-tighter text-blue-900">
-                NEWSPRO<span class="text-red-600">.</span>
+            <a href="index.html?refresh=true" class="text-3xl lg:text-4xl font-black tracking-tighter text-blue-900 uppercase">
+                News<span class="text-red-600">Pro</span>
             </a>
 
-            <nav class="hidden lg:flex space-x-6 text-sm font-extrabold uppercase tracking-tight">
-                <a href="#" class="text-blue-600 border-b-2 border-blue-600">Manşet</a>
-                <a href="#" class="hover:text-blue-600 transition">Siyaset</a>
-                <a href="#" class="hover:text-blue-600 transition">Dünya</a>
-                <a href="#" class="hover:text-blue-600 transition">Teknoloji</a>
-                <a href="#" class="hover:text-blue-600 transition">Yaşam</a>
+            <nav class="hidden lg:flex space-x-8 text-[13px] font-bold uppercase tracking-tight">
+                <a href="#" class="text-red-600 border-b-2 border-red-600 pb-1">Gündem</a>
+                <a href="#" class="hover:text-blue-700 transition">Ekonomi</a>
+                <a href="#" class="hover:text-blue-700 transition">Teknoloji</a>
+                <a href="#" class="hover:text-blue-700 transition">Dünya</a>
+                <a href="#" class="hover:text-blue-700 transition">Spor</a>
             </nav>
 
-            <div class="flex items-center space-x-3">
-                <button class="hidden sm:block bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-bold">GİRİŞ YAP</button>
-                <button class="text-xl">🔍</button>
+            <div class="flex items-center space-x-5">
+                <div class="hidden md:flex items-center text-xs font-semibold bg-slate-100 px-3 py-1.5 rounded-full">
+                    <span class="mr-2">☀️ İSTANBUL</span>
+                    <span class="text-blue-600">18°C</span>
+                </div>
+                <button class="text-xl hover:text-blue-600 transition">🔍</button>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-12 gap-6 lg:gap-10">
             
-            <div class="md:col-span-2 lg:col-span-2 relative group overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-video lg:aspect-auto h-[400px] lg:h-[600px]">
-                <img src="https://images.unsplash.com/photo-1585829365234-781fcd50c819?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-6 lg:p-10 flex flex-col justify-end">
-                    <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-1 w-max mb-4 rounded italic">FLAŞ HABER</span>
-                    <h2 class="news-title text-white text-3xl lg:text-5xl leading-tight hover:underline cursor-pointer transition">Kritik Zirve: Yeni Ekonomik Paket Meclis Yolunda</h2>
-                    <p class="text-slate-300 mt-4 hidden sm:block">Milyonları ilgilendiren yeni vergi düzenlemesi ve destek paketi detayları belli olmaya başladı...</p>
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-4">
-                <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm flex flex-col h-1/2">
-                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400" class="h-32 object-cover">
-                    <div class="p-4">
-                        <span class="text-blue-600 text-[10px] font-black uppercase tracking-widest">Bilim</span>
-                        <h3 class="font-bold text-lg leading-snug mt-1">Mars'ta yeni su rezervleri keşfedildi.</h3>
-                    </div>
-                </div>
-                <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm flex flex-col h-1/2">
-                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400" class="h-32 object-cover">
-                    <div class="p-4">
-                        <span class="text-blue-600 text-[10px] font-black uppercase tracking-widest">Kültür</span>
-                        <h3 class="font-bold text-lg leading-snug mt-1">Dijital Sanatın Yeni Adresi: NFT Müzesi.</h3>
+            <div class="col-span-12 lg:col-span-9">
+                <div class="relative group overflow-hidden rounded-[2rem] shadow-2xl h-[450px] lg:h-[650px]">
+                    <img src="https://images.unsplash.com/photo-1504711432869-efd5973e0142?auto=format&fit=crop&w=1200" 
+                         class="w-full h-full object-cover hover-scale" alt="Ana Haber">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent p-6 lg:p-12 flex flex-col justify-end">
+                        <div class="flex space-x-2 mb-4">
+                            <span class="bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full">SON DAKİKA</span>
+                            <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Siyaset</span>
+                        </div>
+                        <h1 class="news-title text-white text-3xl lg:text-6xl leading-[1.1] mb-6">Yapay Zeka Yasası Meclis'ten Geçti: Yeni Bir Dönem Başlıyor</h1>
+                        <p class="text-slate-200 text-sm lg:text-lg max-w-2xl line-clamp-2">Teknoloji dünyasının merakla beklediği düzenlemeler bugün yürürlüğe girdi. İşte kullanıcıları ve şirketleri bekleyen değişiklikler...</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
-                <h4 class="font-black text-sm border-b pb-4 mb-4 flex justify-between">
-                    <span>ÇOK OKUNANLAR</span>
-                    <span class="text-red-500">•</span>
-                </h4>
-                <div class="space-y-6">
-                    <div class="group cursor-pointer">
-                        <span class="text-3xl font-black text-slate-100 group-hover:text-blue-600 transition">01</span>
-                        <p class="font-bold text-sm -mt-2 group-hover:translate-x-1 transition-transform">Asgari ücret zammında ikinci tur görüşmeleri bitti.</p>
+            <div class="col-span-12 lg:col-span-3 space-y-8">
+                <h3 class="text-xl font-black border-b-4 border-blue-900 w-max pb-1 mb-6">Öne Çıkanlar</h3>
+                
+                <div class="group cursor-pointer flex flex-col space-y-3">
+                    <div class="overflow-hidden rounded-2xl aspect-video">
+                        <img src="https://images.unsplash.com/photo-1611974714658-058e11ee2241?auto=format&fit=crop&w=400" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
-                    <div class="group cursor-pointer">
-                        <span class="text-3xl font-black text-slate-100 group-hover:text-blue-600 transition">02</span>
-                        <p class="font-bold text-sm -mt-2 group-hover:translate-x-1 transition-transform">Yeni iPhone modeli için sızıntılar başladı.</p>
+                    <h4 class="font-bold text-md leading-tight group-hover:text-blue-700 transition">Borsa'da tarihi hacim: Yatırımcılar teknoloji hisselerine yöneldi.</h4>
+                </div>
+
+                <div class="group cursor-pointer flex flex-col space-y-3 pt-4 border-t border-slate-100">
+                    <div class="overflow-hidden rounded-2xl aspect-video text-center bg-blue-900 p-8 flex items-center justify-center">
+                        <p class="text-white font-black italic text-xl">REKLAM ALANI</p>
                     </div>
-                    <div class="group cursor-pointer">
-                        <span class="text-3xl font-black text-slate-100 group-hover:text-blue-600 transition">03</span>
-                        <p class="font-bold text-sm -mt-2 group-hover:translate-x-1 transition-transform">Süper Lig'de haftanın en dikkat çeken maçları.</p>
+                </div>
+
+                <div class="group cursor-pointer flex flex-col space-y-3">
+                    <div class="overflow-hidden rounded-2xl aspect-video">
+                        <img src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?auto=format&fit=crop&w=400" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
+                    <h4 class="font-bold text-md leading-tight group-hover:text-blue-700 transition">Geleceğin otomobilleri: Hidrojen yakıtı elektrikli araçları tahtından mı edecek?</h4>
                 </div>
             </div>
 
         </div>
     </main>
 
-    <footer class="bg-slate-900 text-slate-500 py-12 mt-12 text-center text-sm">
-        <div class="container mx-auto px-4">
-            <p>© 2026 NewsPro Media Global. Her hakkı saklıdır. Yazılım versiyonu: v4.2-Pro</p>
+    <footer class="bg-slate-950 text-slate-400 py-16 mt-12 border-t border-white/5">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+                <h2 class="text-white text-2xl font-black mb-6">NewsPro<span class="text-red-600">.</span></h2>
+                <p class="text-sm leading-relaxed text-slate-500">Dünyanın en hızlı ve güvenilir haber yazılımı. 2026 yılı tüm hakları saklıdır.</p>
+            </div>
+            <div class="flex flex-col space-y-3 text-sm">
+                <h5 class="text-white font-bold mb-3 uppercase tracking-widest">Kategoriler</h5>
+                <a href="#" class="hover:text-white transition">Teknoloji Haberleri</a>
+                <a href="#" class="hover:text-white transition">Ekonomi Bülteni</a>
+                <a href="#" class="hover:text-white transition">Yaşam ve Kültür</a>
+            </div>
+            <div class="text-sm">
+                <h5 class="text-white font-bold mb-3 uppercase tracking-widest">Bülten</h5>
+                <div class="flex">
+                    <input type="text" placeholder="E-posta..." class="bg-white/5 border border-white/10 rounded-l-lg p-2 w-full outline-none">
+                    <button class="bg-blue-600 text-white px-4 rounded-r-lg font-bold">OK</button>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <script>
+        // Sayfa her yüklendiğinde URL'e rastgele bir parametre ekleyerek 
+        // tarayıcıyı taze tutmaya zorlar (Opsiyonel ama etkilidir)
+        window.onload = function() {
+            if(!window.location.hash) {
+                // window.location = window.location + '#loaded';
+                // window.location.reload();
+            }
+        }
+    </script>
 </body>
 </html>
