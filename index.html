@@ -3,170 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Portal | Mardin & Rio</title>
+    <title>ASC Global Portal | Mardin & Rio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'tr', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         [x-cloak] { display: none !important; }
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; scroll-behavior: smooth; }
-        * { font-style: normal !important; }
-        .hero-gradient { background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.9) 100%); }
-        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); }
-        .page-fade { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
+        * { font-style: normal !important; transition: all 0.3s ease; }
+        .hero-split { height: 60vh; display: flex; overflow: hidden; border-bottom: 8px solid #1e3a8a; }
+        .hero-img { width: 50%; height: 100%; object-fit: cover; filter: brightness(0.6); }
+        .admin-modal { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); }
+        input, textarea { border: 1px solid #e2e8f0 !important; }
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0px !important; }
     </style>
 </head>
 <body x-data="portalApp()" x-init="init()">
 
-    <nav class="sticky top-0 z-[100] glass-nav border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div @click="currentPage = 'home'" class="text-2xl font-black tracking-tighter uppercase cursor-pointer text-slate-900 flex items-center gap-2">
-                <span class="bg-blue-700 text-white px-3 py-1 rounded">ASC</span> PORTAL
+    <nav class="sticky top-0 z-[100] bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
+            <div @click="currentPage = 'home'" class="text-xl md:text-2xl font-black tracking-tighter cursor-pointer text-blue-900 uppercase">
+                <span class="bg-blue-900 text-white px-2 rounded">ASC</span> PORTAL
             </div>
             
-            <div class="hidden md:flex space-x-10 text-[11px] font-black uppercase tracking-widest text-slate-600">
-                <button @click="currentPage = 'home'" class="hover:text-blue-700 transition">Ana Sayfa</button>
-                <button @click="loginAdmin()" class="bg-slate-900 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition shadow-lg shadow-blue-900/20">Yönetim Paneli</button>
-            </div>
-
-            <div class="flex gap-6 text-[10px] font-bold border-l pl-6 border-slate-200 text-slate-500">
-                <div class="text-right">Mardin<br><span class="text-blue-700 text-sm font-black" x-text="mTime"></span></div>
-                <div class="text-left border-l pl-4 border-slate-200">Rio<br><span class="text-emerald-600 text-sm font-black" x-text="bTime"></span></div>
+            <div class="flex items-center gap-2 md:gap-6">
+                <div id="google_translate_element" class="hidden md:block"></div>
+                <button @click="loginAdmin()" class="bg-slate-900 text-white px-3 py-1.5 md:px-5 md:py-2 rounded-full text-[10px] font-black uppercase hover:bg-blue-700">Panel</button>
             </div>
         </div>
     </nav>
 
     <main>
-        <div x-show="currentPage === 'home'" class="page-fade">
+        <div x-show="currentPage === 'home'" class="animate-in fade-in duration-500">
             
-            <header class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-slate-950">
-                <div class="absolute inset-0 flex">
-                    <div class="w-1/2 h-full"><img src="https://images.unsplash.com/photo-1582236894056-e918b9588667?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover"></div>
-                    <div class="w-1/2 h-full border-l border-white/10"><img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover"></div>
-                    <div class="absolute inset-0 hero-gradient"></div>
-                </div>
-                <div class="relative text-center z-10 px-4">
-                    <span class="text-blue-400 font-black uppercase tracking-[0.8em] text-[10px] mb-4 block">Medeniyetlerin Buluşma Noktası</span>
-                    <h1 class="text-white text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none">MARDİN <span class="text-transparent" style="-webkit-text-stroke: 2px white;">&</span> RIO</h1>
+            <header class="relative hero-split flex-col md:flex-row h-[50vh] md:h-[65vh]">
+                <img src="https://images.unsplash.com/photo-1544830154-1505c215f79a?auto=format&fit=crop&q=80&w=1000" class="w-full md:w-1/2 h-1/2 md:h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-700" alt="Mardin">
+                <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&q=80&w=1000" class="w-full md:w-1/2 h-1/2 md:h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-700" alt="Rio">
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <h1 class="text-white text-4xl md:text-8xl font-black uppercase tracking-tighter text-center px-4 drop-shadow-2xl">
+                        MARDİN <span class="text-blue-400">&</span> RIO
+                    </h1>
                 </div>
             </header>
 
-            <section class="bg-white py-20 border-b">
-                <div class="max-w-7xl mx-auto px-6 text-center mb-16">
-                    <h2 class="text-xs font-black uppercase tracking-[0.5em] text-blue-700 mb-2">Köşe Yazarları</h2>
-                    <p class="text-4xl font-black text-slate-900 uppercase tracking-tighter">Fikir Dünyamız</p>
-                </div>
-                <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <template x-for="(author, index) in authors" :key="index">
-                        <div @click="openAuthor(author)" class="group cursor-pointer text-center">
-                            <div class="relative mb-6">
-                                <img :src="author.photo" class="w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-xl group-hover:scale-110 transition duration-500">
-                                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-blue-700 text-white text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Yazar</div>
+            <section class="py-12 md:py-20 bg-slate-900 overflow-x-auto">
+                <div class="max-w-7xl mx-auto px-6">
+                    <h2 class="text-blue-400 text-[10px] font-black uppercase tracking-[0.5em] mb-10 text-center md:text-left">Kıdemli Yazarlarımız</h2>
+                    <div class="flex md:grid md:grid-cols-4 gap-6 pb-6 overflow-x-auto">
+                        <template x-for="(author, index) in authors" :key="index">
+                            <div @click="openAuthor(author)" class="min-w-[280px] bg-slate-800/50 p-6 rounded-[2rem] border border-slate-700 hover:border-blue-500 cursor-pointer text-center group transition">
+                                <img :src="author.photo || 'https://via.placeholder.com/150'" class="w-24 h-24 rounded-3xl mx-auto object-cover mb-4 group-hover:scale-105 transition">
+                                <h3 class="text-white font-black uppercase text-sm mb-1" x-text="author.name"></h3>
+                                <p class="text-blue-400 text-[9px] font-bold uppercase tracking-widest" x-text="author.title"></p>
                             </div>
-                            <h3 class="font-black text-slate-900 uppercase text-lg group-hover:text-blue-700 transition" x-text="author.name"></h3>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1" x-text="author.title"></p>
-                        </div>
-                    </template>
+                        </template>
+                    </div>
                 </div>
             </section>
 
-            <section class="max-w-7xl mx-auto px-6 py-24">
-                <div class="flex items-center justify-between mb-16 border-b-2 border-slate-900 pb-4">
-                    <h2 class="text-5xl font-black uppercase tracking-tighter">Manşetler</h2>
-                    <div class="text-[10px] font-black bg-blue-700 text-white px-4 py-2 rounded uppercase tracking-widest">Son Dakika</div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            <section class="max-w-7xl mx-auto px-4 md:px-6 py-16">
+                <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-12 text-slate-900 border-l-8 border-blue-900 pl-6">Manşetler</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                     <template x-for="(news, index) in newsData" :key="index">
-                        <div @click="openNews(news)" class="group cursor-pointer">
-                            <div class="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl mb-8 relative">
-                                <img :src="news.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
-                                <div class="absolute bottom-10 left-10 right-10">
-                                    <span class="text-blue-400 text-[10px] font-black uppercase tracking-widest mb-3 block" x-text="news.tag"></span>
-                                    <h3 class="text-white text-2xl font-black uppercase tracking-tight leading-tight group-hover:text-blue-300 transition" x-text="news.title"></h3>
-                                </div>
+                        <div @click="openNews(news)" class="group cursor-pointer bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition">
+                            <img :src="news.img || 'https://via.placeholder.com/800x600'" class="h-64 md:h-80 w-full object-cover group-hover:scale-110 transition duration-700">
+                            <div class="p-8">
+                                <span class="text-blue-600 font-black text-[10px] uppercase tracking-widest" x-text="news.tag"></span>
+                                <h3 class="text-xl md:text-2xl font-black uppercase my-4 leading-tight group-hover:text-blue-800 transition" x-text="news.title"></h3>
+                                <p class="text-slate-500 text-sm line-clamp-3 leading-relaxed" x-text="news.desc"></p>
                             </div>
-                            <p class="text-slate-500 text-sm leading-relaxed px-4 line-clamp-3" x-text="news.desc"></p>
                         </div>
                     </template>
                 </div>
             </section>
         </div>
 
-        <div x-show="currentPage === 'author-detail'" class="max-w-5xl mx-auto px-6 py-24 page-fade" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-12 text-xs font-black text-blue-700 uppercase tracking-widest flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i> Ana Sayfaya Dön
-            </button>
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
-                <div class="md:col-span-4 sticky top-32">
-                    <img :src="selectedAuthor?.photo" class="w-full aspect-square rounded-[3rem] object-cover shadow-2xl">
-                    <div class="mt-8 text-center md:text-left">
-                        <h1 class="text-4xl font-black text-slate-900 uppercase leading-none" x-text="selectedAuthor?.name"></h1>
-                        <p class="text-blue-700 font-bold uppercase tracking-widest text-xs mt-4" x-text="selectedAuthor?.title"></p>
-                    </div>
-                </div>
-                <div class="md:col-span-8 bg-white p-12 rounded-[3.5rem] shadow-sm border border-slate-100">
-                    <h4 class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8 border-b pb-4">Yazar Hakkında</h4>
-                    <p class="text-xl leading-relaxed text-slate-800 font-medium" x-text="selectedAuthor?.bio"></p>
-                </div>
-            </div>
-        </div>
-
-        <div x-show="currentPage === 'news-detail'" class="max-w-4xl mx-auto px-6 py-24 page-fade" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-12 text-xs font-black text-blue-700 uppercase tracking-widest flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i> Geri Dön
-            </button>
-            <img :src="selectedNews?.img" class="w-full h-[60vh] object-cover rounded-[4rem] shadow-2xl mb-16">
-            <span class="text-blue-700 font-black text-xs uppercase tracking-[0.4em]" x-text="selectedNews?.tag"></span>
-            <h1 class="text-6xl font-black uppercase tracking-tighter text-slate-900 my-8 leading-[0.9]" x-text="selectedNews?.title"></h1>
-            <div class="text-2xl text-slate-800 leading-relaxed font-medium space-y-8" x-html="selectedNews?.body"></div>
-        </div>
-
-        <div x-show="currentPage === 'admin'" class="max-w-7xl mx-auto px-6 py-20 page-fade" x-cloak>
-            <div class="flex justify-between items-center mb-16">
-                <h2 class="text-5xl font-black uppercase tracking-tighter">Admin Panel</h2>
-                <button @click="currentPage = 'home'" class="bg-red-600 text-white px-8 py-3 rounded-full font-black uppercase text-xs">Oturumu Kapat</button>
-            </div>
+        <div x-show="currentPage === 'news-detail' || currentPage === 'author-detail'" class="max-w-4xl mx-auto px-6 py-12 md:py-24" x-cloak>
+            <button @click="currentPage = 'home'" class="mb-8 font-black text-xs uppercase text-blue-700 tracking-widest">← Geri Dön</button>
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div class="bg-white p-10 rounded-[3rem] shadow-xl">
-                    <h3 class="text-xl font-black mb-8 uppercase border-l-4 border-blue-700 pl-4">Yazar Ekle</h3>
+            <template x-if="currentPage === 'news-detail'">
+                <div class="animate-in slide-in-from-bottom-10 duration-500">
+                    <img :src="selectedNews?.img" class="w-full h-[40vh] md:h-[60vh] object-cover rounded-[3rem] shadow-2xl mb-10">
+                    <h1 class="text-4xl md:text-7xl font-black uppercase tracking-tighter mb-8" x-text="selectedNews?.title"></h1>
+                    <div class="text-xl leading-relaxed text-slate-800 space-y-6" x-html="selectedNews?.body"></div>
+                </div>
+            </template>
+
+            <template x-if="currentPage === 'author-detail'">
+                <div class="text-center animate-in zoom-in-95 duration-500">
+                    <img :src="selectedAuthor?.photo" class="w-48 h-48 rounded-[3rem] mx-auto object-cover shadow-2xl mb-8">
+                    <h1 class="text-4xl font-black uppercase mb-2 text-slate-900" x-text="selectedAuthor?.name"></h1>
+                    <p class="text-blue-600 font-bold uppercase tracking-widest text-sm mb-10" x-text="selectedAuthor?.title"></p>
+                    <div class="text-lg leading-relaxed text-slate-700 bg-white p-10 rounded-[3rem] border shadow-sm" x-text="selectedAuthor?.bio"></div>
+                </div>
+            </template>
+        </div>
+
+        <div x-show="currentPage === 'admin'" class="max-w-7xl mx-auto px-6 py-20" x-cloak>
+            <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter">Panel <span class="text-blue-600">v2.0</span></h2>
+                <button @click="currentPage = 'home'" class="w-full md:w-auto bg-slate-900 text-white px-10 py-4 rounded-full font-black uppercase text-xs">Siteden Çık</button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-xl border border-slate-100">
+                    <h3 class="text-2xl font-black mb-8 uppercase text-blue-800">Yazar Ekle</h3>
                     <div class="space-y-4">
-                        <input x-model="newAuthor.name" type="text" placeholder="İsim Soyisim" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-700 outline-none">
-                        <input x-model="newAuthor.title" type="text" placeholder="Ünvan" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-700 outline-none">
-                        <input x-model="newAuthor.photo" type="text" placeholder="Fotoğraf URL" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-700 outline-none">
-                        <textarea x-model="newAuthor.bio" placeholder="Biyografi Metni" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-700 outline-none h-32"></textarea>
-                        <button @click="addAuthor()" class="w-full bg-blue-700 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em]">Yazarı Kaydet</button>
+                        <input x-model="newAuthor.name" type="text" placeholder="Ad Soyad" class="w-full p-4 rounded-2xl outline-none bg-slate-50">
+                        <input x-model="newAuthor.title" type="text" placeholder="Ünvan" class="w-full p-4 rounded-2xl outline-none bg-slate-50">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-black uppercase ml-2 text-slate-400">Yazar Fotoğrafı Seç</label>
+                            <input type="file" @change="handleFileUpload($event, 'author')" class="text-xs bg-slate-50 p-4 rounded-2xl border-dashed border-2">
+                        </div>
+                        <textarea x-model="newAuthor.bio" placeholder="Biyografi" class="w-full p-4 rounded-2xl outline-none bg-slate-50 h-32"></textarea>
+                        <button @click="addAuthor()" class="w-full bg-blue-800 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-black transition">Kaydet</button>
                     </div>
                 </div>
 
-                <div class="bg-white p-10 rounded-[3rem] shadow-xl">
-                    <h3 class="text-xl font-black mb-8 uppercase border-l-4 border-emerald-600 pl-4">Haber Yayınla</h3>
+                <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-xl border border-slate-100">
+                    <h3 class="text-2xl font-black mb-8 uppercase text-emerald-800">Haber Yayınla</h3>
                     <div class="space-y-4">
-                        <input x-model="newNews.title" type="text" placeholder="Haber Başlığı" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
-                        <input x-model="newNews.tag" type="text" placeholder="Kategori" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
-                        <input x-model="newNews.img" type="text" placeholder="Haber Görsel URL" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
-                        <textarea x-model="newNews.desc" placeholder="Kısa Özet (Alt Metin)" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none h-20"></textarea>
-                        <textarea x-model="newNews.body" placeholder="Haber Detay İçeriği" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none h-32"></textarea>
-                        <button @click="addNews()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em]">Haberi Yayınla</button>
+                        <input x-model="newNews.title" type="text" placeholder="Başlık" class="w-full p-4 rounded-2xl outline-none bg-slate-50">
+                        <input x-model="newNews.tag" type="text" placeholder="Etiket" class="w-full p-4 rounded-2xl outline-none bg-slate-50">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-black uppercase ml-2 text-slate-400">Haber Görseli Seç</label>
+                            <input type="file" @change="handleFileUpload($event, 'news')" class="text-xs bg-slate-50 p-4 rounded-2xl border-dashed border-2">
+                        </div>
+                        <textarea x-model="newNews.desc" placeholder="Kısa Özet" class="w-full p-4 rounded-2xl outline-none bg-slate-50 h-20"></textarea>
+                        <textarea x-model="newNews.body" placeholder="Haber İçeriği" class="w-full p-4 rounded-2xl outline-none bg-slate-50 h-32"></textarea>
+                        <button @click="addNews()" class="w-full bg-emerald-800 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-black transition">Yayınla</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-slate-900 py-20 text-center mt-20">
-        <div class="text-3xl font-black text-white uppercase tracking-tighter mb-8 italic">ASC GLOBAL</div>
-        <p class="text-[10px] font-black uppercase tracking-[0.8em] text-slate-500">Mardin & Rio De Janeiro | 2026</p>
+    <footer class="bg-white border-t py-12 text-center mt-20">
+        <p class="text-[10px] font-black uppercase tracking-[0.6em] text-slate-400">ASC GLOBAL PORTAL © 2026</p>
     </footer>
 
     <script>
-        async function hashPassword(string) {
-            const utf8 = new TextEncoder().encode(string);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
@@ -176,55 +164,61 @@
                 currentPage: 'home',
                 selectedNews: null,
                 selectedAuthor: null,
-                mTime: '',
-                bTime: '',
-                // SHA-256 hash for 'Mardin47'
-                adminHash: '5e378c5750868f03107050212f45ec7f7c41372332675970a049d533bc7ca194',
+                mTime: '', bTime: '',
+                // Şifre: Mardin47** (Hashlenmiş hali aşağıdadır)
+                adminHash: '52618635836c28383a1f810b14619d0092c686144e5445217436b76a08469d80',
                 
                 newAuthor: { name: '', title: '', bio: '', photo: '' },
                 newNews: { title: '', tag: '', desc: '', img: '', body: '' },
-                
-                authors: JSON.parse(localStorage.getItem('portal_authors')) || [
-                    { name: 'Ahmet Salim', title: 'Baş Editör', bio: 'Mezopotamya tarihi uzmanı.', photo: 'https://i.pravatar.cc/150?u=1' },
-                    { name: 'Dr. Isabella Mendes', title: 'Stratejist', bio: 'Latin Amerika ekonomi uzmanı.', photo: 'https://i.pravatar.cc/150?u=2' },
-                    { name: 'Canan Ersoy', title: 'Kültür Yazarı', bio: 'Geleneksel sanatlar araştırmacısı.', photo: 'https://i.pravatar.cc/150?u=3' },
-                    { name: 'Ricardo Santos', title: 'Analist', bio: 'Global ticaret ve lojistik analisti.', photo: 'https://i.pravatar.cc/150?u=4' }
+
+                authors: JSON.parse(localStorage.getItem('v2_authors')) || [
+                    { name: 'Ahmet Salim', title: 'Baş Editör', bio: 'Mezopotamya üzerine uzman.', photo: 'https://i.pravatar.cc/150?u=1' },
+                    { name: 'Dr. Isabella Mendes', title: 'Stratejist', bio: 'Brezilya ekonomi uzmanı.', photo: 'https://i.pravatar.cc/150?u=2' }
                 ],
-                newsData: JSON.parse(localStorage.getItem('portal_news')) || [
-                    { title: 'Artuklu Sarayı Yeniden Doğuyor', tag: 'Mardin', desc: 'Saray restorasyonu dünya basınında ilgi gördü.', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=800', body: 'Detaylar buraya...' },
-                    { title: 'Amazon Enerji Koridoru Projesi', tag: 'Rio', desc: 'Brezilya hükümeti dev yatırımı onayladı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=800', body: 'Detaylar buraya...' },
-                    { title: 'Kültürlerarası Gastronomi Festivali', tag: 'Global', desc: 'Mardin mutfağı Rio sokaklarında tanıtılıyor.', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800', body: 'Detaylar buraya...' }
+                newsData: JSON.parse(localStorage.getItem('v2_news')) || [
+                    { title: 'Mardin Turizminde Rekor Yıl', tag: 'Mardin', desc: 'Tarihi kent ziyaretçi akınına uğradı.', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=800', body: 'Detaylı içerik...' },
+                    { title: 'Rio Karnavalı Başladı', tag: 'Rio', desc: 'Dünyanın en büyük şovu kapılarını açtı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=800', body: 'Detaylı içerik...' }
                 ],
 
                 init() {
-                    this.updateTime();
-                    setInterval(() => this.updateTime(), 1000);
+                    setInterval(() => {
+                        const n = new Date();
+                        this.mTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Istanbul' }).format(n);
+                        this.bTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' }).format(n);
+                    }, 1000);
                 },
-                updateTime() {
-                    const n = new Date();
-                    this.mTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Istanbul' }).format(n);
-                    this.bTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' }).format(n);
+
+                handleFileUpload(event, type) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        if(type === 'author') this.newAuthor.photo = reader.result;
+                        else this.newNews.img = reader.result;
+                    }
+                    if(file) reader.readAsDataURL(file);
                 },
+
                 async loginAdmin() {
-                    const pass = prompt("Sistem Anahtarını Giriniz:");
+                    const pass = prompt("Güvenlik Anahtarını Giriniz:");
                     if (pass) {
-                        const hashed = await hashPassword(pass);
+                        const hashed = await sha256(pass);
                         if (hashed === this.adminHash) {
                             this.currentPage = 'admin';
-                            window.scrollTo(0, 0);
+                            window.scrollTo(0,0);
                         } else {
-                            alert("Erişim Reddedildi!");
+                            alert("Hatalı Şifre!");
                         }
                     }
                 },
-                openNews(news) { this.selectedNews = news; this.currentPage = 'news-detail'; window.scrollTo(0, 0); },
-                openAuthor(author) { this.selectedAuthor = author; this.currentPage = 'author-detail'; window.scrollTo(0, 0); },
-                addAuthor() { this.authors.push({...this.newAuthor}); this.save(); this.newAuthor = { name: '', title: '', bio: '', photo: '' }; },
-                addNews() { this.newsData.push({...this.newNews}); this.save(); this.newNews = { title: '', tag: '', desc: '', img: '', body: '' }; },
+
+                addAuthor() { this.authors.push({...this.newAuthor}); this.save(); this.newAuthor = {name:'', title:'', bio:'', photo:''}; },
+                addNews() { this.newsData.push({...this.newNews}); this.save(); this.newNews = {title:'', tag:'', desc:'', img:'', body:''}; },
                 save() {
-                    localStorage.setItem('portal_authors', JSON.stringify(this.authors));
-                    localStorage.setItem('portal_news', JSON.stringify(this.newsData));
-                }
+                    localStorage.setItem('v2_authors', JSON.stringify(this.authors));
+                    localStorage.setItem('v2_news', JSON.stringify(this.newsData));
+                },
+                openNews(news) { this.selectedNews = news; this.currentPage = 'news-detail'; window.scrollTo(0,0); },
+                openAuthor(author) { this.selectedAuthor = author; this.currentPage = 'author-detail'; window.scrollTo(0,0); }
             }
         }
     </script>
