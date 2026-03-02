@@ -1,23 +1,150 @@
-<section id="dinamik-haberler" class="container mx-auto px-4 mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-    </section>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mardin Sao Paulo Portalı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .msp-title { font-family: 'Playfair Display', serif; }
+        body { font-family: 'Inter', sans-serif; background: #fcfcfc; }
+        .page-view { display: none; }
+        .active-view { display: block; animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
 
-<script>
-    window.onload = function() {
-        const dinamikAlan = document.getElementById('dinamik-haberler');
-        const veriler = JSON.parse(localStorage.getItem('msp_haberler')) || [];
+    <header class="bg-white border-b-4 border-blue-900 sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div onclick="showPage('home')" class="cursor-pointer">
+                <h1 class="text-2xl font-black text-blue-900 uppercase tracking-tighter leading-none">MSP PORTAL<span class="text-red-600">.</span></h1>
+                <p class="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">Mardin - Sao Paulo</p>
+            </div>
+            <nav class="flex gap-4">
+                <button onclick="showPage('home')" class="text-[10px] font-bold uppercase text-slate-600 hover:text-blue-900">Ana Sayfa</button>
+                <button onclick="showPage('admin')" class="text-[10px] font-bold bg-blue-900 text-white px-3 py-1.5 rounded-full hover:bg-red-600 transition">ADMİN PANELİ</button>
+            </nav>
+        </div>
+    </header>
 
-        veriler.reverse().forEach(haber => {
-            dinamikAlan.innerHTML += `
-                <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer">
-                    <span class="text-[10px] font-black text-blue-600 uppercase tracking-widest">${haber.kategori}</span>
-                    <h3 class="msp-title text-xl font-bold mt-2 leading-tight">${haber.baslik}</h3>
-                    <p class="text-xs text-slate-500 mt-3 line-clamp-3">${haber.icerik}</p>
-                    <div class="mt-4 pt-4 border-t flex justify-between items-center">
-                        <span class="text-[10px] font-bold text-slate-400 italic">${haber.yazar}</span>
-                        <span class="text-[9px] font-black text-slate-300 uppercase">${haber.tarih}</span>
+    <main id="page-home" class="page-view active-view container mx-auto px-4 py-8">
+        <div class="grid grid-cols-12 gap-8">
+            <div class="col-span-12 lg:col-span-9 space-y-10">
+                <div onclick="showPage('news-detail')" class="relative h-[450px] rounded-[2.5rem] overflow-hidden shadow-2xl cursor-pointer group border-4 border-white">
+                    <img src="https://images.unsplash.com/photo-1552035509-b63909772545?auto=format&fit=crop&w=1200" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-blue-950 p-8 flex flex-col justify-end">
+                        <h2 class="msp-title text-white text-4xl leading-tight">Mardin ve Sao Paulo: Tarih Yeniden Yazılıyor</h2>
+                        <p class="text-slate-300 mt-4 text-sm">İki kadim şehir arasındaki ticaret ve kültür köprüsü güçleniyor.</p>
                     </div>
                 </div>
-            `;
-        });
-    }
-</script>
+
+                <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
+                    <h3 class="text-sm font-black text-blue-900 uppercase mb-6 tracking-widest border-l-4 border-red-600 pl-3">Yazarlar Modülü</h3>
+                    <div id="author-list" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div onclick="showPage('author-detail')" class="text-center cursor-pointer group">
+                            <img src="https://ui-avatars.com/api/?name=Ahmet+Mardin&background=1e293b&color=fff" class="w-16 h-16 rounded-full mx-auto border-2 group-hover:border-blue-500 transition">
+                            <p class="text-xs font-bold mt-2 uppercase">Ahmet Mardinî</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="news-feed" class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+                    </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-3 space-y-6">
+                <div class="bg-blue-900 p-6 rounded-3xl text-white">
+                    <h4 class="text-[10px] font-bold uppercase opacity-50 mb-3">Sponsorlu</h4>
+                    <img id="adv-img" src="https://images.unsplash.com/photo-1512418490979-92798ccc13b0?auto=format&fit=crop&w=300" class="rounded-xl mb-4 w-full h-32 object-cover">
+                    <p class="text-xs font-bold italic">Mardin Kahvesi Şimdi Brezilya'da!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-news-detail" class="page-view container mx-auto px-4 py-12 max-w-3xl">
+        <button onclick="showPage('home')" class="text-xs font-bold text-blue-600 mb-6 uppercase tracking-widest">← Geri Dön</button>
+        <h1 class="msp-title text-4xl font-black mb-6">Mardin ve Sao Paulo Arasındaki Tarihi Bağlar</h1>
+        <img src="https://images.unsplash.com/photo-1552035509-b63909772545?auto=format&fit=crop&w=1200" class="rounded-[2rem] mb-8 shadow-xl">
+        <p class="text-lg leading-relaxed text-slate-700">Mardin'in dar sokaklarından Brezilya'nın dev meydanlarına uzanan bu hikaye, ticaretin ötesinde bir gönül köprüsü kuruyor...</p>
+    </main>
+
+    <main id="page-author-detail" class="page-view container mx-auto px-4 py-12 max-w-3xl">
+        <div class="bg-white p-10 rounded-[3rem] shadow-xl text-center border">
+            <img src="https://ui-avatars.com/api/?name=Ahmet+Mardin&background=1e293b&color=fff" class="w-32 h-32 rounded-full mx-auto mb-6 shadow-lg border-4 border-white">
+            <h2 class="msp-title text-3xl font-black mb-2">Ahmet Mardinî</h2>
+            <p class="text-blue-600 font-bold text-xs uppercase mb-6 tracking-widest">Kıdemli Kültür Yazarı</p>
+            <p class="text-slate-500">Mardin tarihini ve Brezilya kültürünü harmanlayan yazılarıyla MSP Portal'da.</p>
+            <button onclick="showPage('home')" class="mt-8 bg-slate-900 text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest">Geri Dön</button>
+        </div>
+    </main>
+
+    <main id="page-admin" class="page-view container mx-auto px-4 py-12 max-w-4xl">
+        <div class="bg-slate-900 text-white p-8 lg:p-12 rounded-[3rem] shadow-2xl">
+            <h2 class="text-2xl font-black mb-10 text-center uppercase tracking-tighter">İçerik Yönetim Merkezi</h2>
+            
+            <div class="grid grid-cols-1 gap-6">
+                <input id="in-title" type="text" placeholder="Haber Başlığı" class="w-full bg-slate-800 p-4 rounded-2xl outline-none focus:ring-2 ring-blue-500">
+                <textarea id="in-text" rows="4" placeholder="Haber İçeriği..." class="w-full bg-slate-800 p-4 rounded-2xl outline-none"></textarea>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 italic text-xs">
+                    <div class="p-4 border-2 border-dashed border-slate-700 rounded-2xl text-center">
+                        <p class="mb-2">Haber Fotoğrafı (Yerelden)</p>
+                        <input type="file" id="in-img" class="text-[10px]">
+                    </div>
+                    <div class="p-4 border-2 border-dashed border-slate-700 rounded-2xl text-center">
+                        <p class="mb-2">Reklam Görseli (Yerelden)</p>
+                        <input type="file" id="in-adv" class="text-[10px]">
+                    </div>
+                </div>
+
+                <button onclick="publishContent()" class="w-full bg-blue-600 hover:bg-red-600 text-white font-black py-4 rounded-2xl transition-all uppercase tracking-widest">İÇERİĞİ YAYINLA</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // SAYFA YÖNETİMİ
+        function showPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-view'));
+            document.getElementById('page-' + pageId).classList.add('active-view');
+            window.scrollTo(0,0);
+        }
+
+        // İÇERİK YAYINLAMA (Local Storage)
+        function publishContent() {
+            const title = document.getElementById('in-title').value;
+            const text = document.getElementById('in-text').value;
+
+            if(!title || !text) { alert("Lütfen alanları doldurun!"); return; }
+
+            const newPost = { title, text, date: new Date().toLocaleDateString('tr-TR') };
+            let posts = JSON.parse(localStorage.getItem('msp_posts')) || [];
+            posts.push(newPost);
+            localStorage.setItem('msp_posts', JSON.stringify(posts));
+
+            alert("Haber Yayınlandı!");
+            location.reload(); // Sayfayı yenileyerek veriyi çekmesini sağla
+        }
+
+        // VERİLERİ YÜKLE
+        window.onload = function() {
+            const newsFeed = document.getElementById('news-feed');
+            const posts = JSON.parse(localStorage.getItem('msp_posts')) || [];
+            
+            posts.reverse().forEach(post => {
+                newsFeed.innerHTML += `
+                    <div class="bg-white p-6 rounded-[2rem] border shadow-sm border-slate-100">
+                        <span class="text-[9px] font-black text-blue-600 uppercase mb-2 block">Yeni Haber</span>
+                        <h3 class="font-bold text-xl mb-3">${post.title}</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">${post.text.substring(0, 150)}...</p>
+                        <div class="mt-4 pt-4 border-t text-[10px] font-bold text-slate-400 uppercase">${post.date}</div>
+                    </div>
+                `;
+            });
+        };
+    </script>
+</body>
+</html>
