@@ -3,97 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewsPro Admin | Control Center</title>
+    <title>MSP Portal | Yönetim Merkezi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-[#0f172a] text-slate-200 font-sans antialiased">
+<body class="bg-[#0b1120] text-slate-300">
 
     <div class="flex min-h-screen">
-        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#1e293b] border-r border-slate-700 transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out">
-            <div class="p-6 flex items-center justify-between">
-                <span class="text-2xl font-black text-blue-500 tracking-tighter">NP ADMIN</span>
-                <button onclick="toggleSidebar()" class="lg:hidden text-slate-400"><i class="fas fa-times"></i></button>
+        <aside class="w-64 bg-[#111827] border-r border-slate-800 hidden lg:block">
+            <div class="p-6">
+                <h1 class="text-xl font-bold text-blue-500">MSP <span class="text-white">PORTAL</span></h1>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest">Mardin - Sao Paulo</p>
             </div>
-            <nav class="px-4 space-y-2">
-                <a href="#" class="flex items-center space-x-3 p-3 bg-blue-600/10 text-blue-500 rounded-xl border border-blue-500/20"><i class="fas fa-chart-pie"></i> <span class="font-semibold">Dashboard</span></a>
-                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-xl transition text-slate-400"><i class="fas fa-edit"></i> <span>İçerik Ekle</span></a>
-                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-xl transition text-slate-400"><i class="fas fa-layer-group"></i> <span>Kategoriler</span></a>
-                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-xl transition text-slate-400"><i class="fas fa-images"></i> <span>Medya Kütüphanesi</span></a>
-                <div class="pt-4 pb-2 text-xs font-bold text-slate-500 uppercase px-3">Sistem</div>
-                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-xl transition text-slate-400"><i class="fas fa-user-shield"></i> <span>Yetkiler</span></a>
-                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-xl transition text-slate-400"><i class="fas fa-cog"></i> <span>Ayarlar</span></a>
+            <nav class="px-4 space-y-1">
+                <a href="#" class="flex items-center space-x-3 p-3 bg-blue-600/10 text-blue-400 rounded-lg"><i class="fas fa-home"></i> <span>Panel</span></a>
+                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-lg transition"><i class="fas fa-pen-nib"></i> <span>Yazarlar</span></a>
+                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-lg transition"><i class="fas fa-ad"></i> <span>Reklam Yönetimi</span></a>
             </nav>
         </aside>
 
-        <div class="flex-1 flex flex-col min-w-0">
-            <header class="h-16 bg-[#1e293b]/50 backdrop-blur-md border-b border-slate-700 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-40">
-                <button onclick="toggleSidebar()" class="lg:hidden p-2 text-slate-400"><i class="fas fa-bars"></i></button>
-                <div class="flex items-center space-x-4 ml-auto">
-                    <div class="hidden sm:block text-right">
-                        <p class="text-sm font-bold">Admin User</p>
-                        <p class="text-xs text-green-500">Online</p>
+        <main class="flex-1 p-4 lg:p-8">
+            <div class="max-w-5xl mx-auto space-y-10">
+                
+                <section class="bg-[#1e293b] p-6 rounded-2xl border border-slate-700 shadow-2xl">
+                    <h2 class="text-xl font-bold mb-6 text-white flex items-center"><i class="fas fa-plus-circle mr-2 text-green-500"></i> Yeni Haber Yayınla</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <input type="text" placeholder="Haber Başlığı" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                            <select class="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 outline-none">
+                                <option>Mardin Gündem</option>
+                                <option>Sao Paulo Ekonomi</option>
+                                <option>Kültür Köprüsü</option>
+                            </select>
+                            <textarea placeholder="Haber İçeriği..." rows="4" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 outline-none"></textarea>
+                        </div>
+                        <div class="border-2 border-dashed border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center bg-[#0f172a] hover:border-blue-500 transition cursor-pointer">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-slate-500 mb-2"></i>
+                            <p class="text-sm font-medium">Haber Fotoğrafı Seç</p>
+                            <input type="file" class="mt-4 text-xs text-slate-400">
+                        </div>
                     </div>
-                    <img src="https://ui-avatars.com/api/?background=3b82f6&color=fff&name=AU" class="w-10 h-10 rounded-full ring-2 ring-blue-500/20">
-                </div>
-            </header>
+                    <button class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">YAYINLA</button>
+                </section>
 
-            <main class="p-4 lg:p-8 space-y-8">
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                    <div class="bg-[#1e293b] p-6 rounded-2xl border border-slate-700 shadow-xl">
-                        <div class="flex justify-between items-start">
-                            <div><p class="text-slate-400 text-sm">Toplam Hit</p><h3 class="text-2xl font-bold mt-1">2.4M</h3></div>
-                            <div class="p-3 bg-blue-500/10 text-blue-500 rounded-lg"><i class="fas fa-eye"></i></div>
-                        </div>
+                <section class="bg-[#1e293b] p-6 rounded-2xl border border-slate-700">
+                    <h2 class="text-xl font-bold mb-6 text-white"><i class="fas fa-bullhorn mr-2 text-yellow-500"></i> Reklam Görseli Güncelle</h2>
+                    <div class="flex flex-col md:flex-row gap-4 items-center">
+                        <input type="file" class="flex-1 bg-[#0f172a] border border-slate-700 p-2 rounded-lg text-xs">
+                        <input type="text" placeholder="Reklam Linki" class="flex-1 bg-[#0f172a] border border-slate-700 p-2 rounded-lg text-sm">
+                        <button class="bg-yellow-600 px-6 py-2 rounded-lg text-white font-bold text-sm">GÜNCELLE</button>
                     </div>
-                    <div class="bg-[#1e293b] p-6 rounded-2xl border border-slate-700 shadow-xl">
-                        <div class="flex justify-between items-start">
-                            <div><p class="text-slate-400 text-sm">Yorumlar</p><h3 class="text-2xl font-bold mt-1">854</h3></div>
-                            <div class="p-3 bg-emerald-500/10 text-emerald-500 rounded-lg"><i class="fas fa-comment"></i></div>
-                        </div>
-                    </div>
-                    </div>
-
-                <div class="bg-[#1e293b] rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
-                    <div class="p-6 border-b border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <h3 class="text-lg font-bold">Son Haberler</h3>
-                        <div class="flex gap-2 w-full sm:w-auto">
-                            <input type="text" placeholder="Haber ara..." class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead class="bg-slate-800/50 text-slate-400 text-xs uppercase tracking-wider">
-                                <tr>
-                                    <th class="p-4">Başlık</th>
-                                    <th class="p-4">Kategori</th>
-                                    <th class="p-4">Okunma</th>
-                                    <th class="p-4">İşlem</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-700">
-                                <tr class="hover:bg-slate-800/30 transition">
-                                    <td class="p-4 text-sm font-medium">Borsa İstanbul'da Rekor Kapanış</td>
-                                    <td class="p-4"><span class="px-2 py-1 bg-amber-500/10 text-amber-500 rounded text-[10px] font-bold uppercase">Ekonomi</span></td>
-                                    <td class="p-4 text-sm font-mono">42.1K</td>
-                                    <td class="p-4 flex gap-3 text-slate-400">
-                                        <button class="hover:text-blue-500"><i class="fas fa-eye"></i></button>
-                                        <button class="hover:text-emerald-500"><i class="fas fa-edit"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
-        </div>
+                </section>
+            </div>
+        </main>
     </div>
-
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('-translate-x-full');
-        }
-    </script>
 </body>
 </html>
