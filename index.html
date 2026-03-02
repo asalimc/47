@@ -182,4 +182,120 @@
                 <div class="flex gap-4">
                     <button @click="adminTab = 'news'" :class="adminTab === 'news' ? 'bg-black text-white' : 'bg-gray-50'" class="px-8 py-3 text-[10px] font-black uppercase tracking-widest transition-all">Makale</button>
                     <button @click="adminTab = 'authors'" :class="adminTab === 'authors' ? 'bg-black text-white' : 'bg-gray-50'" class="px-8 py-3 text-[10px] font-black uppercase tracking-widest transition-all">Yazar</button>
-                    <button @click="adminTab = 'ads'" :class
+                    <button @click="adminTab = 'ads'" :class="adminTab === 'ads' ? 'bg-orange-700 text-white' : 'bg-gray-50'" class="px-8 py-3 text-[10px] font-black uppercase tracking-widest transition-all">Reklam</button>
+                    <button @click="currentPage = 'home'" class="bg-red-50 w-12 h-12 flex items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition-all">X</button>
+                </div>
+            </div>
+
+            <div x-show="adminTab !== 'ads'" class="grid grid-cols-12 gap-16">
+                <div class="col-span-12 lg:col-span-8 space-y-12">
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Ana Başlık</label>
+                        <input x-model="form.main" type="text" class="luxury-field font-serif text-3xl font-bold" placeholder="Manşet buraya...">
+                    </div>
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Alt Bilgi / Bölge</label>
+                        <input x-model="form.sub" type="text" class="luxury-field" placeholder="Örn: Mardin / Stratejik Rapor">
+                    </div>
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Gövde Metni</label>
+                        <textarea x-model="form.content" class="luxury-field h-[500px] leading-relaxed" placeholder="Anlatıyı buraya dökün..."></textarea>
+                    </div>
+                </div>
+
+                <div class="col-span-12 lg:col-span-4 space-y-12">
+                    <div class="border border-dashed border-gray-200 p-12 text-center bg-[#fafafa]">
+                        <input type="file" @change="handleFile" id="mainMedia" class="hidden">
+                        <label for="mainMedia" class="cursor-pointer group">
+                            <i class="fas fa-camera text-4xl text-gray-200 group-hover:text-black transition-colors mb-4 block"></i>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Görsel Seç</span>
+                        </label>
+                    </div>
+                    <button @click="save()" class="w-full bg-black text-white py-10 font-black text-xl uppercase tracking-widest hover:bg-orange-700 transition-all shadow-2xl">YAYINLA</button>
+                    
+                    <div class="pt-10 border-t border-gray-100">
+                        <h4 class="text-[10px] font-black uppercase text-gray-300 mb-6 tracking-[0.3em]">Arşivdeki Kayıtlar</h4>
+                        <div class="max-h-[300px] overflow-y-auto space-y-2">
+                            <template x-for="item in (adminTab === 'news' ? newsData : authors)" :key="item.id">
+                                <div class="flex justify-between items-center p-4 bg-gray-50 text-[10px] font-bold uppercase tracking-widest">
+                                    <span class="truncate w-40" x-text="item.title || item.name"></span>
+                                    <button @click="deleteItem(item.id)" class="text-red-500">Sil</button>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="adminTab === 'ads'" class="text-center py-20 space-y-12">
+                <div class="w-[300px] h-[300px] mx-auto border-4 border-black flex items-center justify-center overflow-hidden">
+                    <img :src="adImage">
+                </div>
+                <input type="file" @change="handleAdUpload" id="adUpload" class="hidden">
+                <label for="adUpload" class="inline-block bg-black text-white px-16 py-6 font-black text-sm uppercase tracking-widest cursor-pointer shadow-2xl">Görseli Değiştir</label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function ascEngine() {
+            return {
+                currentPage: 'home', adminTab: 'news', selectedItem: null,
+                form: { main: '', sub: '', content: '', media: '' },
+                adImage: localStorage.getItem('asc_ad_v28') || '',
+                
+                newsData: JSON.parse(localStorage.getItem('asc_news_v28')) || [
+                    { id: 1, title: 'Kürsel Ticarette Mardin Manifestosu', region: 'STRATEJİ', body: 'Brezilya ve Türkiye arasındaki yeni dijital koridor, Mardin’in tarihi derinliğiyle modern lojistiği birleştiriyor. İpek Yolu’nun bu yeni versiyonu sadece ürün değil, kültürel veri taşıyor. Uzmanlar bu hattın önümüzdeki 10 yılın en karlı rotası olacağını öngörüyor.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600' }
+                ],
+                authors: JSON.parse(localStorage.getItem('asc_authors_v28')) || [
+                    { id: 1, name: 'Ahmet Çınarbaş', title: 'Stratejist', bio: 'Küresel jeopolitik analizler uzmanı.', photo: 'https://i.ibb.co/LhqZz4H/ahmet.jpg' },
+                    { id: 2, name: 'M. Beşir Ayanoğlu', title: 'Hukuk Danışmanı', bio: 'Uluslararası hukuk uzmanı.', photo: 'https://i.ibb.co/vYm6D6T/besir.jpg' }
+                ],
+
+                init() { this.sync(); },
+                openAdmin() { if(prompt("Sistem Giriş Şifresi:") === "47") this.currentPage = 'admin'; },
+                
+                handleFile(e) {
+                    const reader = new FileReader();
+                    reader.onload = (f) => this.form.media = f.target.result;
+                    reader.readAsDataURL(e.target.files[0]);
+                },
+                handleAdUpload(e) {
+                    const reader = new FileReader();
+                    reader.onload = (f) => {
+                        this.adImage = f.target.result;
+                        localStorage.setItem('asc_ad_v28', this.adImage);
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                },
+
+                save() {
+                    const isNews = this.adminTab === 'news';
+                    const payload = isNews ? 
+                        { id: Date.now(), title: this.form.main, region: this.form.sub, body: this.form.content, img: this.form.media } :
+                        { id: Date.now(), name: this.form.main, title: this.form.sub, bio: this.form.content, photo: this.form.media };
+
+                    if (isNews) this.newsData.unshift(payload);
+                    else this.authors.push(payload);
+                    this.sync(); this.form = { main: '', sub: '', content: '', media: '' };
+                    alert("Yayın Başarılı.");
+                },
+
+                deleteItem(id) {
+                    if(confirm('Kayıt silinsin mi?')) {
+                        if(this.adminTab === 'news') this.newsData = this.newsData.filter(n => n.id !== id);
+                        else this.authors = this.authors.filter(a => a.id !== id);
+                        this.sync();
+                    }
+                },
+
+                viewItem(item) { this.selectedItem = item; this.currentPage = 'reader'; window.scrollTo(0,0); },
+                sync() { 
+                    localStorage.setItem('asc_news_v28', JSON.stringify(this.newsData)); 
+                    localStorage.setItem('asc_authors_v28', JSON.stringify(this.authors)); 
+                }
+            }
+        }
+    </script>
+</body>
+</html>
