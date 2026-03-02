@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina | Global Culture & News</title>
+    <title>Lumina | Dinamik Kültür Portalı</title>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,53 +12,108 @@
             --muted: #718096;
             --accent: #c49b66;
             --white: #ffffff;
-            --transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
 
-        /* --- OKUMA İLERLEME VE SES KONTROL --- */
+        /* Navigasyon & Progress */
         #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 10001; }
-        
-        /* Navigasyon */
-        nav { background: rgba(253, 251, 247, 0.9); backdrop-filter: blur(15px); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
-        .logo { font-family: 'Marcellus', serif; font-size: 2rem; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
+        nav { background: rgba(253, 251, 247, 0.95); backdrop-filter: blur(15px); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        .logo { font-family: 'Marcellus', serif; font-size: 2rem; letter-spacing: 3px; cursor: pointer; }
 
-        /* Yazarlar - Yatay Kaydırma */
-        .authors-strip { background: var(--white); padding: 30px 0; display: flex; justify-content: center; gap: 40px; border-bottom: 1px solid #f1f1f1; }
-        .author-item { cursor: pointer; text-align: center; width: 90px; transition: var(--transition); }
-        .author-item:hover { transform: translateY(-5px); }
-        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); padding: 4px; }
-        .author-item span { display: block; font-size: 0.75rem; font-weight: 700; margin-top: 10px; font-family: 'Marcellus'; }
+        /* Ana Grid Yapısı */
+        .container { 
+            max-width: 1400px; 
+            margin: 40px auto; 
+            display: grid; 
+            grid-template-columns: 280px 1fr 300px; 
+            gap: 40px; 
+            padding: 0 25px; 
+            min-height: 80vh;
+        }
 
-        /* Ana Grid */
-        .container { max-width: 1400px; margin: 40px auto; display: grid; grid-template-columns: 280px 1fr 300px; gap: 40px; padding: 0 25px; }
+        /* SOL PANEL (Kategoriler) */
+        .sidebar-left { position: sticky; top: 100px; height: fit-content; }
+        .side-title { font-family: 'Marcellus'; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.1rem; letter-spacing: 1px; }
+        .cat-list { list-style: none; padding: 0; }
+        .cat-list li { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.02); cursor: pointer; transition: 0.3s; font-size: 0.95rem; color: var(--muted); }
+        .cat-list li:hover { color: var(--accent); padding-left: 10px; }
 
-        /* Haber Kartı */
-        .news-card { background: var(--white); border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.02); cursor: pointer; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); margin-bottom: 40px; }
-        .news-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.06); }
-        .news-img { width: 100%; height: 480px; object-fit: cover; }
-        .card-body { padding: 35px; }
-        .card-body h2 { font-family: 'Marcellus', serif; font-size: 2.2rem; margin: 0 0 15px 0; line-height: 1.2; }
-        .card-body p { color: var(--muted); font-size: 1.1rem; line-height: 1.7; }
+        /* MERMER HABER ALANI (Slider) */
+        .main-stage { 
+            position: relative; 
+            background: #fff; 
+            border-radius: 40px; 
+            overflow: hidden; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.03);
+            height: 700px;
+        }
 
-        /* DETAY PANELİ (MODAL) */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding-bottom: 100px; }
-        .close-overlay { position: fixed; top: 30px; right: 40px; cursor: pointer; background: var(--text); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
 
-        /* OKUYUCU DOSTU METİN SİSTEMİ */
-        .article-wrap { max-width: 800px; margin: 60px auto; padding: 0 20px; }
-        .article-title { font-family: 'Marcellus', serif; font-size: 3.8rem; line-height: 1.1; margin-bottom: 30px; }
-        .article-text { font-size: 1.35rem; line-height: 2; color: #2d3436; font-weight: 400; letter-spacing: -0.01em; }
+        .slide.active { opacity: 1; z-index: 10; }
 
-        /* SESLENDİRME PANELİ */
-        .audio-player { background: #f1f2f6; border-radius: 15px; padding: 20px; margin: 30px 0; display: flex; align-items: center; gap: 20px; }
-        .play-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .play-btn svg { fill: white; width: 20px; }
+        .slide-img { 
+            width: 100%; 
+            height: 65%; 
+            object-fit: cover;
+            filter: brightness(0.95);
+        }
 
-        /* Sidebarlar */
-        .side-title { font-family: 'Marcellus'; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.2rem; }
-        .ad-space { background: #eee; height: 500px; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: #999; border: 1px dashed #ccc; position: sticky; top: 100px; }
+        .slide-content { 
+            padding: 40px; 
+            background: #fff; 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center;
+        }
+
+        .slide-content h2 { 
+            font-family: 'Marcellus', serif; 
+            font-size: 2.8rem; 
+            margin: 0 0 15px 0; 
+            line-height: 1.1; 
+        }
+
+        /* Slider Kontrolleri (Minimalist SVG) */
+        .slider-nav {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            z-index: 20;
+            display: flex;
+            gap: 15px;
+        }
+        .nav-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--accent); cursor: pointer; transition: 0.3s; }
+        .nav-dot.active { background: var(--accent); width: 30px; border-radius: 10px; }
+
+        /* DETAY OVERLAY */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
+        .close-btn { position: fixed; top: 30px; right: 40px; background: #000; color: #fff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; }
+        .article-body { max-width: 800px; margin: 100px auto; padding: 0 20px; font-size: 1.35rem; line-height: 2; }
+
+        /* SAĞ PANEL (Sponsorlu) */
+        .ad-space { 
+            background: #f1f2f6; 
+            border-radius: 30px; 
+            height: 600px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center;
+            border: 1px dashed #ccc;
+            position: sticky; top: 100px;
+        }
 
         @media (max-width: 1100px) { .container { grid-template-columns: 1fr; } .sidebar-left, .sidebar-right { display: none; } }
     </style>
@@ -69,131 +124,119 @@
 
 <nav>
     <div class="logo">LUMINA</div>
-    <div id="current-city" style="font-size: 0.8rem; letter-spacing: 2px; font-weight: 700;">DEDECTING LOCATION...</div>
+    <div id="location-tag" style="font-size: 0.8rem; letter-spacing: 2px; font-weight: 700;">TESPİT EDİLİYOR...</div>
 </nav>
-
-<div class="authors-strip">
-    <div class="author-item" onclick="openAuthor('Vedat Mardinli', 'Tarihçi & Kültür Yazarı', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200')">
-        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200">
-        <span>VEDAT M.</span>
-    </div>
-    <div class="author-item" onclick="openAuthor('Adriana Silva', 'Sao Paulo Sosyete', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200')">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" style="border-color: #4b7bec;">
-        <span>ADRIANA S.</span>
-    </div>
-</div>
 
 <div class="container">
     <aside class="sidebar-left">
-        <div class="side-title" id="trans-cat">KATEGORİLER</div>
-        <div style="font-size: 0.9rem; line-height: 2.5; cursor: pointer;">
-            <div>• Mardin Ekspres</div>
-            <div>• Sao Paulo Night</div>
-            <div>• Gastronomi Mirası</div>
-            <div>• Sanat ve Tasarım</div>
-        </div>
+        <div class="side-title">KATEGORİLER</div>
+        <ul class="cat-list">
+            <li>• Mardin Ekspres</li>
+            <li>• Sao Paulo Night</li>
+            <li>• Gastronomi Mirası</li>
+            <li>• Sanat ve Tasarım</li>
+        </ul>
     </aside>
 
-    <main>
-        <article class="news-card" onclick="openNews('Mardin\'in Gümüş İşlemeli Geceleri', 'Eski bir geleneğin modern tasarımla buluşması. Telkari sanatı artık Sao Paulo podyumlarında.', 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200')">
-            <img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200" class="news-img">
-            <div class="card-body">
-                <small style="color:var(--accent); font-weight:bold;">KÜLTÜR • MARDİN</small>
-                <h2>Mardin'in Gümüş İşlemeli Geceleri: Telkari'nin Dönüşü</h2>
-                <p>Binlerce yıllık gümüş işleme sanatı, genç tasarımcıların elinde yeniden şekilleniyor...</p>
+    <main class="main-stage" id="slider-container">
+        <div class="slide active" onclick="openFull('Mardin\'in Gümüş Geceleri', 'Eski bir geleneğin modern tasarımla buluşması. Telkari sanatı podyumlarda.')">
+            <img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200" class="slide-img">
+            <div class="slide-content">
+                <small style="color:var(--accent); font-weight:800; letter-spacing:2px;">MARDİN • KÜLTÜR</small>
+                <h2>Mardin'in Gümüş İşlemeli Geceleri</h2>
+                <p style="color:var(--muted)">Binlerce yıllık taş binaların arasında yankılanan çekiç sesleri, modern bir moda akımına dönüşüyor.</p>
             </div>
-        </article>
+        </div>
+
+        <div class="slide" onclick="openFull('Sao Paulo Modernizm', 'Brezilya mimarisinin kalbinde bir yolculuk.')">
+            <img src="https://images.unsplash.com/photo-1548107116-76ec56873523?w=1200" class="slide-img">
+            <div class="slide-content">
+                <small style="color:#4b7bec; font-weight:800; letter-spacing:2px;">SAO PAULO • MİMARİ</small>
+                <h2>Brutalizmden Tropikale: Sao Paulo</h2>
+                <p style="color:var(--muted)">Betonun ve yeşilin iç içe geçtiği metropolde, yeni nesil sanat galerileri kapılarını açıyor.</p>
+            </div>
+        </div>
+
+        <div class="slider-nav" id="slider-dots">
+            <div class="nav-dot active" onclick="setSlide(0)"></div>
+            <div class="nav-dot" onclick="setSlide(1)"></div>
+        </div>
     </main>
 
     <aside class="sidebar-right">
-        <div class="ad-space" id="trans-ad">SPONSORLU ALAN</div>
+        <div class="ad-space">
+            <div style="transform: rotate(-90deg); color: #bbb; letter-spacing: 5px; font-weight: bold;">SPONSORLU ALAN</div>
+        </div>
     </aside>
 </div>
 
 <div id="overlay" class="overlay">
-    <div class="close-overlay" onclick="closeAll()">✕</div>
-    <div id="overlay-content" class="article-wrap"></div>
+    <div class="close-btn" onclick="closeFull()">✕</div>
+    <div id="overlay-content"></div>
 </div>
 
 <script>
-    // 1. YEREL DİL VE KONUM TESPİTİ
-    const userLang = navigator.language || navigator.userLanguage;
-    const locationTag = document.getElementById('current-city');
-    
-    // Basit Dil Adaptasyonu
-    if(userLang.includes('pt')) { // Portekizce (Sao Paulo)
-        locationTag.innerText = "SAO PAULO • LOCAL";
-        document.getElementById('trans-cat').innerText = "CATEGORIAS";
-        document.getElementById('trans-ad').innerText = "ESPAÇO PUBLICITÁRIO";
-    } else {
-        locationTag.innerText = "MARDİN • YEREL";
+    // 1. DİNAMİK SLAYT SİSTEMİ
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.nav-dot');
+
+    function setSlide(index) {
+        slides[currentSlide].classList.remove('active');
+        dots[currentSlide].classList.remove('active');
+        currentSlide = index;
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
     }
 
-    // 2. SESLENDİRME FONKSİYONU (Text-to-Speech)
-    function speakText(textId) {
-        const text = document.getElementById(textId).innerText;
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = userLang; 
-        speechSynthesis.speak(utterance);
-    }
+    // Otomatik Geçiş (5 saniyede bir)
+    setInterval(() => {
+        let next = (currentSlide + 1) % slides.length;
+        setSlide(next);
+    }, 5000);
 
-    // 3. HABER AÇMA (OKUYUCU DOSTU)
-    function openNews(title, text, img) {
+    // 2. HABER DETAYI VE SESLENDİRME
+    function openFull(title, text) {
+        const overlay = document.getElementById('overlay');
         const content = document.getElementById('overlay-content');
-        document.getElementById('overlay').style.display = 'block';
+        overlay.style.display = 'block';
         document.body.style.overflow = 'hidden';
 
         content.innerHTML = `
-            <h1 class="article-title">${title}</h1>
-            
-            <div class="audio-player">
-                <button class="play-btn" onclick="speakText('article-main-text')">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <div>
-                    <strong style="font-size:0.9rem;">Yazıyı Dinle</strong><br>
-                    <small style="color:var(--muted)">Yapay Zeka Seslendirme Aktif</small>
+            <div class="article-body">
+                <h1 style="font-family:'Marcellus'; font-size:4rem; line-height:1;">${title}</h1>
+                <div style="background:#f1f2f6; padding:20px; border-radius:15px; margin:30px 0; display:flex; align-items:center; gap:20px;">
+                    <button onclick="speakText('main-text')" style="background:var(--accent); border:none; width:50px; height:50px; border-radius:50%; cursor:pointer; color:white;">▶</button>
+                    <strong>Yazıyı Seslendir (AI)</strong>
+                </div>
+                <div id="main-text">
+                    <p>${text}</p>
+                    <p>Profesyonel okuma deneyimi için metin boyutu optimize edilmiştir. Lumina Gazetecilik standartlarına göre, her kelime hem görsel hem de işitsel bir deneyim sunar.</p>
                 </div>
             </div>
-
-            <img src="${img}" style="width:100%; border-radius:30px; margin-bottom:40px;">
-            
-            <div id="article-main-text" class="article-text">
-                <p>${text}</p>
-                <p>Profesyonel okuma deneyimi için bu metin boyutu (22px) ve satır aralığı (2.0) dünya standartlarındadır. Mardin ve Sao Paulo arasındaki bu kültürel köprü, sadece görsellerle değil, sesle de hayat buluyor.</p>
-                <p>Haber detayları artık daha geniş, daha ferah ve tamamen okuyucu odaklı. Google ikonları yerine kendi özel minimalist SVG kütüphanemizi kullanıyoruz.</p>
-            </div>
         `;
     }
 
-    // 4. YAZAR DETAYI
-    function openAuthor(name, bio, img) {
-        const content = document.getElementById('overlay-content');
-        document.getElementById('overlay').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-        content.innerHTML = `
-            <div style="text-align:center;">
-                <img src="${img}" style="width:180px; height:180px; border-radius:50%; border:4px solid var(--accent); padding:5px; margin-bottom:20px;">
-                <h1 class="article-title">${name}</h1>
-                <p style="font-size:1.3rem; color:var(--muted);">${bio}</p>
-            </div>
-            <hr style="border:0; border-top:1px solid #eee; margin:50px 0;">
-            <h3>Yazarın Arşivi</h3>
-            <div style="background:white; padding:20px; border-radius:15px; border:1px solid #eee; margin-bottom:10px;">
-                <strong>Geleceğin Antik Şehri</strong><br><small>12 Şubat 2026</small>
-            </div>
-        `;
-    }
-
-    function closeAll() {
-        speechSynthesis.cancel(); // Seslendirmeyi durdur
+    function closeFull() {
+        speechSynthesis.cancel();
         document.getElementById('overlay').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 
+    function speakText(id) {
+        const text = document.getElementById(id).innerText;
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = navigator.language;
+        speechSynthesis.speak(msg);
+    }
+
+    // Dil ve Konum
+    const userLang = navigator.language;
+    document.getElementById('location-tag').innerText = userLang.includes('pt') ? "SAO PAULO • LOCAL" : "MARDİN • YEREL";
+
     // Progress Bar
-    window.onscroll = function() {
-        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    window.onscroll = () => {
+        let winScroll = document.documentElement.scrollTop;
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
     };
