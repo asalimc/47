@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC GLOBAL | Management Suite</title>
+    <title>ASC GLOBAL | Master Edition</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -12,13 +12,14 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap');
         
-        /* GOOGLE YAZI VE BAR ENGELLEYİCİ */
+        /* GOOGLE TEMİZLİK SİSTEMİ */
         .goog-te-banner-frame, .goog-te-balloon-frame, .goog-te-menu-value, 
         .goog-te-menu-frame, .skiptranslate, #google_translate_element {
             display: none !important; opacity: 0 !important; visibility: hidden !important;
         }
         body { top: 0px !important; font-family: 'Outfit', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
         
+        /* Premium Arka Plan */
         .bg-ultra {
             background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, transparent 50%),
                         radial-gradient(circle at 100% 100%, #064e3b 0%, transparent 50%),
@@ -35,24 +36,26 @@
         }
 
         .img-zoom { width: 100%; height: 100%; object-fit: cover; transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .group:hover .img-zoom { transform: scale(1.15); }
+        .group:hover .img-zoom { transform: scale(1.1); }
 
         [x-cloak] { display: none !important; }
-
-        /* Admin Tablo Stili */
-        .admin-table-row { border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.3s; }
-        .admin-table-row:hover { background: rgba(255,255,255,0.03); }
+        
+        /* Admin Tablo Geçişleri */
+        .admin-row { border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; }
+        .admin-row:hover { background: rgba(255,255,255,0.03); }
     </style>
 </head>
 <body x-data="portalApp()" x-init="init()" class="bg-ultra">
 
     <nav class="fixed top-0 w-full z-[100] bg-black/40 backdrop-blur-md border-b border-white/5">
         <div class="max-w-[1800px] mx-auto px-8 py-5 flex justify-between items-center">
-            <div @click="currentPage = 'home'" class="flex items-center gap-4 cursor-pointer">
-                <div class="bg-blue-600 text-white font-black px-5 py-2 rounded-2xl text-2xl tracking-tighter shadow-2xl">ASC</div>
-                <span class="text-3xl font-black italic tracking-tighter text-white uppercase">Global</span>
+            <div @click="currentPage = 'home'" class="flex items-center gap-4 cursor-pointer group">
+                <div class="bg-blue-600 text-white font-black px-5 py-2 rounded-2xl text-2xl tracking-tighter shadow-2xl group-hover:bg-white group-hover:text-blue-600 transition">ASC</div>
+                <span class="text-3xl font-black italic tracking-tighter text-white uppercase">GLOBAL</span>
             </div>
-            <button @click="loginAdmin()" class="bg-white text-black px-10 py-3.5 rounded-full text-xs font-black uppercase hover:bg-blue-600 hover:text-white transition-all shadow-2xl">Terminal</button>
+            <button @click="loginAdmin()" class="bg-white text-black px-10 py-3.5 rounded-full text-xs font-black uppercase hover:bg-blue-600 hover:text-white transition-all shadow-2xl">
+                TERMINAL
+            </button>
         </div>
     </nav>
 
@@ -69,17 +72,18 @@
                         <div class="absolute bottom-24 right-16 text-right"><h2 class="text-5xl font-black italic text-white">RIO</h2></div>
                     </div>
                 </div>
+                
                 <div class="relative z-10 text-center pointer-events-none">
                     <h1 class="hero-title italic text-white uppercase">ASC<br><span class="text-transparent" style="-webkit-text-stroke: 1.5px white;">GLOBAL</span></h1>
                     <div class="mt-16 flex justify-center gap-8">
-                        <div class="glass-panel px-12 py-6 rounded-[2.5rem]"><span class="block text-3xl font-black text-blue-500" x-text="mTime"></span><span class="text-[10px] uppercase tracking-widest opacity-40 font-bold">Mardin</span></div>
-                        <div class="glass-panel px-12 py-6 rounded-[2.5rem]"><span class="block text-3xl font-black text-emerald-500" x-text="bTime"></span><span class="text-[10px] uppercase tracking-widest opacity-40 font-bold">Rio</span></div>
+                        <div class="glass-panel px-12 py-6 rounded-[2.5rem]"><span class="block text-3xl font-black text-blue-500" x-text="mTime"></span><span class="text-[10px] uppercase tracking-widest opacity-40 font-bold">Mardin Time</span></div>
+                        <div class="glass-panel px-12 py-6 rounded-[2.5rem]"><span class="block text-3xl font-black text-emerald-500" x-text="bTime"></span><span class="text-[10px] uppercase tracking-widest opacity-40 font-bold">Rio Time</span></div>
                     </div>
                 </div>
             </header>
 
             <section class="max-w-[1800px] mx-auto px-8 py-40">
-                <h2 class="text-7xl font-black uppercase italic mb-20 leading-none">Global <span class="text-blue-600 text-transparent" style="-webkit-text-stroke: 1px #2563eb;">Editorial</span></h2>
+                <h2 class="text-7xl font-black uppercase italic mb-20 leading-none">Global <span class="text-blue-600">Editorial</span></h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     <template x-for="(author, index) in authors" :key="index">
                         <div @click="openAuthor(author)" class="group cursor-pointer">
@@ -98,11 +102,11 @@
             <section class="max-w-[1800px] mx-auto px-8 py-20 border-t border-white/5">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                     <template x-for="(news, index) in newsData" :key="index">
-                        <div @click="openNews(news)" class="glass-panel rounded-[3rem] overflow-hidden group cursor-pointer hover:border-emerald-500 transition-all duration-500">
-                            <div class="h-64 overflow-hidden"><img :src="news.img" class="img-zoom"></div>
-                            <div class="p-10">
+                        <div @click="openNews(news)" class="glass-panel rounded-[3.5rem] overflow-hidden group cursor-pointer hover:border-emerald-500 transition-all duration-500">
+                            <div class="h-72 overflow-hidden"><img :src="news.img" class="img-zoom"></div>
+                            <div class="p-12">
                                 <span class="text-emerald-500 text-[10px] font-black uppercase tracking-widest" x-text="news.tag"></span>
-                                <h3 class="text-2xl font-black uppercase italic mt-4" x-text="news.title"></h3>
+                                <h3 class="text-3xl font-black uppercase italic mt-4 text-white" x-text="news.title"></h3>
                             </div>
                         </div>
                     </template>
@@ -111,77 +115,91 @@
         </div>
 
         <div x-show="currentPage === 'author-detail'" class="max-w-[1400px] mx-auto px-8 py-48" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-16 font-black text-xs uppercase tracking-widest text-slate-500 border border-white/10 px-8 py-4 rounded-full hover:bg-white hover:text-black transition">← Portal'a Dön</button>
+            <button @click="currentPage = 'home'" class="mb-16 font-black text-xs uppercase tracking-widest text-slate-500 border border-white/10 px-8 py-4 rounded-full hover:bg-white hover:text-black transition">← Back to Portal</button>
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
-                <div class="lg:col-span-4"><img :src="selectedAuthor?.photo" class="w-full aspect-square object-cover rounded-[4rem] shadow-2xl glass-panel p-4"></div>
+                <div class="lg:col-span-4"><img :src="selectedAuthor?.photo" class="w-full aspect-square object-cover rounded-[5rem] glass-panel p-4 shadow-2xl"></div>
                 <div class="lg:col-span-8">
-                    <h1 class="text-8xl font-black uppercase italic text-white" x-text="selectedAuthor?.name"></h1>
-                    <p class="text-blue-600 text-xl font-bold uppercase mt-4 mb-10" x-text="selectedAuthor?.title"></p>
+                    <h1 class="text-8xl font-black uppercase italic text-white leading-none" x-text="selectedAuthor?.name"></h1>
+                    <p class="text-blue-600 text-2xl font-bold uppercase mt-6 mb-12" x-text="selectedAuthor?.title"></p>
                     <div class="glass-panel p-16 rounded-[4rem] text-2xl text-slate-300 leading-relaxed italic" x-text="selectedAuthor?.bio"></div>
                 </div>
             </div>
         </div>
 
         <div x-show="currentPage === 'news-detail'" class="max-w-[1200px] mx-auto px-8 py-48" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-16 font-black text-xs uppercase tracking-widest text-slate-500 border border-white/10 px-8 py-4 rounded-full hover:bg-white hover:text-black transition">← Portal'a Dön</button>
-            <img :src="selectedNews?.img" class="w-full h-[60vh] object-cover rounded-[5rem] mb-16 shadow-2xl border border-white/10">
-            <h1 class="text-7xl font-black uppercase italic text-white mb-10" x-text="selectedNews?.title"></h1>
+            <button @click="currentPage = 'home'" class="mb-16 font-black text-xs uppercase tracking-widest text-slate-500 border border-white/10 px-8 py-4 rounded-full hover:bg-white hover:text-black transition">← Back to Portal</button>
+            <img :src="selectedNews?.img" class="w-full h-[65vh] object-cover rounded-[5rem] mb-20 shadow-2xl border border-white/10">
+            <h1 class="text-7xl font-black uppercase italic text-white mb-12 tracking-tighter" x-text="selectedNews?.title"></h1>
             <div class="glass-panel p-16 rounded-[4rem] text-2xl text-slate-300 leading-relaxed font-light" x-html="selectedNews?.body"></div>
         </div>
 
-        <div x-show="currentPage === 'admin'" class="max-w-[1600px] mx-auto px-8 py-40" x-cloak>
+        <div x-show="currentPage === 'admin'" class="max-w-[1700px] mx-auto px-8 py-40" x-cloak>
             <div class="glass-panel p-16 rounded-[5rem]">
                 <div class="flex justify-between items-center mb-16 border-b border-white/10 pb-10">
-                    <h2 class="text-5xl font-black italic">SYSTEM <span class="text-blue-500">TERMINAL</span></h2>
-                    <button @click="currentPage = 'home'" class="bg-red-600 px-10 py-4 rounded-full text-xs font-black uppercase">Close</button>
+                    <h2 class="text-5xl font-black italic">ASC <span class="text-blue-500">TERMINAL</span></h2>
+                    <button @click="currentPage = 'home'" class="bg-red-600 px-12 py-4 rounded-full text-xs font-black uppercase shadow-2xl">Exit System</button>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32">
                     <div class="space-y-6">
-                        <h3 class="text-blue-400 font-black uppercase tracking-widest text-sm">Yazar İşlemleri</h3>
-                        <input x-model="tempAuthor.name" type="text" placeholder="İsim" class="w-full bg-white/5 p-6 rounded-3xl border border-white/10">
-                        <input x-model="tempAuthor.title" type="text" placeholder="Ünvan" class="w-full bg-white/5 p-6 rounded-3xl border border-white/10">
-                        <textarea x-model="tempAuthor.bio" placeholder="Biyografi" class="w-full bg-white/5 p-6 rounded-3xl border border-white/10 h-32"></textarea>
-                        <input type="file" @change="handleFileUpload($event, 'author')" class="text-xs">
-                        <button @click="saveAuthor()" class="w-full bg-blue-600 py-6 rounded-3xl font-black uppercase tracking-widest" x-text="isEditingAuthor ? 'Güncelle' : 'Sisteme Kaydet'"></button>
+                        <div class="flex justify-between items-center"><h3 class="text-blue-400 font-black uppercase text-sm">Writer Management</h3> <span x-show="isEditingAuthor" class="text-[10px] bg-blue-600 px-3 py-1 rounded-full uppercase">Edit Mode</span></div>
+                        <input x-model="tempAuthor.name" type="text" placeholder="Name / Surname" class="w-full bg-white/5 p-6 rounded-[2rem] border border-white/10 outline-none focus:border-blue-600 transition">
+                        <input x-model="tempAuthor.title" type="text" placeholder="Designation" class="w-full bg-white/5 p-6 rounded-[2rem] border border-white/10 outline-none focus:border-blue-600 transition">
+                        <textarea x-model="tempAuthor.bio" placeholder="Biography" class="w-full bg-white/5 p-6 rounded-[2rem] border border-white/10 h-32 outline-none focus:border-blue-600 transition"></textarea>
+                        <div class="relative bg-white/5 p-6 rounded-3xl border-2 border-dashed border-white/10 text-center">
+                            <input type="file" @change="handleFileUpload($event, 'author')" class="absolute inset-0 opacity-0 cursor-pointer">
+                            <p class="text-xs opacity-50 font-bold uppercase">Upload Photo</p>
+                        </div>
+                        <button @click="saveAuthor()" class="w-full bg-blue-600 py-6 rounded-[2rem] font-black uppercase tracking-widest shadow-2xl" x-text="isEditingAuthor ? 'Update Writer' : 'Add to System'"></button>
                     </div>
+                    
                     <div class="space-y-6">
-                        <h3 class="text-emerald-400 font-black uppercase tracking-widest text-sm">Haber İşlemleri</h3>
-                        <input x-model="tempNews.title" type="text" placeholder="Haber Başlığı" class="w-full bg-white/5 p-6 rounded-3xl border border-white/10">
-                        <input x-model="tempNews.tag" type="text" placeholder="Kategori" class="w-full bg-white/5 p-6 rounded-3xl border border-white/10">
-                        <textarea x-model="tempNews.body" placeholder="Haber İçeriği" class="w-full bg-white/5 p-6 rounded-3xl border border-white/10 h-32"></textarea>
-                        <input type="file" @change="handleFileUpload($event, 'news')" class="text-xs">
-                        <button @click="saveNews()" class="w-full bg-emerald-600 py-6 rounded-3xl font-black uppercase tracking-widest" x-text="isEditingNews ? 'Güncelle' : 'Yayına Al'"></button>
+                        <div class="flex justify-between items-center"><h3 class="text-emerald-400 font-black uppercase text-sm">Broadcast Hub</h3> <span x-show="isEditingNews" class="text-[10px] bg-emerald-600 px-3 py-1 rounded-full uppercase">Edit Mode</span></div>
+                        <input x-model="tempNews.title" type="text" placeholder="Headline" class="w-full bg-white/5 p-6 rounded-[2rem] border border-white/10 outline-none focus:border-emerald-600 transition">
+                        <input x-model="tempNews.tag" type="text" placeholder="Category" class="w-full bg-white/5 p-6 rounded-[2rem] border border-white/10 outline-none focus:border-emerald-600 transition">
+                        <textarea x-model="tempNews.body" placeholder="Content (HTML support)" class="w-full bg-white/5 p-6 rounded-[2rem] border border-white/10 h-32 outline-none focus:border-emerald-600 transition"></textarea>
+                        <div class="relative bg-white/5 p-6 rounded-3xl border-2 border-dashed border-white/10 text-center">
+                            <input type="file" @change="handleFileUpload($event, 'news')" class="absolute inset-0 opacity-0 cursor-pointer">
+                            <p class="text-xs opacity-50 font-bold uppercase">Upload Cover Media</p>
+                        </div>
+                        <button @click="saveNews()" class="w-full bg-emerald-600 py-6 rounded-[2rem] font-black uppercase tracking-widest shadow-2xl" x-text="isEditingNews ? 'Update News' : 'Deploy Story'"></button>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                    <div class="glass-panel p-10 rounded-[3rem]">
-                        <h4 class="text-xl font-black uppercase mb-8 border-b border-white/10 pb-4">Yazarları Yönet</h4>
+                    <div class="glass-panel p-10 rounded-[3.5rem]">
+                        <h4 class="text-xl font-black uppercase mb-8 border-b border-white/10 pb-4">Writer List</h4>
                         <div class="space-y-4">
                             <template x-for="(a, index) in authors" :key="index">
-                                <div class="admin-table-row py-4 flex justify-between items-center">
-                                    <div class="flex items-center gap-4">
-                                        <img :src="a.photo" class="w-12 h-12 rounded-full object-cover">
-                                        <span class="font-bold text-sm" x-text="a.name"></span>
+                                <div class="admin-row py-5 flex justify-between items-center">
+                                    <div class="flex items-center gap-5">
+                                        <img :src="a.photo" class="w-14 h-14 rounded-2xl object-cover shadow-xl">
+                                        <div>
+                                            <p class="font-black text-white text-sm uppercase" x-text="a.name"></p>
+                                            <p class="text-[10px] text-blue-500 font-bold uppercase" x-text="a.title"></p>
+                                        </div>
                                     </div>
-                                    <div class="flex gap-2">
-                                        <button @click="editAuthor(index)" class="bg-blue-600/20 text-blue-400 p-3 rounded-xl hover:bg-blue-600 hover:text-white transition"><i class="fas fa-edit"></i></button>
-                                        <button @click="deleteAuthor(index)" class="bg-red-600/20 text-red-400 p-3 rounded-xl hover:bg-red-600 hover:text-white transition"><i class="fas fa-trash"></i></button>
+                                    <div class="flex gap-3">
+                                        <button @click="editAuthor(index)" class="bg-blue-600/20 text-blue-400 p-4 rounded-2xl hover:bg-blue-600 hover:text-white transition"><i class="fas fa-edit"></i></button>
+                                        <button @click="deleteAuthor(index)" class="bg-red-600/20 text-red-400 p-4 rounded-2xl hover:bg-red-600 hover:text-white transition"><i class="fas fa-trash-alt"></i></button>
                                     </div>
                                 </div>
                             </template>
                         </div>
                     </div>
-                    <div class="glass-panel p-10 rounded-[3rem]">
-                        <h4 class="text-xl font-black uppercase mb-8 border-b border-white/10 pb-4">Haberleri Yönet</h4>
+                    
+                    <div class="glass-panel p-10 rounded-[3.5rem]">
+                        <h4 class="text-xl font-black uppercase mb-8 border-b border-white/10 pb-4">Story List</h4>
                         <div class="space-y-4">
                             <template x-for="(n, index) in newsData" :key="index">
-                                <div class="admin-table-row py-4 flex justify-between items-center">
-                                    <span class="font-bold text-sm truncate max-w-[200px]" x-text="n.title"></span>
-                                    <div class="flex gap-2">
-                                        <button @click="editNews(index)" class="bg-emerald-600/20 text-emerald-400 p-3 rounded-xl hover:bg-emerald-600 hover:text-white transition"><i class="fas fa-edit"></i></button>
-                                        <button @click="deleteNews(index)" class="bg-red-600/20 text-red-400 p-3 rounded-xl hover:bg-red-600 hover:text-white transition"><i class="fas fa-trash"></i></button>
+                                <div class="admin-row py-5 flex justify-between items-center">
+                                    <div class="flex items-center gap-5">
+                                        <img :src="n.img" class="w-20 h-14 rounded-xl object-cover grayscale">
+                                        <p class="font-bold text-white text-sm uppercase truncate max-w-[200px]" x-text="n.title"></p>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <button @click="editNews(index)" class="bg-emerald-600/20 text-emerald-400 p-4 rounded-2xl hover:bg-emerald-600 hover:text-white transition"><i class="fas fa-edit"></i></button>
+                                        <button @click="deleteNews(index)" class="bg-red-600/20 text-red-400 p-4 rounded-2xl hover:bg-red-600 hover:text-white transition"><i class="fas fa-trash-alt"></i></button>
                                     </div>
                                 </div>
                             </template>
@@ -192,6 +210,10 @@
         </div>
     </main>
 
+    <footer class="py-24 text-center opacity-30">
+        <p class="text-[11px] font-black uppercase tracking-[1.5em] italic text-white">ASC Global Intelligence © 2026</p>
+    </footer>
+
     <script>
         function portalApp() {
             return {
@@ -200,26 +222,27 @@
                 selectedNews: null,
                 mTime: '', bTime: '',
                 
-                // Form Verileri
+                // DATA FORMS
                 tempAuthor: { name: '', title: '', bio: '', photo: '' },
                 tempNews: { title: '', tag: '', body: '', img: '' },
                 isEditingAuthor: false, editAuthorIdx: null,
                 isEditingNews: false, editNewsIdx: null,
 
-                authors: JSON.parse(localStorage.getItem('asc_v11_authors')) || [
-                    { name: 'Dr. Ahmet Salim', title: 'Senior Historian', bio: 'Mezopotamya mimarisi uzmanı.', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800' },
-                    { name: 'Isabella Mendes', title: 'Macro Strategist', bio: 'Güney Amerika ekonomi analisti.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800' }
+                // DATABASE
+                authors: JSON.parse(localStorage.getItem('asc_v12_authors')) || [
+                    { name: 'Dr. Ahmet Salim', title: 'Senior Historian', bio: 'Mezopotamya mimarisi ve Mardin in kadim tarihi üzerine 20 yılı aşkın süredir araştırmalar yapmaktadır.', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800' },
+                    { name: 'Isabella Mendes', title: 'Macro Strategist', bio: 'Rio de Janeiro merkezli ekonomi analisti. Güney Amerika pazarları üzerine uzmanlaşmış bir stratejisttir.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800' }
                 ],
-                newsData: JSON.parse(localStorage.getItem('asc_v11_news')) || [
-                    { title: 'The Golden City: Mardin', tag: 'Kültür', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=1200', body: 'Tarihi dokusuyla Mardin...' },
-                    { title: 'Rio de Janeiro: 2026 Vision', tag: 'Şehir', img: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1200', body: 'Rio nun yeni vizyonu...' }
+                newsData: JSON.parse(localStorage.getItem('asc_v12_news')) || [
+                    { title: 'Golden Era of Mesopotamia', tag: 'History', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=1200', body: 'The deep history of Mardin is being rediscovered...' },
+                    { title: 'The Rio Economic Shift', tag: 'Economy', img: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1200', body: 'New financial hubs are rising in Rio de Janeiro...' }
                 ],
 
                 init() {
                     setInterval(() => {
                         const n = new Date();
-                        this.mTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' }).format(n);
-                        this.bTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' }).format(n);
+                        this.mTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Istanbul' }).format(n);
+                        this.bTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' }).format(n);
                     }, 1000);
                 },
 
@@ -229,49 +252,49 @@
                     if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
                 },
 
-                loginAdmin() { if (prompt("Terminal Key:") === "Mardin47**") this.currentPage = 'admin'; },
+                loginAdmin() { if (prompt("Access Key:") === "Mardin47**") this.currentPage = 'admin'; },
 
-                // YAZAR YÖNETİMİ
+                // WRITER LOGIC
                 saveAuthor() {
                     if(this.isEditingAuthor) this.authors[this.editAuthorIdx] = {...this.tempAuthor};
                     else this.authors.push({...this.tempAuthor});
-                    this.finishAction('author');
+                    this.clearAction('author');
                 },
                 editAuthor(idx) { 
                     this.tempAuthor = {...this.authors[idx]}; 
                     this.isEditingAuthor = true; 
                     this.editAuthorIdx = idx; 
-                    window.scrollTo(0, 500);
+                    window.scrollTo({top: 0, behavior: 'smooth'});
                 },
-                deleteAuthor(idx) { if(confirm("Silmek istediğinize emin misiniz?")) { this.authors.splice(idx, 1); this.saveToLocal(); } },
+                deleteAuthor(idx) { if(confirm("Confirm delete writer?")) { this.authors.splice(idx, 1); this.sync(); } },
 
-                // HABER YÖNETİMİ
+                // NEWS LOGIC
                 saveNews() {
                     if(this.isEditingNews) this.newsData[this.editNewsIdx] = {...this.tempNews};
                     else this.newsData.push({...this.tempNews});
-                    this.finishAction('news');
+                    this.clearAction('news');
                 },
                 editNews(idx) { 
                     this.tempNews = {...this.newsData[idx]}; 
                     this.isEditingNews = true; 
                     this.editNewsIdx = idx; 
-                    window.scrollTo(0, 500);
+                    window.scrollTo({top: 0, behavior: 'smooth'});
                 },
-                deleteNews(idx) { if(confirm("Haber silinsin mi?")) { this.newsData.splice(idx, 1); this.saveToLocal(); } },
+                deleteNews(idx) { if(confirm("Confirm delete story?")) { this.newsData.splice(idx, 1); this.sync(); } },
 
-                finishAction(type) {
-                    this.saveToLocal();
+                clearAction(type) {
+                    this.sync();
                     if(type === 'author') { this.tempAuthor = {name:'', title:'', bio:'', photo:''}; this.isEditingAuthor = false; }
                     else { this.tempNews = {title:'', tag:'', body:'', img:''}; this.isEditingNews = false; }
-                    alert("Başarılı!");
+                    alert("System Synced Successfully!");
                 },
-                saveToLocal() {
-                    localStorage.setItem('asc_v11_authors', JSON.stringify(this.authors));
-                    localStorage.setItem('asc_v11_news', JSON.stringify(this.newsData));
+                sync() {
+                    localStorage.setItem('asc_v12_authors', JSON.stringify(this.authors));
+                    localStorage.setItem('asc_v12_news', JSON.stringify(this.newsData));
                 },
 
-                openAuthor(author) { this.selectedAuthor = author; this.currentPage = 'author-detail'; window.scrollTo(0,0); },
-                openNews(news) { this.selectedNews = news; this.currentPage = 'news-detail'; window.scrollTo(0,0); }
+                openAuthor(a) { this.selectedAuthor = a; this.currentPage = 'author-detail'; window.scrollTo(0,0); },
+                openNews(n) { this.selectedNews = n; this.currentPage = 'news-detail'; window.scrollTo(0,0); }
             }
         }
     </script>
