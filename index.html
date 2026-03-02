@@ -16,7 +16,246 @@
         /* --- UI COMPONENTS --- */
         #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 10001; }
         nav { background: rgba(253, 251, 247, 0.9); backdrop-filter: blur(15px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
-        .logo { font-family: 'Marcellus', serif; font-size: 1.8rem; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
+        .logo { font-family: 'Marcellus', serif; font-size: 1.8rem<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina | Global Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fdfbf7; --text: #1a1a1a; --muted: #718096; --accent: #c49b66;
+            --white: #ffffff; --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
+
+        /* --- ANA ARAYÜZ (DOKUNULMADI) --- */
+        nav { background: rgba(253, 251, 247, 0.95); backdrop-filter: blur(15px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .logo { font-family: 'Marcellus', serif; font-size: 1.8rem; letter-spacing: 3px; cursor: pointer; }
+        .admin-trigger { cursor: pointer; opacity: 0.1; font-size: 10px; padding: 10px; }
+        
+        .container { max-width: 1400px; margin: 20px auto; display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 0 20px; }
+        #news-feed { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        
+        .news-card { background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); cursor: pointer; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); height: 100%; display: flex; flex-direction: column; }
+        .news-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.07); }
+        .news-img { width: 100%; height: 200px; object-fit: cover; }
+        .card-body { padding: 20px; flex-grow: 1; }
+
+        /* --- FULL RESPONSIVE ADMIN DASHBOARD --- */
+        .admin-panel { display: none; position: fixed; inset: 0; background: #f0f2f5; z-index: 12000; padding: 20px; overflow-y: auto; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        
+        .cms-card { background: #fff; padding: 25px; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #e1e4e8; }
+        .cms-card h3 { font-family: 'Marcellus', serif; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; color: var(--accent); }
+
+        .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-item { background: var(--accent); color: white; padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-item b { display: block; font-size: 22px; }
+        .stat-item small { font-size: 10px; text-transform: uppercase; opacity: 0.9; }
+
+        /* Formlar */
+        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 14px; }
+        .btn { padding: 12px 20px; border-radius: 50px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; width: 100%; }
+        .btn-gold { background: var(--accent); color: white; }
+        .btn-dark { background: #1a1a1a; color: white; }
+        .btn-ai { background: #6c5ce7; color: white; margin-bottom: 15px; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
+        .del-btn { background: #ff7675; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; }
+
+        /* Responsive Kurallar */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar-left { display: none; }
+            .dash-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Overlay */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo" onclick="location.reload()">LUMINA</div>
+    <div style="display:flex; align-items:center; gap:15px;">
+        <div id="local-tag" style="font-size: 0.75rem; letter-spacing: 1px; font-weight: 700;">LOCALIZING...</div>
+        <div class="admin-trigger" onclick="openCMS()">[L_CORE]</div>
+    </div>
+</nav>
+
+<div class="container">
+    <aside class="sidebar-left">
+        <h4 id="lang-cat-head" style="font-family:'Marcellus'; border-bottom:2px solid var(--accent); padding-bottom:10px;">CATEGORIES</h4>
+        <div id="cat-list-view" style="font-size: 0.95rem; line-height: 2.8; cursor:pointer;"></div>
+        <div id="ad-sidebar" onclick="trackClick('ad', 'sidebar')" style="margin-top:30px; border-radius:15px; overflow:hidden; cursor:pointer;"></div>
+    </aside>
+    <main id="news-feed"></main>
+</div>
+
+<div id="adminPanel" class="admin-panel">
+    <div class="dash-header">
+        <h1 style="font-family:'Marcellus'; margin:0;">Lumina Global Control</h1>
+        <button class="btn btn-dark" style="width:auto;" onclick="closeCMS()">Exit Dashboard</button>
+    </div>
+
+    <div class="dash-grid">
+        <div class="cms-card">
+            <h3>Analytics & Visitors</h3>
+            <div class="stat-row">
+                <div class="stat-item"><small>Views</small><b id="total-views">0</b></div>
+                <div class="stat-item"><small>News</small><b id="news-clicks">0</b></div>
+                <div class="stat-item"><small>Ads</small><b id="ad-clicks">0</b></div>
+            </div>
+            <div style="max-height: 150px; overflow-y: auto; font-size: 11px;" id="visitor-log-list"></div>
+        </div>
+
+        <div class="cms-card">
+            <h3>Haber & AI Motoru</h3>
+            <button class="btn btn-ai" onclick="generateAI()">AI: Mardin-Brezilya Haberi Üret</button>
+            <input type="hidden" id="edit-id">
+            <input type="text" id="nTitle" placeholder="Haber Başlığı">
+            <textarea id="nContent" placeholder="Haber İçeriği..." rows="3"></textarea>
+            <select id="nCatSelect"></select>
+            <button class="btn btn-gold" onclick="saveNews()">Haberi Yayınla</button>
+            <div id="mgmt-news-list" style="margin-top:15px; max-height:120px; overflow-y:auto;"></div>
+        </div>
+
+        <div class="cms-card">
+            <h3>Kategori & Reklam</h3>
+            <div style="display:flex; gap:5px; margin-bottom:15px;">
+                <input type="text" id="newCatInput" placeholder="Yeni Kategori" style="margin:0;">
+                <button class="btn btn-gold" style="width:auto;" onclick="addCategory()">+</button>
+            </div>
+            <div id="mgmt-cat-list" style="max-height:100px; overflow-y:auto; margin-bottom:20px; border-bottom:1px solid #eee;"></div>
+            
+            <h4 style="font-size:14px; margin-bottom:10px;">Reklam Ayarları</h4>
+            <input type="text" id="adImageUrl" placeholder="Reklam Görsel URL">
+            <input type="text" id="adTargetUrl" placeholder="Reklam Linki">
+            <button class="btn btn-dark" onclick="updateAd()">Reklamı Güncelle</button>
+        </div>
+
+        <div class="cms-card">
+            <h3>Yazarlar</h3>
+            <input type="text" id="authName" placeholder="Yazar Adı">
+            <textarea id="authBio" placeholder="Yazar Biyografisi..."></textarea>
+            <button class="btn btn-gold" onclick="addAuthor()">Yazar Ekle</button>
+            <div id="mgmt-auth-list" style="margin-top:15px; max-height:120px; overflow-y:auto;"></div>
+        </div>
+    </div>
+</div>
+
+<div id="overlay" class="overlay" onclick="if(event.target==this) closeAll()">
+    <div style="max-width:800px; margin:40px auto; background:white; padding:30px; border-radius:25px; position:relative;">
+        <span style="position:absolute; top:20px; right:20px; cursor:pointer; font-size:24px;" onclick="closeAll()">✕</span>
+        <div id="overlay-content"></div>
+    </div>
+</div>
+
+<script>
+    const _KEY = "47";
+    let db = JSON.parse(localStorage.getItem('lumina_v16')) || {
+        news: [{id:1, title: "Mardin'in Gümüş Ruhu", text: "Telkari sanatının Brezilya tasarımlarıyla buluşması...", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800", cat: "Kültür", clicks: 0}],
+        authors: [{id:1, name: "VEDAT M.", bio: "Kültür ve Sanat Yazarı.", clicks: 0}],
+        cats: ['Mardin', 'Brezilya', 'Tasarım', 'Gastronomi'],
+        ad: { img: 'https://via.placeholder.com/300x400?text=Lumina+Ad', url: '#', clicks: 0 },
+        stats: { totalViews: 0, newsClicks: 0, adClicks: 0, logs: [] }
+    };
+
+    // --- YERELLEŞTİRME ---
+    const userLang = navigator.language || 'en';
+    const dict = {
+        tr: { cat: "KATEGORİLER", listen: "Yazıyı Dinle", city: "MARDİN • YEREL" },
+        pt: { cat: "CATEGORIAS", listen: "Ouvir Artigo", city: "SAO PAULO • LOCAL" },
+        en: { cat: "CATEGORIES", listen: "Listen Article", city: "GLOBAL • FEED" }
+    };
+    const t = userLang.includes('tr') ? dict.tr : (userLang.includes('pt') ? dict.pt : dict.en);
+
+    // --- TRACKER ---
+    function initTracker() {
+        db.stats.totalViews++;
+        const entry = { time: new Date().toLocaleTimeString(), loc: userLang.toUpperCase(), dur: '...' };
+        db.stats.logs.unshift(entry);
+        if(db.stats.logs.length > 20) db.stats.logs.pop();
+        sync();
+    }
+
+    function trackClick(type, id) {
+        if(type === 'news') { db.stats.newsClicks++; const n = db.news.find(x=>x.id==id); if(n) n.clicks++; }
+        if(type === 'ad') { db.stats.adClicks++; db.ad.clicks++; if(db.ad.url !== '#') window.open(db.ad.url); }
+        sync();
+    }
+
+    // --- CMS FONKSİYONLARI ---
+    function openCMS() { if(prompt("Pass:") === _KEY) document.getElementById('adminPanel').style.display='block'; renderAdmin(); }
+    function closeCMS() { document.getElementById('adminPanel').style.display='none'; }
+    function sync() { localStorage.setItem('lumina_v16', JSON.stringify(db)); renderApp(); renderAdmin(); }
+
+    function addCategory() { const val = document.getElementById('newCatInput').value; if(val){ db.cats.push(val); document.getElementById('newCatInput').value=''; sync(); } }
+    function addAuthor() { const name = document.getElementById('authName').value; if(name){ db.authors.push({id:Date.now(), name: name.toUpperCase(), bio: document.getElementById('authBio').value, clicks:0}); sync(); } }
+    function updateAd() { db.ad.img = document.getElementById('adImageUrl').value; db.ad.url = document.getElementById('adTargetUrl').value; sync(); }
+
+    function saveNews() {
+        const id = document.getElementById('edit-id').value;
+        const data = { id: id ? Number(id) : Date.now(), title: document.getElementById('nTitle').value, text: document.getElementById('nContent').value, img: "https://via.placeholder.com/800?text=Lumina+News", cat: document.getElementById('nCatSelect').value, clicks: 0 };
+        if(id) { const idx = db.news.findIndex(x=>x.id==id); db.news[idx] = data; } else { db.news.unshift(data); }
+        document.getElementById('edit-id').value=''; sync();
+    }
+
+    function generateAI() {
+        const aiNews = { id: Date.now(), title: "AI: Brezilya Kahvesi ve Mardin Güneşi", text: "İki uzak coğrafyanın lezzet haritası yapay zeka tarafından analiz edildi...", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800", cat: "AI Analiz", clicks: 0 };
+        db.news.unshift(aiNews); sync();
+    }
+
+    // --- RENDER ---
+    function renderApp() {
+        document.getElementById('lang-cat-head').innerText = t.cat;
+        document.getElementById('local-tag').innerText = t.city;
+        document.getElementById('cat-list-view').innerHTML = db.cats.map(c => `<div>• ${c}</div>`).join('');
+        document.getElementById('ad-sidebar').innerHTML = `<img src="${db.ad.img}" style="width:100%; display:block;">`;
+        document.getElementById('news-feed').innerHTML = db.news.map(n => `
+            <div class="news-card" onclick="trackClick('news', ${n.id}); openFull('${n.title.replace(/'/g,"")}', '${n.text.replace(/'/g,"")}', '${n.img}')">
+                <img src="${n.img}" class="news-img">
+                <div class="card-body">
+                    <small style="color:var(--accent); font-weight:700;">${n.cat}</small>
+                    <h2 style="font-family:'Marcellus'; font-size:1.3rem; margin:10px 0;">${n.title}</h2>
+                    <p style="font-size:0.9rem; color:var(--muted);">${n.text.substring(0,70)}...</p>
+                </div>
+            </div>`).join('');
+    }
+
+    function renderAdmin() {
+        document.getElementById('total-views').innerText = db.stats.totalViews;
+        document.getElementById('news-clicks').innerText = db.stats.newsClicks;
+        document.getElementById('ad-clicks').innerText = db.stats.adClicks;
+        document.getElementById('nCatSelect').innerHTML = db.cats.map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('mgmt-news-list').innerHTML = db.news.map(n => `<div class="list-item"><span>${n.title.substring(0,15)}.. (${n.clicks})</span> <button class="del-btn" onclick="deleteItem('news', ${n.id})">X</button></div>`).join('');
+        document.getElementById('mgmt-cat-list').innerHTML = db.cats.map((c,i) => `<div class="list-item"><span>${c}</span> <button class="del-btn" onclick="db.cats.splice(${i},1); sync();">X</button></div>`).join('');
+        document.getElementById('mgmt-auth-list').innerHTML = db.authors.map(a => `<div class="list-item"><span>${a.name}</span> <button class="del-btn" onclick="deleteItem('authors', ${a.id})">X</button></div>`).join('');
+        document.getElementById('visitor-log-list').innerHTML = db.stats.logs.map(l => `<div>[${l.time}] ${l.loc} - Giriş Yapıldı</div>`).join('');
+    }
+
+    function openFull(t, txt, img) {
+        document.getElementById('overlay').style.display='block';
+        document.getElementById('overlay-content').innerHTML = `
+            <h1 style="font-family:'Marcellus';">${t}</h1>
+            <button class="btn btn-gold" style="width:auto; margin-bottom:20px;" onclick="speak('${txt}')">🔊 Dinle</button>
+            <img src="${img}" style="width:100%; border-radius:15px; margin-bottom:20px;">
+            <p style="line-height:1.8; font-size:1.1rem;">${txt}</p>`;
+    }
+
+    function deleteItem(type, id) { db[type] = db[type].filter(x=>x.id!=id); sync(); }
+    function speak(txt) { const u = new SpeechSynthesisUtterance(txt); u.lang = userLang; speechSynthesis.speak(u); }
+    function closeAll() { document.getElementById('overlay').style.display='none'; speechSynthesis.cancel(); }
+
+    initTracker();
+    renderApp();
+</script>
+</body>
+</html>; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
         .admin-trigger { cursor: pointer; opacity: 0.05; font-size: 10px; }
 
         .authors-strip { background: var(--white); padding: 25px 0; display: flex; justify-content: center; gap: 20px; border-bottom: 1px solid #f1f1f1; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
