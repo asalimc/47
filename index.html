@@ -3,191 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC GLOBAL | v33 Operations Center</title>
+    <title>ASC GLOBAL | v34 Authority Console</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,900&family=Plus+Jakarta+Sans:wght@200;400;700;800&display=swap');
         
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #111; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #111; }
         .font-serif { font-family: 'Crimson Pro', serif; }
         
-        /* DASHBOARD ÖZEL STİLLERİ (image_0abf5c esintili) */
-        .sidebar-item { @apply flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all cursor-pointer border-l-4 border-transparent; }
+        /* ADMIN DASHBOARD STİLLERİ (image_0abf5c Referanslı) */
+        .sidebar-item { @apply flex items-center gap-4 px-8 py-5 text-sm font-bold transition-all cursor-pointer border-l-4 border-transparent text-gray-400; }
         .sidebar-item.active { @apply bg-orange-50 text-orange-700 border-orange-700; }
-        .sidebar-item:hover:not(.active) { @apply bg-gray-50 text-black border-gray-200; }
+        .sidebar-item:hover:not(.active) { @apply bg-gray-50 text-black; }
         
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid #f0f0f0; }
+        /* ANA SAYFA ÖZEL (image_0ba45b Referanslı) */
+        .giant-headline { font-size: clamp(3rem, 10vw, 7rem); line-height: 0.85; letter-spacing: -0.05em; }
+        
         [x-cloak] { display: none !important; }
-
-        /* Scrollbar Gizleme */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body x-data="ascOps()" x-init="init()">
+<body x-data="ascSyndicate()" x-init="init()">
 
     <div x-show="!adminOpen" class="min-h-screen">
-        <header class="p-10 text-center border-b border-gray-100 sticky top-0 bg-white/80 backdrop-blur-md z-40">
-            <h1 class="font-serif text-6xl italic font-black tracking-tighter">ASC <span class="text-orange-700 not-italic uppercase text-4xl">Global</span></h1>
-            <p class="text-[9px] font-black uppercase tracking-[0.5em] mt-2 text-gray-400">Intelligence Syndicate</p>
-            <button @click="authModal = true" class="absolute right-10 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all">
-                <i class="fas fa-lock text-xs"></i>
+        <header class="p-12 text-center relative border-b border-gray-50">
+            <h1 class="font-serif text-7xl italic font-black tracking-tighter">ASC <span class="text-orange-700 not-italic uppercase text-4xl">Global</span></h1>
+            <p class="text-[9px] font-black uppercase tracking-[0.5em] mt-4 text-gray-400">Intelligence & Editorial Syndicate</p>
+            <button @click="authModal = true" class="absolute right-12 top-1/2 -translate-y-1/2 text-gray-200 hover:text-black transition-colors">
+                <i class="fas fa-terminal"></i>
             </button>
         </header>
 
-        <main class="max-w-6xl mx-auto py-20 px-6 text-center">
-            <div class="space-y-10">
-                <template x-for="news in newsData" :key="news.id">
-                    <article class="group cursor-pointer border-b border-gray-50 pb-12">
-                        <span class="text-orange-700 font-bold text-[10px] uppercase tracking-widest" x-text="news.region"></span>
-                        <h2 class="text-5xl font-serif italic font-black my-4 group-hover:underline" x-text="news.title"></h2>
-                        <p class="text-gray-400 max-w-2xl mx-auto" x-text="news.body.substring(0, 150) + '...'"></p>
-                    </article>
+        <div class="border-b border-gray-50 bg-gray-50/30 overflow-x-auto no-scrollbar py-6">
+            <div class="flex justify-center gap-12 px-10 min-w-max">
+                <template x-for="author in authors" :key="author.id">
+                    <div class="flex items-center gap-3 grayscale hover:grayscale-0 transition-all cursor-pointer">
+                        <img :src="author.photo" class="w-10 h-10 rounded-full border border-gray-200 object-cover">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-tight" x-text="author.name"></p>
+                            <p class="text-[8px] text-orange-600 font-bold uppercase" x-text="author.title"></p>
+                        </div>
+                    </div>
                 </template>
             </div>
+        </div>
+
+        <main class="max-w-7xl mx-auto py-24 px-10">
+            <template x-for="news in newsData" :key="news.id">
+                <article class="mb-32 text-center group cursor-pointer">
+                    <span class="text-orange-700 font-black text-xs uppercase tracking-[0.4em]" x-text="news.region"></span>
+                    <h2 class="giant-headline font-serif italic font-black my-8 group-hover:underline" x-text="news.title"></h2>
+                    <div class="max-w-4xl mx-auto overflow-hidden rounded-sm mb-12">
+                        <img :src="news.img" class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000">
+                    </div>
+                    <p class="text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed" x-text="news.body"></p>
+                </article>
+            </template>
         </main>
     </div>
 
     <template x-if="authModal">
-        <div class="fixed inset-0 z-[5000] bg-black/95 backdrop-blur-xl flex items-center justify-center p-6">
+        <div class="fixed inset-0 z-[5000] bg-white flex items-center justify-center p-8">
             <div class="w-full max-w-sm text-center">
-                <div class="mb-8 inline-flex w-20 h-20 rounded-3xl bg-orange-700 items-center justify-center shadow-2xl shadow-orange-700/40">
-                    <i class="fas fa-fingerprint text-white text-3xl"></i>
-                </div>
-                <h2 class="text-white font-serif italic text-3xl mb-10">Syndicate Access</h2>
-                <input x-model="tempPass" type="password" @keyup.enter="checkAuth()" placeholder="Terminal Code" 
-                       class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-center text-white text-xl tracking-[1em] outline-none focus:border-orange-700 transition-all mb-4">
-                <button @click="checkAuth()" class="w-full bg-orange-700 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:scale-105 transition-all">Authenticate</button>
-                <p @click="authModal = false" class="mt-8 text-gray-500 text-[10px] font-black uppercase cursor-pointer tracking-widest">Abort Access</p>
+                <div class="font-serif italic text-5xl mb-12">Terminal Login</div>
+                <input x-model="tempPass" type="password" @keyup.enter="authenticate()" placeholder="CODE" 
+                       class="w-full text-center text-2xl border-b-2 border-black py-4 mb-8 outline-none tracking-[0.5em]">
+                <button @click="authenticate()" class="w-full bg-black text-white py-5 font-black uppercase tracking-widest hover:bg-orange-700 transition-all">Authorize</button>
+                <p @click="authModal = false" class="mt-10 text-[10px] font-black text-gray-300 uppercase cursor-pointer tracking-widest">Back to Front</p>
             </div>
         </div>
     </template>
 
-    <div x-show="adminOpen" x-cloak class="fixed inset-0 z-[6000] bg-[#f4f7fe] flex overflow-hidden">
+    <div x-show="adminOpen" x-cloak class="fixed inset-0 z-[6000] bg-[#f8f9fc] flex overflow-hidden">
         
-        <aside class="w-72 bg-white border-r border-gray-100 flex flex-col shadow-xl">
-            <div class="p-8 border-b border-gray-50">
-                <h3 class="font-serif italic text-2xl font-black italic">Atelier <span class="text-orange-700 not-italic text-sm uppercase font-black">v33</span></h3>
+        <aside class="w-80 bg-white border-r border-gray-100 flex flex-col shadow-2xl">
+            <div class="p-10 border-b border-gray-50">
+                <div class="font-serif italic text-3xl font-black">Atelier <span class="text-orange-700 not-italic text-xs font-black uppercase">v34</span></div>
             </div>
-            
-            <nav class="flex-1 py-6 overflow-y-auto no-scrollbar">
+            <nav class="flex-1 py-8">
                 <div class="sidebar-item" :class="adminTab === 'news' ? 'active' : ''" @click="adminTab = 'news'">
-                    <i class="fas fa-file-alt w-5 text-center"></i> <span>Haber Akışı</span>
+                    <i class="fas fa-feather-alt w-5"></i> <span>Haber Akışı</span>
                 </div>
                 <div class="sidebar-item" :class="adminTab === 'authors' ? 'active' : ''" @click="adminTab = 'authors'">
-                    <i class="fas fa-user-tie w-5 text-center"></i> <span>Yazarlar Kurulu</span>
+                    <i class="fas fa-users w-5"></i> <span>Yazarlar Kurulu</span>
                 </div>
                 <div class="sidebar-item" :class="adminTab === 'ads' ? 'active' : ''" @click="adminTab = 'ads'">
-                    <i class="fas fa-ad w-5 text-center"></i> <span>Reklam Yönetimi</span>
-                </div>
-                <div class="sidebar-item" :class="adminTab === 'analytics' ? 'active' : ''" @click="adminTab = 'analytics'">
-                    <i class="fas fa-chart-line w-5 text-center"></i> <span>Analitik Veriler</span>
+                    <i class="fas fa-bullhorn w-5"></i> <span>Reklam Masası</span>
                 </div>
             </nav>
-
-            <div class="p-6 border-t border-gray-50">
-                <button @click="logout()" class="w-full bg-red-50 text-red-600 py-4 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all">
-                    Güvenli Çıkış
-                </button>
+            <div class="p-8 border-t border-gray-50">
+                <button @click="adminOpen = false" class="w-full bg-red-50 text-red-600 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all">Sistemden Çık</button>
             </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto p-10">
-            
-            <header class="flex justify-between items-center mb-12">
+        <main class="flex-1 overflow-y-auto p-16">
+            <header class="flex justify-between items-end mb-16 border-b border-gray-100 pb-10">
                 <div>
-                    <h2 class="text-2xl font-black text-slate-800 uppercase tracking-tight" x-text="adminTab === 'news' ? 'Haber Yönetimi' : (adminTab === 'authors' ? 'Yazar Yönetimi' : 'Reklam Masası')"></h2>
-                    <p class="text-xs text-slate-400 font-medium">Syndicate Kontrol Paneli • <span x-text="today"></span></p>
+                    <h2 class="text-4xl font-black tracking-tighter uppercase" x-text="adminTab === 'news' ? 'Article Management' : (adminTab === 'authors' ? 'Editorial Board' : 'Global Sponsorship')"></h2>
+                    <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-widest">Syndicate Operations Center</p>
                 </div>
-                <div class="flex items-center gap-4">
-                    <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 text-[10px] font-bold text-green-600 flex items-center gap-2">
-                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> SYSTEM ONLINE
-                    </div>
+                <div class="text-[10px] font-black text-green-500 bg-green-50 px-4 py-2 rounded-full flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> ONLINE
                 </div>
             </header>
 
-            <div class="grid grid-cols-12 gap-8">
-                
-                <div class="col-span-12 lg:col-span-8 space-y-6">
-                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-50 space-y-6">
+            <div class="grid grid-cols-12 gap-12">
+                <div class="col-span-8 space-y-10">
+                    <div class="bg-white p-12 rounded-[40px] shadow-sm border border-gray-50 space-y-8">
                         <div x-show="adminTab !== 'ads'">
-                            <label class="text-[10px] font-black uppercase text-gray-400 mb-2 block tracking-widest">İçerik Başlığı</label>
-                            <input x-model="form.main" type="text" class="w-full text-2xl font-semibold border-b-2 border-gray-50 focus:border-orange-700 outline-none py-3 transition-all" placeholder="Başlık giriniz...">
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Başlık / İsim</label>
+                            <input x-model="form.main" type="text" class="w-full text-3xl font-bold border-b-2 border-gray-50 focus:border-orange-700 outline-none py-4 transition-all" placeholder="...">
                         </div>
-                        
                         <div x-show="adminTab !== 'ads'">
-                            <label class="text-[10px] font-black uppercase text-gray-400 mb-2 block tracking-widest">Kategori / Ünvan</label>
-                            <input x-model="form.sub" type="text" class="w-full text-sm font-medium border-b border-gray-50 focus:border-orange-700 outline-none py-2 transition-all" placeholder="Örn: STRATEJİ veya HUKUKÇU">
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Bölge / Ünvan</label>
+                            <input x-model="form.sub" type="text" class="w-full text-lg border-b border-gray-50 focus:border-orange-700 outline-none py-3 transition-all" placeholder="...">
                         </div>
-
                         <div x-show="adminTab !== 'ads'">
-                            <label class="text-[10px] font-black uppercase text-gray-400 mb-2 block tracking-widest">Detaylı Metin</label>
-                            <textarea x-model="form.content" class="w-full h-64 text-base leading-relaxed border-none focus:ring-0 outline-none resize-none no-scrollbar" placeholder="İçeriği buraya dökün..."></textarea>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Metin İçeriği</label>
+                            <textarea x-model="form.content" class="w-full h-80 text-xl leading-relaxed outline-none border-none resize-none no-scrollbar" placeholder="Yazmaya başlayın..."></textarea>
                         </div>
-
-                        <div x-show="adminTab === 'ads'" class="text-center py-10 space-y-6">
-                            <i class="fas fa-bullhorn text-5xl text-gray-100"></i>
-                            <h4 class="text-lg font-bold">Reklam Görseli Güncelleme</h4>
-                            <p class="text-xs text-gray-400">Yüklediğiniz görsel tüm sayfalardaki reklam alanlarında anında güncellenir.</p>
+                        <div x-show="adminTab === 'ads'" class="py-20 text-center space-y-6">
+                            <i class="fas fa-images text-6xl text-gray-100"></i>
+                            <h3 class="text-xl font-bold">Reklam Görselini Güncelle</h3>
+                            <p class="text-gray-400 text-sm max-w-xs mx-auto italic">Yüklenen görsel otomatik olarak 300x300 alanına sığdırılır.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-span-12 lg:col-span-4 space-y-6">
-                    <div class="bg-white p-6 rounded-[32px] shadow-sm border border-gray-50 text-center">
-                        <label class="text-[10px] font-black uppercase text-gray-400 mb-4 block tracking-widest">Görsel Varlık</label>
-                        <input type="file" @change="handleFile" id="mediaUpload" class="hidden">
-                        <label for="mediaUpload" class="cursor-pointer group block">
-                            <div class="w-full aspect-square rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden group-hover:border-orange-700 transition-all">
+                <div class="col-span-4 space-y-8">
+                    <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-50 text-center">
+                        <input type="file" @change="handleFile" id="up34" class="hidden">
+                        <label for="up34" class="cursor-pointer group">
+                            <div class="w-full aspect-square rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden group-hover:border-orange-700 transition-all">
                                 <img x-show="form.media || (adminTab === 'ads' && adImage)" :src="adminTab === 'ads' ? adImage : form.media" class="w-full h-full object-cover">
-                                <div x-show="!form.media && !(adminTab === 'ads' && adImage)" class="text-center">
-                                    <i class="fas fa-cloud-upload-alt text-3xl text-slate-300 mb-2 group-hover:text-orange-700"></i>
-                                    <p class="text-[9px] font-bold text-slate-400">GÖRSEL SEÇ</p>
-                                </div>
+                                <div x-show="!form.media && !(adminTab === 'ads' && adImage)" class="text-gray-300 font-bold uppercase text-[10px]">Görsel Seç</div>
                             </div>
                         </label>
-                        <p class="text-[9px] text-slate-300 mt-4 italic">Not: Görsel otomatik optimize edilir.</p>
                     </div>
-
-                    <button @click="save()" class="w-full bg-black text-white py-6 rounded-[32px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-black/20 hover:bg-orange-700 transition-all flex items-center justify-center gap-3">
-                        <i class="fas fa-paper-plane text-xs"></i>
-                        Sisteme İşle
+                    <button @click="save()" class="w-full bg-black text-white py-8 rounded-[40px] font-black uppercase tracking-[0.3em] shadow-2xl hover:bg-orange-700 transition-all">
+                        Yayınla
                     </button>
                 </div>
-
             </div>
         </main>
     </div>
 
     <script>
-        function ascOps() {
+        function ascSyndicate() {
             return {
                 adminOpen: false, authModal: false, adminTab: 'news',
                 tempPass: '',
                 form: { main: '', sub: '', content: '', media: '' },
-                today: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }),
-                adImage: localStorage.getItem('asc_ad_v33') || '',
+                adImage: localStorage.getItem('asc_ad_v34') || '',
                 
-                newsData: JSON.parse(localStorage.getItem('asc_news_v33')) || [
-                    { id: 1, title: 'Brezilya Ormanlarından Mardin Sokaklarına', region: 'STRATEJİ', body: 'Küresel ticaretin yeni rotası üzerine derinlemesine bir analiz.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600' }
+                newsData: JSON.parse(localStorage.getItem('asc_news_v34')) || [
+                    { id: 1, title: 'Brezilya Ormanlarından Mardin Sokaklarına', region: 'GEO-STRATEGY', body: 'Küresel ticaretin yeni rotaları üzerine özel analiz.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600' }
                 ],
-                authors: JSON.parse(localStorage.getItem('asc_authors_v33')) || [
-                    { id: 1, name: 'Ahmet Çınarbaş', title: 'Siyaset Bilimci', bio: 'Küresel analizler.', photo: 'https://i.ibb.co/LhqZz4H/ahmet.jpg' }
+                authors: JSON.parse(localStorage.getItem('asc_authors_v34')) || [
+                    { id: 1, name: 'Ahmet Çınarbaş', title: 'Political Scientist', photo: 'https://i.ibb.co/LhqZz4H/ahmet.jpg' },
+                    { id: 2, name: 'M. Beşir Ayanoğlu', title: 'Legal Counsel', photo: 'https://i.ibb.co/vYm6D6T/besir.jpg' }
                 ],
 
                 init() { this.sync(); },
 
-                checkAuth() {
+                authenticate() {
                     if(this.tempPass === "47") {
                         this.authModal = false;
                         this.adminOpen = true;
                         this.tempPass = '';
-                    } else {
-                        alert("Erişim Reddedildi: Terminal Kodu Geçersiz.");
-                    }
+                    } else { alert("ERİŞİM REDDEDİLDİ: Kod Hatalı."); }
                 },
 
                 handleFile(e) {
@@ -195,19 +182,14 @@
                     reader.onload = (f) => {
                         if(this.adminTab === 'ads') {
                             this.adImage = f.target.result;
-                            localStorage.setItem('asc_ad_v33', this.adImage);
-                        } else {
-                            this.form.media = f.target.result;
-                        }
+                            localStorage.setItem('asc_ad_v34', this.adImage);
+                        } else { this.form.media = f.target.result; }
                     };
                     reader.readAsDataURL(e.target.files[0]);
                 },
 
                 save() {
-                    if(this.adminTab === 'ads') {
-                        alert("Reklam Sistemi Güncellendi.");
-                        return;
-                    }
+                    if(this.adminTab === 'ads') { alert("Reklam Güncellendi."); return; }
                     
                     const isNews = this.adminTab === 'news';
                     const payload = {
@@ -227,13 +209,12 @@
                     
                     this.sync();
                     this.form = { main: '', sub: '', content: '', media: '' };
-                    alert("Veri Güvenli Şekilde Buluta İşlendi.");
+                    alert("Yayın Başarılı.");
                 },
 
-                logout() { this.adminOpen = false; },
                 sync() {
-                    localStorage.setItem('asc_news_v33', JSON.stringify(this.newsData));
-                    localStorage.setItem('asc_authors_v33', JSON.stringify(this.authors));
+                    localStorage.setItem('asc_news_v34', JSON.stringify(this.newsData));
+                    localStorage.setItem('asc_authors_v34', JSON.stringify(this.authors));
                 }
             }
         }
