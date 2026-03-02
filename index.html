@@ -3,197 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina | Kültür, Magazin & Yaşam</title>
+    <title>Lumina | Pro Management System</title>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #fdfbf7;
-            --text: #1a1a1a;
-            --muted: #718096;
-            --accent: #c49b66;
-            --white: #ffffff;
-            --transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --bg: #fdfbf7; --text: #1a1a1a; --muted: #718096; --accent: #c49b66;
+            --white: #ffffff; --glass: rgba(255, 255, 255, 0.9); --transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
-
-        /* Progress & Nav */
-        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 10001; }
-        nav { background: rgba(253, 251, 247, 0.95); backdrop-filter: blur(15px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        
+        /* Navigasyon */
+        nav { background: var(--glass); backdrop-filter: blur(15px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .logo { font-family: 'Marcellus', serif; font-size: 1.8rem; letter-spacing: 3px; cursor: pointer; }
+        .admin-trigger { cursor: pointer; opacity: 0.3; transition: 0.3s; font-size: 0.8rem; }
+        .admin-trigger:hover { opacity: 1; color: var(--accent); }
 
-        /* YAZARLAR ŞERİDİ (Geri Geldi) */
-        .authors-strip { background: var(--white); padding: 25px 0; display: flex; justify-content: center; gap: 35px; border-bottom: 1px solid #f1f1f1; }
-        .author-item { cursor: pointer; text-align: center; width: 90px; transition: var(--transition); position: relative; }
-        .author-item:hover { transform: translateY(-5px); }
-        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); padding: 3px; background: #fff; }
-        .author-item span { display: block; font-size: 0.75rem; font-weight: 700; margin-top: 8px; font-family: 'Marcellus'; letter-spacing: 1px; }
+        /* Yazarlar Şeridi */
+        .authors-strip { background: var(--white); padding: 20px 0; display: flex; justify-content: center; gap: 30px; border-bottom: 1px solid #f1f1f1; }
+        .author-item { cursor: pointer; text-align: center; width: 80px; transition: var(--transition); }
+        .author-item img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); padding: 3px; }
 
         /* Konteynır */
-        .container { max-width: 1400px; margin: 30px auto; display: grid; grid-template-columns: 280px 1fr 300px; gap: 40px; padding: 0 25px; }
+        .container { max-width: 1400px; margin: 30px auto; display: grid; grid-template-columns: 250px 1fr 300px; gap: 30px; padding: 0 20px; }
 
-        /* Sol Liste */
-        .side-title { font-family: 'Marcellus'; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.1rem; }
-        .cat-list { list-style: none; padding: 0; }
-        .cat-list li { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.02); cursor: pointer; color: var(--muted); transition: 0.3s; }
-        .cat-list li:hover { color: var(--accent); padding-left: 8px; }
-
-        /* MERMER SLIDER */
-        .main-stage { position: relative; background: #fff; border-radius: 40px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.03); height: 650px; }
-        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: var(--transition); display: flex; flex-direction: column; cursor: pointer; }
-        .slide.active { opacity: 1; z-index: 10; }
+        /* Mermer Sahneli Slider */
+        .main-stage { position: relative; background: #fff; border-radius: 35px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.02); height: 600px; }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: var(--transition); cursor: pointer; display: none; }
+        .slide.active { opacity: 1; display: block; }
         .slide-img { width: 100%; height: 60%; object-fit: cover; }
-        .slide-content { padding: 40px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
-        .slide-content h2 { font-family: 'Marcellus', serif; font-size: 2.5rem; margin: 0 0 15px 0; line-height: 1.1; }
+        .slide-content { padding: 30px; }
+        .slide-content h2 { font-family: 'Marcellus'; font-size: 2.2rem; margin: 0; }
 
-        /* OVERLAY (Detay Sayfası) */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
-        .close-btn { position: fixed; top: 30px; right: 40px; background: #1a1a1a; color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; }
-        
-        /* Profesyonel Okuma Düzeni */
-        .article-wrap { max-width: 800px; margin: 80px auto; padding: 0 25px; }
-        .article-title { font-family: 'Marcellus', serif; font-size: 3.5rem; line-height: 1.1; margin-bottom: 30px; }
-        .article-text { font-size: 1.35rem; line-height: 2; color: #2d3436; text-align: justify; }
+        /* Detay Overlay */
+        .overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
+        .close-btn { position: fixed; top: 30px; right: 40px; background: #000; color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .article-wrap { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+        .article-img { width: 100%; border-radius: 25px; margin: 30px 0; }
+        .article-text { font-size: 1.3rem; line-height: 1.9; text-align: justify; }
 
-        /* Seslendirme Butonu */
-        .audio-ctrl { background: #f1f2f6; border-radius: 15px; padding: 20px; margin: 30px 0; display: flex; align-items: center; gap: 20px; }
-        .play-icon { background: var(--accent); border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; }
+        /* Admin Paneli Stilleri */
+        .admin-panel { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 10002; padding: 50px; overflow-y: auto; }
+        .admin-card { background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        .btn { padding: 12px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-gold { background: var(--accent); color: white; }
+        .btn-dark { background: var(--text); color: white; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .data-table th, .data-table td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
 
-        .ad-space { background: #f1f2f6; border-radius: 30px; height: 500px; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc; position: sticky; top: 100px; }
-        
-        @media (max-width: 1100px) { .container { grid-template-columns: 1fr; } .sidebar-left, .sidebar-right { display: none; } }
+        /* Reklam Alanı */
+        .ad-link { text-decoration: none; display: block; height: 100%; }
     </style>
 </head>
 <body>
 
-<div id="progress-bar"></div>
-
 <nav>
-    <div class="logo">LUMINA</div>
-    <div id="location-tag" style="font-size: 0.8rem; letter-spacing: 2px; font-weight: 700;">TESPİT EDİLİYOR...</div>
+    <div class="logo" onclick="location.reload()">LUMINA</div>
+    <div class="admin-trigger" onclick="checkAccess()">[ SYSTEM LOGIN ]</div>
 </nav>
 
-<div class="authors-strip">
-    <div class="author-item" onclick="openAuthor('Vedat Mardinli', 'Mardin\'in kadim tarihini ve kaybolmaya yüz tutmuş zanaatlarını kaleme alıyor.', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200')">
-        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200">
-        <span>VEDAT M.</span>
-    </div>
-    <div class="author-item" onclick="openAuthor('Adriana Silva', 'Sao Paulo moda haftasından en taze kulis bilgilerini ve cemiyet hayatını aktarıyor.', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200')">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" style="border-color: #4b7bec;">
-        <span>ADRIANA S.</span>
+<div id="app">
+    <div class="authors-strip" id="authors-list"></div>
+
+    <div class="container">
+        <aside>
+            <h3 style="font-family:'Marcellus'">Kategoriler</h3>
+            <div id="category-list"></div>
+        </aside>
+
+        <main class="main-stage" id="slider-root"></main>
+
+        <aside id="ad-root"></aside>
     </div>
 </div>
 
-<div class="container">
-    <aside class="sidebar-left">
-        <div class="side-title">KATEGORİLER</div>
-        <ul class="cat-list">
-            <li onclick="alert('Kategori açılıyor...')">• Mardin Ekspres</li>
-            <li onclick="alert('Kategori açılıyor...')">• Sao Paulo Night</li>
-            <li onclick="alert('Kategori açılıyor...')">• Gastronomi Mirası</li>
-            <li onclick="alert('Kategori açılıyor...')">• Sanat ve Tasarım</li>
-        </ul>
-    </aside>
+<div id="adminPanel" class="admin-panel">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1 style="font-family:'Marcellus'">Lumina Control Center</h1>
+        <button class="btn btn-dark" onclick="closeAdmin()">Çıkış</button>
+    </div>
 
-    <main class="main-stage" id="slider-container">
-        <div class="slide active" onclick="openNews('Mardin\'in Gümüş Geceleri', 'Telkari sanatı, Mardin\'in dar sokaklarından çıkıp dünya podyumlarına ulaşıyor. Bu eşsiz gümüş işçiliği, sadece bir aksesuar değil, binlerce yıllık bir anlatıdır.')">
-            <img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200" class="slide-img">
-            <div class="slide-content">
-                <small style="color:var(--accent); font-weight:800; letter-spacing:2px;">MARDİN • KÜLTÜR</small>
-                <h2>Mardin'in Gümüş İşlemeli Geceleri</h2>
-                <p style="color:var(--muted)">Kadim zanaatın modern tasarımla imtihanı başlıyor...</p>
-            </div>
-        </div>
-        <div class="slide" onclick="openNews('Sao Paulo Tasarım Devrimi', 'Brezilya modernizminin kalbi Sao Paulo, bu yıl minimalist mimari ve sürdürülebilir yaşam alanlarıyla dünyayı etkiliyor.')">
-            <img src="https://images.unsplash.com/photo-1548107116-76ec56873523?w=1200" class="slide-img">
-            <div class="slide-content">
-                <small style="color:#4b7bec; font-weight:800; letter-spacing:2px;">SAO PAULO • TASARIM</small>
-                <h2>Betonun İçindeki Orman: Sao Paulo</h2>
-                <p style="color:var(--muted)">Metropolün gri yüzü, dikey bahçelerle nefes alıyor.</p>
-            </div>
-        </div>
-    </main>
+    <div class="admin-card">
+        <h3>Haber / Makale Ekle</h3>
+        <input type="text" id="newsTitle" placeholder="Haber Başlığı">
+        <textarea id="newsContent" placeholder="Haber İçeriği (Detaylı)" rows="5"></textarea>
+        <input type="file" id="newsImg" accept="image/*">
+        <select id="newsCat"></select>
+        <button class="btn btn-gold" onclick="saveNews()">Kaydet</button>
+    </div>
 
-    <aside class="sidebar-right">
-        <div class="ad-space">
-            <div style="transform: rotate(-90deg); color: #bbb; letter-spacing: 5px; font-weight: bold;">SPONSORLU</div>
-        </div>
-    </aside>
+    <div class="admin-card">
+        <h3>Yönetim Listeleri</h3>
+        <div id="management-tables"></div>
+    </div>
 </div>
 
 <div id="overlay" class="overlay">
     <div class="close-btn" onclick="closeOverlay()">✕</div>
-    <div id="overlay-content"></div>
+    <div id="overlay-content" class="article-wrap"></div>
 </div>
 
 <script>
-    // 1. Slider
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.slide');
-    setInterval(() => {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }, 5000);
-
-    // 2. Haber Detay (Sesli & Büyük Text)
-    function openNews(title, text) {
-        renderDetail(title, text, "HABER DETAYI");
+    // --- GÜVENLİK (Şifre: 47) ---
+    // Şifreyi basitçe yazmak yerine, reverse ve obfuscate ediyoruz
+    const _KEY = "NzQ="; // '74'ün base64 hali, kod içinde ters çevrilecek
+    function checkAccess() {
+        const p = prompt("Security Code:");
+        const secure = atob(_KEY).split("").reverse().join(""); // '47'
+        if (p === secure) {
+            document.getElementById('adminPanel').style.display = 'block';
+            renderAdminLists();
+        } else { alert("Access Denied."); }
     }
 
-    // 3. Yazar Detay (Sesli & Büyük Text)
-    function openAuthor(name, bio, img) {
-        renderDetail(name, bio, "YAZAR PROFİLİ", img);
+    // --- VERİ MODELİ (LocalStorage Kullanımı) ---
+    let db = JSON.parse(localStorage.getItem('lumina_db')) || {
+        news: [{id:1, title: 'Mardin Telkari Sanatı', content: 'Kadim gümüş sanatı dünya vitrinlerinde...', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2', cat: 'Kültür'}],
+        authors: [{id:1, name: 'Vedat M.', bio: 'Tarihçi', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e'}],
+        categories: ['Kültür', 'Moda', 'Gastronomi'],
+        ads: {img: 'https://via.placeholder.com/300x500?text=Sponsor', link: 'https://google.com'}
+    };
+
+    function sync() { localStorage.setItem('lumina_db', JSON.stringify(db)); renderApp(); }
+
+    // --- DOSYA YÜKLEME (Yerelden) ---
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
     }
 
-    function renderDetail(title, text, tag, img = null) {
-        const overlay = document.getElementById('overlay');
+    // --- ADMİN FONKSİYONLARI ---
+    async function saveNews() {
+        const title = document.getElementById('newsTitle').value;
+        const content = document.getElementById('newsContent').value;
+        const imgFile = document.getElementById('newsImg').files[0];
+        const cat = document.getElementById('newsCat').value;
+        
+        let imgData = "https://via.placeholder.com/800";
+        if(imgFile) imgData = await getBase64(imgFile);
+
+        db.news.push({ id: Date.now(), title, content, img: imgData, cat });
+        sync();
+        alert("Haber başarıyla eklendi!");
+    }
+
+    function deleteItem(type, id) {
+        if(confirm("Emin misiniz?")) {
+            db[type] = db[type].filter(item => item.id !== id);
+            sync();
+            renderAdminLists();
+        }
+    }
+
+    // --- ARAYÜZ RENDER SİSTEMİ ---
+    function renderApp() {
+        // Yazarları Render Et
+        const authorHtml = db.authors.map(a => `
+            <div class="author-item" onclick="openAuthor(${a.id})">
+                <img src="${a.img}">
+                <span>${a.name.toUpperCase()}</span>
+            </div>
+        `).join('');
+        document.getElementById('authors-list').innerHTML = authorHtml;
+
+        // Slider Render Et
+        const sliderHtml = db.news.map((n, i) => `
+            <div class="slide ${i === 0 ? 'active' : ''}" onclick="openNews(${n.id})">
+                <img src="${n.img}" class="slide-img">
+                <div class="slide-content">
+                    <small style="color:var(--accent); font-weight:800;">${n.cat.toUpperCase()}</small>
+                    <h2>${n.title}</h2>
+                    <p style="color:var(--muted)">Haberin detayları için tıklayın...</p>
+                </div>
+            </div>
+        `).join('');
+        document.getElementById('slider-root').innerHTML = sliderHtml;
+
+        // Kategorileri Render Et
+        document.getElementById('category-list').innerHTML = db.categories.map(c => `<div style="padding:10px 0; border-bottom:1px solid #eee; cursor:pointer;">• ${c}</div>`).join('');
+        document.getElementById('newsCat').innerHTML = db.categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
+        // Reklam Render Et
+        document.getElementById('ad-root').innerHTML = `
+            <a href="${db.ads.link}" target="_blank" class="ad-link">
+                <div class="ad-space" style="background: url('${db.ads.img}') center/cover;">
+                    <div style="background:rgba(0,0,0,0.4); color:white; padding:10px; font-size:0.7rem;">SPONSORLU İÇERİK</div>
+                </div>
+            </a>
+        `;
+    }
+
+    // --- DETAY GÖSTERİMİ ---
+    function openNews(id) {
+        const item = db.news.find(n => n.id === id);
         const content = document.getElementById('overlay-content');
-        overlay.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-
-        let imgHtml = img ? `<center><img src="${img}" style="width:200px; height:200px; border-radius:50%; border:4px solid var(--accent); margin-bottom:20px;"></center>` : '';
-
+        document.getElementById('overlay').style.display = 'block';
         content.innerHTML = `
-            <div class="article-wrap">
-                <small style="color:var(--accent); font-weight:bold; letter-spacing:2px;">${tag}</small>
-                ${imgHtml}
-                <h1 class="article-title">${title}</h1>
-                <div class="audio-ctrl">
-                    <button class="play-icon" onclick="speakText('detail-text')">▶</button>
-                    <div><strong>Sesli Dinle</strong><br><small>Yapay Zeka Okuyucu</small></div>
-                </div>
-                <div id="detail-text" class="article-text">
-                    <p>${text}</p>
-                    <p>Lumina'nın rafine dünyasında her detay sizin konforunuz için tasarlandı. Profesyonel okuma deneyimi sunan 22px metin boyutu, uzun yazılarda gözlerinizi yormaz. Mardin ve Sao Paulo arasındaki bu dijital köprü, her tıklamada yeni bir hikaye sunar.</p>
-                </div>
+            <h1 class="article-title">${item.title}</h1>
+            <div style="background:#f1f2f6; padding:15px; border-radius:10px; margin-bottom:20px;">
+                <button class="btn btn-gold" onclick="speakText('article-txt')">▶ Dinle</button>
+            </div>
+            <img src="${item.img}" class="article-img">
+            <div id="article-txt" class="article-text">${item.content}</div>
+        `;
+    }
+
+    function openAuthor(id) {
+        const a = db.authors.find(x => x.id === id);
+        const content = document.getElementById('overlay-content');
+        document.getElementById('overlay').style.display = 'block';
+        content.innerHTML = `
+            <div style="text-align:center;">
+                <img src="${a.img}" style="width:150px; height:150px; border-radius:50%; margin-bottom:20px;">
+                <h1 class="article-title">${a.name}</h1>
+                <p class="article-text">${a.bio}</p>
+                <hr><h3 style="font-family:'Marcellus'">Yazarın Makaleleri</h3>
             </div>
         `;
     }
 
-    function closeOverlay() {
-        speechSynthesis.cancel();
-        document.getElementById('overlay').style.display = 'none';
-        document.body.style.overflow = 'auto';
+    function renderAdminLists() {
+        let html = `
+            <table class="data-table">
+                <tr><th>Başlık</th><th>Kategori</th><th>İşlem</th></tr>
+                ${db.news.map(n => `<tr><td>${n.title}</td><td>${n.cat}</td><td><button onclick="deleteItem('news', ${n.id})">Sil</button></td></tr>`).join('')}
+            </table>
+        `;
+        document.getElementById('management-tables').innerHTML = html;
     }
 
-    function speakText(id) {
-        const text = document.getElementById(id).innerText;
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = navigator.language;
-        speechSynthesis.speak(msg);
-    }
+    function closeOverlay() { speechSynthesis.cancel(); document.getElementById('overlay').style.display = 'none'; }
+    function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
+    function speakText(id) { const msg = new SpeechSynthesisUtterance(document.getElementById(id).innerText); speechSynthesis.speak(msg); }
 
-    // Yerel Dil
-    const userLang = navigator.language;
-    document.getElementById('location-tag').innerText = userLang.includes('pt') ? "SAO PAULO • LOCAL" : "MARDİN • YEREL";
-
-    // Progress
-    window.onscroll = () => {
-        let winScroll = document.documentElement.scrollTop;
-        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
-    };
+    // Init
+    renderApp();
+    
+    // Auto Slider
+    setInterval(() => {
+        const slides = document.querySelectorAll('.slide');
+        if(slides.length < 2) return;
+        let active = document.querySelector('.slide.active');
+        active.classList.remove('active');
+        let next = active.nextElementSibling || slides[0];
+        next.classList.add('active');
+    }, 6000);
 </script>
 
 </body>
