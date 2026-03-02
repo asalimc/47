@@ -38,7 +38,6 @@
         .close-btn { position: fixed; top: 30px; right: 40px; cursor: pointer; background: var(--text); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; transition: 0.3s; }
         .article-wrap { max-width: 800px; margin: 60px auto; padding: 0 20px; animation: fadeIn 0.8s ease; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 1024px) { .container { grid-template-columns: 1fr; } .sidebar { display: none; } }
     </style>
 </head>
@@ -74,6 +73,7 @@
 
 <script>
     const PASS = "47";
+    // Veritabanı yükleme ve yedekleme
     let db = JSON.parse(localStorage.getItem('lumina_v23')) || {
         news: [{id:1, title: "Mardin Gümüşü", text: "Telkari sanatı canlanıyor...", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800", cat: "Kültür", author: "ASC"}],
         authors: [{id:1, name: "ASC", bio: "Baş Yazar", img: "https://via.placeholder.com/150"}],
@@ -81,7 +81,10 @@
         ad: "https://via.placeholder.com/300x500"
     };
 
-    function sync() { localStorage.setItem('lumina_v23', JSON.stringify(db)); renderApp(); }
+    function sync() { 
+        localStorage.setItem('lumina_v23', JSON.stringify(db)); 
+        renderApp(); 
+    }
 
     async function toBase64(file) {
         return new Promise((res) => {
@@ -97,125 +100,107 @@
         if (!win) return alert("Lütfen pop-up engelleyicisini kapatın.");
 
         const adminHtml = `
-            <html><head><title>Admin Hub | Lumina</title>
+            <html><head><title>Admin Hub | Lumina Studio</title>
             <style>
                 body { font-family: sans-serif; background: #f4f7f6; padding: 20px; color: #333; }
-                .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
-                .box { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-                h2 { color: #c49b66; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-                input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-                button { background: #1a1a1a; color: #fff; border: none; padding: 12px; border-radius: 20px; cursor: pointer; width: 100%; font-weight: bold; margin-top:5px; }
-                .list { margin-top: 15px; max-height: 200px; overflow-y: auto; font-size: 12px; }
-                .item { display: flex; justify-content: space-between; align-items:center; padding: 8px; border-bottom: 1px solid #eee; }
+                .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+                .box { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 10px; }
+                h2 { color: #c49b66; border-bottom: 1px solid #eee; padding-bottom: 10px; font-size: 1rem; text-transform: uppercase; }
+                input, textarea, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+                button { background: #1a1a1a; color: #fff; border: none; padding: 12px; border-radius: 20px; cursor: pointer; width: 100%; font-weight: bold; }
+                .list { margin-top: 10px; max-height: 150px; overflow-y: auto; font-size: 12px; }
+                .item { display: flex; justify-content: space-between; padding: 6px; border-bottom: 1px solid #f9f9f9; }
                 .del { color: red; cursor: pointer; font-weight:bold; }
             </style></head>
             <body>
-                <h1 style="text-align:center">Lumina Studio v23</h1>
+                <h1 style="text-align:center">Lumina Studio Admin</h1>
                 <div class="grid">
                     <div class="box">
-                        <h2>Haber Yönetimi (Yazar: ASC)</h2>
-                        <input type="text" id="nt" placeholder="Haber Başlığı">
-                        <textarea id="nc" placeholder="Haber İçeriği" rows="5"></textarea>
+                        <h2>Haber Yayınla (Yazar: ASC)</h2>
+                        <input type="text" id="nt" placeholder="Başlık">
+                        <textarea id="nc" placeholder="İçerik" rows="3"></textarea>
                         <select id="ncat">${db.cats.map(c=>`<option>${c}</option>`).join('')}</select>
-                        <label>Haber Fotoğrafı:</label>
                         <input type="file" id="ni" accept="image/*">
-                        <button id="addNewsBtn">Haberi Yayınla</button>
-                        <div class="list">
-                            ${db.news.map(n=>`<div class="item"><span><b>[${n.author}]</b> ${n.title.substring(0,25)}...</span><span class="del" onclick="window.opener.postMessage({t:'delNews', id:${n.id}}, '*')">SİL</span></div>`).join('')}
-                        </div>
+                        <button onclick="saveN()">Yayınla</button>
                     </div>
 
                     <div class="box">
                         <h2>Yazar Yönetimi</h2>
-                        <input type="text" id="an" placeholder="Yazar Adı">
-                        <textarea id="ab" placeholder="Yazar Biyografisi" rows="3"></textarea>
-                        <label>Yazar Fotoğrafı:</label>
+                        <input type="text" id="an" placeholder="İsim">
                         <input type="file" id="ai" accept="image/*">
-                        <button id="addAuthBtn">Yazarı Kaydet</button>
-                        <div class="list">
-                            ${db.authors.map(a=>`<div class="item"><span>${a.name}</span><span class="del" onclick="window.opener.postMessage({t:'delAuth', id:${a.id}}, '*')">SİL</span></div>`).join('')}
-                        </div>
+                        <button onclick="saveA()">Kaydet</button>
+                        <div class="list">${db.authors.map(a=>`<div class="item"><span>${a.name}</span><span class="del" onclick="delA(${a.id})">SİL</span></div>`).join('')}</div>
                     </div>
 
                     <div class="box">
-                        <h2>Kategori & Reklam</h2>
-                        <label>Yeni Kategori:</label>
-                        <div style="display:flex; gap:5px;">
-                            <input type="text" id="newCat" style="margin:0;">
-                            <button id="addCatBtn" style="width:auto; margin:0;">Ekle</button>
-                        </div>
-                        <hr>
-                        <label>Reklam Görseli:</label>
+                        <h2>Kategori Yönetimi</h2>
+                        <input type="text" id="catIn" placeholder="Yeni Kategori">
+                        <button onclick="saveC()">Ekle</button>
+                        <div class="list">${db.cats.map((c,i)=>`<div class="item"><span>${c}</span><span class="del" onclick="delC(${i})">SİL</span></div>`).join('')}</div>
+                    </div>
+
+                    <div class="box">
+                        <h2>Reklam Yönetimi</h2>
                         <input type="file" id="adi" accept="image/*">
-                        <button id="upAdBtn">Reklamı Güncelle</button>
+                        <button onclick="saveAd()">Reklamı Güncelle</button>
                     </div>
                 </div>
 
                 <script>
-                    const post = (data) => window.opener.postMessage(data, '*');
+                    const send = (t, d) => { window.opener.postMessage({t, ...d}, '*'); setTimeout(()=>location.reload(), 300); };
                     
-                    document.getElementById('addNewsBtn').onclick = async () => {
-                        const file = document.getElementById('ni').files[0];
-                        const img = file ? await window.opener.toBase64(file) : "https://via.placeholder.com/800";
-                        post({t:'addNews', data: {id: Date.now(), title: document.getElementById('nt').value, text: document.getElementById('nc').value, cat: document.getElementById('ncat').value, author: "ASC", img: img}});
-                        location.reload();
-                    };
-
-                    document.getElementById('addAuthBtn').onclick = async () => {
-                        const file = document.getElementById('ai').files[0];
-                        const img = file ? await window.opener.toBase64(file) : "https://via.placeholder.com/150";
-                        post({t:'addAuth', data: {id: Date.now(), name: document.getElementById('an').value, bio: document.getElementById('ab').value, img: img}});
-                        location.reload();
-                    };
-
-                    document.getElementById('addCatBtn').onclick = () => {
-                        post({t:'addCat', val: document.getElementById('newCat').value});
-                        location.reload();
-                    };
-
-                    document.getElementById('upAdBtn').onclick = async () => {
-                        const file = document.getElementById('adi').files[0];
-                        if(file) {
-                            const img = await window.opener.toBase64(file);
-                            post({t:'upAd', img: img});
-                            alert("Reklam güncellendi!");
-                        }
-                    };
+                    async function saveN(){
+                        const f = document.getElementById('ni').files[0];
+                        const img = f ? await window.opener.toBase64(f) : "https://via.placeholder.com/800";
+                        send('addNews', {data: {id: Date.now(), title: document.getElementById('nt').value, text: document.getElementById('nc').value, cat: document.getElementById('ncat').value, author: "ASC", img: img}});
+                    }
+                    async function saveA(){
+                        const f = document.getElementById('ai').files[0];
+                        const img = f ? await window.opener.toBase64(f) : "https://via.placeholder.com/150";
+                        send('addAuth', {data: {id: Date.now(), name: document.getElementById('an').value, img: img}});
+                    }
+                    function saveC(){ send('addCat', {val: document.getElementById('catIn').value}); }
+                    function delC(i){ send('delCat', {index: i}); }
+                    function delA(id){ send('delAuth', {id}); }
+                    async function saveAd(){
+                        const f = document.getElementById('adi').files[0];
+                        if(f) { const img = await window.opener.toBase64(f); send('upAd', {img}); }
+                    }
                 <\/script>
             </body></html>`;
-
+        
         win.document.open();
         win.document.write(adminHtml);
         win.document.close();
     }
 
-    // --- ANA PENCERE MESAJ MERKEZİ ---
-    window.onmessage = (e) => {
-        if(e.data.t === 'addNews') { db.news.unshift(e.data.data); sync(); }
-        if(e.data.t === 'delNews') { db.news = db.news.filter(n=>n.id !== e.data.id); sync(); }
-        if(e.data.t === 'addAuth') { db.authors.push(e.data.data); sync(); }
-        if(e.data.t === 'delAuth') { db.authors = db.authors.filter(a=>a.id !== e.data.id); sync(); }
-        if(e.data.t === 'addCat') { db.cats.push(e.data.val); sync(); }
-        if(e.data.t === 'delCat') { db.cats.splice(e.data.index, 1); sync(); }
-        if(e.data.t === 'upAd') { db.ad = e.data.img; sync(); }
-    };
+    // --- İletişim ve Senkronizasyon ---
+    window.addEventListener('message', function(e) {
+        if(e.data.t === 'addNews') db.news.unshift(e.data.data);
+        if(e.data.t === 'delNews') db.news = db.news.filter(n=>n.id !== e.data.id);
+        if(e.data.t === 'addAuth') db.authors.push(e.data.data);
+        if(e.data.t === 'delAuth') db.authors = db.authors.filter(a=>a.id !== e.data.id);
+        if(e.data.t === 'addCat') db.cats.push(e.data.val);
+        if(e.data.t === 'delCat') db.cats.splice(e.data.index, 1);
+        if(e.data.t === 'upAd') db.ad = e.data.img;
+        sync();
+    });
 
     function renderApp() {
-        // Yazarlar Şeridi
+        // Yazarlar
         document.getElementById('authors-list').innerHTML = db.authors.map(a => `
             <div class="author-item" onclick="openAuthor(${a.id})">
                 <img src="${a.img}"><span>${a.name}</span>
             </div>`).join('');
         
-        // Yan Menü Kategoriler
-        document.getElementById('cat-nav').innerHTML = db.cats.map((c, i) => `
+        // Kategoriler
+        document.getElementById('cat-nav').innerHTML = db.cats.map(c => `
             <div class="cat-item" onclick="filterCat('${c}')">• ${c}</div>
         `).join('') + `<div class="cat-item" onclick="renderApp()" style="font-weight:bold; margin-top:10px;">• TÜMÜ</div>`;
         
         // Reklam
-        document.getElementById('ad-sidebar').innerHTML = `<img src="${db.ad}" style="width:100%; border-radius:15px;">`;
+        document.getElementById('ad-sidebar').innerHTML = `<img src="${db.ad}" style="width:100%; border-radius:15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">`;
         
-        // Haber Akışı
         renderFeed(db.news);
     }
 
@@ -256,7 +241,6 @@
             <div style="text-align:center;">
                 <img src="${a.img}" style="width:180px; height:180px; border-radius:50%; object-fit:cover;">
                 <h1 style="font-family:Marcellus; font-size:3rem;">${a.name}</h1>
-                <p>${a.bio}</p>
             </div>
             <hr style="margin:40px 0; border:0; border-top:1px solid #eee;">
             <div class="news-grid">${db.news.filter(n=>n.author === a.name).map(n=>`
