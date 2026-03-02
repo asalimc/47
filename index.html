@@ -3,132 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin & Brazil Global Portal | Canlı</title>
+    <title>Global Portal | Mardin & Brazil</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         [x-cloak] { display: none !important; }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); }
-        .gradient-text { background: linear-gradient(90deg, #2563eb, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .page-enter { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        .page-fade { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-900" x-data="portalApp()" x-init="init()">
+<body class="bg-slate-50 text-slate-900 font-sans" x-data="portalControl()" x-init="init()">
 
-    <nav class="sticky top-0 z-[100] glass border-b border-slate-200">
+    <nav class="sticky top-0 z-[100] glass border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div @click="currentPage = 'home'" class="text-3xl font-black tracking-tighter uppercase italic gradient-text cursor-pointer">Mardin / Brazil</div>
+            <div @click="page = 'home'" class="text-2xl font-black tracking-tighter uppercase italic cursor-pointer text-blue-700">ASC PORTAL</div>
             
-            <div class="hidden md:flex space-x-6 text-[11px] font-bold uppercase tracking-widest">
-                <button @click="currentPage = 'home'" class="hover:text-blue-600 transition">Ana Sayfa</button>
-                <button @click="currentPage = 'news'" class="hover:text-blue-600 transition">Haberler</button>
-                <button @click="currentPage = 'authors'" class="hover:text-blue-600 transition">Yazarlar</button>
+            <div class="hidden md:flex space-x-8 text-[11px] font-black uppercase tracking-widest">
+                <button @click="page = 'home'" :class="page === 'home' ? 'text-blue-600' : 'text-slate-500 hover:text-blue-600'">Ana Sayfa</button>
+                <button @click="page = 'haberler'" :class="page === 'haberler' ? 'text-blue-600' : 'text-slate-500 hover:text-blue-600'">Haberler</button>
+                <button @click="page = 'yazarlar'" :class="page === 'yazarlar' ? 'text-blue-600' : 'text-slate-500 hover:text-blue-600'">Yazarlar</button>
+                <button @click="page = 'iletisim'" :class="page === 'iletisim' ? 'text-blue-600' : 'text-slate-500 hover:text-blue-600'">İletişim</button>
             </div>
 
-            <div class="flex space-x-4 text-[10px] font-mono">
-                <div class="text-right border-r pr-4 border-slate-200">
-                    <span class="block text-slate-400 uppercase">Mardin</span>
-                    <span class="text-blue-600 font-bold" x-text="mardinTime"></span>
-                </div>
-                <div>
-                    <span class="block text-slate-400 uppercase">Brazil</span>
-                    <span class="text-emerald-600 font-bold" x-text="brazilTime"></span>
-                </div>
+            <div class="flex space-x-4 text-[10px] font-mono border-l pl-4 border-slate-200 text-slate-400">
+                <div class="text-right leading-tight">Mardin<br><span class="text-blue-600 font-bold" x-text="mTime"></span></div>
+                <div class="text-left leading-tight">Brazil<br><span class="text-emerald-600 font-bold" x-text="bTime"></span></div>
             </div>
         </div>
     </nav>
 
-    <template x-if="currentPage === 'home'">
-        <div class="page-enter">
-            <header class="relative h-[60vh] flex items-center justify-center bg-black overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1590424744295-827054f76785?auto=format&fit=crop&q=80&w=1600" class="absolute w-full h-full object-cover opacity-60">
-                <div class="relative text-center px-4">
-                    <h1 class="text-white text-6xl md:text-8xl font-black mb-4 uppercase tracking-tighter italic">GLOBAL PORT</h1>
-                    <p class="text-blue-300 text-xl tracking-[0.3em] uppercase font-light">Mistik Mardin & Egzotik Brezilya</p>
+    <main class="min-h-screen">
+
+        <div x-show="page === 'home'" class="page-fade">
+            <header class="relative h-[50vh] flex items-center justify-center bg-slate-900 text-white overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1590424744295-827054f76785?auto=format&fit=crop&q=80&w=1600" class="absolute w-full h-full object-cover opacity-40">
+                <div class="relative text-center">
+                    <h1 class="text-5xl md:text-7xl font-black italic tracking-tighter">MARDİN / BRAZIL</h1>
+                    <p class="mt-4 text-blue-200 tracking-[0.4em] uppercase text-sm">Global Haber & Kültür Hattı</p>
                 </div>
             </header>
-
-            <section class="max-w-7xl mx-auto px-6 py-20">
-                <h2 class="text-2xl font-black uppercase mb-12 border-l-8 border-blue-600 pl-4">Öne Çıkan Haberler</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <template x-for="news in newsList.slice(0, 3)">
-                        <div @click="openNews(news)" class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all cursor-pointer group">
-                            <div class="h-64 overflow-hidden"><img :src="news.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
-                            <div class="p-8">
-                                <span class="text-blue-600 text-[10px] font-black uppercase" x-text="news.tag"></span>
-                                <h3 class="font-bold text-xl my-3 group-hover:text-blue-600 transition" x-text="news.title"></h3>
+            
+            <section class="max-w-7xl mx-auto px-6 py-16">
+                <h2 class="text-2xl font-black uppercase mb-10 border-l-4 border-blue-600 pl-4">Manşetler</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <template x-for="news in newsData">
+                        <div @click="showNews(news)" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer border border-slate-100 group">
+                            <div class="h-52 overflow-hidden"><img :src="news.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
+                            <div class="p-6">
+                                <span class="text-blue-600 text-[9px] font-black uppercase" x-text="news.tag"></span>
+                                <h3 class="font-bold text-lg my-2 group-hover:text-blue-600" x-text="news.title"></h3>
                                 <p class="text-slate-500 text-sm line-clamp-2" x-text="news.desc"></p>
                             </div>
                         </div>
                     </template>
                 </div>
-                <div class="text-center mt-12">
-                    <button @click="currentPage = 'news'" class="bg-slate-900 text-white px-10 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-blue-600 transition">Tüm Haberleri Gör</button>
-                </div>
             </section>
         </div>
-    </template>
 
-    <template x-if="currentPage === 'news-detail'">
-        <div class="page-enter max-w-4xl mx-auto px-6 py-20">
-            <button @click="currentPage = 'home'" class="text-xs font-bold uppercase text-slate-400 mb-8 hover:text-blue-600">&larr; Geri Dön</button>
-            <img :src="selectedNews.img" class="w-full h-[50vh] object-cover rounded-[3rem] shadow-2xl mb-12">
-            <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase" x-text="selectedNews.tag"></span>
-            <h1 class="text-4xl md:text-6xl font-black my-6 leading-tight" x-text="selectedNews.title"></h1>
-            <div class="prose prose-lg text-slate-600 leading-relaxed" x-html="selectedNews.content"></div>
+        <div x-show="page === 'detail'" class="page-fade max-w-4xl mx-auto px-6 py-16" x-cloak>
+            <button @click="page = 'home'" class="mb-8 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 italic">← Geri Dön</button>
+            <img :src="activeNews?.img" class="w-full h-[45vh] object-cover rounded-[2.5rem] shadow-2xl mb-10 border-4 border-white">
+            <h1 class="text-4xl md:text-6xl font-black leading-tight mb-6" x-text="activeNews?.title"></h1>
+            <div class="text-slate-600 leading-relaxed text-lg italic border-l-4 border-slate-200 pl-6 mb-8" x-text="activeNews?.desc"></div>
+            <div class="text-slate-800 leading-loose space-y-4" x-html="activeNews?.body"></div>
         </div>
-    </template>
 
-    <template x-if="currentPage === 'authors'">
-        <div class="page-enter max-w-7xl mx-auto px-6 py-20">
-            <h2 class="text-4xl font-black text-center mb-20 uppercase tracking-widest">Kıdemli Yazarlarımız</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div x-show="page === 'yazarlar'" class="page-fade max-w-7xl mx-auto px-6 py-20" x-cloak>
+            <h2 class="text-4xl font-black text-center mb-16 uppercase tracking-widest italic">Kıdemli Yazarlar</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <template x-for="author in authors">
-                    <div class="bg-slate-900 text-white p-12 rounded-[3rem] shadow-2xl flex flex-col items-center text-center">
-                        <img :src="author.photo" class="w-32 h-32 rounded-full border-4 border-blue-500 mb-6 object-cover">
-                        <h3 class="text-3xl font-bold mb-2" x-text="author.name"></h3>
-                        <span class="text-blue-400 font-bold uppercase text-xs tracking-widest mb-6" x-text="author.role"></span>
-                        <p class="text-slate-400 italic leading-relaxed" x-text="author.bio"></p>
+                    <div class="bg-slate-900 text-white p-10 rounded-[2.5rem] shadow-2xl flex flex-col items-center text-center hover:scale-[1.02] transition">
+                        <img :src="author.photo" class="w-24 h-24 rounded-full border-4 border-blue-500 mb-6 object-cover shadow-lg">
+                        <h3 class="text-2xl font-bold mb-1" x-text="author.name"></h3>
+                        <span class="text-blue-400 font-black uppercase text-[10px] tracking-[0.2em] mb-4" x-text="author.title"></span>
+                        <p class="text-slate-400 text-sm leading-relaxed" x-text="author.bio"></p>
                     </div>
                 </template>
             </div>
         </div>
-    </template>
 
-    <footer class="bg-white border-t border-slate-200 py-12 text-center">
-        <p class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">&copy; 2026 ASC GLOBAL PORTAL - MARDIN / BRAZIL</p>
+        <div x-show="page === 'iletisim'" class="page-fade max-w-2xl mx-auto px-6 py-20" x-cloak>
+            <h2 class="text-3xl font-black mb-8 uppercase text-center italic tracking-widest">Bize Ulaşın</h2>
+            <form class="space-y-4 bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100">
+                <input type="text" placeholder="Adınız" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 ring-blue-500">
+                <input type="email" placeholder="E-posta" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 ring-blue-500">
+                <textarea placeholder="Mesajınız" rows="5" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 ring-blue-500"></textarea>
+                <button type="button" class="w-full bg-blue-600 text-white p-4 rounded-xl font-black uppercase tracking-widest hover:bg-slate-900 transition shadow-lg">Gönder</button>
+            </form>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-10 text-center">
+        <p class="text-[9px] font-black uppercase tracking-[0.6em] text-slate-300 italic">&copy; 2026 ASC GLOBAL PORTAL - MARDIN / BRAZIL</p>
     </footer>
 
     <script>
-        function portalApp() {
+        function portalControl() {
             return {
-                currentPage: 'home',
-                selectedNews: null,
-                mardinTime: '',
-                brazilTime: '',
-                newsList: [
-                    { tag: 'Mardin', title: 'Antik Kentte Gece Turları Başladı', desc: 'Dara Antik Kenti, yeni ışıklandırma sistemiyle artık gece de ziyaret edilebilecek.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=1000', content: 'Mardin’in gözbebeği Dara, dünya standartlarında bir ışıklandırma projesiyle geceleri de hayat buluyor. Turizm Bakanlığı desteğiyle tamamlanan proje, Mezopotamya’nın Efes’i olarak bilinen antik kenti dev bir açık hava müzesine dönüştürdü...' },
-                    { tag: 'Brazil', title: 'Rio Karnavalı’nda Bu Yıl Rekor Bekleniyor', desc: 'Brezilya turizm ofisi, bu yılki karnaval için 5 milyon turist beklendiğini açıkladı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=1000', content: 'Rio de Janeiro sokakları, dünyanın en büyük festivaline hazırlanıyor. Bu yılki tema "Dünya Barışı ve Kültürel Kardeşlik" olarak belirlendi. Şehirdeki otellerde doluluk oranı şimdiden %98’e ulaştı...' },
-                    { tag: 'Ekonomi', title: 'Mardin Tekstil Ürünleri Brezilya Pazarında', desc: 'Mardinli yerel üreticiler, özel tasarım kumaşlarını Sao Paulo moda haftasında sergiledi.', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1000', content: 'Kültürel ticaret köprüsü meyvelerini veriyor. Mardin’in eşsiz dokumaları, Latin Amerika’nın moda başkenti Sao Paulo’da büyük ilgi gördü. İki ülke arasında yıllık 500 milyon dolarlık yeni bir ticaret hacmi hedefleniyor...' }
+                page: 'home',
+                activeNews: null,
+                mTime: '',
+                bTime: '',
+                newsData: [
+                    { tag: 'Mardin', title: 'Tarihi Konaklarda Restorasyon Seferberliği', desc: 'Mardin Valiliği, 10 adet tarihi konağın turizme kazandırılması için dev bütçe ayırdı.', img: 'https://images.unsplash.com/photo-1528642463366-20ba5d3f000c?w=1000', body: 'Proje kapsamında Artuklu bölgesindeki tescilli yapılar aslına uygun olarak restore edilecek. Mardin’in eşsiz taş işçiliğiyle bezenmiş bu yapılar, butik otel ve kültür merkezi olarak hizmet verecek. Yerel halk için de yeni iş imkanları yaratılması hedefleniyor.' },
+                    { tag: 'Brazil', title: 'Amazon Ormanlarında Dijital Takip Dönemi', desc: 'Brezilya uzay ajansı, yapay zeka destekli uydularla orman yangınlarını anlık izleyecek.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=1000', body: 'Yapay zeka teknolojisi, dumanı ve ısı değişimlerini henüz yangın büyümeden tespit ederek ekiplere bildirecek. Bu sistemin, orman tahribatını %40 oranında azaltması bekleniyor. Brezilya, çevre teknolojilerinde dünya lideri olmayı hedefliyor.' },
+                    { tag: 'Ekonomi', title: 'Mardin-Rio Ticaret Forumu Başladı', desc: 'İki bölgenin iş insanları, tarım ve tekstil odaklı yeni bir serbest ticaret hattı kuruyor.', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1000', body: 'Forumun ilk gününde Mardin tekstil ürünlerinin Brezilya pazarına girmesi konusunda mutabakata varıldı. Brezilya’nın tropikal meyveleri ise Türkiye üzerinden Avrupa pazarına ulaştırılacak. Bu ticaret köprüsü binlerce kişiye istihdam sağlayacak.' }
                 ],
                 authors: [
-                    { name: 'Prof. Dr. Ahmet Salim', role: 'Tarih & Strateji', bio: 'Mezopotamya ve Latin medeniyetleri arasındaki benzerlikler üzerine 5 adet uluslararası yayını bulunmaktadır. Portalın kurucu editörüdür.', photo: 'https://i.pravatar.cc/150?u=asalim' },
-                    { name: 'Dr. Isabella Santos', role: 'Kültür Analisti', bio: 'Brezilya Dış İşleri Bakanlığı eski danışmanı. Türk kahvesi ve Brezilya sanatı üzerine karşılaştırmalı çalışmalar yürütmektedir.', photo: 'https://i.pravatar.cc/150?u=isabella' }
+                    { name: 'Prof. Dr. Ahmet Salim', title: 'Kıdemli Analist', bio: 'Mezopotamya tarihi ve Latin Amerika stratejileri uzmanı.', photo: 'https://i.pravatar.cc/150?u=asalim' },
+                    { name: 'Isabella Mendes', title: 'Kültür Editörü', bio: 'Sao Paulo Üniversitesi’nde Türk-Brezilya kültürü araştırmacısı.', photo: 'https://i.pravatar.cc/150?u=isabella' }
                 ],
                 init() {
-                    this.updateClocks();
-                    setInterval(() => this.updateClocks(), 1000);
+                    this.updateTime();
+                    setInterval(() => this.updateTime(), 1000);
                 },
-                updateClocks() {
-                    const now = new Date();
-                    this.mardinTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Istanbul' }).format(now);
-                    this.brazilTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' }).format(now);
+                updateTime() {
+                    const n = new Date();
+                    this.mTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Istanbul' }).format(n);
+                    this.bTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' }).format(n);
                 },
-                openNews(news) {
-                    this.selectedNews = news;
-                    this.currentPage = 'news-detail';
+                showNews(news) {
+                    this.activeNews = news;
+                    this.page = 'detail';
                     window.scrollTo(0, 0);
                 }
             }
