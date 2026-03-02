@@ -3,176 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC GLOBAL | Elite Intelligence v23</title>
+    <title>ASC GLOBAL | Editorial Excellence v24</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&family=Playfair+Display:ital,wght@0,900;1,900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap');
         
-        :root { 
-            --primary: #020617; --accent: #b45309; --surface: #ffffff; 
-        }
+        :root { --ink: #000000; --paper: #ffffff; --gold-leaf: #8b5cf6; --accent: #c2410c; }
 
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: #f8fafc; color: var(--primary);
-            scroll-behavior: smooth;
-        }
-
+        body { font-family: 'Inter', sans-serif; background-color: #fafaf9; color: var(--ink); }
         .font-serif { font-family: 'Playfair Display', serif; }
 
-        /* OKUNABİLİRLİK: DERİN SİYAH METİNLER */
-        h1, h2, h3, p, label { color: #000000 !important; font-weight: 700; }
-        .text-muted { color: #475569 !important; font-weight: 500; }
+        /* OKUNABİLİRLİK: DERİN KONTRAST */
+        .editorial-text { color: var(--ink) !important; line-height: 1.8; font-size: 1.15rem; font-weight: 400; }
+        .headline-xl { font-size: 4rem; line-height: 1; font-weight: 900; letter-spacing: -0.04em; color: var(--ink); }
 
-        /* ELITE AUTHOR CARDS (Referans Görsel Uyarlaması) */
-        .author-card {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 2px solid rgba(180, 83, 9, 0.3);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        /* ADMIN FOCUS: NET VE KESKİN */
+        .zen-input {
+            background: #ffffff !important;
+            border: 2px solid #e5e7eb !important;
+            color: #000 !important;
+            font-size: 1.25rem !important;
+            padding: 1.5rem !important;
+            border-radius: 1rem !important;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .author-card:hover {
-            border-color: #f59e0b;
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-        .author-img {
-            clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
-            border: 2px solid #b45309;
-        }
+        .zen-input:focus { border-color: var(--ink) !important; box-shadow: 0 0 0 4px rgba(0,0,0,0.05); outline: none; }
 
-        /* REKLAM MOTORU v23 */
-        .ad-engine {
+        /* MAGS & CARDS */
+        .magazine-card { transition: all 0.5s ease; border-bottom: 1px solid #e5e7eb; padding-bottom: 2rem; }
+        .magazine-card:hover { transform: translateY(-4px); border-color: var(--ink); }
+
+        /* REKLAM ALANI: NATIVE STYLE */
+        .native-ad-frame {
             width: 300px; height: 300px;
-            background: #ffffff;
-            border: 4px double #000;
+            background: white; border: 1px solid #e5e7eb;
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
-            box-shadow: 15px 15px 0px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
         }
-        .ad-engine img { width: 100%; height: 100%; object-fit: contain; z-index: 2; }
-
-        /* ADMIN INPUTS (Ultra Clarity) */
-        .premium-input {
-            background: white !important;
-            border: 3px solid #000 !important;
-            color: #000 !important;
-            font-size: 1.1rem !important;
-            padding: 1rem !important;
-            border-radius: 0.5rem !important;
-            transition: all 0.2s;
-        }
-        .premium-input:focus {
-            background: #fffbeb !important;
-            border-color: #b45309 !important;
-            box-shadow: 0 0 0 5px rgba(180, 83, 9, 0.1);
-        }
+        .native-ad-frame img { width: 100%; height: 100%; object-fit: cover; }
 
         [x-cloak] { display: none !important; }
     </style>
 </head>
 <body x-data="ascEngine()" x-init="init()">
 
-    <nav class="sticky top-0 z-[1000] bg-white/80 backdrop-blur-xl border-b-4 border-black px-8 py-4 flex justify-between items-center">
-        <div @click="currentPage = 'home'" class="flex items-center gap-4 cursor-pointer group">
-            <div class="bg-black text-white w-14 h-14 flex items-center justify-center rounded-2xl transform group-hover:rotate-12 transition-transform duration-500 font-black text-2xl shadow-xl">A</div>
-            <div>
-                <h1 class="font-serif text-3xl leading-none italic uppercase">ASC <span class="text-amber-600">Global</span></h1>
-                <p class="text-[10px] font-extrabold tracking-[0.4em] uppercase opacity-50">Intelligence Network</p>
-            </div>
+    <nav class="sticky top-0 z-[1000] bg-white/90 backdrop-blur-md border-b border-stone-200 px-8 py-6 flex justify-between items-center">
+        <div @click="currentPage = 'home'" class="flex items-center gap-6 cursor-pointer group">
+            <h1 class="font-serif text-4xl font-black uppercase tracking-tighter italic">ASC <span class="text-orange-700">Global</span></h1>
+            <div class="h-8 w-px bg-stone-200 hidden md:block"></div>
+            <p class="text-[10px] font-bold uppercase tracking-[0.4em] opacity-40 hidden md:block">World Report & Style</p>
         </div>
-        <div class="flex items-center gap-6">
-            <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest">
-                <a href="#" class="hover:text-amber-600 transition-colors">Mardin</a>
-                <a href="#" class="hover:text-amber-600 transition-colors">Sao Paulo</a>
-                <a href="#" class="hover:text-amber-600 transition-colors">Reports</a>
-            </div>
-            <button @click="openAdmin()" class="bg-black text-white px-8 py-4 rounded-full font-black text-[10px] uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all">
-                Access Dashboard
+        <div class="flex items-center gap-8">
+            <button @click="openAdmin()" class="bg-black text-white px-10 py-3 rounded-full font-bold text-[11px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl">
+                Terminal
             </button>
         </div>
     </nav>
 
-    <main x-show="currentPage === 'home'" x-cloak class="max-w-7xl mx-auto px-6 py-12 space-y-24">
+    <main x-show="currentPage === 'home'" x-cloak class="max-w-7xl mx-auto px-6 py-16">
         
-        <section class="relative p-1 bg-black rounded-[40px] shadow-2xl overflow-hidden group">
-            <div class="absolute inset-0 bg-gradient-to-r from-amber-900/20 to-transparent"></div>
-            <div class="relative bg-[#0a0a0a] rounded-[38px] p-12 border border-white/10">
-                <div class="flex flex-col items-center mb-16">
-                    <span class="bg-amber-600 text-black px-10 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.6em] mb-4 shadow-lg">Meridian Portal</span>
-                    <div class="h-1 w-32 bg-amber-600/30 rounded-full"></div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <template x-for="author in authors" :key="author.id">
-                        <div @click="viewItem(author, 'author')" class="author-card p-8 rounded-[30px] flex items-center gap-8 cursor-pointer group/card">
-                            <div class="w-32 h-32 relative flex-shrink-0">
-                                <div class="absolute inset-0 bg-amber-600 rotate-6 rounded-3xl opacity-20 group-hover/card:rotate-12 transition-transform"></div>
-                                <img :src="author.photo" class="author-img w-full h-full object-cover relative z-10">
-                            </div>
-                            <div>
-                                <p class="text-amber-500 font-black text-[10px] uppercase tracking-widest mb-2" x-text="author.title"></p>
-                                <h3 class="text-white text-4xl font-serif italic" x-text="author.name"></h3>
-                                <div class="mt-4 flex gap-1 opacity-0 group-hover/card:opacity-100 transition-opacity">
-                                    <div class="h-1 w-8 bg-amber-600 rounded-full"></div>
-                                    <div class="h-1 w-2 bg-amber-600 rounded-full"></div>
-                                </div>
-                            </div>
+        <section class="mb-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center border-b-2 border-black pb-16">
+            <div class="lg:col-span-4">
+                <span class="text-orange-700 font-black text-xs uppercase tracking-[0.4em] mb-4 block">Corner Writers</span>
+                <h2 class="font-serif text-7xl font-black leading-none mb-8">Meridian Portal</h2>
+            </div>
+            <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <template x-for="author in authors" :key="author.id">
+                    <div @click="viewItem(author, 'author')" class="group flex items-center gap-6 cursor-pointer">
+                        <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-stone-100 group-hover:border-black transition-all p-1">
+                            <img :src="author.photo" class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all duration-700">
                         </div>
-                    </template>
-                </div>
+                        <div>
+                            <p class="text-stone-400 font-bold text-[10px] uppercase tracking-widest mb-1" x-text="author.title"></p>
+                            <h3 class="text-3xl font-serif italic group-hover:underline" x-text="author.name"></h3>
+                        </div>
+                    </div>
+                </template>
             </div>
         </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
             <div class="lg:col-span-8 space-y-20">
-                <div class="flex items-end justify-between border-b-4 border-black pb-4">
-                    <h2 class="text-5xl font-serif italic lowercase tracking-tighter">latest <span class="text-amber-600 font-black uppercase tracking-normal not-italic text-4xl">Intelligence</span></h2>
-                </div>
-
-                <div class="grid gap-20">
-                    <template x-for="news in newsData" :key="news.id">
-                        <article @click="viewItem(news, 'news')" class="group cursor-pointer">
-                            <div class="relative rounded-[60px] overflow-hidden border-2 border-black/5 shadow-2xl mb-8 aspect-video">
-                                <img :src="news.img" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-12">
-                                    <span class="text-white font-black text-sm uppercase tracking-widest">Devamını Oku →</span>
-                                </div>
-                                <div class="absolute top-8 left-8 bg-white border-2 border-black px-6 py-2 rounded-full font-black text-xs uppercase" x-text="news.region"></div>
+                <template x-for="(news, index) in newsData" :key="news.id">
+                    <article @click="viewItem(news, 'news')" class="magazine-card group cursor-pointer">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                            <div class="md:col-span-7">
+                                <span class="bg-stone-100 text-stone-500 px-3 py-1 rounded text-[10px] font-black uppercase mb-6 inline-block" x-text="news.region"></span>
+                                <h3 :class="index === 0 ? 'text-6xl' : 'text-4xl'" class="font-serif font-black leading-tight mb-6 group-hover:text-orange-800 transition-colors" x-text="news.title"></h3>
+                                <p class="text-stone-500 line-clamp-3 editorial-text italic" x-text="news.body"></p>
                             </div>
-                            <h3 class="text-5xl font-black leading-[1.1] tracking-tight group-hover:text-amber-700 transition-colors" x-text="news.title"></h3>
-                        </article>
-                    </template>
-                </div>
+                            <div class="md:col-span-5">
+                                <div class="aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
+                                    <img :src="news.img" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </template>
             </div>
 
-            <div class="lg:col-span-4 space-y-16">
-                <div class="sticky top-32 space-y-16">
-                    <div class="text-center">
-                        <p class="text-[10px] font-black uppercase tracking-[0.5em] mb-6 text-slate-400 italic">Global Partnership</p>
-                        <div class="ad-engine mx-auto">
-                            <div x-show="!adImage" class="text-slate-200 text-6xl"><i class="fas fa-bullhorn"></i></div>
-                            <img :src="adImage" x-show="adImage">
+            <div class="lg:col-span-4 space-y-20">
+                <div class="sticky top-40 space-y-20">
+                    <div>
+                        <p class="text-center text-[9px] font-black uppercase tracking-[0.5em] mb-6 text-stone-300">Advertisement</p>
+                        <div class="native-ad-frame mx-auto">
+                            <img :src="adImage || 'https://via.placeholder.com/300x300?text=ASC+GLOBAL+ADS'" alt="Ad">
+                            <div x-show="!adImage" class="absolute inset-0 flex items-center justify-center border-4 border-dashed border-stone-50">
+                                <i class="fas fa-image text-stone-200 text-4xl"></i>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-black p-10 rounded-[40px] text-white shadow-2xl transform -rotate-2">
-                        <div class="flex justify-between items-center mb-8">
-                            <h4 class="font-black text-xs uppercase tracking-widest text-amber-500">Live Feed</h4>
-                            <div class="flex gap-1">
-                                <div class="w-2 h-2 bg-red-600 rounded-full animate-ping"></div>
+                    <div class="bg-black text-white p-12 rounded-[40px] shadow-2xl relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-orange-700 rounded-full blur-3xl opacity-20"></div>
+                        <h4 class="font-serif text-3xl italic mb-8">Global Briefing</h4>
+                        <div class="space-y-8">
+                            <div class="border-l border-white/20 pl-6 group cursor-default">
+                                <p class="text-xs font-bold leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity">Amazon havzasındaki ticaret rotaları Brezilya hükümeti tarafından yeniden düzenlendi.</p>
                             </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="group cursor-help">
-                                <p class="text-xs font-bold leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">Artuklu Sarayı Restorasyonu Tamamlandı. Mardin turizminde yeni bir dönem başlıyor.</p>
-                                <div class="h-px w-full bg-white/10 mt-4"></div>
-                            </div>
-                            <div class="group cursor-help">
-                                <p class="text-xs font-bold leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity italic">Amazon Havzası Güneş Paneli Projesi: Brezilya hükümetinden onay çıktı.</p>
+                            <div class="border-l border-white/20 pl-6 group cursor-default">
+                                <p class="text-xs font-bold leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity">Mardin Artuklu Sarayı dijital arşivi dünyaya açıldı.</p>
                             </div>
                         </div>
                     </div>
@@ -181,102 +136,91 @@
         </div>
     </main>
 
-    <div x-show="currentPage === 'admin'" class="fixed inset-0 z-[2000] bg-slate-50 flex overflow-hidden" x-cloak x-transition:enter="transition duration-500" x-transition:enter-start="opacity-0 translate-y-10">
-        <div class="w-96 bg-black p-12 flex flex-col justify-between shadow-[20px_0_60px_rgba(0,0,0,0.1)]">
-            <div class="space-y-16">
-                <div class="border-b border-white/10 pb-10">
-                    <h2 class="text-white font-serif text-3xl italic">Elite <span class="text-amber-500 not-italic font-black">CMS</span></h2>
-                    <p class="text-[9px] text-amber-500 font-black uppercase tracking-[0.4em] mt-2">v23.0 Authorized Only</p>
+    <div x-show="currentPage === 'admin'" class="fixed inset-0 z-[2000] bg-white overflow-y-auto" x-cloak>
+        <div class="max-w-6xl mx-auto px-8 py-20">
+            <div class="flex justify-between items-end mb-20 border-b-4 border-black pb-10">
+                <div>
+                    <h2 class="text-7xl font-serif font-black tracking-tighter italic">Studio</h2>
+                    <p class="text-orange-700 font-black uppercase tracking-widest mt-4">Content & Media Control</p>
                 </div>
-                <nav class="space-y-4">
-                    <button @click="adminTab = 'news'" :class="adminTab === 'news' ? 'bg-amber-600 text-black shadow-[0_0_30px_rgba(180,83,9,0.3)]' : 'text-white/40 hover:text-white'" class="w-full text-left px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">Intelligence</button>
-                    <button @click="adminTab = 'authors'" :class="adminTab === 'authors' ? 'bg-amber-600 text-black shadow-[0_0_30px_rgba(180,83,9,0.3)]' : 'text-white/40 hover:text-white'" class="w-full text-left px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">Analysts</button>
-                    <button @click="adminTab = 'ads'" :class="adminTab === 'ads' ? 'bg-amber-600 text-black shadow-[0_0_30px_rgba(180,83,9,0.3)]' : 'text-white/40 hover:text-white'" class="w-full text-left px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">Marketing</button>
-                </nav>
+                <div class="flex gap-4">
+                    <button @click="adminTab = 'news'" :class="adminTab === 'news' ? 'bg-black text-white' : 'bg-stone-100'" class="px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-widest">Articles</button>
+                    <button @click="adminTab = 'authors'" :class="adminTab === 'authors' ? 'bg-black text-white' : 'bg-stone-100'" class="px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-widest">Writers</button>
+                    <button @click="adminTab = 'ads'" :class="adminTab === 'ads' ? 'bg-orange-700 text-white' : 'bg-stone-100'" class="px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-widest">Ads</button>
+                    <button @click="currentPage = 'home'" class="bg-stone-100 w-12 h-12 rounded-xl flex items-center justify-center hover:bg-black hover:text-white transition-all"><i class="fas fa-times"></i></button>
+                </div>
             </div>
-            <button @click="currentPage = 'home'" class="w-full py-5 bg-red-600/10 text-red-500 rounded-2xl font-black text-xs uppercase hover:bg-red-600 hover:text-white transition-all">Terminate Session</button>
-        </div>
 
-        <div class="flex-grow p-20 overflow-y-auto">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex justify-between items-center mb-16">
-                    <h3 class="text-6xl font-black uppercase tracking-tighter" x-text="adminTab"></h3>
-                    <div class="h-2 w-32 bg-black rounded-full"></div>
-                </div>
-
-                <template x-if="adminTab === 'ads'">
-                    <div class="bg-white p-16 rounded-[60px] shadow-2xl border-4 border-black text-center space-y-12">
-                        <div class="ad-engine mx-auto shadow-inner border-dashed border-slate-200">
-                            <img :src="adImage">
-                        </div>
-                        <div class="max-w-xs mx-auto">
-                            <input type="file" @change="handleAdUpload" id="adFile" class="hidden">
-                            <label for="adFile" class="block bg-black text-white py-6 rounded-3xl font-black text-sm uppercase cursor-pointer hover:bg-amber-600 transition-all shadow-xl">Select Visual Assets</label>
-                            <p class="mt-6 text-slate-400 font-bold text-[10px] uppercase">Requirement: 300x300 Optimized</p>
-                        </div>
+            <template x-if="adminTab === 'ads'">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+                    <div class="native-ad-frame mx-auto scale-125 border-4 border-black">
+                        <img :src="adImage">
                     </div>
-                </template>
-
-                <div x-show="adminTab !== 'ads'" class="bg-white p-12 rounded-[50px] shadow-2xl border-2 border-slate-100 space-y-10">
-                    <div class="grid grid-cols-2 gap-10">
-                        <div class="space-y-4">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400">Primary Headline</label>
-                            <input x-model="form.main" type="text" class="premium-input" placeholder="Title here...">
-                        </div>
-                        <div class="space-y-4">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400">Region / Identity</label>
-                            <input x-model="form.sub" type="text" class="premium-input" placeholder="e.g. Mardin / TR">
-                        </div>
-                        <div class="col-span-2 space-y-4">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400">Deep Content Analysis</label>
-                            <textarea x-model="form.content" class="premium-input h-64" placeholder="Report details..."></textarea>
-                        </div>
-                        <div class="col-span-2">
-                            <input type="file" @change="handleFile" id="formFile" class="hidden">
-                            <label for="formFile" class="flex items-center justify-center gap-4 border-4 border-dashed border-slate-100 p-12 rounded-[40px] cursor-pointer hover:bg-slate-50 transition-all">
-                                <i class="fas fa-cloud-upload-alt text-4xl text-amber-600"></i>
-                                <span class="font-black text-xs uppercase">Upload Master Media</span>
-                            </label>
-                        </div>
+                    <div class="space-y-8">
+                        <h4 class="text-4xl font-serif font-black italic">Ad Space <span class="text-stone-300">#01</span></h4>
+                        <p class="text-stone-500 font-medium">Yüklediğiniz görsel sağ sütundaki 300x300 boyutundaki alanda anında yayınlanır. PNG veya JPG önerilir.</p>
+                        <input type="file" @change="handleAdUpload" id="adFile" class="hidden">
+                        <label for="adFile" class="inline-block bg-black text-white px-12 py-5 rounded-2xl font-black cursor-pointer shadow-2xl hover:bg-orange-700 transition-all">Upload New Asset</label>
                     </div>
-                    <button @click="save()" class="w-full bg-black text-white py-8 rounded-full font-black text-xl uppercase tracking-[0.2em] shadow-2xl hover:bg-amber-600 transition-all">Commit to Database</button>
                 </div>
+            </template>
 
-                <div x-show="adminTab !== 'ads'" class="mt-20 space-y-6">
-                    <h4 class="text-xs font-black uppercase tracking-[0.5em] text-slate-400 mb-8">Live Registry</h4>
-                    <template x-for="item in (adminTab === 'news' ? newsData : authors)" :key="item.id">
-                        <div class="bg-white p-6 rounded-3xl border border-slate-100 flex justify-between items-center shadow-sm hover:shadow-xl transition-shadow">
-                            <div class="flex items-center gap-6">
-                                <img :src="item.img || item.photo" class="w-16 h-16 rounded-2xl object-cover grayscale hover:grayscale-0 transition-all">
-                                <div>
-                                    <p class="font-black text-black text-lg" x-text="item.title || item.name"></p>
-                                    <p class="text-[10px] font-bold text-amber-600 uppercase" x-text="item.region || item.title"></p>
-                                </div>
+            <div x-show="adminTab !== 'ads'" class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+                <div class="lg:col-span-8 space-y-12">
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">Headline</label>
+                        <input x-model="form.main" type="text" class="zen-input w-full font-serif font-bold italic text-3xl" placeholder="Kışkırtıcı bir başlık yazın...">
+                    </div>
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">Context / Region</label>
+                        <input x-model="form.sub" type="text" class="zen-input w-full" placeholder="Örn: Mardin, Türkiye / Ekonomi">
+                    </div>
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">Long-form Narrative</label>
+                        <textarea x-model="form.content" class="zen-input w-full h-[400px] editorial-text" placeholder="Hikayeyi buraya derinlemesine işleyin..."></textarea>
+                    </div>
+                </div>
+                <div class="lg:col-span-4 space-y-12">
+                    <div class="bg-stone-50 p-10 rounded-[30px] border-2 border-dashed border-stone-200 text-center">
+                        <input type="file" @change="handleFile" id="formFile" class="hidden">
+                        <label for="formFile" class="cursor-pointer group">
+                            <div class="w-20 h-20 bg-white rounded-2xl mx-auto flex items-center justify-center shadow-xl mb-6 group-hover:bg-black group-hover:text-white transition-all">
+                                <i class="fas fa-camera text-2xl"></i>
                             </div>
-                            <button @click="deleteItem(item.id)" class="bg-red-50 text-red-500 w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </template>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-stone-500">Visual Header Yükle</span>
+                        </label>
+                    </div>
+                    <button @click="save()" class="w-full bg-black text-white py-8 rounded-3xl font-black text-xl uppercase tracking-widest shadow-2xl hover:bg-orange-700 transition-all">Publish Content</button>
+                    
+                    <div class="pt-10 space-y-4 border-t border-stone-100">
+                        <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 mb-6">Recent Records</h4>
+                        <template x-for="item in (adminTab === 'news' ? newsData : authors)" :key="item.id">
+                            <div class="flex items-center justify-between p-4 bg-white border border-stone-100 rounded-xl">
+                                <span class="font-bold text-xs truncate w-32" x-text="item.title || item.name"></span>
+                                <button @click="deleteItem(item.id)" class="text-red-500 text-xs font-black">SİL</button>
+                            </div>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div x-show="currentPage === 'reader'" class="fixed inset-0 z-[3000] bg-white overflow-y-auto" x-cloak x-transition:enter="transition duration-700" x-transition:enter-start="scale-110 opacity-0">
-        <div class="max-w-4xl mx-auto py-32 px-10 relative">
-            <button @click="currentPage = 'home'" class="fixed top-12 right-12 w-20 h-20 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-2xl z-[3001]"><i class="fas fa-times text-2xl"></i></button>
+    <div x-show="currentPage === 'reader'" class="fixed inset-0 z-[3000] bg-white overflow-y-auto" x-cloak x-transition:enter="transition duration-700" x-transition:enter-start="opacity-0 translate-y-20">
+        <div class="max-w-4xl mx-auto px-8 py-32 relative">
+            <button @click="currentPage = 'home'" class="fixed top-12 right-12 w-16 h-16 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-all z-[3001] shadow-2xl"><i class="fas fa-times"></i></button>
             
-            <div class="space-y-12">
+            <div class="space-y-16">
                 <div class="text-center">
-                    <span class="bg-amber-100 text-amber-700 px-8 py-2 rounded-full font-black text-xs uppercase tracking-widest" x-text="selectedItem?.region || selectedItem?.title"></span>
-                    <h1 class="text-7xl md:text-9xl font-serif italic mt-12 leading-tight" x-text="selectedItem?.title || selectedItem?.name"></h1>
+                    <span class="text-orange-700 font-black text-xs uppercase tracking-[0.5em] mb-8 block" x-text="selectedItem?.region || selectedItem?.title"></span>
+                    <h1 class="font-serif text-7xl md:text-9xl font-black italic leading-[1] mb-12" x-text="selectedItem?.title || selectedItem?.name"></h1>
                 </div>
 
-                <div class="relative group">
-                    <div class="absolute inset-0 bg-amber-600 rounded-[80px] blur-3xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                    <img :src="selectedItem?.img || selectedItem?.photo" class="w-full h-[600px] object-cover rounded-[80px] relative z-10 shadow-2xl border-8 border-white">
+                <div class="relative rounded-[60px] overflow-hidden shadow-2xl">
+                    <img :src="selectedItem?.img || selectedItem?.photo" class="w-full h-auto object-cover max-h-[800px]">
                 </div>
 
-                <div class="prose prose-2xl mx-auto font-medium text-slate-800 leading-[1.8] space-y-12 py-12" x-html="selectedItem?.body || selectedItem?.bio"></div>
+                <div class="editorial-text space-y-10 py-12 border-t border-stone-100" x-html="selectedItem?.body || selectedItem?.bio"></div>
             </div>
         </div>
     </div>
@@ -286,18 +230,18 @@
             return {
                 currentPage: 'home', adminTab: 'news', editingId: null, selectedItem: null,
                 form: { main: '', sub: '', content: '', media: '' },
-                adImage: localStorage.getItem('asc_ad_v23') || '',
+                adImage: localStorage.getItem('asc_ad_v24') || '',
                 
-                newsData: JSON.parse(localStorage.getItem('asc_news_v23')) || [
-                    { id: 1, title: 'Brezilya ve Türkiye Arasında Yeni Dijital Lojistik Koridoru', region: 'Sao Paulo / BR', body: 'Küresel ticaretin yeni kalbi Mardin ve Sao Paulo arasındaki dijital entegrasyon süreci tamamlandı. Bu stratejik adım, iki kıta arasındaki veri ve emtia akışını %40 hızlandıracak...', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600' }
+                newsData: JSON.parse(localStorage.getItem('asc_news_v24')) || [
+                    { id: 1, title: 'Brezilya Ormanlarından Mardin Sokaklarına: Bir Kültür Köprüsü', region: 'Style & Culture', body: 'İki uzak coğrafya arasındaki ticaret sadece rakamlardan ibaret değil. Bugün Sao Paulo limanından kalkan her gemi, beraberinde yeni bir yaşam tarzı getiriyor. Mardin’in tarihi taş evlerinde artık Amazon esintileri yankılanıyor...', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600' }
                 ],
-                authors: JSON.parse(localStorage.getItem('asc_authors_v23')) || [
-                    { id: 1, name: 'Ahmet Çınarbaş', title: 'Siyaset Bilimci', bio: 'Küresel jeopolitik analizler ve bölgesel stratejiler uzmanı.', photo: 'https://i.ibb.co/LhqZz4H/ahmet.jpg' },
-                    { id: 2, name: 'M. Beşir Ayanoğlu', title: 'Hukukçu', bio: 'Uluslararası hukuk ve kurumsal yönetim kıdemli danışmanı.', photo: 'https://i.ibb.co/vYm6D6T/besir.jpg' }
+                authors: JSON.parse(localStorage.getItem('asc_authors_v24')) || [
+                    { id: 1, name: 'Ahmet Çınarbaş', title: 'Senior Analyst', bio: 'Küresel jeopolitik analizler ve bölgesel stratejiler uzmanı.', photo: 'https://i.ibb.co/LhqZz4H/ahmet.jpg' },
+                    { id: 2, name: 'M. Beşir Ayanoğlu', title: 'Legal Counsel', bio: 'Uluslararası hukuk ve kurumsal yönetim kıdemli danışmanı.', photo: 'https://i.ibb.co/vYm6D6T/besir.jpg' }
                 ],
 
                 init() { this.sync(); },
-                openAdmin() { if(prompt("ACCESS CODE:") === "47") this.currentPage = 'admin'; },
+                openAdmin() { if(prompt("Sistem Anahtarı:") === "47") this.currentPage = 'admin'; },
                 
                 handleFile(e) {
                     const reader = new FileReader();
@@ -308,8 +252,8 @@
                     const reader = new FileReader();
                     reader.onload = (f) => {
                         this.adImage = f.target.result;
-                        localStorage.setItem('asc_ad_v23', this.adImage);
-                        alert("Marketing Asset Deployed Successfully");
+                        localStorage.setItem('asc_ad_v24', this.adImage);
+                        alert("Ad Unit Live!");
                     };
                     reader.readAsDataURL(e.target.files[0]);
                 },
@@ -324,11 +268,11 @@
                     else this.authors.push(payload);
                     
                     this.sync(); this.resetForm();
-                    alert("System Updated Successfully.");
+                    alert("Published Successfully.");
                 },
 
                 deleteItem(id) {
-                    if(confirm('Kayıt kalıcı olarak silinsin mi?')) {
+                    if(confirm('Arşive gönderilsin mi?')) {
                         if(this.adminTab === 'news') this.newsData = this.newsData.filter(n => n.id !== id);
                         else this.authors = this.authors.filter(a => a.id !== id);
                         this.sync();
@@ -337,8 +281,8 @@
 
                 viewItem(item) { this.selectedItem = item; this.currentPage = 'reader'; window.scrollTo(0,0); },
                 sync() { 
-                    localStorage.setItem('asc_news_v23', JSON.stringify(this.newsData)); 
-                    localStorage.setItem('asc_authors_v23', JSON.stringify(this.authors)); 
+                    localStorage.setItem('asc_news_v24', JSON.stringify(this.newsData)); 
+                    localStorage.setItem('asc_authors_v24', JSON.stringify(this.authors)); 
                 },
                 resetForm() { this.form = { main: '', sub: '', content: '', media: '' }; }
             }
