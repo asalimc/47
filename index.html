@@ -3,31 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSP Global | Professional Portal</title>
+    <title>MSP Global | Mardin - Brazil Bridge</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --msp-dark: #0f172a; }
+        :root { --msp-dark: #0f172a; --mardin-gold: #b45309; --brazil-green: #15803d; }
         body { font-family: 'Inter', sans-serif; background: #f8fafc; overflow-x: hidden; }
         .msp-title { font-family: 'Playfair Display', serif; }
         .view-node { display: none; min-height: 100vh; }
         .active-view { display: block; }
         
-        /* Taşma Engelleyici Kilitler */
-        .ad-box-fixed { aspect-ratio: 4 / 5; position: relative; overflow: hidden; border-radius: 2.5rem; }
-        .ad-img-fixed { width: 100%; height: 100%; object-fit: cover; }
-        .news-img-fixed { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 2rem; }
+        /* Çift Sütun Kilitleri */
+        .news-column { height: auto; transition: all 0.3s ease; }
+        .img-lock { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 2rem; }
         
-        /* Admin Sidebar Sabitleyici */
+        /* Bayrak ve Etiketler */
+        .tag-mardin { background: var(--mardin-gold); color: white; }
+        .tag-brazil { background: var(--brazil-green); color: white; }
+        
+        /* Admin Sidebar */
         .admin-sidebar { height: 100vh; position: sticky; top: 0; background: var(--msp-dark); }
         
-        /* Scroll */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        
-        /* Resim Önizleme */
-        #img-preview { width: 100%; height: 200px; object-fit: cover; border-radius: 1.5rem; display: none; border: 2px solid #e2e8f0; }
+        /* Reklam ve Yazar Sabitleyici (Alt Bar) */
+        .bottom-shelf { background: white; border-top: 1px solid #e2e8f0; padding: 2rem 0; margin-top: 4rem; }
     </style>
 </head>
 <body class="text-slate-900">
@@ -36,60 +35,74 @@
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div onclick="router('home')" class="cursor-pointer">
                 <h1 class="text-2xl font-black tracking-tighter italic uppercase">MSP<span class="text-red-600">.</span>GLOBAL</h1>
-                <p class="text-[8px] font-black uppercase tracking-[0.3em] text-slate-400">Intelligence Bridge</p>
             </div>
-            <div class="flex items-center gap-4">
-                <button onclick="router('home')" class="text-xs font-black uppercase px-4 py-2 hover:text-red-600 transition">Ana Sayfa</button>
-                <button onclick="router('admin')" class="bg-blue-600 text-white text-[10px] font-black px-6 py-3 rounded-full shadow-xl hover:bg-blue-700 transition uppercase">Yönetim Paneli</button>
+            <div class="flex gap-4">
+                <button onclick="router('admin')" class="bg-slate-900 text-white text-[10px] font-black px-6 py-3 rounded-full shadow-xl uppercase">YÖNETİM</button>
             </div>
         </div>
     </header>
 
     <main id="view-home" class="view-node active-view container mx-auto px-4 py-10">
-        <div class="grid grid-cols-12 gap-8">
-            <div class="col-span-12 lg:col-span-8 space-y-10" id="news-grid">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            <div class="news-column space-y-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <span class="w-12 h-1 bg-amber-600"></span>
+                    <h2 class="msp-title text-3xl font-black italic">Mardin News</h2>
                 </div>
+                <div id="mardin-flow" class="space-y-10">
+                    </div>
+            </div>
 
-            <aside class="col-span-12 lg:col-span-4 space-y-8">
-                <div id="ad-container" class="ad-box-fixed bg-slate-200 shadow-2xl">
-                    <div class="absolute inset-0 flex items-center justify-center text-slate-400 italic">Reklam Yükleniyor...</div>
+            <div class="news-column space-y-8 border-l-0 md:border-l md:pl-12 border-slate-200">
+                <div class="flex items-center gap-4 mb-6">
+                    <span class="w-12 h-1 bg-green-700"></span>
+                    <h2 class="msp-title text-3xl font-black italic">Brazil News</h2>
                 </div>
-                
-                <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100">
-                    <h3 class="text-[10px] font-black uppercase text-slate-400 mb-8 border-l-4 border-blue-600 pl-4 tracking-widest">Köşe Yazarları</h3>
-                    <div id="author-sidebar" class="space-y-6"></div>
-                </div>
-            </aside>
+                <div id="brazil-flow" class="space-y-10">
+                    </div>
+            </div>
+
         </div>
+
+        <section class="mt-20 grid grid-cols-12 gap-8 pt-10 border-t">
+            <div class="col-span-12 lg:col-span-8">
+                <div id="global-ad" class="relative h-64 rounded-[3rem] overflow-hidden shadow-2xl">
+                    </div>
+            </div>
+            <div class="col-span-12 lg:col-span-4 bg-white p-8 rounded-[3rem] shadow-sm border">
+                <h3 class="text-[10px] font-black uppercase text-slate-400 mb-6 tracking-widest border-l-4 border-red-600 pl-4 text-xs">Elit Yazarlar</h3>
+                <div id="author-shelf" class="flex flex-wrap gap-4"></div>
+            </div>
+        </section>
     </main>
 
     <main id="view-detail" class="view-node container mx-auto px-4 py-12 max-w-4xl">
-        <button onclick="router('home')" class="text-xs font-black uppercase text-slate-400 mb-8 hover:text-black">← Geri Dön</button>
-        <article id="full-article">
-            </article>
+        <button onclick="router('home')" class="text-xs font-black uppercase text-slate-400 mb-8">← Geri Dön</button>
+        <article id="full-article"></article>
     </main>
 
     <main id="view-admin" class="view-node bg-slate-100">
         <div class="flex flex-col lg:flex-row">
             <nav class="w-full lg:w-72 admin-sidebar p-8 flex flex-col gap-2 text-slate-400">
-                <p class="text-[10px] font-black uppercase mb-6 tracking-widest">Menu</p>
-                <button onclick="setMod('haber')" id="m-haber" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:bg-white/5 hover:text-white transition">Haberler</button>
-                <button onclick="setMod('yazar')" id="m-yazar" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:bg-white/5 hover:text-white transition">Yazarlar</button>
-                <button onclick="setMod('reklam')" id="m-reklam" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:bg-white/5 hover:text-white transition">Reklamlar</button>
-                <hr class="my-6 border-slate-800">
-                <button onclick="router('home')" class="p-4 bg-red-600/10 text-red-500 rounded-2xl font-black text-xs uppercase">Siteden Çık</button>
+                <button onclick="setMod('haber')" id="m-haber" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:text-white transition uppercase text-xs">Haberler</button>
+                <button onclick="setMod('yazar')" id="m-yazar" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:text-white transition uppercase text-xs">Yazarlar</button>
+                <button onclick="setMod('reklam')" id="m-reklam" class="flex items-center gap-4 p-4 rounded-2xl font-bold hover:text-white transition uppercase text-xs">Reklamlar</button>
+                <div class="mt-auto pt-6 border-t border-slate-800">
+                    <button onclick="router('home')" class="w-full p-4 bg-red-600/10 text-red-500 rounded-2xl font-black text-xs uppercase">Siteden Çık</button>
+                </div>
             </nav>
 
             <section class="flex-1 p-8 lg:p-12">
                 <div class="flex justify-between items-center mb-10">
-                    <h2 id="admin-title" class="text-3xl font-black italic uppercase">Yönetim</h2>
+                    <h2 id="admin-title" class="text-3xl font-black italic uppercase">Modül Yönetimi</h2>
                     <button onclick="openModal()" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black text-xs shadow-xl">+ EKLE</button>
                 </div>
-                
                 <div class="bg-white rounded-[2.5rem] shadow-sm border overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-slate-50 border-b text-[10px] font-black uppercase text-slate-400">
-                            <tr><th class="p-6">Görsel</th><th class="p-6">Başlık</th><th class="p-6 text-right">İşlem</th></tr>
+                            <tr><th class="p-6">Medya</th><th class="p-6">Başlık</th><th class="p-6">Konum</th><th class="p-6 text-right">İşlem</th></tr>
                         </thead>
                         <tbody id="admin-table-body" class="divide-y"></tbody>
                     </table>
@@ -100,38 +113,41 @@
 
     <div id="modal" class="fixed inset-0 z-[200] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white w-full max-w-xl rounded-[3rem] p-10 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <h3 id="modal-head" class="text-2xl font-black italic mb-8">İçerik Formu</h3>
+            <h3 class="text-2xl font-black italic mb-8">İçerik Formu</h3>
             <div class="space-y-4">
-                <img id="img-preview" src="">
-                <label class="block w-full p-6 border-2 border-dashed rounded-2xl text-center cursor-pointer hover:bg-slate-50 transition">
-                    <span class="text-xs font-bold text-slate-400 uppercase">Resim Seç (PC'den)</span>
-                    <input type="file" class="hidden" onchange="encodeImg(event)">
-                </label>
-                <input id="in-title" type="text" placeholder="Ana Başlık / İsim" class="w-full p-5 bg-slate-100 rounded-2xl border-none outline-none font-bold">
-                <textarea id="in-text" placeholder="İçerik Metni..." class="w-full p-5 bg-slate-100 rounded-2xl border-none outline-none h-32"></textarea>
-                <input id="in-sub" type="text" placeholder="Alt Başlık (Yazar veya Link)" class="w-full p-5 bg-slate-100 rounded-2xl border-none outline-none text-xs font-bold">
+                <img id="img-preview" src="" class="w-full h-40 object-cover rounded-2xl hidden border">
+                <input type="file" onchange="encodeImg(event)" class="w-full p-4 bg-slate-50 rounded-xl text-xs font-bold border-2 border-dashed">
+                
+                <select id="in-location" class="w-full p-5 bg-slate-100 rounded-2xl font-bold text-xs outline-none">
+                    <option value="Mardin">Mardin</option>
+                    <option value="Brezilya">Brezilya</option>
+                </select>
+
+                <input id="in-title" type="text" placeholder="Başlık" class="w-full p-5 bg-slate-100 rounded-2xl font-bold border-none outline-none">
+                <textarea id="in-text" placeholder="Haber Metni..." class="w-full p-5 bg-slate-100 rounded-2xl h-32 outline-none border-none"></textarea>
+                <input id="in-sub" type="text" placeholder="Yazar/Kategori" class="w-full p-5 bg-slate-100 rounded-2xl text-xs font-bold outline-none">
             </div>
             <div class="mt-8 flex gap-4">
-                <button onclick="closeModal()" class="flex-1 font-bold text-slate-400">İptal</button>
-                <button onclick="saveData()" class="flex-[2] bg-blue-600 text-white p-5 rounded-2xl font-black uppercase text-xs">Kaydet</button>
+                <button onclick="closeModal()" class="flex-1 font-bold text-slate-400">Vazgeç</button>
+                <button onclick="saveData()" class="flex-[2] bg-blue-600 text-white p-5 rounded-2xl font-black uppercase text-xs shadow-lg">Kaydet</button>
             </div>
         </div>
     </div>
 
     <script>
-        // SİSTEM HAFIZASI (Varsayılan Verilerle)
-        const initialDB = {
-            haber: [{id: 1, title: "Mardin'den Sao Paulo'ya Sanat Köprüsü", text: "İki kadim kültür arasındaki bağlar güçleniyor...", sub: "Haber Ekibi", img: "https://images.unsplash.com/photo-1552035509-b63909772545?w=800"}],
-            yazar: [{id: 1, title: "Ahmet Mardinli", text: "Kültür Yazarı", sub: "Başyazar", img: "https://ui-avatars.com/api/?name=Ahmet+Mardinli&bg=0f172a&color=fff"}],
-            reklam: [{id: 1, title: "Artuklu Kahvesi", text: "Sao Paulo'da Mardin Tadı", sub: "#", img: "https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=800"}]
+        // SİSTEM HAFIZASI
+        let db = JSON.parse(localStorage.getItem('msp_dual_db')) || {
+            haber: [
+                {id:1, title: "Artuklu'nun Taşları Konuşuyor", text: "Mardin'in kadim sokaklarında yeni keşifler...", sub: "Arkeoloji", loc: "Mardin", img: "https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=600"},
+                {id:2, title: "Amazon'da Yeni Yaşam Alanları", text: "Brezilya'nın kalbinde biyolojik çeşitlilik...", sub: "Doğa", loc: "Brezilya", img: "https://images.unsplash.com/photo-1552035509-b63909772545?w=600"}
+            ],
+            yazar: [], reklam: []
         };
 
-        let db = JSON.parse(localStorage.getItem('msp_locked_db')) || initialDB;
         let currentMod = 'haber';
         let editId = null;
         let tempBase64 = "";
 
-        // ROUTER
         function router(view) {
             document.querySelectorAll('.view-node').forEach(n => n.classList.remove('active-view'));
             document.getElementById('view-' + view).classList.add('active-view');
@@ -140,24 +156,22 @@
             window.scrollTo(0,0);
         }
 
-        // RESİM ŞİFRELEME
         function encodeImg(e) {
             const file = e.target.files[0];
             const reader = new FileReader();
             reader.onloadend = () => {
                 tempBase64 = reader.result;
                 const p = document.getElementById('img-preview');
-                p.src = tempBase64; p.style.display = 'block';
+                p.src = tempBase64; p.classList.remove('hidden');
             };
             if(file) reader.readAsDataURL(file);
         }
 
-        // ADMIN CRUD
+        // ADMIN
         function setMod(m) {
             currentMod = m;
-            document.querySelectorAll('.admin-sidebar button').forEach(b => b.classList.remove('bg-white/10', 'text-white'));
-            document.getElementById('m-'+m).classList.add('bg-white/10', 'text-white');
-            document.getElementById('admin-title').innerText = m.toUpperCase() + " YÖNETİMİ";
+            document.querySelectorAll('.admin-sidebar button').forEach(b => b.classList.remove('text-white', 'bg-white/10'));
+            document.getElementById('m-'+m).classList.add('text-white', 'bg-white/10');
             renderAdmin();
         }
 
@@ -167,8 +181,9 @@
             db[currentMod].forEach(item => {
                 tbody.innerHTML += `
                     <tr>
-                        <td class="p-6 w-20"><img src="${item.img}" class="w-12 h-12 rounded-xl object-cover bg-slate-100"></td>
+                        <td class="p-6"><img src="${item.img}" class="w-12 h-12 rounded-xl object-cover"></td>
                         <td class="p-6 font-bold text-sm">${item.title}</td>
+                        <td class="p-6"><span class="text-[10px] font-black uppercase px-2 py-1 bg-slate-100 rounded-md">${item.loc || '-'}</span></td>
                         <td class="p-6 text-right space-x-4">
                             <button onclick="editItem(${item.id})" class="text-blue-500"><i class="fas fa-edit"></i></button>
                             <button onclick="deleteItem(${item.id})" class="text-red-500"><i class="fas fa-trash"></i></button>
@@ -184,7 +199,8 @@
                 title: document.getElementById('in-title').value,
                 text: document.getElementById('in-text').value,
                 sub: document.getElementById('in-sub').value,
-                img: tempBase64 || "https://via.placeholder.com/800"
+                loc: document.getElementById('in-location').value,
+                img: tempBase64 || "https://via.placeholder.com/600"
             };
             if(editId) {
                 const i = db[currentMod].findIndex(x => x.id === editId);
@@ -192,15 +208,15 @@
             } else {
                 db[currentMod].unshift(obj);
             }
-            localStorage.setItem('msp_locked_db', JSON.stringify(db));
+            localStorage.setItem('msp_dual_db', JSON.stringify(db));
             closeModal();
             renderAdmin();
         }
 
         function deleteItem(id) {
-            if(confirm('Veriyi silmek istediğine emin misin?')) {
+            if(confirm('Silinsin mi?')) {
                 db[currentMod] = db[currentMod].filter(x => x.id !== id);
-                localStorage.setItem('msp_locked_db', JSON.stringify(db));
+                localStorage.setItem('msp_dual_db', JSON.stringify(db));
                 renderAdmin();
             }
         }
@@ -211,81 +227,62 @@
             document.getElementById('in-title').value = item.title;
             document.getElementById('in-text').value = item.text;
             document.getElementById('in-sub').value = item.sub;
+            document.getElementById('in-location').value = item.loc || 'Mardin';
             tempBase64 = item.img;
             document.getElementById('img-preview').src = item.img;
-            document.getElementById('img-preview').style.display = 'block';
+            document.getElementById('img-preview').classList.remove('hidden');
             document.getElementById('modal').classList.remove('hidden');
         }
 
-        // PORTAL RENDER
+        // PORTAL
         function renderHome() {
-            const newsGrid = document.getElementById('news-grid');
-            const authSide = document.getElementById('author-sidebar');
-            const adBox = document.getElementById('ad-container');
+            const mFlow = document.getElementById('mardin-flow');
+            const bFlow = document.getElementById('brazil-flow');
+            const authShelf = document.getElementById('author-shelf');
+            const adGrid = document.getElementById('global-ad');
 
-            newsGrid.innerHTML = '';
+            mFlow.innerHTML = ''; bFlow.innerHTML = ''; authShelf.innerHTML = '';
+
             db.haber.forEach(h => {
-                newsGrid.innerHTML += `
-                    <div onclick="openDetail(${h.id})" class="bg-white p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl transition cursor-pointer group">
-                        <img src="${h.img}" class="news-img-fixed mb-6 group-hover:scale-[0.98] transition duration-500">
-                        <h2 class="msp-title text-3xl font-black mb-3 leading-tight">${h.title}</h2>
-                        <p class="text-xs font-black text-red-600 uppercase tracking-widest">${h.sub}</p>
+                const html = `
+                    <div onclick="openDetail(${h.id})" class="bg-white p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all cursor-pointer group">
+                        <img src="${h.img}" class="img-lock mb-6 group-hover:scale-95 transition duration-500 shadow-md">
+                        <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${h.loc === 'Mardin' ? 'tag-mardin' : 'tag-brazil'}">${h.loc}</span>
+                        <h2 class="msp-title text-2xl font-black mt-4 leading-tight group-hover:text-blue-600 transition">${h.title}</h2>
+                        <p class="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-widest">${h.sub}</p>
                     </div>
                 `;
+                if(h.loc === 'Mardin') mFlow.innerHTML += html;
+                else bFlow.innerHTML += html;
             });
 
-            authSide.innerHTML = '';
             db.yazar.forEach(y => {
-                authSide.innerHTML += `
-                    <div class="flex items-center gap-4 p-2 hover:bg-slate-50 rounded-2xl transition">
-                        <img src="${y.img}" class="w-12 h-12 rounded-full object-cover shadow-sm">
-                        <div><p class="text-xs font-black uppercase">${y.title}</p><p class="text-[9px] text-slate-400 font-bold">${y.sub}</p></div>
-                    </div>
-                `;
+                authShelf.innerHTML += `<img src="${y.img}" class="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition cursor-help" title="${y.title}">`;
             });
 
             if(db.reklam.length > 0) {
                 const ad = db.reklam[0];
-                adBox.innerHTML = `
-                    <img src="${ad.img}" class="ad-img-fixed">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent p-10 flex flex-col justify-end text-white">
-                        <span class="text-[9px] font-black uppercase opacity-60 mb-2">Sponsorlu</span>
-                        <h4 class="msp-title text-3xl italic">${ad.title}</h4>
-                        <p class="text-xs opacity-80 mt-2">${ad.text}</p>
-                    </div>
-                `;
+                adGrid.innerHTML = `<img src="${ad.img}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/30 p-10 flex flex-col justify-end text-white"><h3 class="msp-title text-4xl italic">${ad.title}</h3></div>`;
+            } else {
+                adGrid.innerHTML = `<div class="bg-slate-900 w-full h-full flex items-center justify-center text-white italic">Global Reklam Alanı</div>`;
             }
         }
 
         function openDetail(id) {
             const h = db.haber.find(x => x.id === id);
-            const art = document.getElementById('full-article');
-            art.innerHTML = `
-                <h1 class="msp-title text-5xl lg:text-7xl font-black leading-tight mb-8">${h.title}</h1>
-                <div class="flex items-center gap-4 mb-10 pb-10 border-b">
-                    <span class="text-xs font-black uppercase px-4 py-1 bg-red-600 text-white rounded-full">${h.sub}</span>
-                </div>
-                <img src="${h.img}" class="w-full rounded-[3rem] shadow-2xl mb-12">
+            document.getElementById('full-article').innerHTML = `
+                <span class="text-xs font-black uppercase text-blue-600">${h.loc}</span>
+                <h1 class="msp-title text-5xl font-black mt-4 mb-8 leading-tight">${h.title}</h1>
+                <img src="${h.img}" class="w-full rounded-[3rem] shadow-2xl mb-12 border-8 border-white">
                 <div class="text-xl leading-relaxed text-slate-700 space-y-6">${h.text}</div>
             `;
             router('detail');
         }
 
-        // YARDIMCI
-        function openModal() { 
-            editId = null; tempBase64 = ""; 
-            document.getElementById('img-preview').style.display='none';
-            document.getElementById('in-title').value=''; 
-            document.getElementById('in-text').value='';
-            document.getElementById('in-sub').value='';
-            document.getElementById('modal').classList.remove('hidden'); 
-        }
+        function openModal() { editId = null; tempBase64 = ""; document.getElementById('img-preview').classList.add('hidden'); document.getElementById('modal').classList.remove('hidden'); }
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
-        window.onload = () => {
-            renderHome();
-            setMod('haber');
-        };
+        window.onload = () => { renderHome(); setMod('haber'); };
     </script>
 </body>
 </html>
