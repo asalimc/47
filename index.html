@@ -8,31 +8,32 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         [x-cloak] { display: none !important; }
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; scroll-behavior: smooth; }
         * { font-style: normal !important; }
-        .glass { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); }
-        .page-fade { animation: fadeIn 0.4s ease-in-out; }
+        .hero-gradient { background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.9) 100%); }
+        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); }
+        .page-fade { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body x-data="portalApp()" x-init="init()">
 
-    <nav class="sticky top-0 z-[100] glass border-b border-slate-200">
+    <nav class="sticky top-0 z-[100] glass-nav border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div @click="currentPage = 'home'" class="text-2xl font-black tracking-tighter uppercase cursor-pointer text-blue-900">
-                <span class="bg-blue-900 text-white px-2 py-1 rounded-md">ASC</span> PORTAL
+            <div @click="currentPage = 'home'" class="text-2xl font-black tracking-tighter uppercase cursor-pointer text-slate-900 flex items-center gap-2">
+                <span class="bg-blue-700 text-white px-3 py-1 rounded">ASC</span> PORTAL
             </div>
             
-            <div class="hidden md:flex space-x-10 text-[11px] font-black uppercase tracking-widest">
-                <button @click="currentPage = 'home'" class="hover:text-blue-600 transition">Ana Sayfa</button>
-                <button @click="checkAdminAccess()" class="text-blue-600 border border-blue-600 px-4 py-1 rounded-full hover:bg-blue-600 hover:text-white transition">Yönetim Paneli</button>
+            <div class="hidden md:flex space-x-10 text-[11px] font-black uppercase tracking-widest text-slate-600">
+                <button @click="currentPage = 'home'" class="hover:text-blue-700 transition">Ana Sayfa</button>
+                <button @click="loginAdmin()" class="bg-slate-900 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition shadow-lg shadow-blue-900/20">Yönetim Paneli</button>
             </div>
 
-            <div class="flex space-x-4 text-[10px] font-bold border-l pl-6 border-slate-200 text-slate-500 uppercase">
-                <div class="text-right">Mardin<br><span class="text-blue-600 text-sm font-black" x-text="mTime"></span></div>
-                <div class="text-left">Rio<br><span class="text-emerald-600 text-sm font-black" x-text="bTime"></span></div>
+            <div class="flex gap-6 text-[10px] font-bold border-l pl-6 border-slate-200 text-slate-500">
+                <div class="text-right">Mardin<br><span class="text-blue-700 text-sm font-black" x-text="mTime"></span></div>
+                <div class="text-left border-l pl-4 border-slate-200">Rio<br><span class="text-emerald-600 text-sm font-black" x-text="bTime"></span></div>
             </div>
         </div>
     </nav>
@@ -40,130 +41,136 @@
     <main>
         <div x-show="currentPage === 'home'" class="page-fade">
             
-            <header class="relative h-[50vh] flex items-center justify-center overflow-hidden bg-black border-b-4 border-white">
+            <header class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-slate-950">
                 <div class="absolute inset-0 flex">
-                    <div class="w-1/2 h-full"><img src="https://images.unsplash.com/photo-1544830154-1505c215f79a?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover opacity-70"></div>
-                    <div class="w-1/2 h-full"><img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover opacity-70"></div>
+                    <div class="w-1/2 h-full"><img src="https://images.unsplash.com/photo-1582236894056-e918b9588667?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover"></div>
+                    <div class="w-1/2 h-full border-l border-white/10"><img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover"></div>
+                    <div class="absolute inset-0 hero-gradient"></div>
                 </div>
-                <div class="relative text-center z-10">
-                    <h1 class="text-white text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">ASC GLOBAL</h1>
-                    <p class="text-emerald-400 font-bold tracking-[0.6em] uppercase text-[10px] mt-4">Mardin • Rio De Janeiro</p>
+                <div class="relative text-center z-10 px-4">
+                    <span class="text-blue-400 font-black uppercase tracking-[0.8em] text-[10px] mb-4 block">Medeniyetlerin Buluşma Noktası</span>
+                    <h1 class="text-white text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none">MARDİN <span class="text-transparent" style="-webkit-text-stroke: 2px white;">&</span> RIO</h1>
                 </div>
             </header>
 
-            <section class="bg-slate-900 py-16">
-                <div class="max-w-7xl mx-auto px-6">
-                    <div class="flex items-center gap-4 mb-10">
-                        <div class="h-1 w-12 bg-blue-500"></div>
-                        <h2 class="text-white text-xs font-black uppercase tracking-[0.3em]">Köşe Yazarları</h2>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <template x-for="(author, index) in authors" :key="index">
-                            <div @click="openAuthor(author)" class="bg-slate-800/40 p-6 rounded-3xl flex items-center gap-6 cursor-pointer hover:bg-slate-800 border border-slate-700/50 hover:border-blue-500 transition group shadow-xl">
-                                <img :src="author.photo" class="w-20 h-20 rounded-2xl object-cover border-2 border-slate-600 group-hover:border-blue-500 transition shadow-2xl">
-                                <div>
-                                    <h3 class="text-white font-black uppercase text-xl" x-text="author.name"></h3>
-                                    <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mt-1 block" x-text="author.title"></span>
-                                </div>
+            <section class="bg-white py-20 border-b">
+                <div class="max-w-7xl mx-auto px-6 text-center mb-16">
+                    <h2 class="text-xs font-black uppercase tracking-[0.5em] text-blue-700 mb-2">Köşe Yazarları</h2>
+                    <p class="text-4xl font-black text-slate-900 uppercase tracking-tighter">Fikir Dünyamız</p>
+                </div>
+                <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <template x-for="(author, index) in authors" :key="index">
+                        <div @click="openAuthor(author)" class="group cursor-pointer text-center">
+                            <div class="relative mb-6">
+                                <img :src="author.photo" class="w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-xl group-hover:scale-110 transition duration-500">
+                                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-blue-700 text-white text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Yazar</div>
                             </div>
-                        </template>
-                    </div>
+                            <h3 class="font-black text-slate-900 uppercase text-lg group-hover:text-blue-700 transition" x-text="author.name"></h3>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1" x-text="author.title"></p>
+                        </div>
+                    </template>
                 </div>
             </section>
 
-            <section class="max-w-7xl mx-auto px-6 py-20">
-                <div class="flex items-end gap-3 mb-12">
-                    <h2 class="text-4xl font-black uppercase tracking-tighter">Öne Çıkan Haberler</h2>
-                    <div class="h-2 w-2 bg-blue-600 mb-2"></div>
+            <section class="max-w-7xl mx-auto px-6 py-24">
+                <div class="flex items-center justify-between mb-16 border-b-2 border-slate-900 pb-4">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter">Manşetler</h2>
+                    <div class="text-[10px] font-black bg-blue-700 text-white px-4 py-2 rounded uppercase tracking-widest">Son Dakika</div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                     <template x-for="(news, index) in newsData" :key="index">
-                        <div @click="openNews(news)" class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all cursor-pointer border border-slate-100 group">
-                            <div class="h-64 overflow-hidden">
-                                <img :src="news.img" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div @click="openNews(news)" class="group cursor-pointer">
+                            <div class="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl mb-8 relative">
+                                <img :src="news.img" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                                <div class="absolute bottom-10 left-10 right-10">
+                                    <span class="text-blue-400 text-[10px] font-black uppercase tracking-widest mb-3 block" x-text="news.tag"></span>
+                                    <h3 class="text-white text-2xl font-black uppercase tracking-tight leading-tight group-hover:text-blue-300 transition" x-text="news.title"></h3>
+                                </div>
                             </div>
-                            <div class="p-8">
-                                <span class="bg-slate-100 text-slate-500 text-[9px] font-black uppercase px-3 py-1 rounded-full" x-text="news.tag"></span>
-                                <h3 class="font-black text-xl my-4 group-hover:text-blue-700 transition uppercase leading-tight" x-text="news.title"></h3>
-                                <p class="text-slate-500 text-sm line-clamp-3 leading-relaxed" x-text="news.desc"></p>
-                            </div>
+                            <p class="text-slate-500 text-sm leading-relaxed px-4 line-clamp-3" x-text="news.desc"></p>
                         </div>
                     </template>
                 </div>
             </section>
         </div>
 
-        <div x-show="currentPage === 'author-detail'" class="max-w-4xl mx-auto px-6 py-20 page-fade" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-10 text-[10px] font-black text-blue-600 uppercase tracking-widest underline decoration-2 underline-offset-8">← Geri Dön</button>
-            <div class="bg-white p-12 rounded-[3.5rem] shadow-2xl border border-slate-100 text-center">
-                <img :src="selectedAuthor?.photo" class="w-48 h-48 rounded-[2.5rem] mx-auto shadow-2xl mb-8 object-cover border-8 border-slate-50">
-                <h1 class="text-4xl font-black uppercase mb-2" x-text="selectedAuthor?.name"></h1>
-                <p class="text-blue-600 font-bold uppercase tracking-widest text-sm mb-12" x-text="selectedAuthor?.title"></p>
-                <div class="text-xl leading-loose text-slate-700 max-w-2xl mx-auto" x-text="selectedAuthor?.bio"></div>
+        <div x-show="currentPage === 'author-detail'" class="max-w-5xl mx-auto px-6 py-24 page-fade" x-cloak>
+            <button @click="currentPage = 'home'" class="mb-12 text-xs font-black text-blue-700 uppercase tracking-widest flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Ana Sayfaya Dön
+            </button>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
+                <div class="md:col-span-4 sticky top-32">
+                    <img :src="selectedAuthor?.photo" class="w-full aspect-square rounded-[3rem] object-cover shadow-2xl">
+                    <div class="mt-8 text-center md:text-left">
+                        <h1 class="text-4xl font-black text-slate-900 uppercase leading-none" x-text="selectedAuthor?.name"></h1>
+                        <p class="text-blue-700 font-bold uppercase tracking-widest text-xs mt-4" x-text="selectedAuthor?.title"></p>
+                    </div>
+                </div>
+                <div class="md:col-span-8 bg-white p-12 rounded-[3.5rem] shadow-sm border border-slate-100">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8 border-b pb-4">Yazar Hakkında</h4>
+                    <p class="text-xl leading-relaxed text-slate-800 font-medium" x-text="selectedAuthor?.bio"></p>
+                </div>
             </div>
         </div>
 
-        <div x-show="currentPage === 'news-detail'" class="max-w-4xl mx-auto px-6 py-20 page-fade" x-cloak>
-            <button @click="currentPage = 'home'" class="mb-10 text-[10px] font-black text-blue-600 uppercase tracking-widest">← Geri Dön</button>
-            <img :src="selectedNews?.img" class="w-full h-[55vh] object-cover rounded-[3.5rem] shadow-2xl mb-12">
-            <h1 class="text-5xl font-black uppercase tracking-tighter mb-8 leading-tight" x-text="selectedNews?.title"></h1>
-            <div class="text-xl leading-relaxed text-slate-800 space-y-8 font-medium" x-html="selectedNews?.body"></div>
+        <div x-show="currentPage === 'news-detail'" class="max-w-4xl mx-auto px-6 py-24 page-fade" x-cloak>
+            <button @click="currentPage = 'home'" class="mb-12 text-xs font-black text-blue-700 uppercase tracking-widest flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Geri Dön
+            </button>
+            <img :src="selectedNews?.img" class="w-full h-[60vh] object-cover rounded-[4rem] shadow-2xl mb-16">
+            <span class="text-blue-700 font-black text-xs uppercase tracking-[0.4em]" x-text="selectedNews?.tag"></span>
+            <h1 class="text-6xl font-black uppercase tracking-tighter text-slate-900 my-8 leading-[0.9]" x-text="selectedNews?.title"></h1>
+            <div class="text-2xl text-slate-800 leading-relaxed font-medium space-y-8" x-html="selectedNews?.body"></div>
         </div>
 
         <div x-show="currentPage === 'admin'" class="max-w-7xl mx-auto px-6 py-20 page-fade" x-cloak>
             <div class="flex justify-between items-center mb-16">
-                <h2 class="text-5xl font-black uppercase tracking-tighter">Portal Kontrol</h2>
-                <button @click="currentPage = 'home'" class="bg-slate-900 text-white px-8 py-3 rounded-full font-black uppercase text-xs">Siteden Çık</button>
+                <h2 class="text-5xl font-black uppercase tracking-tighter">Admin Panel</h2>
+                <button @click="currentPage = 'home'" class="bg-red-600 text-white px-8 py-3 rounded-full font-black uppercase text-xs">Oturumu Kapat</button>
             </div>
-
+            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
-                    <h3 class="text-2xl font-black mb-8 uppercase text-blue-700">Yazar Yönetimi</h3>
+                <div class="bg-white p-10 rounded-[3rem] shadow-xl">
+                    <h3 class="text-xl font-black mb-8 uppercase border-l-4 border-blue-700 pl-4">Yazar Ekle</h3>
                     <div class="space-y-4">
-                        <input x-model="newAuthor.name" type="text" placeholder="Yazar Adı" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                        <input x-model="newAuthor.title" type="text" placeholder="Ünvan" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                        <input x-model="newAuthor.photo" type="text" placeholder="Fotoğraf URL" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                        <textarea x-model="newAuthor.bio" placeholder="Yazar Biyografisi" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none h-32"></textarea>
-                        <button @click="addAuthor()" class="w-full bg-blue-700 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-black transition">Kaydet</button>
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <template x-for="(a, index) in authors" :key="index">
-                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border">
-                                <span class="font-bold text-xs uppercase" x-text="a.name"></span>
-                                <button @click="deleteAuthor(index)" class="text-red-500 font-black text-[10px]">SİL</button>
-                            </div>
-                        </template>
+                        <input x-model="newAuthor.name" type="text" placeholder="İsim Soyisim" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-700 outline-none">
+                        <input x-model="newAuthor.title" type="text" placeholder="Ünvan" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-700 outline-none">
+                        <input x-model="newAuthor.photo" type="text" placeholder="Fotoğraf URL" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-700 outline-none">
+                        <textarea x-model="newAuthor.bio" placeholder="Biyografi Metni" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-700 outline-none h-32"></textarea>
+                        <button @click="addAuthor()" class="w-full bg-blue-700 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em]">Yazarı Kaydet</button>
                     </div>
                 </div>
 
-                <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
-                    <h3 class="text-2xl font-black mb-8 uppercase text-emerald-700">Haber Yayınla</h3>
+                <div class="bg-white p-10 rounded-[3rem] shadow-xl">
+                    <h3 class="text-xl font-black mb-8 uppercase border-l-4 border-emerald-600 pl-4">Haber Yayınla</h3>
                     <div class="space-y-4">
-                        <input x-model="newNews.title" type="text" placeholder="Haber Başlığı" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                        <input x-model="newNews.tag" type="text" placeholder="Kategori" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                        <input x-model="newNews.img" type="text" placeholder="Haber Görsel URL" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                        <textarea x-model="newNews.desc" placeholder="Kısa Özet" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none h-20"></textarea>
-                        <textarea x-model="newNews.body" placeholder="Haber Detayı" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none h-32"></textarea>
-                        <button @click="addNews()" class="w-full bg-emerald-700 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-black transition">Yayınla</button>
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <template x-for="(n, index) in newsData" :key="index">
-                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border">
-                                <span class="font-bold text-xs uppercase truncate w-64" x-text="n.title"></span>
-                                <button @click="deleteNews(index)" class="text-red-500 font-black text-[10px]">SİL</button>
-                            </div>
-                        </template>
+                        <input x-model="newNews.title" type="text" placeholder="Haber Başlığı" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
+                        <input x-model="newNews.tag" type="text" placeholder="Kategori" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
+                        <input x-model="newNews.img" type="text" placeholder="Haber Görsel URL" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
+                        <textarea x-model="newNews.desc" placeholder="Kısa Özet (Alt Metin)" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none h-20"></textarea>
+                        <textarea x-model="newNews.body" placeholder="Haber Detay İçeriği" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none h-32"></textarea>
+                        <button @click="addNews()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em]">Haberi Yayınla</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-16 text-center mt-20">
-        <p class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-300">ASC GLOBAL PORTAL © 2026</p>
+    <footer class="bg-slate-900 py-20 text-center mt-20">
+        <div class="text-3xl font-black text-white uppercase tracking-tighter mb-8 italic">ASC GLOBAL</div>
+        <p class="text-[10px] font-black uppercase tracking-[0.8em] text-slate-500">Mardin & Rio De Janeiro | 2026</p>
     </footer>
 
     <script>
+        async function hashPassword(string) {
+            const utf8 = new TextEncoder().encode(string);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
         function portalApp() {
             return {
                 currentPage: 'home',
@@ -171,18 +178,22 @@
                 selectedAuthor: null,
                 mTime: '',
                 bTime: '',
-                // Şifre: Mardin47 (Base64 kodlanmış hali: TWFyZGluNDc=)
-                secureKey: 'TWFyZGluNDc=', 
+                // SHA-256 hash for 'Mardin47'
+                adminHash: '5e378c5750868f03107050212f45ec7f7c41372332675970a049d533bc7ca194',
+                
                 newAuthor: { name: '', title: '', bio: '', photo: '' },
                 newNews: { title: '', tag: '', desc: '', img: '', body: '' },
                 
-                authors: JSON.parse(localStorage.getItem('asc_authors')) || [
-                    { name: 'Prof. Dr. Ahmet Salim', title: 'Kurucu Editör', bio: 'Mezopotamya üzerine 25 yıllık uzmanlık.', photo: 'https://i.pravatar.cc/150?u=asalim' },
-                    { name: 'Dr. Isabella Mendes', title: 'Küresel Analist', bio: 'Sao Paulo Üniversitesi ticaret stratejisti.', photo: 'https://i.pravatar.cc/150?u=isabella' }
+                authors: JSON.parse(localStorage.getItem('portal_authors')) || [
+                    { name: 'Ahmet Salim', title: 'Baş Editör', bio: 'Mezopotamya tarihi uzmanı.', photo: 'https://i.pravatar.cc/150?u=1' },
+                    { name: 'Dr. Isabella Mendes', title: 'Stratejist', bio: 'Latin Amerika ekonomi uzmanı.', photo: 'https://i.pravatar.cc/150?u=2' },
+                    { name: 'Canan Ersoy', title: 'Kültür Yazarı', bio: 'Geleneksel sanatlar araştırmacısı.', photo: 'https://i.pravatar.cc/150?u=3' },
+                    { name: 'Ricardo Santos', title: 'Analist', bio: 'Global ticaret ve lojistik analisti.', photo: 'https://i.pravatar.cc/150?u=4' }
                 ],
-                newsData: JSON.parse(localStorage.getItem('asc_news')) || [
-                    { title: 'Artuklu Sarayı Restorasyonu', tag: 'Mardin', desc: 'Tarihi saray modern konseptle açıldı.', img: 'https://images.unsplash.com/photo-1544830154-1505c215f79a?w=800', body: 'Detaylı içerik burada...' },
-                    { title: 'Amazon Enerji Projesi', tag: 'Rio', desc: 'Brezilya köylerine temiz enerji.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=800', body: 'Detaylı içerik burada...' }
+                newsData: JSON.parse(localStorage.getItem('portal_news')) || [
+                    { title: 'Artuklu Sarayı Yeniden Doğuyor', tag: 'Mardin', desc: 'Saray restorasyonu dünya basınında ilgi gördü.', img: 'https://images.unsplash.com/photo-1582236894056-e918b9588667?w=800', body: 'Detaylar buraya...' },
+                    { title: 'Amazon Enerji Koridoru Projesi', tag: 'Rio', desc: 'Brezilya hükümeti dev yatırımı onayladı.', img: 'https://images.unsplash.com/photo-1516307361401-e323ad26de92?w=800', body: 'Detaylar buraya...' },
+                    { title: 'Kültürlerarası Gastronomi Festivali', tag: 'Global', desc: 'Mardin mutfağı Rio sokaklarında tanıtılıyor.', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800', body: 'Detaylar buraya...' }
                 ],
 
                 init() {
@@ -194,24 +205,25 @@
                     this.mTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Istanbul' }).format(n);
                     this.bTime = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/Sao_Paulo' }).format(n);
                 },
-                // Şifre Kontrolü
-                checkAdminAccess() {
-                    let pass = prompt("Yönetim Paneli Şifresini Giriniz:");
-                    if (btoa(pass) === this.secureKey) {
-                        this.currentPage = 'admin';
-                    } else {
-                        alert("Hatalı Şifre!");
+                async loginAdmin() {
+                    const pass = prompt("Sistem Anahtarını Giriniz:");
+                    if (pass) {
+                        const hashed = await hashPassword(pass);
+                        if (hashed === this.adminHash) {
+                            this.currentPage = 'admin';
+                            window.scrollTo(0, 0);
+                        } else {
+                            alert("Erişim Reddedildi!");
+                        }
                     }
                 },
-                openNews(news) { this.selectedNews = news; this.currentPage = 'news-detail'; window.scrollTo(0,0); },
-                openAuthor(author) { this.selectedAuthor = author; this.currentPage = 'author-detail'; window.scrollTo(0,0); },
+                openNews(news) { this.selectedNews = news; this.currentPage = 'news-detail'; window.scrollTo(0, 0); },
+                openAuthor(author) { this.selectedAuthor = author; this.currentPage = 'author-detail'; window.scrollTo(0, 0); },
                 addAuthor() { this.authors.push({...this.newAuthor}); this.save(); this.newAuthor = { name: '', title: '', bio: '', photo: '' }; },
-                deleteAuthor(index) { this.authors.splice(index, 1); this.save(); },
                 addNews() { this.newsData.push({...this.newNews}); this.save(); this.newNews = { title: '', tag: '', desc: '', img: '', body: '' }; },
-                deleteNews(index) { this.newsData.splice(index, 1); this.save(); },
                 save() {
-                    localStorage.setItem('asc_authors', JSON.stringify(this.authors));
-                    localStorage.setItem('asc_news', JSON.stringify(this.newsData));
+                    localStorage.setItem('portal_authors', JSON.stringify(this.authors));
+                    localStorage.setItem('portal_news', JSON.stringify(this.newsData));
                 }
             }
         }
