@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC GLOBAL | v35 Absolute Authority</title>
+    <title>ASC GLOBAL | v37 Absolute Authority</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -15,8 +15,8 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #111; overflow-x: hidden; }
         .font-serif { font-family: 'Crimson Pro', serif; }
         
-        /* ANA SAYFA STİLİ (image_0ab09a referanslı) */
-        .main-title { font-size: clamp(2.5rem, 8vw, 6rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 900; }
+        /* ANA SAYFA STİLİ (image_0ab09a & image_0ba45b referanslı) */
+        .giant-title { font-size: clamp(2.5rem, 8vw, 6.5rem); line-height: 1.05; letter-spacing: -0.04em; font-weight: 900; }
         
         /* ADMIN DASHBOARD (image_0abf5c referanslı) */
         .sidebar-nav { @apply flex items-center gap-4 px-8 py-4 text-sm font-bold transition-all cursor-pointer border-l-4 border-transparent text-gray-400; }
@@ -26,112 +26,106 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body x-data="ascEngine()" x-init="init()">
+<body x-data="ascApp()" x-init="init()">
 
-    <div x-show="!adminOpen" class="min-h-screen flex flex-col items-center justify-start pt-20 px-6">
-        <header class="text-center mb-32 relative w-full max-w-7xl">
-            <h1 class="font-serif text-7xl italic font-black tracking-tighter">ASC <span class="text-orange-700 not-italic uppercase text-4xl">Global</span></h1>
-            <p class="text-[10px] font-black uppercase tracking-[0.6em] mt-4 text-gray-300">Intelligence Syndicate</p>
+    <div x-show="!adminOpen" class="min-h-screen flex flex-col items-center pt-24 px-6 bg-white">
+        <header class="text-center mb-40 relative w-full max-w-7xl">
+            <h1 class="font-serif text-8xl italic font-black tracking-tighter">ASC <span class="text-orange-700 not-italic uppercase text-4xl">Global</span></h1>
+            <p class="text-[10px] font-black uppercase tracking-[0.7em] mt-5 text-gray-300">Intelligence Syndicate</p>
             
             <button @click="authModal = true" class="absolute right-0 top-0 text-gray-100 hover:text-black transition-all">
-                <i class="fas fa-lock text-xs"></i>
+                <i class="fas fa-fingerprint text-xl"></i>
             </button>
         </header>
 
-        <main class="w-full max-w-5xl text-center space-y-40 pb-40">
+        <main class="w-full max-w-6xl text-center space-y-48 pb-60">
             <template x-for="news in newsData" :key="news.id">
-                <article class="group cursor-pointer">
-                    <span class="text-orange-700 font-black text-[10px] uppercase tracking-[0.4em] mb-8 block" x-text="news.region"></span>
-                    <h2 class="main-title font-serif italic mb-8 group-hover:text-orange-800 transition-colors" x-text="news.title"></h2>
-                    <p class="text-xl text-gray-400 font-light max-w-2xl mx-auto leading-relaxed mb-12" x-text="news.body"></p>
-                    <div class="w-full h-[1px] bg-gray-100 max-w-xs mx-auto"></div>
+                <article class="group">
+                    <span class="text-orange-700 font-black text-[10px] uppercase tracking-[0.5em] mb-10 block" x-text="news.region"></span>
+                    <h2 class="giant-title font-serif italic mb-10 group-hover:text-orange-800 transition-all duration-700" x-text="news.title"></h2>
+                    <p class="text-2xl text-gray-400 font-light max-w-2xl mx-auto leading-relaxed mb-16" x-text="news.body"></p>
+                    <div class="w-24 h-[1px] bg-gray-100 mx-auto"></div>
                 </article>
             </template>
         </main>
     </div>
 
     <template x-if="authModal">
-        <div class="fixed inset-0 z-[9000] bg-white/95 backdrop-blur-xl flex items-center justify-center p-6">
-            <div class="w-full max-w-sm text-center">
-                <div class="font-serif italic text-4xl mb-12">Security Terminal</div>
-                <input x-model="tempPass" type="password" @keyup.enter="authenticate()" placeholder="ENTRY CODE" 
-                       class="w-full text-center text-2xl border-b-2 border-black py-4 mb-8 outline-none tracking-[0.8em] font-bold">
-                <button @click="authenticate()" class="w-full bg-black text-white py-5 font-black uppercase tracking-widest hover:bg-orange-700 transition-all">Authorize Access</button>
-                <p @click="authModal = false" class="mt-10 text-[10px] font-black text-gray-300 uppercase cursor-pointer tracking-widest">Abort</p>
+        <div class="fixed inset-0 z-[9000] bg-white flex items-center justify-center p-8">
+            <div class="w-full max-w-md text-center">
+                <h2 class="font-serif italic text-5xl mb-16">Terminal Login</h2>
+                <input x-model="passInput" type="password" @keyup.enter="verify()" placeholder="········" 
+                       class="w-full text-center text-3xl border-b-2 border-black py-6 mb-10 outline-none tracking-[0.5em] font-bold">
+                <button @click="verify()" class="w-full bg-[#CC4F26] text-white py-6 font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-black transition-all">Authorize Access</button>
+                <p @click="authModal = false" class="mt-12 text-[10px] font-black text-gray-300 uppercase cursor-pointer tracking-widest">Abort Mission</p>
             </div>
         </div>
     </template>
 
-    <div x-show="adminOpen" x-cloak class="fixed inset-0 z-[9999] bg-[#f4f7fe] flex overflow-hidden">
-        
+    <div x-show="adminOpen" x-cloak class="fixed inset-0 z-[9999] bg-[#F8F9FC] flex overflow-hidden">
         <aside class="w-80 bg-white border-r border-gray-100 flex flex-col shadow-2xl">
-            <div class="p-10 border-b border-gray-50">
-                <div class="font-serif italic text-3xl font-black">Atelier <span class="text-orange-700 not-italic text-[10px] font-black uppercase">Admin v35</span></div>
+            <div class="p-12 border-b border-gray-50">
+                <div class="font-serif italic text-3xl font-black">Atelier <span class="text-orange-700 not-italic text-[10px] font-black uppercase block">Authority v37</span></div>
             </div>
-            <nav class="flex-1 py-8">
-                <div class="sidebar-nav" :class="adminTab === 'news' ? 'active' : ''" @click="adminTab = 'news'">
-                    <i class="fas fa-edit w-5"></i> <span>Haberleri Yönet</span>
+            <nav class="flex-1 py-10">
+                <div class="sidebar-nav" :class="activeTab === 'news' ? 'active' : ''" @click="activeTab = 'news'">
+                    <i class="fas fa-newspaper w-6"></i> <span>Haber Akışı</span>
                 </div>
-                <div class="sidebar-nav" :class="adminTab === 'authors' ? 'active' : ''" @click="adminTab = 'authors'">
-                    <i class="fas fa-user-circle w-5"></i> <span>Yazarları Yönet</span>
+                <div class="sidebar-nav" :class="activeTab === 'authors' ? 'active' : ''" @click="activeTab = 'authors'">
+                    <i class="fas fa-users-cog w-6"></i> <span>Yazarlar Kurulu</span>
                 </div>
-                <div class="sidebar-nav" :class="adminTab === 'ads' ? 'active' : ''" @click="adminTab = 'ads'">
-                    <i class="fas fa-ad w-5"></i> <span>Reklam Alanı</span>
+                <div class="sidebar-nav" :class="activeTab === 'ads' ? 'active' : ''" @click="activeTab = 'ads'">
+                    <i class="fas fa-shield-alt w-6"></i> <span>Sponsorluk</span>
                 </div>
             </nav>
-            <div class="p-8 border-t border-gray-50">
-                <button @click="adminOpen = false" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-red-600 transition-all text-center">Panelden Çık</button>
+            <div class="p-10 border-t border-gray-50">
+                <button @click="logout()" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-600 transition-all">Güvenli Çıkış</button>
             </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto p-16 no-scrollbar">
+        <main class="flex-1 overflow-y-auto p-20 no-scrollbar">
             <div class="max-w-5xl mx-auto">
-                <header class="flex justify-between items-center mb-16">
+                <header class="flex justify-between items-end mb-20 border-b border-gray-100 pb-12">
                     <div>
-                        <h2 class="text-3xl font-black uppercase tracking-tighter" x-text="adminTab === 'news' ? 'Article Desk' : (adminTab === 'authors' ? 'Editorial Board' : 'Sponsorship')"></h2>
-                        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mt-1">Syndicate Control Panel</p>
+                        <h2 class="text-4xl font-black uppercase tracking-tighter" x-text="activeTab === 'news' ? 'Intelligence Desk' : 'Syndicate Board'"></h2>
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.3em] mt-2">Active Operations Terminal</p>
                     </div>
-                    <div class="bg-white px-6 py-3 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3">
+                    <div class="flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-sm border border-gray-50">
                         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                        <span class="text-[10px] font-black text-gray-500 uppercase">System Status: Active</span>
+                        <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">System Online</span>
                     </div>
                 </header>
 
-                <div class="grid grid-cols-12 gap-10">
-                    <div class="col-span-12 lg:col-span-8 space-y-8">
-                        <div class="bg-white p-12 rounded-[40px] shadow-sm border border-gray-50 space-y-8">
-                            <div x-show="adminTab !== 'ads'">
-                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Ana Başlık / İsim</label>
-                                <input x-model="form.main" type="text" class="w-full text-2xl font-bold border-b-2 border-gray-50 focus:border-orange-700 outline-none py-4 transition-all">
+                <div class="grid grid-cols-12 gap-12">
+                    <div class="col-span-8 space-y-10">
+                        <div class="bg-white p-16 rounded-[50px] shadow-sm border border-gray-50 space-y-10">
+                            <div x-show="activeTab !== 'ads'">
+                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Giriş Başlığı</label>
+                                <input x-model="form.main" type="text" class="w-full text-2xl font-bold border-b-2 border-gray-50 focus:border-orange-700 outline-none py-4 transition-all" placeholder="...">
                             </div>
-                            <div x-show="adminTab !== 'ads'">
+                            <div x-show="activeTab !== 'ads'">
                                 <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Kategori / Ünvan</label>
-                                <input x-model="form.sub" type="text" class="w-full text-sm border-b border-gray-50 focus:border-orange-700 outline-none py-3 transition-all">
+                                <input x-model="form.sub" type="text" class="w-full text-sm border-b border-gray-50 focus:border-orange-700 outline-none py-3 transition-all" placeholder="...">
                             </div>
-                            <div x-show="adminTab !== 'ads'">
-                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">İçerik Detayı</label>
-                                <textarea x-model="form.content" class="w-full h-80 text-lg outline-none border-none resize-none no-scrollbar font-light leading-relaxed"></textarea>
-                            </div>
-                            <div x-show="adminTab === 'ads'" class="py-20 text-center space-y-4">
-                                <i class="fas fa-image text-5xl text-gray-100"></i>
-                                <h3 class="text-lg font-bold">Reklam Görseli Güncelleme</h3>
-                                <p class="text-xs text-gray-400">Yüklediğiniz görsel yan sütunlardaki 300x300 alanına otomatik işlenir.</p>
+                            <div x-show="activeTab !== 'ads'">
+                                <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4 block">Detaylı İçerik</label>
+                                <textarea x-model="form.content" class="w-full h-80 text-lg outline-none border-none resize-none no-scrollbar font-light leading-relaxed" placeholder="Veri girişine başlayın..."></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-span-12 lg:col-span-4 space-y-8">
-                        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-50 text-center">
-                            <input type="file" @change="handleFile" id="v35upload" class="hidden">
-                            <label for="v35upload" class="cursor-pointer group block">
-                                <div class="w-full aspect-square rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden group-hover:border-orange-700 transition-all">
-                                    <img x-show="form.media || (adminTab === 'ads' && adImage)" :src="adminTab === 'ads' ? adImage : form.media" class="w-full h-full object-cover">
-                                    <div x-show="!form.media && !(adminTab === 'ads' && adImage)" class="text-gray-300 font-bold text-[10px]">GÖRSEL SEÇ</div>
+                    <div class="col-span-4 space-y-10">
+                        <div class="bg-white p-10 rounded-[50px] shadow-sm border border-gray-100 text-center">
+                            <input type="file" @change="handleFile" id="v37up" class="hidden">
+                            <label for="v37up" class="cursor-pointer group block">
+                                <div class="w-full aspect-square rounded-[40px] bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden group-hover:border-orange-700 transition-all">
+                                    <img x-show="form.media" :src="form.media" class="w-full h-full object-cover">
+                                    <div x-show="!form.media" class="text-gray-300 font-black text-[10px] uppercase tracking-widest">Görsel Yükle</div>
                                 </div>
                             </label>
                         </div>
-                        <button @click="save()" class="w-full bg-black text-white py-8 rounded-[40px] font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-orange-700 transition-all">
-                            Sistemi Güncelle
+                        <button @click="publish()" class="w-full bg-black text-white py-10 rounded-[50px] font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-orange-700 transition-all">
+                            Sisteme İşle
                         </button>
                     </div>
                 </div>
@@ -140,73 +134,55 @@
     </div>
 
     <script>
-        function ascEngine() {
+        function ascApp() {
             return {
-                adminOpen: false, authModal: false, adminTab: 'news',
-                tempPass: '',
+                adminOpen: false, authModal: false, activeTab: 'news',
+                passInput: '',
                 form: { main: '', sub: '', content: '', media: '' },
-                adImage: localStorage.getItem('asc_ad_v35') || '',
+                newsData: JSON.parse(localStorage.getItem('asc_v37_news')) || [
+                    { id: 1, title: 'Brezilya Ormanlarından Mardin Sokaklarına', region: 'STRATEJİ', body: 'Küresel ticaretin yeni rotası üzerine derinlemesine bir analiz.' }
+                ],
                 
-                newsData: JSON.parse(localStorage.getItem('asc_news_v35')) || [
-                    { id: 1, title: 'Brezilya Ormanlarından Mardin Sokaklarına', region: 'STRATEJİ', body: 'Küresel ticaretin yeni rotası üzerine derinlemesine bir analiz....', img: '' }
-                ],
-                authors: JSON.parse(localStorage.getItem('asc_authors_v35')) || [
-                    { id: 1, name: 'Ahmet Çınarbaş', title: 'Siyaset Bilimci', photo: 'https://i.ibb.co/LhqZz4H/ahmet.jpg' }
-                ],
+                init() {
+                    if(localStorage.getItem('asc_session') === 'active') this.adminOpen = true;
+                },
 
-                init() { this.sync(); },
-
-                authenticate() {
-                    // Fail-safe authentication
-                    if(this.tempPass.trim() === "47") {
-                        this.authModal = false;
+                verify() {
+                    // ŞİFRE GÜNCELLEMESİ: Mardin47**
+                    if(this.passInput === "Mardin47**") {
+                        localStorage.setItem('asc_session', 'active');
                         this.adminOpen = true;
-                        this.tempPass = '';
-                        console.log("Authority Verified.");
+                        this.authModal = false;
+                        this.passInput = '';
                     } else {
-                        alert("ERİŞİM REDDEDİLDİ: Geçersiz Kod.");
-                        this.tempPass = '';
+                        alert("YETKİSİZ ERİŞİM: Şifre Hatalı.");
+                        this.passInput = '';
                     }
                 },
 
                 handleFile(e) {
                     const reader = new FileReader();
-                    reader.onload = (f) => {
-                        if(this.adminTab === 'ads') {
-                            this.adImage = f.target.result;
-                            localStorage.setItem('asc_ad_v35', this.adImage);
-                        } else { this.form.media = f.target.result; }
-                    };
+                    reader.onload = (f) => { this.form.media = f.target.result; };
                     reader.readAsDataURL(e.target.files[0]);
                 },
 
-                save() {
-                    if(this.adminTab === 'ads') { alert("Reklam Güncellendi."); return; }
-                    
-                    const isNews = this.adminTab === 'news';
+                publish() {
                     const payload = {
                         id: Date.now(),
-                        title: isNews ? this.form.main : undefined,
-                        name: !isNews ? this.form.main : undefined,
-                        region: isNews ? this.form.sub : undefined,
-                        title: !isNews ? this.form.sub : (isNews ? this.form.sub : undefined),
-                        body: isNews ? this.form.content : undefined,
-                        bio: !isNews ? this.form.content : undefined,
-                        img: isNews ? this.form.media : undefined,
-                        photo: !isNews ? this.form.media : undefined
+                        title: this.form.main,
+                        region: this.form.sub,
+                        body: this.form.content,
+                        img: this.form.media
                     };
-
-                    if (isNews) this.newsData.unshift(payload);
-                    else this.authors.push(payload);
-                    
-                    this.sync();
+                    this.newsData.unshift(payload);
+                    localStorage.setItem('asc_v37_news', JSON.stringify(this.newsData));
                     this.form = { main: '', sub: '', content: '', media: '' };
-                    alert("Yayın Başarıyla Tamamlandı.");
+                    alert("Yayın Başarılı.");
                 },
 
-                sync() {
-                    localStorage.setItem('asc_news_v35', JSON.stringify(this.newsData));
-                    localStorage.setItem('asc_authors_v35', JSON.stringify(this.authors));
+                logout() {
+                    localStorage.removeItem('asc_session');
+                    this.adminOpen = false;
                 }
             }
         }
