@@ -75,9 +75,9 @@
 <script>
     const PASS = "47";
     let db = JSON.parse(localStorage.getItem('lumina_v23')) || {
-        news: [{id:1, title: "Mardin'in Gümüş Kalbi", text: "Binlerce yıllık telkari sanatı...", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800", cat: "Kültür", author: "ASC"}],
-        authors: [{id:1, name: "ASC", bio: "Kültür Araştırmacısı ve Editör", img: "https://via.placeholder.com/150"}],
-        cats: ['Mardin', 'Kültür', 'Gastronomi', 'Tasarım'],
+        news: [{id:1, title: "Mardin Gümüşü", text: "Telkari sanatı canlanıyor...", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800", cat: "Kültür", author: "ASC"}],
+        authors: [{id:1, name: "ASC", bio: "Baş Yazar", img: "https://via.placeholder.com/150"}],
+        cats: ['Mardin', 'Brezilya', 'Tasarım', 'Gastronomi'],
         ad: "https://via.placeholder.com/300x500"
     };
 
@@ -92,97 +92,130 @@
     }
 
     function openAdmin() {
-        if(prompt("Sistem Şifresi:") !== PASS) return;
+        if(prompt("Şifre:") !== PASS) return;
         const win = window.open("", "LuminaAdmin", "width=1300,height=900");
         if (!win) return alert("Lütfen pop-up engelleyicisini kapatın.");
 
         const adminHtml = `
-            <html><head><title>Lumina Studio | Admin</title>
+            <html><head><title>Admin Hub | Lumina</title>
             <style>
-                body { font-family: sans-serif; background: #f8fafc; padding: 30px; color: #1e293b; }
-                .grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px; }
-                .box { background: #fff; padding: 25px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 25px; }
-                h2 { color: #c49b66; border-bottom: 2px solid #f8fafc; padding-bottom: 10px; }
-                input, textarea, select { width: 100%; padding: 12px; margin: 8px 0 18px 0; border: 1.5px solid #e2e8f0; border-radius: 10px; }
-                button { background: #1a1a1a; color: #fff; border: none; padding: 14px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: 700; }
-                .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8fafc; margin-bottom: 8px; border-radius: 8px; }
-                .del-btn { color: #ef4444; cursor: pointer; font-weight: bold; }
+                body { font-family: sans-serif; background: #f4f7f6; padding: 20px; color: #333; }
+                .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+                .box { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+                h2 { color: #c49b66; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+                input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+                button { background: #1a1a1a; color: #fff; border: none; padding: 12px; border-radius: 20px; cursor: pointer; width: 100%; font-weight: bold; margin-top:5px; }
+                .list { margin-top: 15px; max-height: 200px; overflow-y: auto; font-size: 12px; }
+                .item { display: flex; justify-content: space-between; align-items:center; padding: 8px; border-bottom: 1px solid #eee; }
+                .del { color: red; cursor: pointer; font-weight:bold; }
             </style></head>
             <body>
-                <h1>Lumina Studio Admin</h1>
+                <h1 style="text-align:center">Lumina Studio v23</h1>
                 <div class="grid">
-                    <div class="left-col">
-                        <div class="box">
-                            <h2>Yeni Haber Yayınla (Yazar: ASC)</h2>
-                            <input type="text" id="nt" placeholder="Haber Başlığı">
-                            <select id="ncat">${db.cats.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
-                            <textarea id="nc" placeholder="Haber İçeriği" rows="8"></textarea>
-                            <label>Kapak Görseli:</label>
-                            <input type="file" id="ni" accept="image/*">
-                            <button id="saveNewsBtn">Haberi Yayına Al</button>
+                    <div class="box">
+                        <h2>Haber Yönetimi (Yazar: ASC)</h2>
+                        <input type="text" id="nt" placeholder="Haber Başlığı">
+                        <textarea id="nc" placeholder="Haber İçeriği" rows="5"></textarea>
+                        <select id="ncat">${db.cats.map(c=>`<option>${c}</option>`).join('')}</select>
+                        <label>Haber Fotoğrafı:</label>
+                        <input type="file" id="ni" accept="image/*">
+                        <button id="addNewsBtn">Haberi Yayınla</button>
+                        <div class="list">
+                            ${db.news.map(n=>`<div class="item"><span><b>[${n.author}]</b> ${n.title.substring(0,25)}...</span><span class="del" onclick="window.opener.postMessage({t:'delNews', id:${n.id}}, '*')">SİL</span></div>`).join('')}
                         </div>
                     </div>
-                    <div class="right-col">
-                        <div class="box">
-                            <h2>Kategori Yönetimi</h2>
-                            <input type="text" id="newCatInput" placeholder="Yeni kategori...">
-                            <button id="addCatBtn">Ekle</button>
-                            <div style="margin-top:15px;">
-                                ${db.cats.map((c, i)=>`<div class="list-item"><span>${c}</span><span class="del-btn" onclick="window.opener.postMessage({t:'delCat', index:${i}}, '*')">SİL</span></div>`).join('')}
-                            </div>
+
+                    <div class="box">
+                        <h2>Yazar Yönetimi</h2>
+                        <input type="text" id="an" placeholder="Yazar Adı">
+                        <textarea id="ab" placeholder="Yazar Biyografisi" rows="3"></textarea>
+                        <label>Yazar Fotoğrafı:</label>
+                        <input type="file" id="ai" accept="image/*">
+                        <button id="addAuthBtn">Yazarı Kaydet</button>
+                        <div class="list">
+                            ${db.authors.map(a=>`<div class="item"><span>${a.name}</span><span class="del" onclick="window.opener.postMessage({t:'delAuth', id:${a.id}}, '*')">SİL</span></div>`).join('')}
                         </div>
-                        <div class="box">
-                            <h2>Aktif Haberler</h2>
-                            ${db.news.map(n=>`<div class="list-item"><span><b>[${n.author}]</b> ${n.title.substring(0,20)}...</span><span class="del-btn" onclick="window.opener.postMessage({t:'delNews', id:${n.id}}, '*')">SİL</span></div>`).join('')}
+                    </div>
+
+                    <div class="box">
+                        <h2>Kategori & Reklam</h2>
+                        <label>Yeni Kategori:</label>
+                        <div style="display:flex; gap:5px;">
+                            <input type="text" id="newCat" style="margin:0;">
+                            <button id="addCatBtn" style="width:auto; margin:0;">Ekle</button>
                         </div>
+                        <hr>
+                        <label>Reklam Görseli:</label>
+                        <input type="file" id="adi" accept="image/*">
+                        <button id="upAdBtn">Reklamı Güncelle</button>
                     </div>
                 </div>
-            <script>
-                document.getElementById('saveNewsBtn').onclick = async () => {
-                    const imgFile = document.getElementById('ni').files[0];
-                    const img = imgFile ? await window.opener.toBase64(imgFile) : "https://via.placeholder.com/800";
-                    window.opener.postMessage({
-                        t: 'addNews',
-                        data: {
-                            id: Date.now(),
-                            title: document.getElementById('nt').value,
-                            text: document.getElementById('nc').value,
-                            cat: document.getElementById('ncat').value,
-                            author: "ASC",
-                            img: img
+
+                <script>
+                    const post = (data) => window.opener.postMessage(data, '*');
+                    
+                    document.getElementById('addNewsBtn').onclick = async () => {
+                        const file = document.getElementById('ni').files[0];
+                        const img = file ? await window.opener.toBase64(file) : "https://via.placeholder.com/800";
+                        post({t:'addNews', data: {id: Date.now(), title: document.getElementById('nt').value, text: document.getElementById('nc').value, cat: document.getElementById('ncat').value, author: "ASC", img: img}});
+                        location.reload();
+                    };
+
+                    document.getElementById('addAuthBtn').onclick = async () => {
+                        const file = document.getElementById('ai').files[0];
+                        const img = file ? await window.opener.toBase64(file) : "https://via.placeholder.com/150";
+                        post({t:'addAuth', data: {id: Date.now(), name: document.getElementById('an').value, bio: document.getElementById('ab').value, img: img}});
+                        location.reload();
+                    };
+
+                    document.getElementById('addCatBtn').onclick = () => {
+                        post({t:'addCat', val: document.getElementById('newCat').value});
+                        location.reload();
+                    };
+
+                    document.getElementById('upAdBtn').onclick = async () => {
+                        const file = document.getElementById('adi').files[0];
+                        if(file) {
+                            const img = await window.opener.toBase64(file);
+                            post({t:'upAd', img: img});
+                            alert("Reklam güncellendi!");
                         }
-                    }, '*');
-                    location.reload();
-                };
-                document.getElementById('addCatBtn').onclick = () => {
-                    window.opener.postMessage({t: 'addCat', val: document.getElementById('newCatInput').value}, '*');
-                    location.reload();
-                };
-            <\/script></body></html>`;
-        
+                    };
+                <\/script>
+            </body></html>`;
+
         win.document.open();
         win.document.write(adminHtml);
         win.document.close();
     }
 
+    // --- ANA PENCERE MESAJ MERKEZİ ---
     window.onmessage = (e) => {
         if(e.data.t === 'addNews') { db.news.unshift(e.data.data); sync(); }
         if(e.data.t === 'delNews') { db.news = db.news.filter(n=>n.id !== e.data.id); sync(); }
+        if(e.data.t === 'addAuth') { db.authors.push(e.data.data); sync(); }
+        if(e.data.t === 'delAuth') { db.authors = db.authors.filter(a=>a.id !== e.data.id); sync(); }
         if(e.data.t === 'addCat') { db.cats.push(e.data.val); sync(); }
         if(e.data.t === 'delCat') { db.cats.splice(e.data.index, 1); sync(); }
+        if(e.data.t === 'upAd') { db.ad = e.data.img; sync(); }
     };
 
     function renderApp() {
+        // Yazarlar Şeridi
         document.getElementById('authors-list').innerHTML = db.authors.map(a => `
             <div class="author-item" onclick="openAuthor(${a.id})">
                 <img src="${a.img}"><span>${a.name}</span>
             </div>`).join('');
         
-        document.getElementById('cat-nav').innerHTML = db.cats.map(c => `
+        // Yan Menü Kategoriler
+        document.getElementById('cat-nav').innerHTML = db.cats.map((c, i) => `
             <div class="cat-item" onclick="filterCat('${c}')">• ${c}</div>
         `).join('') + `<div class="cat-item" onclick="renderApp()" style="font-weight:bold; margin-top:10px;">• TÜMÜ</div>`;
         
+        // Reklam
         document.getElementById('ad-sidebar').innerHTML = `<img src="${db.ad}" style="width:100%; border-radius:15px;">`;
+        
+        // Haber Akışı
         renderFeed(db.news);
     }
 
@@ -207,7 +240,7 @@
         overlay.style.display = 'block';
         document.body.style.overflow = 'hidden';
         document.getElementById('overlay-content').innerHTML = `
-            <button class="audio-btn" style="background:var(--accent); color:white; border:none; padding:12px 25px; border-radius:50px; cursor:pointer; margin-bottom:30px;" onclick="speak('${n.title.replace(/'/g,"")}. ${n.text.replace(/'/g,"")}')">🔊 Dinle</button>
+            <button style="background:var(--accent); color:white; border:none; padding:12px 25px; border-radius:50px; cursor:pointer; margin-bottom:30px;" onclick="speak('${n.title.replace(/'/g,"")}. ${n.text.replace(/'/g,"")}')">🔊 Dinle</button>
             <h1 style="font-family:Marcellus; font-size:3.5rem;">${n.title}</h1>
             <p style="color:var(--accent); font-weight:bold;">${n.cat}</p>
             <img src="${n.img}" style="width:100%; border-radius:32px; margin-bottom:40px;">
