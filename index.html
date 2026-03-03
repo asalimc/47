@@ -3,327 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MERIDIAN GLOBAL | Author Management System</title>
+    <title>MERIDIAN GLOBAL | Full Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root { --m-orange: #f59e0b; --m-dark: #0f172a; --gold: linear-gradient(45deg, #d4af37, #f7e7ce, #b8860b); }
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; color: var(--m-dark); }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; overflow-x: hidden; }
         .meridian-font { font-family: 'Orbitron', sans-serif; }
         
-        /* Header Menüsündeki Altın Daireli Yazarlar (unnamed.jpg Stili) */
+        /* Altın Çerçeveli Yazar Halkaları */
         .header-author-circle {
-            width: 55px; height: 55px;
-            padding: 3px;
-            background: var(--gold);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.3s;
+            width: 60px; height: 60px; padding: 3px; background: var(--gold);
+            border-radius: 50%; cursor: pointer; transition: 0.3s; flex-shrink: 0;
         }
-        .header-author-circle:hover { transform: scale(1.1); }
-        .header-author-circle img {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid black;
-        }
+        .header-author-circle:hover { transform: scale(1.1); rotate: 5deg; }
+        .header-author-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; }
 
-        .view-node { display: none; animation: fadeIn 0.4s ease; }
-        .active-view { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .view-node { display: none; }
+        .active-view { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .glass-card { background: white; border-radius: 2.5rem; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .glass-card { background: white; border-radius: 2rem; border: 1px solid rgba(0,0,0,0.05); transition: 0.3s; }
+        .glass-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
-    <div class="bg-[#f59e0b] h-12 flex items-center justify-center shadow-md overflow-hidden">
-        <div class="flex items-center gap-8 animate-marquee whitespace-nowrap">
-            <span class="meridian-font text-xs font-black tracking-[0.3em]">MERIDIAN PORTAL</span>
-        </div>
+    <div class="bg-[#f59e0b] h-10 flex items-center justify-center shadow-lg">
+        <p class="meridian-font text-[10px] font-black tracking-[0.4em] text-black">BRASIILIA - MARDIN INTELLIGENCE BRIDGE</p>
     </div>
 
-    <header class="bg-white border-b sticky top-0 z-[100] shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div onclick="router('home')" class="cursor-pointer flex items-center gap-3">
-                    <div class="bg-black text-white w-10 h-10 flex items-center justify-center rounded-xl meridian-font text-xl">M</div>
-                    <h1 class="font-black text-2xl">MSP<span class="text-orange-500">.</span>GLOBAL</h1>
-                </div>
-                
-                <div id="header-authors-list" class="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
-                    </div>
-
-                <div class="flex gap-4">
-                    <button onclick="router('admin')" class="bg-black text-white px-6 py-3 rounded-full text-[10px] font-black uppercase hover:bg-orange-500 transition">DashBoard</button>
-                </div>
+    <header class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-[100]">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div onclick="router('home')" class="cursor-pointer flex items-center gap-2">
+                <div class="bg-black text-white w-10 h-10 flex items-center justify-center rounded-xl meridian-font text-xl">M</div>
+                <h1 class="font-black text-2xl tracking-tighter text-slate-900">MSP<span class="text-orange-500">.</span>GLOBAL</h1>
             </div>
+
+            <div id="h-authors" class="flex gap-4 overflow-x-auto no-scrollbar max-w-md md:max-w-xl py-2"></div>
+
+            <button onclick="router('admin')" class="bg-black text-white px-8 py-3 rounded-full text-[10px] font-black uppercase hover:bg-orange-500 transition shadow-lg">YÖNETİM PANELİ</button>
         </div>
+        <nav class="bg-slate-50 border-t overflow-x-auto no-scrollbar">
+            <div id="h-cats" class="max-w-7xl mx-auto px-4 flex gap-8 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                </div>
+        </nav>
     </header>
 
-    <main id="view-home" class="view-node active-view max-w-7xl mx-auto px-6 py-12">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <div class="lg:col-span-8 space-y-12">
-                <div class="flex items-center gap-4"><span class="w-2 h-8 bg-orange-500 rounded-full"></span><h2 class="text-xl font-black italic">SON HABERLER</h2></div>
-                <div id="home-news-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
-            </div>
-            <aside class="lg:col-span-4" id="home-sidebar-ad"></aside>
+    <main id="view-home" class="view-node active-view max-w-7xl mx-auto px-4 py-10">
+        <div id="cat-indicator" class="hidden mb-8 flex items-center gap-4">
+            <h2 id="current-cat-name" class="text-4xl font-black italic"></h2>
+            <button onclick="filterByCat('all')" class="text-xs font-bold text-orange-500 underline">Tümünü Göster</button>
         </div>
-    </main>
-
-    <main id="view-author-detail" class="view-node max-w-5xl mx-auto px-6 py-12">
-        <div id="author-profile-header" class="mb-16"></div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="author-articles-grid"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div id="news-flow" class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+            <aside class="lg:col-span-4 space-y-8">
+                <div class="bg-slate-900 text-white rounded-[3rem] p-8">
+                    <h4 class="meridian-font text-xs text-orange-500 mb-6">SPONSORLU</h4>
+                    <div id="side-ad"></div>
+                </div>
+            </aside>
+        </div>
     </main>
 
     <main id="view-admin" class="view-node min-h-screen bg-slate-950 text-white">
-        <div class="flex flex-col md:flex-row h-full">
-            <nav class="w-full md:w-72 bg-black p-8 space-y-2">
-                <p class="text-[10px] font-black text-slate-600 uppercase mb-8 tracking-widest">Master Admin</p>
-                <button onclick="setAdminTab('yazar')" id="tab-yazar" class="w-full text-left p-4 rounded-2xl font-bold text-xs uppercase hover:bg-white/10 transition">Yazar Yönetimi</button>
-                <button onclick="setAdminTab('haber')" id="tab-haber" class="w-full text-left p-4 rounded-2xl font-bold text-xs uppercase hover:bg-white/10 transition">Haber/Yazı Ekle</button>
-                <button onclick="router('home')" class="w-full mt-20 bg-orange-500 text-black p-4 rounded-2xl font-black text-xs uppercase">Siteden Çık</button>
+        <div class="flex flex-col md:flex-row min-h-screen">
+            <nav class="w-full md:w-64 bg-black p-8 space-y-2 border-r border-white/5">
+                <p class="text-[9px] font-black text-slate-600 uppercase mb-10 tracking-widest">Master Control</p>
+                <button onclick="setTab('cat')" id="t-cat" class="w-full text-left p-4 rounded-2xl font-bold text-xs uppercase hover:bg-orange-500 transition">Kategoriler</button>
+                <button onclick="setTab('haber')" id="t-haber" class="w-full text-left p-4 rounded-2xl font-bold text-xs uppercase hover:bg-orange-500 transition">Haberler</button>
+                <button onclick="setTab('yazar')" id="t-yazar" class="w-full text-left p-4 rounded-2xl font-bold text-xs uppercase hover:bg-orange-500 transition">Yazarlar</button>
+                <button onclick="router('home')" class="mt-20 w-full bg-white/10 p-4 rounded-2xl text-[10px] font-black uppercase">Portala Dön</button>
             </nav>
-            <section class="flex-1 p-8 md:p-12 overflow-y-auto">
-                <div class="flex justify-between items-center mb-10">
-                    <h2 id="admin-title" class="text-3xl font-black italic uppercase">Modül</h2>
-                    <button onclick="openModal()" class="bg-white text-black px-8 py-4 rounded-xl font-black text-xs">+ YENİ KAYIT</button>
+            <section class="flex-1 p-6 md:p-12">
+                <div class="flex justify-between items-center mb-12">
+                    <h2 id="adm-title" class="text-3xl font-black italic uppercase">Modül</h2>
+                    <button onclick="openModal()" class="bg-orange-500 text-black px-8 py-4 rounded-2xl font-black text-xs hover:scale-105 transition">+ YENİ EKLE</button>
                 </div>
-                <div id="admin-data-list" class="space-y-4"></div>
+                <div id="adm-list" class="grid grid-cols-1 gap-4"></div>
             </section>
         </div>
     </main>
 
     <div id="modal" class="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 hidden">
-        <div class="bg-white text-black w-full max-w-2xl rounded-[3rem] p-10 shadow-2xl relative overflow-y-auto max-h-[90vh]">
-            <h3 class="text-2xl font-black italic mb-8 border-b pb-4">Meridian Veri Girişi</h3>
-            <div id="modal-fields" class="space-y-4">
-                </div>
+        <div class="bg-white text-black w-full max-w-xl rounded-[3rem] p-10 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-2xl font-black mb-8 border-b pb-4">Veri Giriş Paneli</h3>
+            <div id="m-fields" class="space-y-4"></div>
             <div class="mt-10 flex gap-4">
-                <button onclick="closeModal()" class="flex-1 font-bold text-slate-400 uppercase text-xs">Vazgeç</button>
-                <button onclick="handleSave()" class="flex-[2] bg-blue-600 text-white p-5 rounded-2xl font-black uppercase text-xs shadow-xl">Veriyi Kilitle</button>
+                <button onclick="closeModal()" class="flex-1 font-bold text-slate-400">İPTAL</button>
+                <button onclick="saveData()" class="flex-[2] bg-black text-white p-5 rounded-2xl font-black uppercase text-xs">SİSTEME KAYDET</button>
             </div>
         </div>
     </div>
 
     <script>
-        // DATABASE INITIALIZATION
-        let db = JSON.parse(localStorage.getItem('meridian_pro_v1')) || {
-            yazarlar: [], // {id, isim, unvan, biyografi, img}
-            icerikler: [] // {id, yazarId, baslik, metin, kategori, img, tarih}
+        // MASTER DATABASE
+        let db = JSON.parse(localStorage.getItem('meridian_ultra_v1')) || {
+            cats: [
+                {id: 'c1', name: 'Mardin Strateji'},
+                {id: 'c2', name: 'Brasília HQ'},
+                {id: 'c3', name: 'Global Ekonomi'}
+            ],
+            yazarlar: [
+                {id: 'y1', isim: 'Ahmet Çınarbaş', unvan: 'Siyaset Bilimci', img: 'https://i.pravatar.cc/150?u=a1'},
+                {id: 'y2', isim: 'M. Beşir Ayanoğlu', unvan: 'Hukukçu', img: 'https://i.pravatar.cc/150?u=a2'}
+            ],
+            haberler: [
+                {id: 'h1', cid: 'c1', yid: 'y1', title: 'Mardin-Brezilya Ticaret Köprüsü', text: 'İki bölge arasındaki ekonomik bağlar güçleniyor...', img: 'https://images.unsplash.com/photo-1590595906931-81f04f0ccebb?auto=format&fit=crop&w=800', date: '02.03.2026'},
+                {id: 'h2', cid: 'c2', yid: 'y2', title: 'Brasília’da Yeni Diplomasi Atılımı', text: 'Güney Amerika pazarında Mardin rüzgarı esiyor...', img: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=800', date: '02.03.2026'}
+            ]
         };
 
-        let activeTab = 'yazar';
+        let activeTab = 'cat';
         let editId = null;
         let tempImg = "";
 
-        function router(id) {
-            document.querySelectorAll('.view-node').forEach(v => v.classList.remove('active-view'));
-            document.getElementById('view-' + id).classList.add('active-view');
-            if(id === 'home') renderPortal();
-            if(id === 'admin') renderAdminList();
+        function router(v) {
+            document.querySelectorAll('.view-node').forEach(n => n.classList.remove('active-view'));
+            document.getElementById('view-'+v).classList.add('active-view');
+            if(v==='home') renderPortal();
+            if(v==='admin') renderAdmin();
             window.scrollTo(0,0);
         }
 
-        // IMAGE HANDLER
+        function setTab(t) {
+            activeTab = t;
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('bg-orange-500', 'text-black'));
+            document.getElementById('t-'+t).classList.add('bg-orange-500', 'text-black');
+            document.getElementById('adm-title').innerText = t === 'cat' ? 'Kategoriler' : (t === 'haber' ? 'Haber Yönetimi' : 'Yazarlar');
+            renderAdmin();
+        }
+
+        // IMAGE PROCESSOR
         function processImg(e) {
             const r = new FileReader();
-            r.onload = () => { tempImg = r.result; document.getElementById('img-prev').src = tempImg; document.getElementById('img-prev').classList.remove('hidden'); };
-            if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
+            r.onload = () => { tempImg = r.result; document.getElementById('p-img').src = tempImg; document.getElementById('p-img').classList.remove('hidden'); };
+            r.readAsDataURL(e.target.files[0]);
         }
 
-        // ADMIN TAB MANAGEMENT
-        function setAdminTab(tab) {
-            activeTab = tab;
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('bg-white/20', 'text-orange-500'));
-            document.getElementById('tab-' + tab).classList.add('bg-white/20', 'text-orange-500');
-            document.getElementById('admin-title').innerText = tab === 'yazar' ? "YAZAR KADROSU" : "İÇERİK VE MAKALELER";
-            renderAdminList();
-        }
-
-        function renderAdminList() {
-            const list = document.getElementById('admin-data-list');
+        // ADMIN RENDER
+        function renderAdmin() {
+            const list = document.getElementById('adm-list');
             list.innerHTML = '';
-            const target = activeTab === 'yazar' ? db.yazarlar : db.icerikler;
+            let data = activeTab === 'cat' ? db.cats : (activeTab === 'haber' ? db.haberler : db.yazarlar);
 
-            target.forEach(item => {
+            data.forEach(item => {
                 list.innerHTML += `
-                    <div class="bg-white/5 border border-white/10 p-5 rounded-3xl flex items-center justify-between group hover:bg-white/10 transition">
-                        <div class="flex items-center gap-5">
-                            <img src="${item.img}" class="w-14 h-14 rounded-2xl object-cover border border-white/20">
-                            <div>
-                                <p class="font-bold text-sm text-white">${item.isim || item.baslik}</p>
-                                <p class="text-[10px] text-orange-500 uppercase font-black">${item.unvan || item.kategori || ''}</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4">
-                            <button onclick="editEntry('${item.id}')" class="text-blue-400 hover:text-white transition"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteEntry('${item.id}')" class="text-red-500 hover:text-white transition"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>`;
+                <div class="bg-white/5 border border-white/10 p-5 rounded-3xl flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        ${item.img ? `<img src="${item.img}" class="w-12 h-12 rounded-xl object-cover">` : '<div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-black font-bold">#</div>'}
+                        <div><p class="font-bold">${item.name || item.title || item.isim}</p></div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="deleteItem('${item.id}')" class="text-red-500 text-xs font-black uppercase">SİL</button>
+                    </div>
+                </div>`;
             });
         }
 
-        // MODAL & SAVE
+        // MODAL LOGIC
         function openModal() {
             editId = null; tempImg = "";
-            const fields = document.getElementById('modal-fields');
-            if(activeTab === 'yazar') {
-                fields.innerHTML = `
-                    <div class="h-40 bg-slate-100 rounded-3xl relative overflow-hidden flex items-center justify-center border-2 border-dashed">
-                        <img id="img-prev" class="absolute inset-0 w-full h-full object-cover hidden">
-                        <input type="file" onchange="processImg(event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                        <span class="text-[10px] font-black uppercase text-slate-400">Yazar Fotoğrafı Seç</span>
-                    </div>
-                    <input id="f-name" type="text" placeholder="Yazar Ad Soyad" class="w-full p-5 bg-slate-100 rounded-2xl font-bold outline-none">
-                    <input id="f-unvan" type="text" placeholder="Ünvan (Örn: Siyaset Bilimci)" class="w-full p-5 bg-slate-100 rounded-2xl font-bold outline-none">
-                    <textarea id="f-bio" placeholder="Yazar Kısa Biyografisi..." class="w-full p-5 bg-slate-100 rounded-2xl h-32 outline-none"></textarea>
-                `;
+            const f = document.getElementById('m-fields');
+            if(activeTab === 'cat') {
+                f.innerHTML = `<input id="f-name" type="text" placeholder="Kategori Adı" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">`;
+            } else if(activeTab === 'yazar') {
+                f.innerHTML = `
+                <div class="h-32 bg-slate-100 rounded-2xl flex items-center justify-center relative border-2 border-dashed">
+                    <img id="p-img" class="absolute inset-0 w-full h-full object-cover hidden">
+                    <input type="file" onchange="processImg(event)" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <span class="text-[10px] font-black opacity-40">RESİM SEÇ</span>
+                </div>
+                <input id="f-isim" type="text" placeholder="İsim Soyisim" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">
+                <input id="f-unvan" type="text" placeholder="Ünvan" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">`;
             } else {
-                let yazarOptions = db.yazarlar.map(y => `<option value="${y.id}">${y.isim}</option>`).join('');
-                fields.innerHTML = `
-                    <div class="h-40 bg-slate-100 rounded-3xl relative overflow-hidden flex items-center justify-center border-2 border-dashed">
-                        <img id="img-prev" class="absolute inset-0 w-full h-full object-cover hidden">
-                        <input type="file" onchange="processImg(event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                        <span class="text-[10px] font-black uppercase text-slate-400">Kapak Görseli Seç</span>
-                    </div>
-                    <select id="f-yid" class="w-full p-5 bg-slate-100 rounded-2xl font-bold outline-none">
-                        <option value="">Yazar Seçin...</option>
-                        ${yazarOptions}
-                    </select>
-                    <input id="f-title" type="text" placeholder="Makale Başlığı" class="w-full p-5 bg-slate-100 rounded-2xl font-bold outline-none">
-                    <select id="f-cat" class="w-full p-5 bg-slate-100 rounded-2xl font-bold outline-none">
-                        <option value="Mardin">Mardin Sütunu</option>
-                        <option value="Brezilya">Brezilya Sütunu</option>
-                        <option value="Dunya">Dünya Gündemi</option>
-                    </select>
-                    <textarea id="f-text" placeholder="İçerik Metni..." class="w-full p-5 bg-slate-100 rounded-2xl h-44 outline-none"></textarea>
-                `;
+                let cOpts = db.cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                let yOpts = db.yazarlar.map(y => `<option value="${y.id}">${y.isim}</option>`).join('');
+                f.innerHTML = `
+                <div class="h-32 bg-slate-100 rounded-2xl flex items-center justify-center relative border-2 border-dashed">
+                    <img id="p-img" class="absolute inset-0 w-full h-full object-cover hidden">
+                    <input type="file" onchange="processImg(event)" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <span class="text-[10px] font-black opacity-40">HABER RESMİ</span>
+                </div>
+                <select id="f-cid" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">${cOpts}</select>
+                <select id="f-yid" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">${yOpts}</select>
+                <input id="f-title" type="text" placeholder="Haber Başlığı" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">
+                <textarea id="f-text" placeholder="İçerik..." class="w-full p-5 bg-slate-100 rounded-2xl h-32"></textarea>`;
             }
             document.getElementById('modal').classList.remove('hidden');
         }
 
-        function handleSave() {
-            if(activeTab === 'yazar') {
-                const entry = {
-                    id: editId || 'Y' + Date.now(),
-                    isim: document.getElementById('f-name').value,
-                    unvan: document.getElementById('f-unvan').value,
-                    bio: document.getElementById('f-bio').value,
-                    img: tempImg || 'https://via.placeholder.com/300'
-                };
-                if(editId) {
-                    const idx = db.yazarlar.findIndex(x => x.id === editId);
-                    db.yazarlar[idx] = entry;
-                } else { db.yazarlar.unshift(entry); }
-            } else {
-                const entry = {
-                    id: editId || 'I' + Date.now(),
-                    yazarId: document.getElementById('f-yid').value,
-                    baslik: document.getElementById('f-title').value,
-                    metin: document.getElementById('f-text').value,
-                    kategori: document.getElementById('f-cat').value,
-                    img: tempImg || 'https://via.placeholder.com/800',
-                    tarih: new Date().toLocaleDateString()
-                };
-                if(editId) {
-                    const idx = db.icerikler.findIndex(x => x.id === editId);
-                    db.icerikler[idx] = entry;
-                } else { db.icerikler.unshift(entry); }
+        function saveData() {
+            let item = { id: 'ID' + Date.now() };
+            if(activeTab === 'cat') { item.name = document.getElementById('f-name').value; db.cats.push(item); }
+            else if(activeTab === 'yazar') { 
+                item.isim = document.getElementById('f-isim').value; 
+                item.unvan = document.getElementById('f-unvan').value; 
+                item.img = tempImg; db.yazarlar.push(item); 
             }
-            localStorage.setItem('meridian_pro_v1', JSON.stringify(db));
-            closeModal();
-            renderAdminList();
-            renderPortal();
+            else {
+                item.cid = document.getElementById('f-cid').value;
+                item.yid = document.getElementById('f-yid').value;
+                item.title = document.getElementById('f-title').value;
+                item.text = document.getElementById('f-text').value;
+                item.img = tempImg; item.date = new Date().toLocaleDateString();
+                db.haberler.push(item);
+            }
+            localStorage.setItem('meridian_ultra_v1', JSON.stringify(db));
+            closeModal(); renderAdmin(); renderPortal();
         }
 
-        function deleteEntry(id) {
-            if(confirm('Kayıt silinsin mi?')) {
+        function deleteItem(id) {
+            if(confirm('Silinsin mi?')) {
+                if(activeTab === 'cat') db.cats = db.cats.filter(x => x.id !== id);
                 if(activeTab === 'yazar') db.yazarlar = db.yazarlar.filter(x => x.id !== id);
-                else db.icerikler = db.icerikler.filter(x => x.id !== id);
-                localStorage.setItem('meridian_pro_v1', JSON.stringify(db));
-                renderAdminList();
-                renderPortal();
+                if(activeTab === 'haber') db.haberler = db.haberler.filter(x => x.id !== id);
+                localStorage.setItem('meridian_ultra_v1', JSON.stringify(db));
+                renderAdmin(); renderPortal();
             }
         }
-
-        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
         // PORTAL RENDERING
         function renderPortal() {
-            const hList = document.getElementById('header-authors-list');
-            const newsGrid = document.getElementById('home-news-grid');
-            
-            hList.innerHTML = '';
-            newsGrid.innerHTML = '';
+            const hAuthors = document.getElementById('h-authors');
+            const hCats = document.getElementById('h-cats');
+            const newsFlow = document.getElementById('news-flow');
 
-            // Header'daki Altın Daireli Yazarlar (unnamed.jpg Stili)
+            hAuthors.innerHTML = ''; hCats.innerHTML = '<button onclick="filterByCat(\'all\')" class="hover:text-black transition">Tümü</button>';
+            
             db.yazarlar.forEach(y => {
-                hList.innerHTML += `
-                    <div class="flex flex-col items-center gap-1 min-w-[70px]">
-                        <div onclick="showAuthorArticles('${y.id}')" class="header-author-circle">
-                            <img src="${y.img}">
-                        </div>
-                        <span class="text-[8px] font-black uppercase text-center w-full truncate">${y.isim.split(' ')[0]}</span>
-                    </div>
-                `;
+                hAuthors.innerHTML += `
+                <div class="flex flex-col items-center gap-1">
+                    <div class="header-author-circle"><img src="${y.img}"></div>
+                    <span class="text-[8px] font-black uppercase text-slate-400">${y.isim.split(' ')[0]}</span>
+                </div>`;
             });
 
-            // Ana Sayfa Haberler
-            db.icerikler.forEach(i => {
-                const yazar = db.yazarlar.find(y => y.id === i.yazarId) || {isim: 'Anonim'};
-                newsGrid.innerHTML += `
-                    <div class="glass-card p-6 group cursor-pointer hover:shadow-2xl transition">
-                        <img src="${i.img}" class="w-full h-52 object-cover rounded-[2rem] mb-6 group-hover:scale-95 transition duration-500">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-[9px] font-black uppercase bg-orange-500 px-3 py-1 rounded-full">${i.kategori}</span>
-                            <span class="text-[9px] font-bold text-slate-400">${i.tarih}</span>
+            db.cats.forEach(c => {
+                hCats.innerHTML += `<button onclick="filterByCat('${c.id}')" class="hover:text-black transition">${c.name}</button>`;
+            });
+
+            filterByCat('all');
+        }
+
+        function filterByCat(cid) {
+            const flow = document.getElementById('news-flow');
+            flow.innerHTML = '';
+            let filtered = cid === 'all' ? db.haberler : db.haberler.filter(h => h.cid === cid);
+
+            if(cid !== 'all') {
+                document.getElementById('cat-indicator').classList.remove('hidden');
+                document.getElementById('current-cat-name').innerText = db.cats.find(c => c.id === cid).name;
+            } else {
+                document.getElementById('cat-indicator').classList.add('hidden');
+            }
+
+            filtered.forEach(h => {
+                const yazar = db.yazarlar.find(y => y.id === h.yid);
+                const cat = db.cats.find(c => c.id === h.cid);
+                flow.innerHTML += `
+                <div class="glass-card p-6 flex flex-col group cursor-pointer">
+                    <img src="${h.img}" class="w-full h-52 object-cover rounded-[1.5rem] mb-6 group-hover:scale-95 transition">
+                    <span class="text-[9px] font-black uppercase text-orange-500 mb-2">${cat ? cat.name : ''}</span>
+                    <h3 class="text-xl font-black mb-4 leading-tight">${h.title}</h3>
+                    <div class="mt-auto flex items-center justify-between border-t pt-4">
+                        <div class="flex items-center gap-2">
+                            <img src="${yazar.img}" class="w-6 h-6 rounded-full object-cover">
+                            <span class="text-[10px] font-bold text-slate-500">${yazar.isim}</span>
                         </div>
-                        <h3 class="text-xl font-black mb-4 leading-tight">${i.baslik}</h3>
-                        <p class="text-xs font-bold text-blue-600 uppercase">Yazar: ${yazar.isim}</p>
+                        <span class="text-[9px] text-slate-400 font-bold">${h.date}</span>
                     </div>
-                `;
+                </div>`;
             });
         }
 
-        function showAuthorArticles(yid) {
-            const yazar = db.yazarlar.find(y => y.id === yid);
-            const yazilari = db.icerikler.filter(i => i.yazarId === yid);
-            
-            document.getElementById('author-profile-header').innerHTML = `
-                <div class="flex flex-col md:flex-row items-center gap-10 bg-black text-white p-12 rounded-[4rem]">
-                    <div class="header-author-circle !w-44 !h-44">
-                        <img src="${yazar.img}">
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <h1 class="text-5xl font-black italic mb-2">${yazar.isim}</h1>
-                        <p class="text-orange-500 font-black uppercase tracking-widest mb-6">${yazar.unvan}</p>
-                        <p class="text-slate-400 text-lg italic leading-relaxed max-w-2xl">${yazar.bio}</p>
-                    </div>
-                </div>
-            `;
-
-            const grid = document.getElementById('author-articles-grid');
-            grid.innerHTML = yazilari.length ? '' : '<p class="text-center col-span-2 py-20 font-bold opacity-30 italic">Bu yazarın henüz bir yazısı bulunmuyor.</p>';
-            
-            yazilari.forEach(i => {
-                grid.innerHTML += `
-                    <div class="glass-card p-8 hover:bg-orange-50 transition group cursor-pointer">
-                        <h3 class="text-2xl font-black mb-4 group-hover:text-orange-600">${i.baslik}</h3>
-                        <p class="text-slate-500 line-clamp-3 mb-6">${i.metin.substring(0,150)}...</p>
-                        <div class="flex justify-between items-center border-t pt-4">
-                            <span class="text-[10px] font-black uppercase tracking-widest text-orange-500">${i.kategori}</span>
-                            <span class="text-[10px] font-bold text-slate-400">${i.tarih}</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            router('author-detail');
-        }
-
-        window.onload = () => { renderPortal(); setAdminTab('yazar'); };
+        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+        window.onload = () => { renderPortal(); setTab('cat'); };
     </script>
 </body>
 </html>
