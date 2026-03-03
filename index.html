@@ -3,278 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina v15 | Ultimate Dashboard & Interface</title>
+    <title>Lumina v16 | Professional Commercial OS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --bg: #F9F9F7; --accent: #C5A059; --text: #1A1A1A; --dark-ace: #111111; }
-        * { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        :root { --bg: #F9F9F7; --accent: #C5A059; --text: #1A1A1A; }
+        * { -webkit-font-smoothing: antialiased; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
         .serif { font-family: 'Cormorant Garamond', serif; }
 
-        /* Glassmorphism Arayüz */
-        .glass-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        
-        /* Bento Grid Design */
-        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 40px 5%; }
-        .bento-item { border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; height: 550px; border: 1px solid rgba(0,0,0,0.04); transition: 0.6s cubic-bezier(0.2, 1, 0.2, 1); }
-        .bento-item:hover { transform: scale(0.985); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
+        /* Reklam Alanı Tasarımı */
+        .ad-space-container { width: 100%; height: 250px; border-radius: 40px; background: #eee; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
+        .ad-label { position: absolute; top: 15px; left: 20px; font-size: 8px; font-weight: 900; letter-spacing: 3px; opacity: 0.2; text-transform: uppercase; }
 
-        /* Admin Dashboard - World Class */
-        #admin-panel { display: none; position: fixed; inset: 0; background: #080808; color: white; z-index: 200000; flex-direction: row; font-family: 'Inter', sans-serif; }
-        .admin-sidebar { width: 320px; border-right: 1px solid #1F1F1F; padding: 50px 30px; display: flex; flex-direction: column; background: #050505; }
-        .admin-main { flex: 1; padding: 60px; overflow-y: auto; background-image: radial-gradient(circle at top right, #111, #080808); }
-        .admin-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; padding: 30px; transition: 0.3s; }
-        .admin-card:hover { border-color: var(--accent); background: rgba(255,255,255,0.04); }
-        .input-lux { background: #151515; border: 1px solid #252525; border-radius: 16px; padding: 16px; width: 100%; color: white; outline: none; }
-        .input-lux:focus { border-color: var(--accent); }
-
-        /* Author Strip Animation */
-        .author-tag { white-space: nowrap; animation: scrollAuthors 40s linear infinite; }
-        @keyframes scrollAuthors { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        /* Admin Layout */
+        #admin-panel { display: none; position: fixed; inset: 0; background: #080808; color: white; z-index: 200000; flex-direction: row; }
+        .admin-sidebar { width: 320px; border-right: 1px solid #1A1A1A; padding: 50px 30px; background: #050505; }
+        .admin-main { flex: 1; padding: 60px; overflow-y: auto; background: #080808; }
+        .admin-card { background: #111; border: 1px solid #222; border-radius: 24px; padding: 24px; margin-bottom: 20px; }
+        .input-lux { background: #181818; border: 1px solid #333; border-radius: 12px; padding: 12px; width: 100%; color: white; outline: none; margin-bottom: 15px; }
         
+        .modal-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100000; overflow-y: auto; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .highlight { color: var(--accent); font-weight: 900; }
     </style>
 </head>
 <body class="no-scrollbar">
 
-<nav class="glass-nav sticky top-0 z-[5000] px-12 py-6 flex justify-between items-center">
-    <div class="flex items-center gap-16">
-        <h1 class="serif text-4xl font-light uppercase tracking-tighter cursor-pointer">Lumina</h1>
-        <div id="ui-meta" class="hidden lg:flex gap-8 text-[10px] font-black uppercase tracking-[4px] opacity-30">
-            </div>
+<nav class="sticky top-0 z-[5000] px-12 py-6 flex justify-between items-center bg-white/80 backdrop-blur-xl border-b border-black/5">
+    <div class="flex items-center gap-12">
+        <h1 class="serif text-4xl font-light uppercase tracking-tighter cursor-pointer" onclick="location.reload()">Lumina</h1>
+        <div id="ui-meta" class="text-[10px] font-black uppercase tracking-[4px] opacity-30"></div>
     </div>
-    <div class="flex items-center gap-6">
-        <button onclick="toggleAdmin('flex')" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition transform active:scale-90">
-            <i data-lucide="layers" class="w-5 h-5"></i>
-        </button>
-    </div>
+    <button onclick="toggleAdmin('flex')" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition">
+        <i data-lucide="settings-2" class="w-5 h-5"></i>
+    </button>
 </nav>
 
-<section class="border-b border-black/5 bg-white/30 backdrop-blur-sm overflow-hidden py-4">
-    <div id="author-strip" class="flex items-center gap-20 author-tag px-10">
-        </div>
+<section class="px-[5%] py-8 border-b border-black/5 flex gap-12 overflow-x-auto no-scrollbar justify-center">
+    <div id="author-list-ui" class="flex gap-12 items-center"></div>
 </section>
 
-<header class="px-[5%] py-20 flex flex-col md:flex-row justify-between items-end">
-    <div class="max-w-4xl">
-        <p class="text-[11px] font-black uppercase tracking-[10px] text-accent mb-6">Transcontinental Bridge</p>
-        <h2 class="serif text-8xl md:text-[10rem] font-light leading-none tracking-tighter">Mardin & <br><i>Sao Paulo</i></h2>
-    </div>
-    <div class="text-right pb-4">
-        <div class="bg-white p-10 rounded-[50px] shadow-sm border border-black/5">
-            <p class="text-[10px] font-black opacity-20 uppercase mb-2">Real-Time Distance</p>
-            <p id="ui-dist" class="serif text-5xl font-bold tracking-tighter">10.604 KM</p>
+<header class="px-[5%] py-16">
+    <div id="ui-ad-space" class="ad-space-container group cursor-pointer">
+        <span class="ad-label">Sponsorlu İçerik</span>
+        <img id="ad-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <p id="ad-text" class="serif text-4xl italic text-white/40 group-hover:text-white transition uppercase tracking-widest">Premium Partner Space</p>
         </div>
     </div>
 </header>
 
-<section id="ui-feed" class="bento-grid"></section>
+<section id="ui-feed" class="bento-grid grid grid-cols-12 gap-8 px-[5%] py-10"></section>
 
-<div id="article-modal" class="hidden fixed inset-0 bg-white z-[100000] overflow-y-auto">
-    <div class="p-10 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-xl border-b border-black/5">
-        <button onclick="closeModal()" class="text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition flex items-center gap-2">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i> Kapat
-        </button>
-        <button id="tts-btn" onclick="toggleKaraoke()" class="bg-black text-white px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-accent transition">Dinle & Vurgula</button>
+<div id="article-modal" class="modal-overlay">
+    <div class="p-10 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-md">
+        <button onclick="closeModals()" class="text-[10px] font-black uppercase opacity-40 hover:opacity-100"><i data-lucide="arrow-left"></i> Kapat</button>
+        <button id="tts-btn" onclick="toggleKaraoke()" class="bg-black text-white px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest">Dinle</button>
     </div>
     <div id="article-content" class="max-w-4xl mx-auto py-24 px-10"></div>
 </div>
 
 <div id="admin-panel">
     <div class="admin-sidebar">
-        <div class="mb-20">
-            <h2 class="serif text-4xl text-accent italic mb-2">Lumina OS</h2>
-            <p class="text-[9px] font-black uppercase tracking-[3px] opacity-30">Management v15.0</p>
-        </div>
-        
-        <nav class="space-y-4 flex-1">
-            <button onclick="switchTab('dash')" class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition text-[11px] font-black uppercase tracking-widest opacity-50 hover:opacity-100"><i data-lucide="pie-chart" class="w-5 h-5"></i> Dashboard</button>
-            <button onclick="switchTab('write')" class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition text-[11px] font-black uppercase tracking-widest opacity-50 hover:opacity-100"><i data-lucide="pen-tool" class="w-5 h-5"></i> İçerik Yaz</button>
-            <button onclick="switchTab('authors')" class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition text-[11px] font-black uppercase tracking-widest opacity-50 hover:opacity-100"><i data-lucide="users" class="w-5 h-5"></i> Yazarlar</button>
-            <button onclick="switchTab('global')" class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition text-[11px] font-black uppercase tracking-widest opacity-50 hover:opacity-100"><i data-lucide="settings" class="w-5 h-5"></i> Global Sistem</button>
+        <h2 class="serif text-4xl italic text-accent mb-16">Lumina Pro</h2>
+        <nav class="space-y-4">
+            <button onclick="switchTab('news')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="file-text"></i> Haber Yönetimi</button>
+            <button onclick="switchTab('authors')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="users"></i> Yazar Yönetimi</button>
+            <button onclick="switchTab('ad')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="layout"></i> Reklam Modülü</button>
         </nav>
-        
-        <button onclick="toggleAdmin('none')" class="mt-20 p-5 bg-red-950/20 text-red-500 rounded-3xl text-[10px] font-black uppercase tracking-widest border border-red-900/20 hover:bg-red-950/40 transition">Sistemi Kilitle</button>
+        <button onclick="toggleAdmin('none')" class="mt-20 w-full py-4 border border-white/10 rounded-xl text-[10px] font-black uppercase">Sistemi Kapat</button>
     </div>
 
     <div class="admin-main">
-        <div id="tab-dash" class="admin-tab">
-            <div class="flex justify-between items-end mb-12">
-                <div>
-                    <h3 class="serif text-6xl mb-2">Sistem Özeti</h3>
-                    <p class="text-white/40 text-[10px] uppercase font-black tracking-widest">Global Kültürel Veri Akışı</p>
-                </div>
+        <div id="tab-news" class="admin-tab">
+            <h3 class="serif text-5xl mb-10">Haber Editörü</h3>
+            <div class="admin-card">
+                <input id="in-news-id" type="hidden">
+                <input id="in-news-title" placeholder="Başlık" class="input-lux">
+                <textarea id="in-news-text" placeholder="İçerik..." class="input-lux h-40"></textarea>
+                <select id="in-news-author" class="input-lux"></select>
+                <input type="file" id="in-news-file" onchange="handleFile(this, 'news')" class="hidden">
+                <label for="in-news-file" class="block p-4 border border-dashed border-white/20 rounded-xl text-center text-[10px] mb-4 cursor-pointer">Görsel Seç</label>
+                <button onclick="saveNews()" class="bg-accent text-black font-black w-full py-4 rounded-xl text-[10px] uppercase">Kaydet / Güncelle</button>
             </div>
-            
-            <div class="grid grid-cols-3 gap-8 mb-12">
-                <div class="admin-card">
-                    <p class="text-[9px] uppercase font-black opacity-30 mb-4">Kültürel IQ Skoru</p>
-                    <p class="text-5xl serif text-accent">%98.7</p>
-                </div>
-                <div class="admin-card">
-                    <p class="text-[9px] uppercase font-black opacity-30 mb-4">Aktif Yayılım</p>
-                    <p class="text-5xl serif">4.2M</p>
-                </div>
-                <div class="admin-card">
-                    <p class="text-[9px] uppercase font-black opacity-30 mb-4">Sistem Gecikmesi</p>
-                    <p class="text-5xl serif text-green-500">0.002s</p>
-                </div>
-            </div>
-
-            <div class="admin-card p-10">
-                <h4 class="text-xs font-black uppercase tracking-widest mb-8 opacity-40">Hızlı Akış Analizi</h4>
-                <div class="h-40 flex items-end gap-2">
-                    <div class="flex-1 bg-accent/20 h-[30%] rounded-t-lg transition-all hover:bg-accent"></div>
-                    <div class="flex-1 bg-accent/20 h-[60%] rounded-t-lg transition-all hover:bg-accent"></div>
-                    <div class="flex-1 bg-accent/20 h-[45%] rounded-t-lg transition-all hover:bg-accent"></div>
-                    <div class="flex-1 bg-accent/20 h-[90%] rounded-t-lg transition-all hover:bg-accent"></div>
-                    <div class="flex-1 bg-accent/20 h-[75%] rounded-t-lg transition-all hover:bg-accent"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-write" class="admin-tab hidden">
-            <h3 class="serif text-6xl mb-12">Yeni Hikaye Oluştur</h3>
-            <div class="grid grid-cols-12 gap-10">
-                <div class="col-span-8 space-y-6">
-                    <input id="in-title" placeholder="Başlık..." class="input-lux text-3xl serif py-8">
-                    <textarea id="in-text" placeholder="Kültürel derinlik burada başlar..." class="input-lux h-96"></textarea>
-                </div>
-                <div class="col-span-4 space-y-6">
-                    <div class="admin-card">
-                        <label class="text-[9px] font-black uppercase opacity-30 mb-4 block">Görsel Seçimi (Yerel)</label>
-                        <input type="file" id="in-file" class="hidden" onchange="previewFile(this)">
-                        <label for="in-file" class="cursor-pointer block border-2 border-dashed border-white/10 p-12 text-center rounded-3xl hover:border-accent hover:bg-white/5 transition">
-                            <i data-lucide="upload" class="mx-auto mb-4 opacity-30"></i>
-                            <span class="text-[10px] font-black uppercase opacity-40">Dosya Sürükle veya Seç</span>
-                        </label>
-                        <img id="file-preview" class="hidden mt-6 w-full h-40 object-cover rounded-2xl border border-white/10">
-                    </div>
-                    <button onclick="addNews()" class="w-full bg-accent text-black font-black py-6 rounded-3xl text-[12px] uppercase tracking-[4px] hover:scale-[1.02] transition shadow-2xl shadow-accent/20">Sisteme Enjekte Et</button>
-                </div>
-            </div>
+            <div id="adm-news-list" class="space-y-2"></div>
         </div>
 
         <div id="tab-authors" class="admin-tab hidden">
-            <h3 class="serif text-6xl mb-12">Yazar Yönetimi</h3>
-            <div class="grid grid-cols-2 gap-8 mb-12">
-                <input id="in-auth-name" placeholder="Ad Soyad" class="input-lux">
-                <input type="file" id="in-auth-file" onchange="previewAuth(this)" class="hidden">
-                <label for="in-auth-file" class="input-lux cursor-pointer flex items-center justify-between opacity-50">Profil Fotoğrafı Seç <i data-lucide="user"></i></label>
-                <button onclick="addAuthor()" class="col-span-2 bg-white text-black font-black py-5 rounded-3xl text-[10px] uppercase tracking-widest">Yazar Kaydet</button>
+            <h3 class="serif text-5xl mb-10">Yazar Kadrosu</h3>
+            <div class="admin-card">
+                <input id="in-auth-id" type="hidden">
+                <input id="in-auth-name" placeholder="Yazar Adı" class="input-lux">
+                <textarea id="in-auth-bio" placeholder="Biyografi..." class="input-lux h-24"></textarea>
+                <input type="file" id="in-auth-file" onchange="handleFile(this, 'auth')" class="hidden">
+                <label for="in-auth-file" class="block p-4 border border-dashed border-white/20 rounded-xl text-center text-[10px] mb-4 cursor-pointer">Profil Fotoğrafı</label>
+                <button onclick="saveAuthor()" class="bg-white text-black font-black w-full py-4 rounded-xl text-[10px] uppercase">Yazar Kaydet</button>
             </div>
-            <div id="adm-author-list" class="grid grid-cols-3 gap-6"></div>
+            <div id="adm-auth-list" class="grid grid-cols-2 gap-4"></div>
+        </div>
+
+        <div id="tab-ad" class="admin-tab hidden">
+            <h3 class="serif text-5xl mb-10">Reklam Yönetimi</h3>
+            <div class="admin-card">
+                <input id="in-ad-text" placeholder="Reklam Başlığı" class="input-lux">
+                <input type="file" id="in-ad-file" onchange="handleFile(this, 'ad')" class="hidden">
+                <label for="in-ad-file" class="block p-8 border border-dashed border-white/20 rounded-xl text-center mb-6 cursor-pointer">Reklam Görselini Güncelle</label>
+                <button onclick="saveAd()" class="bg-accent text-black font-black w-full py-4 rounded-xl text-[10px] uppercase tracking-widest">Reklamı Yayına Al</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // --- DATABASE ENGINE ---
-    let DB = JSON.parse(localStorage.getItem('LUMINA_V15_MASTER')) || {
-        global: { mardin: '28°C', sp: '22°C', dist: '10.604 KM' },
+    // --- DB ENGINE ---
+    let DB = JSON.parse(localStorage.getItem('LUMINA_PRO_DB')) || {
+        ad: { text: "WORLD CLASS DESIGN PARTNER", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" },
         authors: [
-            { id: 1, name: 'Zeynep Mardini', img: 'https://i.pravatar.cc/150?u=44' },
-            { id: 2, name: 'Lucas Silva', img: 'https://i.pravatar.cc/150?u=32' },
-            { id: 3, name: 'Elena Petrova', img: 'https://i.pravatar.cc/150?u=99' }
+            { id: 1, name: "Zeynep Mardini", bio: "Kültürel miras uzmanı.", img: "https://i.pravatar.cc/150?u=44" },
+            { id: 2, name: "Ricardo Silva", bio: "Brezilya modernizmi araştırmacısı.", img: "https://i.pravatar.cc/150?u=32" }
         ],
         news: [
-            { id: 1, title: 'Sao Paulo\'nun Beton Şiiri', text: 'Brezilya modernizminin kalbi Sao Paulo, brütalist mimarisiyle ruhun dikey uzanışını temsil eder. Her beton blok, bir direnç öyküsüdür.', img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200', type: 'Mimari' },
-            { id: 2, title: 'Sarı Taşların Sessizliği', text: 'Mardin\'in bin yıllık abbaralarında zaman, kum saatindeki gibi değil, taşın sabrıyla akar. Güneş batarken her ev bir altın külçesine dönüşür.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200', type: 'Mistik' }
+            { id: 101, authId: 1, title: "Sarı Taşların Şiiri", text: "Mardin'in dar sokaklarında zamanın nasıl durduğuna şahit olun. Taşın sabrı, güneşin rengiyle buluşuyor.", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200", type: "Kültür" }
         ]
     };
 
-    function sync() { localStorage.setItem('LUMINA_V15_MASTER', JSON.stringify(DB)); init(); }
+    let currentImgs = { news: "", auth: "", ad: "" };
 
-    // --- RENDER ENGINE ---
-    function init() {
+    function sync() { localStorage.setItem('LUMINA_PRO_DB', JSON.stringify(DB)); render(); }
+
+    // --- RENDER ---
+    function render() {
         lucide.createIcons();
         
-        // Global Info
-        const mTime = new Date().toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
-        const sTime = new Date().toLocaleTimeString('tr-TR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
-        document.getElementById('ui-meta').innerHTML = `Mardin ${mTime} • ${DB.global.mardin} &nbsp;|&nbsp; Sao Paulo ${sTime} • ${DB.global.sp}`;
+        // UI Ad
+        document.getElementById('ad-img').src = DB.ad.img;
+        document.getElementById('ad-text').innerText = DB.ad.text;
 
-        // Author Strip (Arayüzde Seçilen Yer)
-        const strip = document.getElementById('author-strip');
-        const authHTML = DB.authors.map(a => `
-            <div class="flex items-center gap-4 min-w-max">
-                <img src="${a.img}" class="w-10 h-10 rounded-full border border-black/10 object-cover">
-                <span class="text-[10px] font-black uppercase tracking-widest opacity-60">${a.name}</span>
+        // UI Authors (Yamayan/Statik)
+        document.getElementById('author-list-ui').innerHTML = DB.authors.map(a => `
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="openAuthorDetail(${a.id})">
+                <img src="${a.img}" class="w-12 h-12 rounded-full border border-black/5 object-cover group-hover:scale-110 transition">
+                <span class="text-[10px] font-black uppercase tracking-widest opacity-40 group-hover:opacity-100">${a.name}</span>
             </div>
         `).join('');
-        strip.innerHTML = authHTML + authHTML; // Sonsuz döngü efekti için çift
 
-        // News Feed
+        // UI Feed
         document.getElementById('ui-feed').innerHTML = DB.news.map((n, idx) => `
-            <div class="bento-item ${idx % 3 === 0 ? 'col-span-12 lg:col-span-8' : 'col-span-12 lg:col-span-4'}" onclick="openArticle(${n.id})">
-                <img src="${n.img}" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
-                <div class="absolute bottom-0 p-12 text-white">
-                    <span class="text-[10px] font-black uppercase tracking-[6px] text-accent mb-6 block">${n.type}</span>
-                    <h3 class="serif text-5xl md:text-6xl leading-[0.85] tracking-tighter">${n.title}</h3>
+            <div class="bento-item h-[500px] rounded-[40px] overflow-hidden relative cursor-pointer group ${idx % 3 === 0 ? 'col-span-8' : 'col-span-4'}" onclick="openArticle(${n.id})">
+                <img src="${n.img}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <div class="absolute bottom-0 p-10 text-white">
+                    <p class="text-[9px] font-black uppercase tracking-[5px] text-accent mb-4">${n.type}</p>
+                    <h3 class="serif text-5xl leading-tight">${n.title}</h3>
                 </div>
             </div>
         `).join('');
 
-        // Admin Author List
-        document.getElementById('adm-author-list').innerHTML = DB.authors.map(a => `
-            <div class="admin-card flex items-center gap-4">
-                <img src="${a.img}" class="w-12 h-12 rounded-full object-cover">
-                <div>
-                    <p class="text-[11px] font-black uppercase tracking-widest">${a.name}</p>
-                    <button onclick="deleteAuth(${a.id})" class="text-red-500 text-[9px] font-bold uppercase mt-1">Sistemi Kaldır</button>
+        // Admin Lists
+        document.getElementById('in-news-author').innerHTML = DB.authors.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+        document.getElementById('adm-news-list').innerHTML = DB.news.map(n => `
+            <div class="p-4 bg-white/5 rounded-xl flex justify-between items-center text-[10px]">
+                <span>${n.title}</span>
+                <div class="flex gap-4">
+                    <button onclick="editNews(${n.id})" class="text-accent uppercase font-black">Düzenle</button>
+                    <button onclick="deleteNews(${n.id})" class="text-red-500 uppercase font-black">Sil</button>
+                </div>
+            </div>
+        `).join('');
+
+        document.getElementById('adm-auth-list').innerHTML = DB.authors.map(a => `
+            <div class="admin-card flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <img src="${a.img}" class="w-10 h-10 rounded-full object-cover">
+                    <span class="text-[10px] font-black uppercase">${a.name}</span>
+                </div>
+                <div class="flex gap-4">
+                    <button onclick="editAuth(${a.id})" class="text-accent text-[9px] font-black uppercase">Düzenle</button>
+                    <button onclick="deleteAuth(${a.id})" class="text-red-500 text-[9px] font-black uppercase">Sil</button>
                 </div>
             </div>
         `).join('');
     }
 
-    // --- FUNCTIONALITIES ---
-    let lastImg = "";
-    function previewFile(input) {
+    // --- ACTIONS ---
+    function handleFile(input, key) {
         const reader = new FileReader();
-        reader.onload = e => { lastImg = e.target.result; document.getElementById('file-preview').src = e.target.result; document.getElementById('file-preview').classList.remove('hidden'); };
+        reader.onload = e => currentImgs[key] = e.target.result;
         reader.readAsDataURL(input.files[0]);
     }
 
-    let authImg = "";
-    function previewAuth(input) {
-        const reader = new FileReader();
-        reader.onload = e => { authImg = e.target.result; };
-        reader.readAsDataURL(input.files[0]);
+    function saveNews() {
+        const id = document.getElementById('in-news-id').value;
+        const n = { 
+            id: id ? parseInt(id) : Date.now(), 
+            authId: parseInt(document.getElementById('in-news-author').value),
+            title: document.getElementById('in-news-title').value,
+            text: document.getElementById('in-news-text').value,
+            img: currentImgs.news || "https://via.placeholder.com/1200",
+            type: "Kültür"
+        };
+        if(id) DB.news = DB.news.map(x => x.id === n.id ? n : x); else DB.news.unshift(n);
+        sync(); resetNewsForm();
     }
 
-    function addNews() {
-        const n = { id: Date.now(), title: document.getElementById('in-title').value, text: document.getElementById('in-text').value, img: lastImg || 'https://via.placeholder.com/1200', type: 'Kültürel Analiz' };
-        DB.news.unshift(n); sync(); toggleAdmin('none');
+    function editNews(id) {
+        const n = DB.news.find(x => x.id === id);
+        document.getElementById('in-news-id').value = n.id;
+        document.getElementById('in-news-title').value = n.title;
+        document.getElementById('in-news-text').value = n.text;
+        document.getElementById('in-news-author').value = n.authId;
+        currentImgs.news = n.img;
+        switchTab('news');
     }
 
-    function addAuthor() {
-        const a = { id: Date.now(), name: document.getElementById('in-auth-name').value, img: authImg || 'https://via.placeholder.com/150' };
-        DB.authors.push(a); sync();
+    function deleteNews(id) { DB.news = DB.news.filter(x => x.id !== id); sync(); }
+
+    function saveAuthor() {
+        const id = document.getElementById('in-auth-id').value;
+        const a = {
+            id: id ? parseInt(id) : Date.now(),
+            name: document.getElementById('in-auth-name').value,
+            bio: document.getElementById('in-auth-bio').value,
+            img: currentImgs.auth || "https://i.pravatar.cc/150"
+        };
+        if(id) DB.authors = DB.authors.map(x => x.id === a.id ? a : x); else DB.authors.push(a);
+        sync(); resetAuthForm();
+    }
+
+    function editAuth(id) {
+        const a = DB.authors.find(x => x.id === id);
+        document.getElementById('in-auth-id').value = a.id;
+        document.getElementById('in-auth-name').value = a.name;
+        document.getElementById('in-auth-bio').value = a.bio;
+        currentImgs.auth = a.img;
+        switchTab('authors');
     }
 
     function deleteAuth(id) { DB.authors = DB.authors.filter(x => x.id !== id); sync(); }
 
+    function saveAd() {
+        DB.ad.text = document.getElementById('in-ad-text').value;
+        if(currentImgs.ad) DB.ad.img = currentImgs.ad;
+        sync();
+    }
+
+    // --- MODAL LOGIC ---
     function openArticle(id) {
         const n = DB.news.find(x => x.id === id);
+        const a = DB.authors.find(x => x.id === n.authId);
         document.getElementById('article-content').innerHTML = `
-            <h1 class="serif text-8xl md:text-[9rem] text-center leading-[0.85] tracking-tighter mb-24">${n.title}</h1>
-            <div id="karaoke-text" class="serif text-4xl leading-relaxed text-justify opacity-80 first-letter:text-9xl first-letter:text-accent">
+            <h1 class="serif text-8xl text-center leading-none mb-12 tracking-tighter">${n.title}</h1>
+            <div class="flex items-center justify-center gap-4 mb-20">
+                <img src="${a.img}" class="w-10 h-10 rounded-full">
+                <span class="text-[10px] font-black uppercase tracking-widest">${a.name}</span>
+            </div>
+            <div id="karaoke-text" class="serif text-4xl leading-relaxed text-justify opacity-80">
                 ${n.text.split(' ').map(w => `<span>${w}</span>`).join(' ')}
             </div>
         `;
-        document.getElementById('article-modal').classList.remove('hidden');
+        document.getElementById('article-modal').style.display = 'block';
     }
+
+    function openAuthorDetail(id) {
+        const a = DB.authors.find(x => x.id === id);
+        const aNews = DB.news.filter(n => n.authId === id);
+        document.getElementById('article-content').innerHTML = `
+            <div class="text-center">
+                <img src="${a.img}" class="w-40 h-40 rounded-full mx-auto mb-10 object-cover border-4 border-accent p-2">
+                <h2 class="serif text-7xl mb-6">${a.name}</h2>
+                <p class="serif text-2xl italic opacity-60 mb-20 max-w-2xl mx-auto">${a.bio}</p>
+                <div class="text-left">
+                    <p class="text-[10px] font-black uppercase tracking-[5px] mb-10 opacity-30">Yazarın Yazıları</p>
+                    <div class="space-y-12">
+                        ${aNews.map(n => `
+                            <div class="group cursor-pointer" onclick="openArticle(${n.id})">
+                                <h4 class="serif text-5xl group-hover:text-accent transition">${n.title}</h4>
+                                <p class="text-[10px] font-black uppercase mt-4 opacity-40">Makaleyi Oku — ${n.type}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+        document.getElementById('article-modal').style.display = 'block';
+    }
+
+    // --- UTILS ---
+    function toggleAdmin(s) { document.getElementById('admin-panel').style.display = s; }
+    function switchTab(t) { document.querySelectorAll('.admin-tab').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); }
+    function closeModals() { window.speechSynthesis.cancel(); document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none'); }
+    function resetNewsForm() { document.getElementById('in-news-id').value = ""; document.getElementById('in-news-title').value = ""; document.getElementById('in-news-text').value = ""; currentImgs.news = ""; }
+    function resetAuthForm() { document.getElementById('in-auth-id').value = ""; document.getElementById('in-auth-name').value = ""; document.getElementById('in-auth-bio').value = ""; currentImgs.auth = ""; }
 
     function toggleKaraoke() {
         const spans = document.querySelectorAll('#karaoke-text span');
         const utter = new SpeechSynthesisUtterance(document.getElementById('karaoke-text').innerText);
-        utter.lang = 'tr-TR'; utter.rate = 0.95;
+        utter.lang = 'tr-TR'; utter.rate = 0.9;
         let i = 0;
         utter.onboundary = e => {
             if(e.name === 'word') {
@@ -286,11 +314,7 @@
         window.speechSynthesis.speak(utter);
     }
 
-    function toggleAdmin(s) { document.getElementById('admin-panel').style.display = s; }
-    function switchTab(t) { document.querySelectorAll('.admin-tab').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); }
-    function closeModal() { window.speechSynthesis.cancel(); document.getElementById('article-modal').classList.add('hidden'); }
-
-    window.onload = () => { init(); setInterval(init, 60000); };
+    window.onload = render;
 </script>
 </body>
 </html>
