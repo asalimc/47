@@ -15,6 +15,8 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Tasarımı bozmadan akıcı kaydırma özelliği eklendi */
+        html { scroll-behavior: smooth; }
         body { background-color: var(--bg); color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; padding-bottom: 80px; }
 
         /* --- 1. HEADER & NAV --- */
@@ -65,7 +67,7 @@
         .admin-panel { background: white; padding: 40px; border-radius: 25px; border-top: 10px solid var(--rio); margin-bottom: 50px; }
         .editor-mock { min-height: 150px; background: #fafafa; border: 1px dashed #ccc; padding: 20px; border-radius: 15px; margin: 20px 0; color: #999; }
 
-        /* --- 8. DETAY MODAL (YENİ KATMAN) --- */
+        /* --- 8. DETAY MODAL --- */
         .detail-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 10001; backdrop-filter: blur(10px); padding: 20px; }
         .detail-content { background: var(--bg); width: 100%; max-width: 800px; max-height: 90vh; border-radius: 25px; overflow-y: auto; position: relative; border-top: 10px solid var(--mardin); padding: 40px; }
         .close-detail { position: sticky; top: 0; float: right; font-size: 2rem; cursor: pointer; color: var(--mardin); font-weight: bold; }
@@ -85,23 +87,23 @@
 </head>
 <body>
 
-    <header>
+    <header id="top">
         <h1>MARDIN<span>RIO</span></h1>
         <p style="letter-spacing: 5px; font-weight: bold; font-size: 12px; color: var(--mardin);">KÜLTÜR • STİL • YAŞAM</p>
     </header>
 
     <nav>
         <ul>
-            <li><a href="#">KEŞFET</a></li>
-            <li><a href="#">GASTRONOMİ</a></li>
-            <li><a href="#">AJANDA</a></li>
-            <li><a href="#">EDİTÖR</a></li>
+            <li><a href="#explore">KEŞFET</a></li>
+            <li><a href="#gastronomy">GASTRONOMİ</a></li>
+            <li><a href="#agenda">AJANDA</a></li>
+            <li><a href="#editor">EDİTÖR</a></li>
         </ul>
     </nav>
 
     <div class="wrapper">
         
-        <h3 style="margin-bottom: 30px; font-family: 'Playfair Display';"><span class="live-pulse"></span>LEZZET DÜELLOSU</h3>
+        <h3 id="gastronomy" style="margin-bottom: 30px; font-family: 'Playfair Display'; scroll-margin-top: 100px;"><span class="live-pulse"></span>LEZZET DÜELLOSU</h3>
         <div class="gastro-grid">
             <div class="flip-card" data-type="gastro">
                 <div class="flip-inner">
@@ -117,7 +119,7 @@
             </div>
         </div>
 
-        <section class="video-section" data-type="video">
+        <section id="explore" class="video-section" data-type="video" style="scroll-margin-top: 100px;">
             <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5" alt="Rio">
             <div class="video-overlay">
                 <div class="play-btn">▶</div>
@@ -139,7 +141,7 @@
             <div><span class="stat-val">2026</span><span class="stat-label">Vizyon Yılı</span></div>
         </div>
 
-        <section class="agenda-section">
+        <section id="agenda" class="agenda-section" style="scroll-margin-top: 100px;">
             <h3 style="margin-bottom: 20px; font-family: 'Playfair Display';">KÜLTÜR AJANDASI 2026</h3>
             <div class="event-item" data-type="event">
                 <div class="date-badge">15 <span>MRT</span></div>
@@ -151,9 +153,9 @@
             </div>
         </section>
 
-        <section class="admin-panel">
+        <section id="editor" class="admin-panel" style="scroll-margin-top: 100px;">
             <h4 style="font-family: 'Playfair Display';">HIZLI İÇERİK EDİTÖRÜ</h4>
-            <div class="editor-mock">Mezopotamya'dan Amazon'a yeni bir hikaye yazın...</div>
+            <div class="editor-mock" contenteditable="true">Mezopotamya'dan Amazon'a yeni bir hikaye yazın...</div>
             <button style="background: var(--rio); color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: bold;">YAYINLA</button>
         </section>
     </div>
@@ -166,10 +168,10 @@
     </div>
 
     <div class="mobile-dock">
-        <a href="#" class="dock-btn active"><span>🏠</span><br>Home</a>
-        <a href="#" class="dock-btn"><span>🍴</span><br>Gastro</a>
-        <a href="#" class="dock-btn"><span>📅</span><br>Ajanda</a>
-        <a href="#" class="dock-btn"><span>⚙️</span><br>Panel</a>
+        <a href="#top" class="dock-btn active"><span>🏠</span><br>Home</a>
+        <a href="#gastronomy" class="dock-btn"><span>🍴</span><br>Gastro</a>
+        <a href="#agenda" class="dock-btn"><span>📅</span><br>Ajanda</a>
+        <a href="#editor" class="dock-btn"><span>⚙️</span><br>Panel</a>
     </div>
 
     <footer style="text-align: center; padding: 60px 40px; background: white; border-top: 1px solid #eee;">
@@ -178,7 +180,7 @@
     </footer>
 
     <script>
-        // TASARIMI BOZMADAN DETAY AÇMA FONKSİYONU
+        // MODAL FONKSİYONLARI
         function openDetail(title, content) {
             document.getElementById('detailBody').innerHTML = `<h2>${title}</h2><div>${content}</div>`;
             document.getElementById('detailOverlay').style.display = 'flex';
@@ -190,6 +192,7 @@
             document.body.style.overflow = 'auto';
         }
 
+        // TIKLAMA YÖNETİMİ
         document.querySelectorAll('[data-type]').forEach(item => {
             item.addEventListener('click', () => {
                 const type = item.getAttribute('data-type');
@@ -197,19 +200,27 @@
 
                 if(type === 'article') {
                     title = item.querySelector('h2').innerText;
-                    content = item.querySelector('.article-body').innerHTML + "<br><p>Haberin devamı: Tasarımcılar bu sentezi oluştururken Mardin'in dar sokaklarındaki Telkâri atölyelerinde 3 ay geçirdi. Sonuç, dünya podyumlarında devrim yarattı.</p>";
+                    content = item.querySelector('.article-body').innerHTML + "<br><p>Detaylı Analiz: Mardin ve Rio arasındaki gümüş köprüsü moda dünyasında kalıcı bir iz bırakıyor.</p>";
                 } else if(type === 'gastro') {
-                    title = item.querySelector('.flip-front h2').innerText + " Lezzet Sırları";
-                    content = "<p>Bu eşsiz yemeğin detaylı tarifi ve Rio/Mardin versiyonları arasındaki farklar yakında mutfak atölyemizde yayınlanacak.</p>";
+                    title = item.querySelector('.flip-front h2').innerText + " Özel Reçetesi";
+                    content = "<p>Bu eşsiz lezzetin sırrı, kullanılan geleneksel yöntemlerde gizlidir.</p>";
                 } else if(type === 'event') {
                     title = item.querySelector('strong').innerText;
-                    content = "<p>Etkinlik Saati: 19:00<br>Yer: Festival Alanı<br>Giriş: Ücretsiz.<br><br>Bu etkinlik iki kültürün sanatsal buluşmasını temsil eder.</p>";
+                    content = "<p>Etkinlik saati ve konumu teyit edilmiştir. Girişler ücretsizdir.</p>";
                 } else if(type === 'video') {
                     title = item.querySelector('h2').innerText;
-                    content = "<div style='background:#000; height:300px; display:flex; align-items:center; justify-content:center; color:#fff; border-radius:15px;'>[VİDEO OYNATICI]</div><p style='margin-top:20px;'>Belgeselin tamamı yayında.</p>";
+                    content = "<div style='background:#000; height:300px; display:flex; align-items:center; justify-content:center; color:#fff; border-radius:15px;'>VİDEO YÜKLENİYOR...</div>";
                 }
                 openDetail(title, content);
             });
+        });
+
+        // EDİTÖR AKTİVASYONU
+        const editor = document.querySelector('.editor-mock');
+        editor.addEventListener('focus', function() {
+            if(this.innerText === 'Mezopotamya\'dan Amazon\'a yeni bir hikaye yazın...') {
+                this.innerText = '';
+            }
         });
     </script>
 </body>
