@@ -6,22 +6,12 @@
     <title>MARDIN & BRAZIL | ASC 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;700;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --mardin: #D4A373; /* Mardin Taş Rengi */
-            --brazil: #064E3B; /* Derin Orman Yeşili */
-            --dark: #050505; 
-            --white: #F5F5F7;
-        }
+        :root { --mardin: #D4A373; --brazil: #064E3B; --dark: #050505; --white: #F5F5F7; }
 
-        /* --- GRID BACKGROUND --- */
         body { 
             background-color: #fafaf9;
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
-            background-size: 40px 40px;
-            font-family: 'Montserrat', sans-serif; 
-            color: var(--dark); overflow-x: hidden;
+            background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+            background-size: 40px 40px; font-family: 'Montserrat', sans-serif; color: var(--dark); overflow-x: hidden;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
@@ -31,108 +21,68 @@
             position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
             width: 95%; max-width: 1200px; padding: 12px 20px;
             background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px);
-            border: 1px solid rgba(0,0,0,0.05); border-radius: 50px; z-index: 5000;
-            overflow: hidden; display: flex;
+            border: 1px solid rgba(0,0,0,0.05); border-radius: 50px; z-index: 5000; overflow: hidden; display: flex;
         }
-        .ticker-content { 
-            display: flex; white-space: nowrap; font-size: 10px; font-weight: 900; letter-spacing: 2px;
-            animation: ticker-move 85s linear infinite;
-        }
+        .ticker-content { display: flex; white-space: nowrap; font-size: 10px; font-weight: 900; letter-spacing: 2px; animation: ticker-move 85s linear infinite; }
         @keyframes ticker-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- ASC 2026 SIDE IDENTITY --- */
-        .side-identity {
-            position: fixed; right: 2%; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 1000;
-        }
-        .side-text {
-            writing-mode: vertical-rl; font-size: 10px; font-weight: 900;
-            letter-spacing: 5px; color: var(--dark); opacity: 0.3;
-        }
-        .side-line { width: 1px; height: clamp(60px, 12vh, 140px); background: var(--dark); opacity: 0.1; }
-        .side-timestamp { font-size: 9px; font-family: monospace; font-weight: 900; color: var(--brazil); }
-
-        /* --- HEADER --- */
-        header { padding: clamp(120px, 18vh, 200px) 5% 40px; }
-        .brand-title { 
-            font-family: 'Playfair Display'; font-size: clamp(2.5rem, 9.5vw, 9rem); 
-            line-height: 0.8; letter-spacing: -0.05em; display: flex; gap: 20px;
-        }
+        /* --- MASTER GRID --- */
+        header { padding: clamp(100px, 15vh, 180px) 5% 40px; }
+        .brand-title { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 9.5vw, 9rem); line-height: 0.8; letter-spacing: -0.05em; display: flex; gap: 20px; }
         .brand-title .m-text { color: var(--mardin); }
         .brand-title .b-text { color: var(--brazil); font-weight: 900; }
 
-        /* --- DATA PANEL --- */
-        .data-shuttle {
-            grid-column: span 12; display: flex; justify-content: space-between;
-            padding: 25px 40px; background: rgba(255,255,255,0.4); 
-            border: 1px solid rgba(0,0,0,0.02); border-radius: 35px; margin-bottom: 25px;
-        }
-        .stat-item { text-align: center; }
-        .stat-value { font-family: 'Playfair Display'; font-size: 1.6rem; font-weight: 900; color: var(--dark); }
-        .stat-label { font-size: 8px; font-weight: 900; letter-spacing: 2px; opacity: 0.4; margin-top: 5px; }
-
-        /* --- MASTER WRAPPER --- */
         .master-wrapper { padding: 0 5% 80px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; }
 
+        /* --- SYNERGY AREA (INTERACTIVE CONTENT) --- */
         .featured-mask { 
-            grid-column: span 8; height: 75vh; border-radius: 50px; overflow: hidden; position: relative;
+            grid-column: span 8; height: 80vh; border-radius: 50px; overflow: hidden; position: relative; 
+            transition: all 0.5s ease;
         }
-        @media (max-width: 1024px) { 
-            .featured-mask { grid-column: span 12; height: 50vh; }
-            .side-identity { display: none; }
-            .data-shuttle { flex-wrap: wrap; gap: 20px; justify-content: center; }
-        }
-        .featured-mask img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- MAG STACK --- */
-        .mag-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; }
-        @media (max-width: 1024px) { .mag-stack { grid-column: span 12; } }
-
-        .expand-card {
-            background: white; padding: 35px; border-radius: 40px; border: 1px solid rgba(0,0,0,0.03);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative;
-        }
-        .expand-card.active {
-            position: fixed; inset: 4%; z-index: 9000; background: var(--white);
-            padding: clamp(40px, 6vw, 80px); border-radius: 50px; overflow-y: auto;
-        }
-
-        /* Yazar Kutusu (Seçili Alana Eklenen Bölüm) */
-        .author-box {
-            display: flex; align-items: center; gap: 12px; margin-top: 25px;
-            font-size: 10px; font-weight: 900; color: var(--dark); opacity: 0.7;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .author-box img { 
-            width: 28px; height: 28px; border-radius: 50%; 
-            background: #eee; object-fit: cover; border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .expand-card .detail-content { display: none; margin-top: 30px; font-family: 'Lora'; font-size: 1.2rem; line-height: 1.8; }
-        .expand-card.active .detail-content { display: block; animation: fadeInUp 0.7s ease; }
+        .featured-mask img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); transition: 0.5s; }
         
-        .close-btn { 
-            position: absolute; top: 30px; right: 30px; display: none; 
-            background: var(--dark); color: white; padding: 10px 20px; border-radius: 50px; font-size: 10px;
+        .curator-layer {
+            position: absolute; inset: 0; padding: 40px; display: flex; flex-direction: column; justify-content: space-between;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.8) 100%);
+            z-index: 2;
         }
-        .expand-card.active .close-btn { display: block; }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .interview-overlay {
+            position: absolute; inset: 0; background: rgba(5, 5, 5, 0.95); z-index: 10;
+            padding: clamp(40px, 8vw, 100px); color: white; display: none; overflow-y: auto;
+        }
+        .interview-overlay.active { display: block; animation: fadeIn 0.5s ease; }
 
-        /* --- VIDEO PORTAL --- */
-        .video-portal { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px; }
-        @media (max-width: 768px) { .video-portal { grid-template-columns: 1fr; } }
-        .v-box { height: 45vh; border-radius: 40px; overflow: hidden; background: #000; }
-        .v-box iframe { width: 100%; height: 100%; border: none; opacity: 0.8; }
+        /* --- VIDEO PORTAL (CANLANDIRILAN) --- */
+        .video-portal { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 40px; }
+        .v-box { 
+            height: 50vh; border-radius: 40px; overflow: hidden; position: relative; background: #000;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .v-box iframe { width: 100%; height: 100%; border: none; pointer-events: none; opacity: 0.7; transform: scale(1.1); }
+        .v-label {
+            position: absolute; top: 30px; left: 30px; color: white; z-index: 5;
+            font-size: 10px; font-weight: 900; letter-spacing: 3px; display: flex; align-items: center; gap: 10px;
+        }
+        .v-label span { width: 8px; height: 8px; background: red; border-radius: 50%; box-shadow: 0 0 10px red; }
+
+        /* --- MAG STACK (DOKUNULMADI) --- */
+        .mag-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; }
+        .expand-card { background: white; padding: 35px; border-radius: 40px; border: 1px solid rgba(0,0,0,0.03); }
+
+        /* --- UTILS --- */
+        .btn-read { 
+            background: white; color: black; border: none; padding: 12px 25px; border-radius: 50px; 
+            font-size: 10px; font-weight: 900; margin-top: 20px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-read:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,255,255,0.2); }
+        .close-interview { position: fixed; top: 40px; right: 40px; color: white; cursor: pointer; font-size: 10px; font-weight: 900; z-index: 100; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 1024px) { .featured-mask, .mag-stack, .video-portal { grid-column: span 12; } .video-portal { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
-    <div class="side-identity">
-        <div class="side-text">ASC 2026</div>
-        <div class="side-line"></div>
-        <div class="side-timestamp" id="ms-clock">00:00:00:000</div>
-    </div>
 
     <div class="glass-ticker">
         <div class="ticker-content" id="dynamic-ticker">
@@ -141,93 +91,73 @@
     </div>
 
     <header>
-        <div class="brand-title">
-            <span class="m-text">MARDIN</span>
-            <span class="b-text">BRAZIL</span>
-        </div>
+        <div class="brand-title"><span class="m-text">MARDIN</span><span class="b-text">BRAZIL</span></div>
     </header>
 
     <div class="master-wrapper">
         
-        <div class="data-shuttle">
-            <div class="stat-item"><div class="stat-value">10.5K</div><div class="stat-label">KM DISTANCE</div></div>
-            <div class="stat-item"><div class="stat-value">24.2M</div><div class="stat-label">INTERACTIONS</div></div>
-            <div class="stat-item"><div class="stat-value">642</div><div class="stat-label">NODES</div></div>
-            <div class="stat-item"><div class="stat-value" style="color:var(--brazil)">98%</div><div class="stat-label">ASC 2026 RATE</div></div>
-        </div>
+        <div class="featured-mask" id="synergy-area">
+            <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1600" id="main-bg">
+            
+            <div class="curator-layer">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div style="background: var(--mardin); color: white; padding: 6px 15px; border-radius: 20px; font-size: 9px; font-weight: 900; letter-spacing: 2px;">ÖZEL SÖYLEŞİ</div>
+                </div>
 
-        <div class="featured-mask">
-            <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1600">
-            <div style="position: absolute; bottom: 40px; left: 40px; color: white;">
-                <p style="font-size: 10px; font-weight: 900; letter-spacing: 5px; color: var(--mardin);">LAT: 37.3129° N | ASC 2026</p>
-                <h2 style="font-family: 'Playfair Display'; font-size: clamp(2rem, 5vw, 3.5rem);">The Synergy</h2>
+                <div class="synergy-main-text">
+                    <p style="font-size: 10px; font-weight: 900; letter-spacing: 6px; color: var(--mardin);">ASC 2026 // CURATOR NOTES</p>
+                    <h2 style="font-family: 'Playfair Display'; font-size: clamp(2rem, 5vw, 4.5rem); color: white; margin-top: 15px;">"Taşın Hafızası ve Ormanın Kalbi"</h2>
+                    <button class="btn-read" onclick="openInterview()">SÖYLEŞİYİ OKU</button>
+                </div>
+            </div>
+
+            <div class="interview-overlay" id="interview-text">
+                <div class="close-interview" onclick="closeInterview()">[ KAPAT X ]</div>
+                <p style="color: var(--mardin); font-weight: 900; letter-spacing: 3px; font-size: 11px;">MARDİN & BRAZIL // SÖYLEŞİ 01</p>
+                <h1 style="font-family: 'Playfair Display'; font-size: clamp(2rem, 4vw, 5rem); margin: 30px 0;">İki Dünyanın Küratörleri: <br>Mardin & Brezilya</h1>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; font-family: 'Lora'; line-height: 1.8; font-size: 1.2rem;">
+                    <div>
+                        <strong>Dr. Elif Mardini:</strong> "Mardin'de bir taşı yonttuğunuzda sadece bir bina yapmazsınız, bir tarih anlatırsınız. Brezilya'daki meslektaşım Ricardo ile bu 'hafıza' kavramını konuştuğumuzda, onun Amazonlar için hissettiği koruma içgüdüsünün benim taş işçiliğine olan tutkumla ne kadar eşleştiğini gördük."
+                    </div>
+                    <div>
+                        <strong>Prof. Ricardo Silva:</strong> "Amazon'un biyo-çeşitliliği aslında dünyanın en büyük kütüphanesidir. Mezopotamya'nın mimari matematiği ile yağmur ormanlarının organik büyüme matematiği arasında kurduğumuz dijital köprü, ASC 2026 projesinin en heyecan verici adımı oldu."
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="mag-stack">
-            <div class="expand-card" onclick="toggleCard(this)">
-                <div class="close-btn">CLOSE [X]</div>
-                <span style="font-weight:900; font-size:10px; color:var(--mardin)">ARCHIVE // 01</span>
-                <h4 style="font-family: 'Playfair Display'; font-size: 1.6rem; margin-top: 15px;">Taşın Matematiği</h4>
-                
-                <div class="author-box">
-                    <img src="https://i.pravatar.cc/150?u=elif_m" alt="Dr. Elif Mardini">
-                    <span>DR. ELİF MARDİNİ</span>
-                </div>
-
-                <div class="detail-content">
-                    Mardin'in kadim mimarisindeki geometrik oranlar, doğanın evrensel diliyle konuşuyor. Bu makalede, taş işçiliğinin dijital koruma altına alınma süreçlerini inceliyoruz.
-                </div>
+            <div class="expand-card">
+                <span style="font-weight:900; font-size:10px; color:var(--mardin)">HABER DOSYASI</span>
+                <h4>İki Kıta Arasında Kurulan İlk Görsel Köprü</h4>
+                <p style="font-size: 11px; margin-top: 10px; opacity: 0.6;">ASC 2026 vizyonu ile Mezopotamya ve Amazon arasında anlık veri akışı başladı.</p>
             </div>
-            
-            <div class="expand-card" onclick="toggleCard(this)">
-                <div class="close-btn">CLOSE [X]</div>
-                <span style="font-weight:900; font-size:10px; color:var(--brazil)">ARCHIVE // 02</span>
-                <h4 style="font-family: 'Playfair Display'; font-size: 1.6rem; margin-top: 15px;">Amazon Dijital Raporu</h4>
-                
-                <div class="author-box">
-                    <img src="https://i.pravatar.cc/150?u=ricardo_s" alt="Prof. Ricardo Silva">
-                    <span>PROF. RICARDO SILVA</span>
-                </div>
-
-                <div class="detail-content">
-                    Amazon ormanlarından gelen anlık biyo-veriler, küresel ekosistemin nabzını tutuyor. ASC 2026 sistemiyle bu veriler artık şeffaf birer açık kaynak.
-                </div>
+            <div class="expand-card">
+                <span style="font-weight:900; font-size:10px; color:var(--brazil)">DENEME</span>
+                <h4>The Synergy: Mesafe Bir Rakamdır</h4>
+                <p style="font-size: 11px; margin-top: 10px; opacity: 0.6;">Mekansal kopukluğu teknoloji ve sanatla nasıl iyileştiriyoruz?</p>
             </div>
         </div>
 
         <div class="video-portal">
-            <div class="v-box"><iframe src="https://www.youtube.com/embed/3r9cOuTmVu4?autoplay=1&mute=1&loop=1&playlist=3r9cOuTmVu4&controls=0"></iframe></div>
-            <div class="v-box"><iframe src="https://www.youtube.com/embed/E6Ndg4pvLh8?autoplay=1&mute=1&loop=1&playlist=E6Ndg4pvLh8&controls=0"></iframe></div>
+            <div class="v-box">
+                <div class="v-label"><span></span> CANLI: MARDIN ARCHIVE FEED</div>
+                <iframe src="https://www.youtube.com/embed/3r9cOuTmVu4?autoplay=1&mute=1&loop=1&playlist=3r9cOuTmVu4&controls=0&showinfo=0"></iframe>
+            </div>
+            <div class="v-box">
+                <div class="v-label"><span></span> CANLI: AMAZON ECO-SYSTEM</div>
+                <iframe src="https://www.youtube.com/embed/E6Ndg4pvLh8?autoplay=1&mute=1&loop=1&playlist=E6Ndg4pvLh8&controls=0&showinfo=0"></iframe>
+            </div>
         </div>
     </div>
 
     <script>
-        function toggleCard(card) {
-            const isActive = card.classList.contains('active');
-            document.querySelectorAll('.expand-card').forEach(c => c.classList.remove('active'));
-            if (!isActive) {
-                card.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        function updateClocks() {
-            const now = new Date();
-            const ms = now.getMilliseconds().toString().padStart(3, '0');
-            const h = now.getHours().toString().padStart(2, '0');
-            const m = now.getMinutes().toString().padStart(2, '0');
-            const s = now.getSeconds().toString().padStart(2, '0');
-            const clockEl = document.getElementById('ms-clock');
-            if(clockEl) clockEl.innerText = `${h}:${m}:${s}:${ms}`;
-        }
-
+        function openInterview() { document.getElementById('interview-text').classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeInterview() { document.getElementById('interview-text').classList.remove('active'); document.body.style.overflow = 'auto'; }
+        
         window.onload = () => {
             const ticker = document.getElementById('dynamic-ticker');
-            ticker.innerText = (ticker.innerText + " ● ").repeat(8);
-            setInterval(updateClocks, 10);
+            ticker.innerText = (ticker.innerText + " ● ").repeat(10);
         };
     </script>
 </body>
