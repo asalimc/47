@@ -3,238 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina | Mardin & Brazil Culture Hub</title>
+    <title>Lumina | Kültür ve Miras Portalı</title>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { --bg: #f4ecd8; --card-bg: #fdfbf7; --text: #433422; --accent: #a67c52; }
         * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; line-height: 1.6; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; line-height: 1.6; transition: 0.8s ease; }
         
-        /* Şehir Modları */
+        /* Şehir Modu Renk Geçişleri */
         body.mardin-mode { --bg: #f4ecd8; }
         body.brazil-mode { --bg: #e8f4ec; }
 
-        nav { background: rgba(244, 236, 216, 0.95); backdrop-filter: blur(15px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(67, 52, 34, 0.1); }
-        .logo { font-family: 'Marcellus', serif; font-size: 1.5rem; letter-spacing: 4px; font-weight: bold; text-transform: uppercase; }
+        nav { background: rgba(244, 236, 216, 0.95); backdrop-filter: blur(15px); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .logo { font-family: 'Marcellus', serif; font-size: 1.8rem; letter-spacing: 4px; font-weight: bold; text-transform: uppercase; }
 
-        /* Yazarlar ve Günün Notu */
-        .authors-strip { background: var(--card-bg); padding: 20px 0; display: flex; gap: 25px; border-bottom: 1px solid rgba(0,0,0,0.05); overflow-x: auto; scrollbar-width: none; padding-left: 5%; }
-        .author-item { text-align: center; min-width: 80px; cursor: pointer; }
-        .author-item img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); margin: 0 auto; }
-        .author-item span { display: block; font-size: 0.6rem; font-weight: 700; margin-top: 6px; font-family: 'Marcellus'; text-transform: uppercase; }
+        /* Yazarlar ve Dinamik Banner */
+        .authors-strip { background: var(--card-bg); padding: 30px 0; display: flex; gap: 30px; border-bottom: 1px solid rgba(0,0,0,0.05); overflow-x: auto; scrollbar-width: none; padding-left: 5%; }
+        .author-item { text-align: center; min-width: 90px; cursor: pointer; transition: 0.3s; }
+        .author-item img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); margin: 0 auto; transition: 0.3s; }
+        .author-item:hover img { transform: scale(1.1); box-shadow: 0 10px 20px rgba(166,124,82,0.2); }
+        .author-item span { display: block; font-size: 0.7rem; font-weight: 700; margin-top: 10px; font-family: 'Marcellus'; text-transform: uppercase; }
         
-        .wisdom-banner { text-align: center; padding: 15px; font-style: italic; font-size: 0.85rem; opacity: 0.8; border-bottom: 1px solid rgba(0,0,0,0.03); letter-spacing: 0.5px; color: var(--accent); }
+        .wisdom-banner { text-align: center; padding: 20px; font-style: italic; font-size: 0.95rem; background: rgba(166, 124, 82, 0.05); border-bottom: 1px solid rgba(0,0,0,0.03); color: var(--accent); min-height: 60px; }
 
-        /* Kartlar */
-        .container-main { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
-        #news-feed { display: grid; grid-template-columns: 1fr; gap: 30px; transition: 0.5s; }
+        /* Ana İçerik */
+        .container-main { max-width: 1400px; margin: 30px auto; padding: 0 25px; }
+        #news-feed { display: grid; grid-template-columns: 1fr; gap: 35px; }
         @media (min-width: 768px) { #news-feed { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1150px) { #news-feed { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1200px) { #news-feed { grid-template-columns: repeat(3, 1fr); } }
 
-        .news-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid rgba(0,0,0,0.04); transition: 0.4s; cursor: pointer; position: relative; }
-        .news-img { width: 100%; height: 260px; object-fit: cover; }
+        .news-card { background: var(--card-bg); border-radius: 24px; overflow: hidden; border: 1px solid rgba(0,0,0,0.04); transition: 0.4s; cursor: pointer; position: relative; }
+        .news-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); }
+        .news-img { width: 100%; height: 280px; object-fit: cover; }
         .card-body { padding: 25px; }
-        .card-body h2 { font-family: 'Marcellus', serif; font-size: 1.3rem; margin-bottom: 10px; color: #1a1a1a; }
+        .card-body h2 { font-family: 'Marcellus', serif; font-size: 1.4rem; margin-bottom: 12px; color: #1a1a1a; line-height: 1.2; }
 
-        /* İnteraktif Sözlük */
-        .term { border-bottom: 1.5px dashed var(--accent); cursor: help; position: relative; font-weight: 500; }
-        .term:hover::after { content: attr(data-desc); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: white; padding: 10px; border-radius: 8px; font-size: 0.75rem; width: 200px; z-index: 100; font-style: normal; line-height: 1.4; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        /* Sözlük ve Metin Etkileşimi */
+        .term { border-bottom: 2px dashed var(--accent); cursor: help; color: var(--accent); font-weight: 600; }
+        
+        /* Ses Kontrol Ünitesi */
+        .audio-overlay-controls { position: sticky; top: 0; background: rgba(244, 236, 216, 0.98); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.1); z-index: 100; }
+        .btn-audio-action { background: #1a1a1a; color: white; padding: 12px 25px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 1px; transition: 0.3s; }
+        .btn-audio-action:hover { opacity: 0.8; transform: scale(1.05); }
+        .btn-stop { background: #fff; color: #1a1a1a; border: 2px solid #1a1a1a; margin-left: 10px; }
 
-        /* Ses Kontrol */
-        .overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
-        .audio-bar { position: sticky; top: 0; background: rgba(244, 236, 216, 0.98); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .btn-speak { background: #1a1a1a; color: white; padding: 12px 24px; border-radius: 50px; font-size: 11px; font-weight: 900; letter-spacing: 1px; }
-        .btn-stop { background: white; color: #1a1a1a; border: 2px solid #1a1a1a; margin-left: 10px; }
+        /* Admin Panel (Görüntüyle Uyumlu) */
+        #admin-panel { display: none; background: #0b0b0b; color: #fff; position: fixed; inset: 0; z-index: 11000; overflow-y: auto; padding: 50px; }
+        .cms-tab-btn { padding: 12px 24px; font-size: 0.75rem; font-weight: 700; border-radius: 8px; background: #1a1a1a; color: #777; transition: 0.3s; }
+        .cms-tab-btn.active { background: var(--accent); color: white; }
+        .cms-input { width: 100%; padding: 15px; background: #151515; border: 1px solid #333; border-radius: 12px; color: white; margin-bottom: 15px; }
 
-        /* Admin */
-        #admin-panel { display: none; background: #080808; color: #fff; position: fixed; inset: 0; z-index: 11000; overflow-y: auto; padding: 40px; }
-        .admin-input { width: 100%; padding: 15px; background: #151515; border: 1px solid #333; border-radius: 12px; color: white; margin-bottom: 15px; font-size: 0.9rem; }
-        .admin-tab-btn { padding: 10px 20px; font-size: 0.7rem; font-weight: 800; border-radius: 8px; background: #1a1a1a; color: #666; }
-        .admin-tab-btn.active { background: var(--accent); color: white; }
+        /* Arka Plan Ses Butonu */
+        .ambient-toggle { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 500; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body class="mardin-mode">
 
+<audio id="ambient-audio" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<div class="ambient-toggle" onclick="toggleAmbient()" title="Arka Plan Sesi">🎵</div>
+
 <nav>
     <div class="logo">LUMINA</div>
-    <div class="flex gap-6 items-center">
-        <button onclick="switchMode('mardin')" title="Mardin Modu" class="text-xl">☀️</button>
-        <button onclick="switchMode('brazil')" title="Brezilya Modu" class="text-xl">🌴</button>
+    <div class="flex gap-8 items-center">
+        <button onclick="changeMode('mardin')" title="Mardin" class="hover:scale-125 transition">☀️</button>
+        <button onclick="changeMode('brazil')" title="Brezilya" class="hover:scale-125 transition">🌴</button>
     </div>
 </nav>
 
-<div id="authors-list" class="authors-strip"></div>
-<div id="wisdom-bar" class="wisdom-banner">"Taşın sabrı, suyun ritmiyle buluşuyor."</div>
+<div id="authors-container" class="authors-strip"></div>
+<div id="dynamic-wisdom" class="wisdom-banner">"Yükleniyor..."</div>
 
 <div class="container-main">
     <main id="news-feed"></main>
 </div>
 
 <footer class="py-20 text-center">
-    <button onclick="toggleAdmin()" class="opacity-20 text-[9px] tracking-[5px] uppercase font-bold border-b border-black pb-1">Master Console</button>
+    <button onclick="openAdmin()" class="opacity-20 text-[10px] tracking-[6px] uppercase font-bold border-b border-black pb-2">Lumina Master Console</button>
 </footer>
 
-<div id="overlay" class="overlay">
-    <div class="audio-bar">
-        <div>
-            <button onclick="playAudio()" class="btn-speak">🔊 METNİ SESLENDİR</button>
-            <button onclick="stopAudio()" class="btn-speak btn-stop">🛑 DURDUR</button>
+<div id="article-overlay" class="fixed inset-0 bg-[#f4ecd8] z-[9999] hidden overflow-y-auto">
+    <div class="audio-overlay-controls">
+        <div class="flex items-center gap-2">
+            <button onclick="startSpeaking()" class="btn-audio-action">🔊 SESLİ OKU</button>
+            <button onclick="stopSpeaking()" class="btn-audio-action btn-stop">🛑 DURDUR</button>
         </div>
-        <button onclick="closeOverlay()" class="w-10 h-10 bg-black text-white rounded-full font-bold">✕</button>
+        <button onclick="closeArticle()" class="text-2xl font-bold p-4">✕</button>
     </div>
-    <div id="overlay-content" class="max-w-3xl mx-auto py-16 px-8"></div>
+    <div id="article-view" class="max-w-4xl mx-auto py-20 px-10"></div>
 </div>
 
 <div id="admin-panel">
     <div class="max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-6">
-            <h2 class="text-2xl font-serif text-accent uppercase">Lumina Core CMS v7.0</h2>
-            <button onclick="toggleAdmin()" class="bg-red-900 px-6 py-2 rounded-full text-[10px] font-bold">PANELİ KAPAT</button>
-        </div>
-        
-        <div class="flex gap-3 mb-10">
-            <button onclick="setTab('content')" id="tab-content" class="admin-tab-btn active">İÇERİK YÖNETİMİ</button>
-            <button onclick="setTab('glossary')" id="tab-glossary" class="admin-tab-btn">KÜLTÜR SÖZLÜĞÜ</button>
-            <button onclick="setTab('wisdom')" id="tab-wisdom" class="admin-tab-btn">GÜNÜN BİLGELİĞİ</button>
+        <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-8">
+            <h1 class="text-3xl font-serif text-accent tracking-tighter uppercase">Lumina Core CMS V8.0</h1>
+            <button onclick="closeAdmin()" class="bg-red-600 px-8 py-3 rounded-full text-xs font-black uppercase">Paneli Kapat</button>
         </div>
 
-        <div id="admin-body" class="grid grid-cols-1 lg:grid-cols-12 gap-10"></div>
+        <div class="flex gap-4 mb-12">
+            <button onclick="setTab('news')" id="tab-news" class="cms-tab-btn active">HABER YÖNETİMİ</button>
+            <button onclick="setTab('glossary')" id="tab-glossary" class="cms-tab-btn">KÜLTÜR SÖZLÜĞÜ</button>
+            <button onclick="setTab('wisdom')" id="tab-wisdom" class="cms-tab-btn">GÜNÜN BİLGELİĞİ</button>
+        </div>
+
+        <div id="admin-content-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            </div>
     </div>
 </div>
 
 <script>
-    const data = {
+    // Genişletilmiş ve Zengin Örnek Veri Seti
+    let db = {
         authors: [
-            {id:'y1', name:'Gabriel Garcia', bio:'Mitoloji Uzmanı', img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200'},
-            {id:'y2', name:'Leyla Mardini', bio:'Tarihçi', img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200'}
-        ],
-        glossary: [
-            {term: 'Abbara', desc: 'Mardin sokaklarında evlerin altından geçen kemerli geçitler.'},
-            {term: 'Mırra', desc: 'Mezopotamya\'ya özgü, acı ve yoğun kıvamlı geleneksel kahve.'},
-            {term: 'Capoeira', desc: 'Brezilyalı kölelerin geliştirdiği, dans ve müziği harmanlayan savunma sanatı.'}
+            {id:'y1', name:'Ahmet Çınarbaş', img:'https://randomuser.me/api/portraits/men/32.jpg'},
+            {id:'y2', name:'Selin Işık', img:'https://randomuser.me/api/portraits/women/44.jpg'},
+            {id:'y3', name:'Marco Polo', img:'https://randomuser.me/api/portraits/men/45.jpg'}
         ],
         wisdoms: [
+            "Gelenek, küllere tapmak değil, ateşi korumaktır.",
             "Mardin'de taşlar fısıldar, Rio'da dalgalar şarkı söyler.",
-            "Sabır taşın kalbinde, neşe sokağın ritmindedir.",
-            "İki coğrafya, tek bir insanlık ruhu."
+            "Sabır taşın kalbinde, neşe sokağın ritmindedir."
         ],
-        news: [
-            {id:'h1', cat:'mardin', aid:'y2', title:"Abbara: Taşın Altındaki Gizli Şehir", text:"Mardin sokaklarında yürürken bir Abbara ile karşılaştığınızda, zaman durur. Bu kemerli yapılar, şehri güneşin sıcağından koruyan birer zırh gibidir. Mırra kokusunun sindiği bu geçitler, bin yıllık bir komşuluk hukukunun mimari tezahürüdür.", img:'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800'},
-            {id:'h2', cat:'brazil', aid:'y1', title:"Rio'nun Ruhu: Capoeira ve Özgürlük", text:"Sahilde yankılanan Berimbau sesi, Capoeira ritminin başladığının habercisidir. Bu sadece bir dövüş sanatı değil, Brezilya halkının özgürlük arayışının dansa dönüşmüş halidir. Her hareket bir hikaye, her ritim bir direniştir.", img:'https://images.unsplash.com/photo-1596707323136-22442436f903?w=800'}
+        glossary: [
+            {term:'Abbara', desc:'Mardin mimarisinde evlerin altından geçen, sokakları birbirine bağlayan tünelvari geçitler.'},
+            {term:'Mırra', desc:'Mezopotamya kültürüne has, çok kez demlenen sert ve acı kahve ritüeli.'},
+            {term:'Samba', desc:'Brezilya kökenli, Afrika ritimleriyle harmanlanmış dünyaca ünlü dans ve müzik türü.'}
+        ],
+        articles: [
+            {id:1, cat:'mardin', aid:'y1', title:'Eski Mardin’in Gece Gizemi', text:'Mezopotamya ovasına hakim o muazzam kaleden aşağı bakıldığında, Mardin bir kehribar kolye gibi parlar. Abbaraların içinden süzülen rüzgar, taşların bin yıllık hikayesini kulağınıza fısıldar. Burada Mırra içmek sadece kahve tüketmek değil, bir saygı duruşudur.', img:'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800'},
+            {id:2, cat:'brazil', aid:'y3', title:'Amazon Ormanlarının Ritmi', text:'Brezilya sadece Samba demek değildir. Amazon’un derinliklerinde her ağacın ve her nehrin kendi müziği vardır. Doğanın bu ham sesi, modern dünyanın gürültüsünü bastıracak kadar güçlü ve kutsaldır.', img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800'}
         ]
     };
 
-    let activeTab = 'content';
     const synth = window.speechSynthesis;
+    let activeTab = 'news';
 
-    function renderPortal() {
+    function init() {
+        renderUI();
+        clocks();
+        setInterval(clocks, 1000);
+    }
+
+    function renderUI() {
         // Yazarlar
-        document.getElementById('authors-list').innerHTML = data.authors.map(a => `<div class="author-item"><img src="${a.img}"><span>${a.name}</span></div>`).join('');
-        
-        // Günün Notu (Rastgele)
-        document.getElementById('wisdom-bar').innerText = data.wisdoms[Math.floor(Math.random()*data.wisdoms.length)];
+        document.getElementById('authors-container').innerHTML = db.authors.map(a => `
+            <div class="author-item"><img src="${a.img}"><span>${a.name}</span></div>
+        `).join('');
 
-        // Haberler
-        document.getElementById('news-feed').innerHTML = data.news.map(h => `
-            <article class="news-card" onclick="openArticle('${h.id}')">
-                <img src="${h.img}" class="news-img">
+        // Bilgelik Notu (Rastgele)
+        document.getElementById('dynamic-wisdom').innerText = db.wisdoms[Math.floor(Math.random()*db.wisdoms.length)];
+
+        // Haber Beslemesi
+        document.getElementById('news-feed').innerHTML = db.articles.map(art => `
+            <div class="news-card" onclick="openArticle(${art.id})">
+                <img src="${art.img}" class="news-img">
                 <div class="card-body">
-                    <small class="text-accent font-bold uppercase text-[9px] tracking-widest">${h.cat === 'mardin' ? 'Mardin' : 'Brezilya'}</small>
-                    <h2 class="font-serif mt-2">${h.title}</h2>
-                    <p class="line-clamp-2 text-sm opacity-60 mt-2">${h.text}</p>
+                    <small class="text-accent font-bold uppercase text-[10px] tracking-widest">${art.cat}</small>
+                    <h2 class="font-serif mt-2">${art.title}</h2>
+                    <p class="line-clamp-2 text-sm opacity-60">${art.text}</p>
                 </div>
-            </article>
+            </div>
         `).join('');
     }
 
     function openArticle(id) {
-        const h = data.news.find(x => x.id === id);
-        const a = data.authors.find(x => x.id === h.aid);
-        document.getElementById('overlay').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-
-        // Sözlük Entegrasyonu (Metin içindeki kelimeleri bulup linkleme)
-        let processedText = h.text;
-        data.glossary.forEach(g => {
-            const regex = new RegExp(g.term, "g");
-            processedText = processedText.replace(regex, `<span class="term" data-desc="${g.desc}">${g.term}</span>`);
+        const art = db.articles.find(x => x.id === id);
+        const author = db.authors.find(x => x.id === art.aid);
+        const overlay = document.getElementById('article-overlay');
+        
+        let processedText = art.text;
+        db.glossary.forEach(g => {
+            const reg = new RegExp(g.term, 'g');
+            processedText = processedText.replace(reg, `<span class="term" title="${g.desc}">${g.term}</span>`);
         });
 
-        document.getElementById('overlay-content').innerHTML = `
-            <h1 class="text-5xl font-serif mb-8 leading-tight">${h.title}</h1>
-            <div class="flex items-center gap-4 mb-10 pb-6 border-b border-black/5">
-                <img src="${a.img}" class="w-12 h-12 rounded-full border border-accent">
-                <div class="text-xs uppercase font-bold tracking-widest">${a.name} • ${a.bio}</div>
+        document.getElementById('article-view').innerHTML = `
+            <h1 class="text-5xl font-serif mb-8 leading-tight">${art.title}</h1>
+            <div class="flex items-center gap-4 mb-10 pb-6 border-b border-black/10">
+                <img src="${author.img}" class="w-14 h-14 rounded-full border-2 border-accent">
+                <span class="font-bold uppercase tracking-widest text-xs">${author.name}</span>
             </div>
-            <img src="${h.img}" class="w-full rounded-3xl mb-12 shadow-2xl">
-            <div id="read-target" class="text-xl leading-relaxed text-justify font-light">${processedText}</div>
+            <img src="${art.img}" class="w-full rounded-3xl mb-12 shadow-2xl">
+            <div id="read-this" class="text-2xl font-light leading-relaxed text-justify">${processedText}</div>
         `;
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
     }
 
-    function renderAdmin() {
-        const body = document.getElementById('admin-body');
-        if(activeTab === 'content') {
-            body.innerHTML = `
-                <div class="lg:col-span-5">
-                    <input type="text" id="adm-h-t" placeholder="Başlık" class="admin-input">
-                    <textarea id="adm-h-x" placeholder="Haber metni..." class="admin-input h-48"></textarea>
-                    <select id="adm-h-c" class="admin-input"><option value="mardin">Mardin</option><option value="brazil">Brezilya</option></select>
-                    <button onclick="saveH()" class="w-full bg-accent py-4 rounded-xl font-bold">YAYINLA</button>
+    // CMS Modülleri
+    function renderCMS() {
+        const grid = document.getElementById('admin-content-grid');
+        if(activeTab === 'news') {
+            grid.innerHTML = `
+                <div class="lg:col-span-5 bg-[#111] p-8 rounded-3xl border border-white/5">
+                    <h3 class="mb-6 text-accent font-bold uppercase text-xs">Yeni Makale Ekle</h3>
+                    <input type="text" id="in-title" placeholder="Başlık" class="cms-input">
+                    <textarea id="in-text" placeholder="İçerik Metni (Uzun)" class="cms-input h-48"></textarea>
+                    <select id="in-cat" class="cms-input"><option value="mardin">Mardin</option><option value="brazil">Brezilya</option></select>
+                    <button onclick="addNews()" class="w-full bg-accent py-4 rounded-xl font-black uppercase text-xs">Yayınla</button>
                 </div>
-                <div class="lg:col-span-7 space-y-2">${data.news.map(n => `<div class="p-4 bg-[#111] rounded-xl text-xs flex justify-between"><span>${n.title}</span><span class="text-accent">${n.cat.toUpperCase()}</span></div>`).join('')}</div>`;
-        } else if(activeTab === 'glossary') {
-            body.innerHTML = `
-                <div class="lg:col-span-5">
-                    <input type="text" id="adm-g-t" placeholder="Terim (Örn: Abbara)" class="admin-input">
-                    <input type="text" id="adm-g-d" placeholder="Açıklama" class="admin-input">
-                    <button onclick="saveG()" class="w-full bg-accent py-4 rounded-xl font-bold">SÖZLÜĞE EKLE</button>
+                <div class="lg:col-span-7 space-y-3">
+                    ${db.articles.map(a => `<div class="p-4 bg-[#181818] rounded-xl flex justify-between items-center text-xs"><span>${a.title}</span><button class="text-red-500 font-bold">SİL</button></div>`).join('')}
                 </div>
-                <div class="lg:col-span-7 space-y-2">${data.glossary.map(g => `<div class="p-4 bg-[#111] rounded-xl text-xs"><strong>${g.term}:</strong> ${g.desc}</div>`).join('')}</div>`;
+            `;
         } else if(activeTab === 'wisdom') {
-            body.innerHTML = `
+            grid.innerHTML = `
                 <div class="lg:col-span-12">
-                    <input type="text" id="adm-w" placeholder="Yeni Bilgelik Notu..." class="admin-input">
-                    <button onclick="saveW()" class="bg-accent px-10 py-4 rounded-xl font-bold mb-6">EKLE</button>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">${data.wisdoms.map(w => `<div class="p-4 bg-[#111] rounded-xl text-xs italic">${w}</div>`).join('')}</div>
-                </div>`;
+                    <input type="text" id="in-wisdom" placeholder="Yeni Bilgelik Notu..." class="cms-input">
+                    <button onclick="addWisdom()" class="bg-accent px-10 py-4 rounded-xl font-bold mb-10">EKLE</button>
+                    <div class="grid grid-cols-2 gap-4">${db.wisdoms.map(w => `<div class="p-5 bg-[#111] rounded-2xl italic text-sm opacity-80 border border-white/5">${w}</div>`).join('')}</div>
+                </div>
+            `;
+        } else if(activeTab === 'glossary') {
+            grid.innerHTML = `
+                <div class="lg:col-span-12">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <input type="text" id="in-term" placeholder="Terim" class="cms-input">
+                        <input type="text" id="in-desc" placeholder="Açıklama" class="cms-input">
+                    </div>
+                    <button onclick="addGlossary()" class="bg-accent px-10 py-4 rounded-xl font-bold mb-10">SÖZLÜĞE EKLE</button>
+                    <div class="space-y-2">${db.glossary.map(g => `<div class="p-4 bg-[#111] rounded-xl text-xs"><strong>${g.term}:</strong> ${g.desc}</div>`).join('')}</div>
+                </div>
+            `;
         }
     }
 
-    function switchMode(m) {
-        document.body.className = m + '-mode';
-        const feed = document.getElementById('news-feed');
-        feed.style.opacity = '0';
-        setTimeout(() => {
-            data.news = m === 'mardin' ? data.news.sort((a,b) => a.cat === 'mardin' ? -1 : 1) : data.news.sort((a,b) => a.cat === 'brazil' ? -1 : 1);
-            renderPortal();
-            feed.style.opacity = '1';
-        }, 500);
+    // Fonksiyonlar
+    function startSpeaking() { synth.cancel(); const u = new SpeechSynthesisUtterance(document.getElementById('read-this').innerText); u.lang='tr-TR'; synth.speak(u); }
+    function stopSpeaking() { synth.cancel(); }
+    function closeArticle() { stopSpeaking(); document.getElementById('article-overlay').classList.add('hidden'); document.body.style.overflow='auto'; }
+    function toggleAmbient() { const a = document.getElementById('ambient-audio'); a.paused ? a.play() : a.pause(); }
+    function changeMode(m) { document.body.className = m + '-mode'; renderUI(); }
+    function openAdmin() { document.getElementById('admin-panel').style.display='block'; renderCMS(); }
+    function closeAdmin() { document.getElementById('admin-panel').style.display='none'; }
+    function setTab(t) { 
+        activeTab = t; 
+        document.querySelectorAll('.cms-tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-'+t).classList.add('active');
+        renderCMS(); 
     }
 
-    function saveH() {
-        const t = document.getElementById('adm-h-t').value, x = document.getElementById('adm-h-x').value, c = document.getElementById('adm-h-c').value;
-        data.news.unshift({id:'h'+Date.now(), title:t, text:x, cat:c, aid:'y1', img:'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800'});
-        renderAdmin(); renderPortal();
+    function addNews() {
+        const t = document.getElementById('in-title').value;
+        const x = document.getElementById('in-text').value;
+        const c = document.getElementById('in-cat').value;
+        db.articles.unshift({id: Date.now(), title: t, text: x, cat: c, aid: 'y1', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800'});
+        renderUI(); renderCMS();
     }
 
-    function saveG() {
-        const t = document.getElementById('adm-g-t').value, d = document.getElementById('adm-g-d').value;
-        data.glossary.push({term:t, desc:d}); renderAdmin();
+    function addWisdom() {
+        db.wisdoms.push(document.getElementById('in-wisdom').value);
+        renderUI(); renderCMS();
     }
 
-    function saveW() {
-        const w = document.getElementById('adm-w').value;
-        data.wisdoms.push(w); renderAdmin(); renderPortal();
+    function addGlossary() {
+        db.glossary.push({term: document.getElementById('in-term').value, desc: document.getElementById('in-desc').value});
+        renderCMS();
     }
 
-    function playAudio() { synth.cancel(); const u = new SpeechSynthesisUtterance(document.getElementById('read-target').innerText); u.lang='tr-TR'; synth.speak(u); }
-    function stopAudio() { synth.cancel(); }
-    function toggleAdmin() { const p = document.getElementById('admin-panel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; if(p.style.display==='block') renderAdmin(); }
-    function setTab(t) { activeTab = t; document.querySelectorAll('.admin-tab-btn').forEach(b=>b.classList.remove('active')); document.getElementById('tab-'+t).classList.add('active'); renderAdmin(); }
-    function closeOverlay() { stopAudio(); document.getElementById('overlay').style.display='none'; document.body.style.overflow='auto'; }
+    function clocks() { /* Saat fonksiyonları buraya gelebilir */ }
 
-    window.onload = renderPortal;
+    init();
 </script>
 </body>
 </html>
