@@ -3,187 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDIN & RIO | Luxury Portal 2026</title>
+    <title>MARDIN & RIO | The Masterpiece 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --mardin: #d4a373;
-            --rio: #0077b6;
-            --dark: #121212;
-            --white: #ffffff;
-            --bg: #f9f7f2;
-        }
+        :root { --mardin: #d4a373; --rio: #0077b6; --dark: #121212; --bg: #f9f7f2; }
+        
+        /* Tasarımı bozmayan özel imleç */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        #cursor { position: fixed; width: 15px; height: 15px; border: 1px solid var(--dark); border-radius: 50%; pointer-events: none; z-index: 10000; transition: transform 0.15s ease-out; background: rgba(0,0,0,0.05); }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { background-color: var(--bg); color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        body { background-color: var(--bg); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-        /* Zarif İlerleme Çubuğu */
-        #scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(to right, var(--mardin), var(--rio)); z-index: 2000; width: 0%; }
-
-        /* --- 1. HEADER & NAV (Glassmorphism Dokunuşu) --- */
-        header { background: white; padding: 80px 20px; text-align: center; border-bottom: 5px solid var(--mardin); }
-        header h1 { font-family: 'Playfair Display', serif; font-size: 6rem; letter-spacing: -4px; transition: 0.5s; cursor: default; }
+        /* HEADER - Tipografi Zenginleştirme */
+        header { background: white; padding: 120px 20px; text-align: center; border-bottom: 5px solid var(--mardin); position: relative; }
+        header h1 { font-family: 'Playfair Display'; font-size: 7rem; letter-spacing: -6px; transition: 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
         header h1:hover { letter-spacing: -2px; }
         header h1 span { color: var(--rio); }
-        
-        nav { background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 20px; }
-        nav ul { display: flex; justify-content: center; list-style: none; gap: 40px; }
-        nav a { font-weight: 700; font-size: 11px; text-transform: uppercase; color: var(--dark); text-decoration: none; letter-spacing: 2px; transition: 0.3s; }
-        nav a:hover { color: var(--mardin); transform: translateY(-2px); }
 
-        .wrapper { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
+        /* NAV - Glassmorphism */
+        nav { background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 25px; }
+        nav ul { display: flex; justify-content: center; list-style: none; gap: 50px; }
+        nav a { font-weight: 900; font-size: 10px; text-transform: uppercase; color: var(--dark); text-decoration: none; letter-spacing: 3px; transition: 0.4s; }
+        nav a:hover { color: var(--rio); transform: scale(1.1); }
 
-        /* --- 2. KARTLAR (Hover Derinliği) --- */
-        .gastro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
-        .flip-card { height: 500px; perspective: 1500px; }
+        .wrapper { max-width: 1300px; margin: 80px auto; padding: 0 40px; }
+
+        /* HABER KARTLARI - Hover Derinliği */
+        .gastro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 50px; }
+        .flip-card { height: 550px; perspective: 2500px; }
         .flip-inner { position: relative; width: 100%; height: 100%; transition: 1s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
         .flip-card:hover .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
-        
-        .flip-front { background-size: cover; background-position: center; display: flex; align-items: flex-end; transition: 0.5s; }
-        .flip-card:hover .flip-front { transform: scale(1.05); }
-        .front-overlay { background: linear-gradient(transparent, rgba(0,0,0,0.9)); width: 100%; padding: 40px; color: white; }
-        .flip-back { color: white; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 50px; text-align: center; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 40px; overflow: hidden; }
+        .flip-front { background-size: cover; background-position: center; display: flex; align-items: flex-end; }
+        .front-overlay { background: linear-gradient(transparent, rgba(0,0,0,0.85)); width: 100%; padding: 50px; color: white; }
+        .flip-back { color: white; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px; text-align: center; }
 
-        /* --- 3. VIDEO KONTEYNER (Sinematik) --- */
-        .video-container { position: relative; width: 100%; height: 500px; border-radius: 30px; overflow: hidden; margin: 80px 0; background: #000; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
-        .video-container iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:0; filter: grayscale(20%) contrast(1.1); }
+        /* VIDEO - Tam Sinematik (Fixed & Working) */
+        .video-container { position: relative; width: 100%; height: 600px; border-radius: 40px; overflow: hidden; margin: 100px 0; background: #000; box-shadow: 0 50px 100px rgba(0,0,0,0.3); }
+        .video-container iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:0; transform: scale(1.1); filter: contrast(1.1) brightness(0.9); }
 
-        /* --- 4. DETAY PANELİ (Maksimum Çekicilik) --- */
-        .detail-overlay { position: fixed; inset: 0; z-index: 10001; display: none; flex-direction: column; overflow-y: auto; color: white; animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .detail-container { max-width: 800px; margin: 80px auto; padding: 40px 20px; }
-        .close-detail { position: fixed; top: 40px; right: 50px; font-size: 4rem; cursor: pointer; color: white; transition: 0.3s; }
-        .close-detail:hover { transform: rotate(90deg); opacity: 0.5; }
+        /* MODAL / DETAY */
+        .detail-overlay { position: fixed; inset: 0; z-index: 10001; display: none; flex-direction: column; overflow-y: auto; color: white; padding: 20px; transition: 0.5s; }
+        .detail-container { max-width: 900px; margin: 100px auto; }
+        .close-detail { position: fixed; top: 50px; right: 60px; font-size: 5rem; cursor: pointer; color: white; line-height: 1; }
 
-        .stat-val { font-size: 3rem; font-weight: 900; color: var(--rio); display: block; letter-spacing: -2px; }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        @media (max-width: 768px) { header h1 { font-size: 3.5rem; } }
+        /* Kaydırma Çubuğu Zenginleştirme */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--mardin), var(--rio)); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="scroll-progress"></div>
+    <div id="cursor"></div>
 
     <header>
-        <div style="font-size: 11px; font-weight: 900; letter-spacing: 3px; margin-bottom: 20px; opacity: 0.5;">MARCH 2026 • GLOBAL EDITION</div>
+        <p style="font-size: 12px; font-weight: 900; letter-spacing: 5px; opacity: 0.4; margin-bottom: 30px;">THE SOUL OF TWO CITIES • 2026</p>
         <h1>MARDIN<span>RIO</span></h1>
-        <p style="letter-spacing: 8px; font-weight: 300; font-size: 14px; color: var(--mardin); margin-top: 10px;">ANCIENT STONES • MODERN RHYTHMS</p>
     </header>
 
     <nav>
         <ul>
-            <li><a href="#explore">JOURNEY</a></li>
-            <li><a href="#news">CHRONICLES</a></li>
-            <li><a href="#agenda">CALENDAR</a></li>
-            <li><a href="#editor">CURATOR</a></li>
+            <li><a href="#explore">CHRONICLES</a></li>
+            <li><a href="#news">COLLECTION</a></li>
+            <li><a href="#editor">VISION</a></li>
         </ul>
     </nav>
 
     <div class="wrapper">
         <div class="gastro-grid">
-            <div class="flip-card reveal" data-type="news" data-color="var(--mardin)"
-                 data-title="The Soul of Ancient Stone" 
-                 data-img="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800&q=80"
-                 data-info="Mardin'in kadim dokusu, 2026'da modern mimarinin ilham kaynağı oluyor. Taşın sessiz fısıltısı, Rio sokaklarında bir yankı buluyor.">
+            <div class="flip-card" data-title="Golden Hour in Mesopotamia" data-color="var(--mardin)" data-img="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200" data-info="Mardin'in kadim taşları, günün son ışıklarıyla altına dönüşürken Rio'nun gece lambalarıyla birleşiyor.">
                 <div class="flip-inner">
-                    <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800&q=80');">
-                        <div class="front-overlay">
-                            <p style="font-size: 10px; font-weight: bold; letter-spacing: 2px;">HISTORY • ARCHITECTURE</p>
-                            <h4 style="font-family:'Playfair Display'; font-size: 2rem;">The Soul of Ancient Stone</h4>
-                        </div>
+                    <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800');">
+                        <div class="front-overlay"><h4 style="font-family:'Playfair Display'; font-size:2.5rem;">The Golden Legacy</h4></div>
                     </div>
                     <div class="flip-back" style="background: var(--mardin);">
-                        <h2 style="font-family:'Playfair Display';">MESOPOTAMIA</h2>
-                        <p style="font-style: italic; margin-top: 15px;">Where time stands still in golden light.</p>
-                        <span style="margin-top:30px; font-weight: 900; border-bottom: 2px solid white; padding-bottom: 5px;">READ STORY</span>
+                        <h2 style="font-family:'Playfair Display'; font-size:3rem;">MARDİN</h2>
+                        <p style="font-size: 1.2rem; font-style: italic; opacity: 0.8; margin-top: 20px;">Stone whispering to the sky.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="flip-card reveal" data-type="news" data-color="var(--rio)"
-                 data-title="Amazon: The Digital Pulse" 
-                 data-img="https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800&q=80"
-                 data-info="Rio de Janeiro, Amazon'un kalbini yapay zeka ile koruyor. 'Alma Verde' projesi, dünyanın en büyük teknolojik doğa koruma hareketi haline geldi.">
+            <div class="flip-card" data-title="Tropical Modernism" data-color="var(--rio)" data-img="https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=1200" data-info="Rio de Janeiro'nun tropikal dokusu, modern teknolojiyle harmanlanarak 2026'nın sürdürülebilir vizyonunu oluşturuyor.">
                 <div class="flip-inner">
-                    <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800&q=80');">
-                        <div class="front-overlay">
-                            <p style="font-size: 10px; font-weight: bold; letter-spacing: 2px;">FUTURE • ECOLOGY</p>
-                            <h4 style="font-family:'Playfair Display'; font-size: 2rem;">Amazon: The Digital Pulse</h4>
-                        </div>
+                    <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800');">
+                        <div class="front-overlay"><h4 style="font-family:'Playfair Display'; font-size:2.5rem;">The Tropical Rhythm</h4></div>
                     </div>
                     <div class="flip-back" style="background: var(--rio);">
-                        <h2 style="font-family:'Playfair Display';">ALMA VERDE</h2>
-                        <p style="font-style: italic; margin-top: 15px;">The heartbeat of the earth, protected.</p>
-                        <span style="margin-top:30px; font-weight: 900; border-bottom: 2px solid white; padding-bottom: 5px;">VER DETALHES</span>
+                        <h2 style="font-family:'Playfair Display'; font-size:3rem;">RIO</h2>
+                        <p style="font-size: 1.2rem; font-style: italic; opacity: 0.8; margin-top: 20px;">Ocean breathing through the city.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="explore" class="video-container reveal">
-            <iframe src="https://www.youtube.com/embed/S_8qMvT2MvA?autoplay=1&mute=1&loop=1&playlist=S_8qMvT2MvA&controls=0" allow="autoplay; encrypted-media"></iframe>
-        </div>
-
-        <div class="reveal" style="text-align: center; margin-bottom: 100px;">
-            <p style="font-family:'Playfair Display'; font-size: 2.5rem; line-height: 1.4;">"İki dünya, tek bir ruh. Mardin'in sessizliği,<br>Rio'nun coşkusuyla buluşuyor."</p>
+        <div id="explore" class="video-container">
+            <iframe src="https://www.youtube.com/embed/S_8qMvT2MvA?autoplay=1&mute=1&loop=1&playlist=S_8qMvT2MvA&controls=0&showinfo=0&rel=0" allow="autoplay; encrypted-media"></iframe>
         </div>
     </div>
 
     <div id="detailOverlay" class="detail-overlay">
         <span class="close-detail" onclick="closeDetail()">&times;</span>
         <div class="detail-container">
-            <img id="modalImage" style="width:100%; border-radius:30px; margin-bottom:50px; box-shadow: 0 40px 80px rgba(0,0,0,0.4);" src="" alt="">
-            <div id="detailBody"></div>
+            <img id="modalImg" style="width:100%; border-radius:40px; margin-bottom:50px; box-shadow: 0 50px 100px rgba(0,0,0,0.5);" src="">
+            <div id="modalText" style="font-family:'Lora';"></div>
         </div>
     </div>
 
     <script>
-        // Scroll İlerleme Çubuğu
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("scroll-progress").style.width = scrolled + "%";
-            
-            // Reveal Animasyonu Tetikleyici
-            let reveals = document.querySelectorAll(".reveal");
-            for (let i = 0; i < reveals.length; i++) {
-                let windowHeight = window.innerHeight;
-                let elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) { reveals[i].classList.add("active"); }
-            }
-        };
+        // İMLEÇ TAKİBİ
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
-        function openDetail(title, content, img, color) {
-            const overlay = document.getElementById('detailOverlay');
-            overlay.style.backgroundColor = color;
-            document.getElementById('modalImage').src = img;
-            document.getElementById('detailBody').innerHTML = `
-                <h2 style="font-family:'Playfair Display'; font-size:4.5rem; margin-bottom:30px; line-height:1.1;">${title}</h2>
-                <p style="font-family:'Lora'; font-size:1.6rem; line-height:1.9; opacity:0.9;">${content}</p>
-            `;
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
+        // KART ETKİLEŞİMİ VE DETAY AÇMA
+        document.querySelectorAll('.flip-card').forEach(card => {
+            card.addEventListener('mouseenter', () => cursor.style.transform = 'scale(5)');
+            card.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+            
+            card.addEventListener('click', () => {
+                const overlay = document.getElementById('detailOverlay');
+                overlay.style.backgroundColor = card.dataset.color;
+                document.getElementById('modalImg').src = card.dataset.img;
+                document.getElementById('modalText').innerHTML = `
+                    <h2 style="font-family:'Playfair Display'; font-size:5rem; line-height:1.1; margin-bottom:30px;">${card.dataset.title}</h2>
+                    <p style="font-size:1.8rem; line-height:1.8; opacity:0.9;">${card.dataset.info}</p>
+                `;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
         function closeDetail() {
             document.getElementById('detailOverlay').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-
-        document.querySelectorAll('[data-type]').forEach(item => {
-            item.addEventListener('click', () => {
-                openDetail(item.dataset.title, item.dataset.info, item.dataset.img, item.dataset.color);
-            });
-        });
-
-        // Sayfa yüklendiğinde ilk elemanları göster
-        window.dispatchEvent(new Event('scroll'));
     </script>
 </body>
 </html>
