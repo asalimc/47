@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina Obsidian v13 | Cultural OS</title>
+    <title>Lumina Obsidian v14 | Professional CMS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,165 +12,143 @@
     <style>
         :root { --bg: #F9F9F7; --accent: #C5A059; --text: #1A1A1A; --dark: #0A0A0A; }
         * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; margin: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; transition: 0.5s; }
         .serif { font-family: 'Cormorant Garamond', serif; }
         
-        /* Modal & Overlays */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100000; overflow-y: auto; }
+        /* Modal Engine */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100000; overflow-y: auto; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Bento Grid */
-        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 20px 5%; }
-        .bento-item { border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid rgba(0,0,0,0.05); transition: 0.6s cubic-bezier(0.2, 1, 0.2, 1); height: 500px; }
-        .bento-item:hover { transform: scale(0.98); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; padding: 40px 5%; }
+        .bento-item { border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid rgba(0,0,0,0.05); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); height: 550px; }
+        .bento-item:hover { transform: scale(0.99); box-shadow: 0 40px 80px rgba(0,0,0,0.06); }
 
-        /* Admin Dashboard (Control Tower) */
-        #admin-panel { display: none; position: fixed; inset: 0; background: var(--dark); color: white; z-index: 200000; display: flex; }
-        .admin-sidebar { width: 280px; border-right: 1px solid #1F1F1F; padding: 40px; }
-        .admin-main { flex: 1; padding: 60px; overflow-y: auto; }
-        .admin-card { background: #111; border: 1px solid #222; border-radius: 24px; padding: 24px; }
-        .input-lux { background: #181818; border: 1px solid #333; border-radius: 12px; padding: 12px; width: 100%; color: white; outline: none; transition: 0.3s; }
-        .input-lux:focus { border-color: var(--accent); }
+        /* Admin Dashboard */
+        #admin-panel { display: none; position: fixed; inset: 0; background: #070707; color: white; z-index: 200000; flex-direction: row; }
+        .admin-sidebar { width: 300px; border-right: 1px solid #1A1A1A; padding: 50px 40px; background: #050505; }
+        .admin-main { flex: 1; padding: 60px 10%; overflow-y: auto; }
+        .admin-card { background: #0F0F0F; border: 1px solid #1F1F1F; border-radius: 30px; padding: 30px; }
+        .input-lux { background: #151515; border: 1px solid #222; border-radius: 15px; padding: 15px; width: 100%; color: white; outline: none; transition: 0.3s; }
+        .input-lux:focus { border-color: var(--accent); background: #1A1A1A; }
         
-        /* Karaoke Reader */
         .highlight { color: var(--accent); font-weight: 700; transition: 0.2s; }
-
-        /* Atlas */
-        .atlas-container { background: var(--dark); padding: 60px 5%; border-radius: 60px; margin: 40px 5%; position: relative; height: 400px; overflow: hidden; }
-        .world-map { opacity: 0.1; width: 100%; height: 100%; object-fit: contain; filter: invert(1); }
-        .pulse-point { position: absolute; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 20px var(--accent); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
-
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="no-scrollbar">
 
-<nav class="sticky top-0 z-[5000] px-10 py-5 flex justify-between items-center bg-white/80 backdrop-blur-xl border-b border-black/5">
-    <div class="flex items-center gap-12">
-        <h1 class="serif text-4xl font-light uppercase tracking-tighter">Lumina</h1>
-        <div id="ui-global-clock" class="hidden lg:flex gap-6 text-[10px] font-black uppercase tracking-[3px] opacity-40">
+<nav class="sticky top-0 z-[5000] px-12 py-6 flex justify-between items-center bg-white/80 backdrop-blur-2xl border-b border-black/5">
+    <div class="flex items-center gap-16">
+        <h1 class="serif text-4xl font-light uppercase tracking-tighter cursor-pointer" onclick="location.reload()">Lumina</h1>
+        <div id="ui-global-info" class="hidden xl:flex gap-8 text-[10px] font-black uppercase tracking-[4px] opacity-30">
             </div>
     </div>
-    <div class="flex items-center gap-6">
-        <button onclick="toggleAdmin('block')" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition">
-            <i data-lucide="command" class="w-4 h-4"></i>
-        </button>
-    </div>
+    <button onclick="toggleAdmin('flex')" class="group flex items-center gap-3 bg-black text-white px-6 py-3 rounded-full hover:bg-accent transition transform active:scale-95">
+        <span class="text-[10px] font-black uppercase tracking-widest">Master Console</span>
+        <i data-lucide="layout-grid" class="w-4 h-4"></i>
+    </button>
 </nav>
 
-<header class="px-[5%] py-16 flex flex-col md:flex-row justify-between items-end border-b border-black/5">
-    <div class="max-w-4xl">
-        <p class="text-[11px] font-black uppercase tracking-[8px] text-accent mb-4">Master Console v13</p>
-        <h2 class="serif text-7xl md:text-9xl font-light leading-none">Mardin <br><i>Sao Paulo</i></h2>
+<header class="px-[5%] py-24 flex flex-col md:flex-row justify-between items-end border-b border-black/5">
+    <div class="max-w-5xl">
+        <p class="text-[12px] font-black uppercase tracking-[10px] text-accent mb-8">Cultural Intelligence v14</p>
+        <h2 class="serif text-8xl md:text-[10rem] font-light leading-[0.85] tracking-tighter">Mardin & <br><i>Sao Paulo</i></h2>
     </div>
-    <div class="text-right">
-        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-black/5">
-            <p class="text-[9px] font-black opacity-20 uppercase tracking-widest">Calculated Distance</p>
-            <p id="ui-distance" class="serif text-5xl font-bold">10.604 KM</p>
+    <div class="text-right mt-12 md:mt-0">
+        <div class="bg-white p-10 rounded-[50px] shadow-sm border border-black/5 inline-block">
+            <p class="text-[10px] font-black opacity-20 uppercase tracking-[4px] mb-2">Distance Engine</p>
+            <p id="ui-distance" class="serif text-5xl font-bold tracking-tighter">10.604 KM</p>
         </div>
     </div>
 </header>
 
-<section class="atlas-container">
-    <div class="pulse-point" style="top: 42%; left: 58%;"></div> <div class="pulse-point" style="top: 75%; left: 32%;"></div> <svg class="absolute inset-0 w-full h-full pointer-events-none" style="stroke: var(--accent); stroke-width: 1; stroke-dasharray: 5; opacity: 0.3;">
-        <path d="M 720 160 Q 550 250 400 300" fill="transparent"/>
-    </svg>
-    <div class="absolute bottom-10 left-10 text-white/20 serif italic text-xl">Transcontinental Bridge: Middle East — South America</div>
-</section>
-
 <section id="ui-feed" class="bento-grid"></section>
 
 <div id="article-modal" class="modal-overlay">
-    <div class="p-8 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-md z-10">
-        <button onclick="closeModals()" class="font-black text-[10px] uppercase opacity-40"><i data-lucide="arrow-left"></i> Geri Dön</button>
-        <button id="tts-btn" onclick="toggleKaraoke()" class="bg-black text-white px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-[3px]">Sesli Deneyim</button>
+    <div class="p-10 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-xl z-10">
+        <button onclick="closeModals()" class="flex items-center gap-3 font-black text-[10px] uppercase opacity-40 hover:opacity-100 transition"><i data-lucide="chevron-left"></i> Kapat</button>
+        <button id="tts-btn" onclick="toggleKaraoke()" class="bg-black text-white px-12 py-4 rounded-full font-black text-[10px] uppercase tracking-[4px] hover:bg-accent transition">Sesli Deneyim</button>
     </div>
-    <div id="article-content" class="max-w-4xl mx-auto py-20 px-10"></div>
+    <div id="article-content" class="max-w-4xl mx-auto py-24 px-10"></div>
 </div>
 
-<div id="admin-panel" style="display:none">
+<div id="admin-panel">
     <div class="admin-sidebar">
-        <h2 class="serif text-3xl italic text-accent mb-12">Lumina OS</h2>
-        <nav class="space-y-6">
-            <button onclick="switchTab('dash')" class="flex items-center gap-4 text-white/40 hover:text-white transition uppercase text-[10px] font-black tracking-widest"><i data-lucide="bar-chart-3"></i> Dashboard</button>
-            <button onclick="switchTab('news')" class="flex items-center gap-4 text-white/40 hover:text-white transition uppercase text-[10px] font-black tracking-widest"><i data-lucide="file-text"></i> İçerik Editörü</button>
-            <button onclick="switchTab('media')" class="flex items-center gap-4 text-white/40 hover:text-white transition uppercase text-[10px] font-black tracking-widest"><i data-lucide="image"></i> Medya Kütüphanesi</button>
+        <h2 class="serif text-4xl italic text-accent mb-16 tracking-tighter">Lumina Core</h2>
+        <nav class="space-y-8">
+            <button onclick="switchTab('news')" class="flex items-center gap-5 text-white/40 hover:text-white transition uppercase text-[11px] font-black tracking-[3px]"><i data-lucide="edit-3"></i> İçerik Yaz</button>
+            <button onclick="switchTab('global')" class="flex items-center gap-5 text-white/40 hover:text-white transition uppercase text-[11px] font-black tracking-[3px]"><i data-lucide="globe"></i> Global Ayarlar</button>
+            <button onclick="switchTab('list')" class="flex items-center gap-5 text-white/40 hover:text-white transition uppercase text-[11px] font-black tracking-[3px]"><i data-lucide="database"></i> Arşiv Yönetimi</button>
         </nav>
-        <button onclick="toggleAdmin('none')" class="mt-24 w-full py-4 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest">Kapat</button>
+        <button onclick="toggleAdmin('none')" class="mt-32 w-full py-5 bg-red-950/20 text-red-500 border border-red-900/30 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-red-900/40 transition">Sistemi Kapat</button>
     </div>
     
     <div class="admin-main">
-        <div id="tab-dash" class="admin-tab">
-            <div class="grid grid-cols-3 gap-6 mb-12">
-                <div class="admin-card">
-                    <p class="text-[9px] uppercase opacity-40 mb-2">Kültürel IQ</p>
-                    <p class="text-4xl serif text-accent">%98.4</p>
-                </div>
-                <div class="admin-card">
-                    <p class="text-[9px] uppercase opacity-40 mb-2">Aktif Yazarlar</p>
-                    <p class="text-4xl serif">12</p>
-                </div>
-                <div class="admin-card">
-                    <p class="text-[9px] uppercase opacity-40 mb-2">API Durumu</p>
-                    <p class="text-4xl serif text-green-500">Online</p>
-                </div>
+        <div id="tab-news" class="admin-tab">
+            <div class="flex justify-between items-center mb-12">
+                <h3 class="serif text-5xl italic">Yeni Bir Hikaye Anlat</h3>
+                <span class="text-[10px] opacity-40 uppercase tracking-[4px]">Status: Writing</span>
             </div>
-            <div class="admin-card">
-                <h3 class="text-xs font-black uppercase tracking-widest mb-6">Hızlı Global Ayarlar</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <input id="in-glob-mardin" placeholder="Mardin Derece" class="input-lux">
-                    <input id="in-glob-sp" placeholder="Sao Paulo Derece" class="input-lux">
-                    <button onclick="saveQuickGlobal()" class="col-span-2 bg-accent p-4 rounded-xl text-black font-black uppercase text-[10px]">Verileri Güncelle</button>
+            <div class="grid grid-cols-12 gap-10">
+                <div class="col-span-8 space-y-6">
+                    <input id="in-news-title" placeholder="Makale Başlığı..." class="input-lux text-3xl serif py-8">
+                    <textarea id="in-news-text" placeholder="Kültürel derinliğe dalın..." class="input-lux h-80 text-lg leading-relaxed"></textarea>
+                </div>
+                <div class="col-span-4 space-y-6">
+                    <div class="admin-card">
+                        <label class="text-[10px] font-black uppercase opacity-40 mb-6 block">Kapak Görseli</label>
+                        <input type="file" id="in-news-file" class="hidden" onchange="handleFile(this, 'news-preview')">
+                        <label for="in-news-file" class="cursor-pointer block border-2 border-dashed border-white/5 p-12 text-center rounded-3xl hover:border-accent transition hover:bg-white/5 group">
+                            <i data-lucide="image-plus" class="mx-auto mb-4 opacity-20 group-hover:opacity-100 transition"></i>
+                            <span class="text-[9px] font-black uppercase opacity-40">Görsel Seç</span>
+                        </label>
+                        <img id="news-preview" class="mt-6 w-full h-48 object-cover rounded-3xl hidden shadow-2xl">
+                        <button onclick="addNews()" class="mt-8 w-full bg-accent text-black font-black py-5 rounded-2xl text-[11px] uppercase tracking-[4px] hover:scale-[1.02] transition">Dünyaya Duyur</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="tab-news" class="admin-tab hidden">
-            <div class="grid grid-cols-12 gap-8">
-                <div class="col-span-8 space-y-4">
-                    <input id="in-news-title" placeholder="Makale Başlığı" class="input-lux text-2xl serif py-6">
-                    <textarea id="in-news-text" placeholder="Hikayeyi anlat..." class="input-lux h-64"></textarea>
+        <div id="tab-global" class="admin-tab hidden">
+            <h3 class="serif text-5xl italic mb-12">Global Parametreler</h3>
+            <div class="grid grid-cols-2 gap-8">
+                <div class="admin-card">
+                    <label class="text-[10px] font-black opacity-30 uppercase mb-4 block">Mardin İklimi</label>
+                    <input id="in-glob-mardin" class="input-lux" placeholder="Örn: 24°C Güneşli">
                 </div>
-                <div class="col-span-4 space-y-4">
-                    <div class="admin-card">
-                        <label class="text-[9px] uppercase opacity-40 block mb-4">Görsel Yükle (Yerel)</label>
-                        <input type="file" id="in-news-file" class="hidden" onchange="handleFile(this, 'news-preview')">
-                        <label for="in-news-file" class="cursor-pointer block border-2 border-dashed border-white/10 p-10 text-center rounded-xl hover:border-accent">
-                            <i data-lucide="upload" class="mx-auto mb-2"></i>
-                            <span class="text-[9px] font-black uppercase">Dosya Seç</span>
-                        </label>
-                        <img id="news-preview" class="mt-4 w-full h-32 object-cover rounded-xl hidden">
-                        <button onclick="addNews()" class="mt-6 w-full bg-accent text-black font-black p-4 rounded-xl text-[10px] uppercase">Yayınla</button>
-                    </div>
+                <div class="admin-card">
+                    <label class="text-[10px] font-black opacity-30 uppercase mb-4 block">Sao Paulo İklimi</label>
+                    <input id="in-glob-sp" class="input-lux" placeholder="Örn: 21°C Yağmurlu">
                 </div>
+                <button onclick="saveGlobal()" class="col-span-2 bg-white text-black font-black py-6 rounded-2xl text-[11px] uppercase tracking-[5px]">Senkronize Et</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // --- NUCLEUS DATABASE ---
-    let DB = JSON.parse(localStorage.getItem('LUMINA_V13_DB')) || {
-        global: { mardin: '26°C', sp: '22°C', dist: '10.604 KM' },
+    // --- DATABASE ---
+    let DB = JSON.parse(localStorage.getItem('LUMINA_V14_DB')) || {
+        global: { mardin: '24°C', sp: '21°C', dist: '10.604 KM' },
         news: [
-            { id: 1, title: 'Mezopotamya\'dan Sao Paulo\'ya: Taşın ve Betonun Şiiri', text: 'Mardin\'in bin yıllık taş evleri, Sao Paulo\'nun brütalist gökdelenleriyle aynı dili konuşur: Dayanıklılık ve hafıza. Bir yanda sessizliğin hakim olduğu dar abbaralar, diğer yanda dünyanın en kalabalık bulvarları. Bu iki şehir, insanlığın yerleşik hayattaki en uç ve en estetik duraklarıdır.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200', type: 'Mimari' }
-        ],
-        media: []
+            { id: 1, title: 'Kasımiye\'den Avenida Paulista\'ya', text: 'Mardin\'in taş sessizliği ile Sao Paulo\'nun beton gürültüsü arasındaki o görünmez bağ, insanlığın mimari tutkusunda gizlidir. Biri gökyüzüne yatay, diğeri dikey uzanır.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200', type: 'Mimari' }
+        ]
     };
 
-    function sync() { localStorage.setItem('LUMINA_V13_DB', JSON.stringify(DB)); render(); }
+    function sync() { localStorage.setItem('LUMINA_V14_DB', JSON.stringify(DB)); render(); }
 
-    // --- AUTOMATION ENGINE ---
-    function updateClocks() {
-        const mardinTime = new Date().toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
-        const spTime = new Date().toLocaleTimeString('tr-TR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
-        document.getElementById('ui-global-clock').innerHTML = `
-            <span>Mardin ${mardinTime} • ${DB.global.mardin}</span>
-            <span class="opacity-20">|</span>
-            <span>Sao Paulo ${spTime} • ${DB.global.sp}</span>
+    // --- AUTOMATION ---
+    function updateHeaderInfo() {
+        const mTime = new Date().toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+        const sTime = new Date().toLocaleTimeString('tr-TR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
+        document.getElementById('ui-global-info').innerHTML = `
+            <span>Mardin ${mTime} • ${DB.global.mardin}</span>
+            <span class="opacity-20">/</span>
+            <span>Sao Paulo ${sTime} • ${DB.global.sp}</span>
         `;
     }
-    setInterval(updateClocks, 1000);
+    setInterval(updateHeaderInfo, 1000);
 
     // --- RENDER ---
     function render() {
@@ -179,38 +157,36 @@
         
         const feed = document.getElementById('ui-feed');
         feed.innerHTML = DB.news.map((n, idx) => `
-            <div class="bento-item ${idx % 3 === 0 ? 'col-span-8' : 'col-span-4'}" onclick="openArticle(${n.id})">
+            <div class="bento-item ${idx % 3 === 0 ? 'col-span-12 lg:col-span-8' : 'col-span-12 lg:col-span-4'}" onclick="openArticle(${n.id})">
                 <img src="${n.img}" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                <div class="absolute bottom-0 p-10 text-white">
-                    <span class="text-[9px] font-black uppercase tracking-[5px] text-accent mb-4 block">${n.type}</span>
-                    <h3 class="serif text-5xl leading-tight">${n.title}</h3>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-0 p-12 text-white">
+                    <span class="text-[10px] font-black uppercase tracking-[6px] text-accent mb-6 block">${n.type}</span>
+                    <h3 class="serif text-5xl md:text-6xl leading-[0.9] tracking-tighter">${n.title}</h3>
                 </div>
             </div>
         `).join('');
     }
 
-    // --- FILE HANDLING (BASE64) ---
-    let lastUploadedImg = "";
+    // --- FILE HANDLING ---
+    let tempImg = "";
     function handleFile(input, previewId) {
-        const file = input.files[0];
         const reader = new FileReader();
         reader.onload = (e) => {
-            lastUploadedImg = e.target.result;
-            const preview = document.getElementById(previewId);
-            preview.src = e.target.result;
-            preview.classList.remove('hidden');
+            tempImg = e.target.result;
+            const p = document.getElementById(previewId);
+            p.src = e.target.result; p.classList.remove('hidden');
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(input.files[0]);
     }
 
-    // --- KARAOKE READER ---
+    // --- MODAL & KARAOKE ---
     function openArticle(id) {
         const n = DB.news.find(x => x.id === id);
         document.getElementById('article-content').innerHTML = `
-            <h1 class="serif text-8xl leading-none mb-12 text-center">${n.title}</h1>
-            <div id="karaoke-text" class="serif text-4xl leading-relaxed text-justify opacity-80">
-                ${n.text.split(' ').map(word => `<span>${word}</span>`).join(' ')}
+            <h1 class="serif text-7xl md:text-9xl text-center leading-[0.85] tracking-tighter mb-20">${n.title}</h1>
+            <div id="karaoke-text" class="serif text-4xl leading-relaxed text-justify opacity-80 first-letter:text-9xl first-letter:text-accent">
+                ${n.text.split(' ').map(w => `<span>${w}</span>`).join(' ')}
             </div>
         `;
         document.getElementById('article-modal').style.display = 'block';
@@ -220,34 +196,27 @@
         const spans = document.querySelectorAll('#karaoke-text span');
         const utter = new SpeechSynthesisUtterance(document.getElementById('karaoke-text').innerText);
         utter.lang = 'tr-TR'; utter.rate = 0.9;
-
-        let wordIndex = 0;
-        utter.onboundary = (event) => {
-            if (event.name === 'word') {
+        let i = 0;
+        utter.onboundary = (e) => {
+            if (e.name === 'word') {
                 spans.forEach(s => s.classList.remove('highlight'));
-                if(spans[wordIndex]) spans[wordIndex].classList.add('highlight');
-                wordIndex++;
+                if(spans[i]) spans[i].classList.add('highlight');
+                i++;
             }
         };
         window.speechSynthesis.speak(utter);
     }
 
-    // --- ADMIN ACTIONS ---
-    function toggleAdmin(val) { document.getElementById('admin-panel').style.display = val; }
+    // --- ADMIN ---
+    function toggleAdmin(s) { document.getElementById('admin-panel').style.display = s; }
     function switchTab(t) { document.querySelectorAll('.admin-tab').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); }
     
     function addNews() {
-        const n = {
-            id: Date.now(),
-            title: document.getElementById('in-news-title').value,
-            text: document.getElementById('in-news-text').value,
-            img: lastUploadedImg || 'https://via.placeholder.com/1200',
-            type: 'Kültür'
-        };
+        const n = { id: Date.now(), title: document.getElementById('in-news-title').value, text: document.getElementById('in-news-text').value, img: tempImg || 'https://via.placeholder.com/1200', type: 'Kültürel Analiz' };
         DB.news.unshift(n); sync(); toggleAdmin('none');
     }
 
-    function saveQuickGlobal() {
+    function saveGlobal() {
         DB.global.mardin = document.getElementById('in-glob-mardin').value;
         DB.global.sp = document.getElementById('in-glob-sp').value;
         sync();
@@ -255,7 +224,7 @@
 
     function closeModals() { window.speechSynthesis.cancel(); document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none'); }
 
-    window.onload = () => { render(); updateClocks(); };
+    window.onload = () => { render(); updateHeaderInfo(); };
 </script>
 </body>
 </html>
