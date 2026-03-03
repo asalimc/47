@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDIN & BRAZIL | ASC // SYSTEM 2026</title>
+    <title>MARDIN & BRAZIL | ASC 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;700;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --mardin: #D4A373; /* Mardin Kalker Sarısı */
+            --mardin: #D4A373; /* Mardin Taş Rengi */
             --brazil: #064E3B; /* Derin Orman Yeşili */
             --dark: #050505; 
             --white: #F5F5F7;
-            --dynamic-weight: 900;
         }
 
         /* --- 4. GRID BACKGROUND --- */
         body { 
             background-color: #fafaf9;
             background-image: 
-                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+                linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
             background-size: 40px 40px;
             font-family: 'Montserrat', sans-serif; 
             color: var(--dark); overflow-x: hidden;
@@ -27,94 +26,97 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
 
-        /* --- TICKER (YAVAŞ & ŞEFFAF) --- */
+        /* --- TICKER (YAVAŞLATILMIŞ) --- */
         .glass-ticker {
             position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
             width: 95%; max-width: 1200px; padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px);
             border: 1px solid rgba(0,0,0,0.05); border-radius: 50px; z-index: 5000;
             overflow: hidden; display: flex;
         }
         .ticker-content { 
             display: flex; white-space: nowrap; font-size: 10px; font-weight: 900; letter-spacing: 2px;
-            animation: ticker-move 80s linear infinite;
+            animation: ticker-move 85s linear infinite;
         }
-        .glass-ticker:hover .ticker-content { animation-play-state: paused; }
         @keyframes ticker-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- 2. ASC // SYSTEM SIDE IDENTITY --- */
+        /* --- ASC 2026 SIDE IDENTITY --- */
         .side-identity {
             position: fixed; right: 2%; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; align-items: center; gap: 15px;
-            z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 1000;
         }
         .side-text {
-            writing-mode: vertical-rl; font-size: 9px; font-weight: 900;
-            letter-spacing: 5px; color: var(--dark); opacity: 0.4;
+            writing-mode: vertical-rl; font-size: 10px; font-weight: 900;
+            letter-spacing: 5px; color: var(--dark); opacity: 0.3;
         }
-        .side-line { width: 1px; height: clamp(50px, 10vh, 150px); background: var(--dark); opacity: 0.2; }
+        .side-line { width: 1px; height: clamp(60px, 12vh, 140px); background: var(--dark); opacity: 0.1; }
         .side-timestamp { font-size: 9px; font-family: monospace; font-weight: 900; color: var(--brazil); }
 
-        /* --- HEADER & BRANDING --- */
+        /* --- HEADER & YAN YANA BAŞLIK --- */
         header { padding: clamp(120px, 18vh, 200px) 5% 40px; }
         .brand-title { 
             font-family: 'Playfair Display'; font-size: clamp(2.5rem, 9.5vw, 9rem); 
-            line-height: 0.8; letter-spacing: -0.05em; display: flex; flex-wrap: nowrap; gap: 20px;
+            line-height: 0.8; letter-spacing: -0.05em; display: flex; gap: 20px;
         }
         .brand-title .m-text { color: var(--mardin); }
-        .brand-title .b-text { color: var(--brazil); }
+        .brand-title .b-text { color: var(--brazil); font-weight: 900; }
 
-        /* --- FLOATING DATA GLASS (Siyah Bant Yerine) --- */
-        .data-grid-shuttle {
+        /* --- DATA PANEL (Siyah Bant Yerine Şeffaf) --- */
+        .data-shuttle {
             grid-column: span 12; display: flex; justify-content: space-between;
-            padding: 20px 40px; background: rgba(255,255,255,0.4); 
-            border: 1px solid rgba(0,0,0,0.03); border-radius: 30px; margin-bottom: 20px;
+            padding: 25px 40px; background: rgba(255,255,255,0.4); 
+            border: 1px solid rgba(0,0,0,0.02); border-radius: 35px; margin-bottom: 25px;
         }
         .stat-item { text-align: center; }
-        .stat-value { font-family: 'Playfair Display'; font-size: 1.5rem; font-weight: 900; color: var(--dark); }
-        .stat-label { font-size: 8px; font-weight: 900; letter-spacing: 2px; opacity: 0.5; margin-top: 5px; }
+        .stat-value { font-family: 'Playfair Display'; font-size: 1.6rem; font-weight: 900; color: var(--dark); }
+        .stat-label { font-size: 8px; font-weight: 900; letter-spacing: 2px; opacity: 0.4; margin-top: 5px; }
 
-        /* --- MASTER WRAPPER --- */
+        /* --- MASTER WRAPPER (RESPONSIVE GRID) --- */
         .master-wrapper { padding: 0 5% 80px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; }
 
         .featured-mask { 
             grid-column: span 8; height: 75vh; border-radius: 50px; overflow: hidden; position: relative;
-            background: #eee;
         }
         @media (max-width: 1024px) { 
             .featured-mask { grid-column: span 12; height: 50vh; }
             .side-identity { display: none; }
-            .data-grid-shuttle { flex-wrap: wrap; gap: 20px; justify-content: center; }
+            .data-shuttle { flex-wrap: wrap; gap: 20px; justify-content: center; }
         }
-        .featured-mask img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s ease; }
+        .featured-mask img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* ARTICLES / MAG STACK */
+        /* --- MAG STACK (YAZARLAR DAHİL) --- */
         .mag-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; }
         @media (max-width: 1024px) { .mag-stack { grid-column: span 12; } }
 
         .expand-card {
-            background: white; padding: 35px; border-radius: 35px; border: 1px solid rgba(0,0,0,0.05);
+            background: white; padding: 35px; border-radius: 40px; border: 1px solid rgba(0,0,0,0.03);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
         }
         .expand-card.active {
             position: fixed; inset: 4%; z-index: 9000; background: var(--white);
-            padding: clamp(30px, 8vw, 80px); border-radius: 40px; overflow-y: auto;
+            padding: clamp(40px, 6vw, 80px); border-radius: 50px; overflow-y: auto;
         }
-        .expand-card .detail-content { display: none; margin-top: 30px; font-family: 'Lora'; font-size: 1.2rem; line-height: 1.8; color: #333; }
-        .expand-card.active .detail-content { display: block; animation: fadeInUp 0.8s ease; }
+
+        /* Yazar İmzası */
+        .author-box {
+            display: flex; align-items: center; gap: 12px; margin-top: 25px;
+            font-size: 10px; font-weight: 900; color: var(--dark); opacity: 0.5;
+        }
+        .author-box img { width: 22px; height: 22px; border-radius: 50%; background: #eee; }
+
+        .expand-card .detail-content { display: none; margin-top: 30px; font-family: 'Lora'; font-size: 1.2rem; line-height: 1.8; }
+        .expand-card.active .detail-content { display: block; animation: fadeInUp 0.7s ease; }
         
         .close-btn { 
             position: absolute; top: 30px; right: 30px; display: none; 
-            background: var(--dark); color: white; padding: 12px 24px; border-radius: 50px; 
-            font-size: 10px; font-weight: 900; z-index: 9001;
+            background: var(--dark); color: white; padding: 10px 20px; border-radius: 50px; font-size: 10px;
         }
         .expand-card.active .close-btn { display: block; }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* VIDEO PORTAL */
-        .video-portal { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px; }
+        /* --- VIDEO PORTAL --- */
+        .video-portal { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px; }
         @media (max-width: 768px) { .video-portal { grid-template-columns: 1fr; } }
         .v-box { height: 45vh; border-radius: 40px; overflow: hidden; background: #000; }
         .v-box iframe { width: 100%; height: 100%; border: none; opacity: 0.8; }
@@ -123,14 +125,14 @@
 <body>
 
     <div class="side-identity">
-        <div class="side-text">ASC // SYSTEM 2026</div>
+        <div class="side-text">ASC 2026</div>
         <div class="side-line"></div>
-        <div class="side-timestamp" id="ms-clock">19:04:00:000</div>
+        <div class="side-timestamp" id="ms-clock">00:00:00:000</div>
     </div>
 
     <div class="glass-ticker">
         <div class="ticker-content" id="dynamic-ticker">
-            CORE_SYNC_ACTIVE ● MARDIN_NODES: 40.73°E ● BRAZIL_NODES: 15.79°S ● DATA_BRIDGE_STABLE ● 
+            ASC 2026 SYNERGY STATUS: 98% ● MARDIN DATA BRIDGE ACTIVE ● BRAZIL ECO-MONITORING STABLE ● 
         </div>
     </div>
 
@@ -143,73 +145,59 @@
 
     <div class="master-wrapper">
         
-        <div class="data-grid-shuttle">
-            <div class="stat-item">
-                <div class="stat-value">10.5K</div>
-                <div class="stat-label">KM DISTANCE</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">24.2M</div>
-                <div class="stat-label">DATA INTERACTIONS</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">642</div>
-                <div class="stat-label">ACTIVE NODES</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" style="color: var(--brazil);">98%</div>
-                <div class="stat-label">SYNERGY RATE</div>
-            </div>
+        <div class="data-shuttle">
+            <div class="stat-item"><div class="stat-value">10.5K</div><div class="stat-label">KM DISTANCE</div></div>
+            <div class="stat-item"><div class="stat-value">24.2M</div><div class="stat-label">INTERACTIONS</div></div>
+            <div class="stat-item"><div class="stat-value">642</div><div class="stat-label">NODES</div></div>
+            <div class="stat-item"><div class="stat-value" style="color:var(--brazil)">98%</div><div class="stat-label">ASC 2026 RATE</div></div>
         </div>
 
         <div class="featured-mask">
             <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1600">
-            <div style="position: absolute; bottom: 40px; left: 40px; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
-                <p style="font-size: 10px; font-weight: 900; letter-spacing: 5px; color: var(--mardin);">LAT: 37.3129° N | LONG: 40.7350° E</p>
-                <h2 style="font-family: 'Playfair Display'; font-size: 3.5rem;">The Synergy</h2>
+            <div style="position: absolute; bottom: 40px; left: 40px; color: white;">
+                <p style="font-size: 10px; font-weight: 900; letter-spacing: 5px; color: var(--mardin);">LAT: 37.3129° N | ASC 2026</p>
+                <h2 style="font-family: 'Playfair Display'; font-size: clamp(2rem, 5vw, 3.5rem);">The Synergy</h2>
             </div>
         </div>
 
         <div class="mag-stack">
             <div class="expand-card" onclick="toggleCard(this)">
                 <div class="close-btn">CLOSE [X]</div>
-                <span style="font-weight:900; font-size:10px; color:var(--mardin)">ARCHIVE_01 // MARDIN</span>
-                <h4 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-top: 15px;">Taşın ve Yaprağın Matematiği</h4>
+                <span style="font-weight:900; font-size:10px; color:var(--mardin)">ARCHIVE // 01</span>
+                <h4 style="font-family: 'Playfair Display'; font-size: 1.6rem; margin-top: 15px;">Taşın Matematiği</h4>
+                <div class="author-box">
+                    <img src="https://i.pravatar.cc/100?u=elif" alt="">
+                    <span>DR. ELİF MARDİNİ</span>
+                </div>
                 <div class="detail-content">
-                    <h3>Mimari ve Fraktal Benzerlikler</h3><br>
-                    Mardin'in binlerce yıllık taş oymacılığındaki geometrik desenler, Amazon ormanlarındaki yaprak damarlarının fraktal yapısıyla şaşırtıcı bir benzerlik gösteriyor. ASC // SYSTEM 2026, bu iki form arasındaki matematiksel korelasyonu %94 oranında eşleştirdi. Bu makale, doğanın ve insanın farklı kıtalarda aynı tasarım dilini nasıl kullandığını inceliyor.
+                    Mardin'in kadim mimarisindeki geometrik oranlar, doğanın evrensel diliyle konuşuyor. Bu makalede, taş işçiliğinin dijital koruma altına alınma süreçlerini inceliyoruz.
                 </div>
             </div>
             
             <div class="expand-card" onclick="toggleCard(this)">
                 <div class="close-btn">CLOSE [X]</div>
-                <span style="font-weight:900; font-size:10px; color:var(--brazil)">ARCHIVE_02 // BRAZIL</span>
-                <h4 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-top: 15px;">Amazon Dijital Raporu</h4>
+                <span style="font-weight:900; font-size:10px; color:var(--brazil)">ARCHIVE // 02</span>
+                <h4 style="font-family: 'Playfair Display'; font-size: 1.6rem; margin-top: 15px;">Amazon Dijital Raporu</h4>
+                <div class="author-box">
+                    <img src="https://i.pravatar.cc/100?u=ricardo" alt="">
+                    <span>PROF. RICARDO SILVA</span>
+                </div>
                 <div class="detail-content">
-                    <h3>Biyo-Veri Koruma Protokolü</h3><br>
-                    Brezilya havzasından gelen anlık sensör verileri, orman ekosisteminin dijital ikizini (Digital Twin) oluşturuyor. Mardin'in kültürel mirasını koruma yöntemleri ile Amazon'un biyo-çeşitliliğini koruma stratejileri artık tek bir global veri köprüsünde birleşiyor. 2026 vizyonu, mirası sadece fiziksel değil, verisel olarak da sonsuz kılmayı hedefliyor.
+                    Amazon ormanlarından gelen anlık biyo-veriler, küresel ekosistemin nabzını tutuyor. ASC 2026 sistemiyle bu veriler artık şeffaf birer açık kaynak.
                 </div>
             </div>
         </div>
 
         <div class="video-portal">
-            <div class="v-box">
-                <iframe src="https://www.youtube.com/embed/3r9cOuTmVu4?autoplay=1&mute=1&loop=1&playlist=3r9cOuTmVu4&controls=0"></iframe>
-            </div>
-            <div class="v-box">
-                <iframe src="https://www.youtube.com/embed/E6Ndg4pvLh8?autoplay=1&mute=1&loop=1&playlist=E6Ndg4pvLh8&controls=0"></iframe>
-            </div>
+            <div class="v-box"><iframe src="https://www.youtube.com/embed/3r9cOuTmVu4?autoplay=1&mute=1&loop=1&playlist=3r9cOuTmVu4&controls=0"></iframe></div>
+            <div class="v-box"><iframe src="https://www.youtube.com/embed/E6Ndg4pvLh8?autoplay=1&mute=1&loop=1&playlist=E6Ndg4pvLh8&controls=0"></iframe></div>
         </div>
     </div>
 
     <script>
-        // Expanding Cards Logic
         function toggleCard(card) {
             const isActive = card.classList.contains('active');
-            document.querySelectorAll('.expand-card').forEach(c => {
-                c.classList.remove('active');
-            });
-            
+            document.querySelectorAll('.expand-card').forEach(c => c.classList.remove('active'));
             if (!isActive) {
                 card.classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -218,7 +206,6 @@
             }
         }
 
-        // Millisecond Precision Clock
         function updateClocks() {
             const now = new Date();
             const ms = now.getMilliseconds().toString().padStart(3, '0');
@@ -231,7 +218,7 @@
 
         window.onload = () => {
             const ticker = document.getElementById('dynamic-ticker');
-            ticker.innerText = (ticker.innerText + " ● ").repeat(10);
+            ticker.innerText = (ticker.innerText + " ● ").repeat(8);
             setInterval(updateClocks, 10);
         };
     </script>
