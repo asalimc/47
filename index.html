@@ -3,208 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDINRIO | Global Portal</title>
+    <title>MARDIN | BRAZIL - Intelligent Interface 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;700;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --mardin: #d4a373; --rio: #0077b6; --dark: #0f0f0f; 
+            --mardin: #d4a373; --brazil: #009b3a; --ocean: #002776; --dark: #050505; 
             --white: #ffffff; --accent: #ff003c;
+            --dynamic-weight: 900;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #fdfdfb; font-family: 'Montserrat', sans-serif; 
-            color: var(--dark); overflow-x: hidden;
-        }
+        /* --- THEMES --- */
+        body.theme-mardin { --theme-accent: var(--mardin); --bg: #fdfaf5; }
+        body.theme-brazil { --theme-accent: var(--brazil); --bg: #f5fdf7; }
 
-        /* --- RESPONSIVE TICKER --- */
-        .ticker-container {
-            background: var(--dark); color: white; padding: 12px 0;
-            font-size: 11px; font-weight: 900; letter-spacing: 2px;
-            position: sticky; top: 0; z-index: 5000;
-            overflow: hidden; white-space: nowrap;
-        }
-        .ticker-wrapper {
-            display: inline-block; animation: slide 25s linear infinite;
-        }
-        .ticker-wrapper:hover { animation-play-state: paused; }
-        @keyframes slide {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* --- HEADER & NAVIGATION --- */
-        header { 
-            padding: 60px 5%; text-align: center; background: white;
-            border-bottom: 5px solid var(--mardin);
-        }
-        .brand { font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 8rem); letter-spacing: -5px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         
-        nav {
-            background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
-            padding: 20px; position: sticky; top: 40px; z-index: 4000;
-            border-bottom: 1px solid #eee;
-        }
-        nav ul { display: flex; justify-content: center; gap: 30px; list-style: none; flex-wrap: wrap; }
-        nav a { text-decoration: none; color: var(--dark); font-weight: 900; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
-
-        /* --- RESPONSIVE GRID --- */
-        .main-container {
-            max-width: 1400px; margin: 40px auto; padding: 0 20px;
-            display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px;
+        body { 
+            background: var(--bg, #fafaf9); font-family: 'Montserrat', sans-serif; 
+            color: var(--dark); overflow-x: hidden; transition: background 1s ease;
         }
 
-        .hero-section {
-            grid-column: span 12; position: relative; height: 70vh;
-            border-radius: 30px; overflow: hidden;
+        /* --- 2. GLASSMORPHISM TICKER (Responsive) --- */
+        .glass-ticker {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+            width: 95%; max-width: 1200px; padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px; z-index: 5000;
+            display: flex; overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
         }
-        @media (min-width: 1024px) { .hero-section { grid-column: span 8; } }
+        .ticker-content { 
+            display: flex; white-space: nowrap; font-size: clamp(8px, 1.5vw, 10px); 
+            font-weight: 900; letter-spacing: 2px; color: var(--dark);
+            animation: ticker-move 30s linear infinite;
+        }
+        @keyframes ticker-move { 0% { transform: translateX(10%); } 100% { transform: translateX(-100%); } }
 
-        .hero-section img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay {
-            position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            padding: 40px; display: flex; flex-direction: column; justify-content: flex-end; color: white;
+        /* --- 3. MAGNETIC CURSOR (Hidden on Mobile) --- */
+        #cursor-dot { position: fixed; width: 6px; height: 6px; background: var(--dark); border-radius: 50%; pointer-events: none; z-index: 10000; }
+        #cursor-outline {
+            position: fixed; width: 40px; height: 40px; border: 1.5px solid var(--dark);
+            border-radius: 50%; pointer-events: none; z-index: 9999;
+            transition: width 0.3s, height 0.3s, background 0.3s, border 0.3s;
+        }
+        @media (max-width: 1024px) { #cursor-dot, #cursor-outline { display: none; } * { cursor: auto; } }
+
+        /* --- 4. DATA-DRIVEN TYPOGRAPHY (Responsive) --- */
+        header { 
+            padding: clamp(100px, 15vh, 180px) 5% 40px; 
+            display: flex; justify-content: space-between; align-items: flex-end; 
+        }
+        .brand-title { 
+            font-family: 'Playfair Display'; font-size: clamp(3rem, 12vw, 10rem); 
+            line-height: 0.8; letter-spacing: -0.05em; 
+        }
+        .brand-title span { font-weight: var(--dynamic-weight); transition: font-weight 0.5s ease; }
+
+        /* --- MASTER WRAPPER (Responsive Grid) --- */
+        .master-wrapper { 
+            padding: 0 5% 80px; 
+            display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; 
         }
 
-        .side-news { grid-column: span 12; display: flex; flex-direction: column; gap: 20px; }
-        @media (min-width: 1024px) { .side-news { grid-column: span 4; } }
-
-        .news-card {
-            background: white; padding: 25px; border-radius: 20px;
-            border: 1px solid #eee; transition: 0.3s;
+        .featured-mask { 
+            grid-column: span 12; height: 60vh; position: relative; 
+            border-radius: 40px; overflow: hidden; 
         }
-        .news-card:hover { transform: translateY(-5px); border-color: var(--rio); }
+        @media (min-width: 1024px) { .featured-mask { grid-column: span 8; height: 85vh; border-radius: 60px; } }
 
-        /* --- VIDEO & DATA --- */
-        .video-box {
-            grid-column: span 12; height: 500px; border-radius: 30px;
-            overflow: hidden; background: #000; position: relative;
+        .featured-mask img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s ease; opacity: 0; }
+        
+        .overlay-content {
+            position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 70%);
+            padding: clamp(20px, 5vw, 60px); display: flex; flex-direction: column; justify-content: flex-end; color: white;
         }
-        .video-box iframe { width: 100%; height: 100%; border: none; opacity: 0.7; }
+        .overlay-content h2 { font-family: 'Playfair Display'; font-size: clamp(2rem, 5vw, 4.5rem); line-height: 1; }
 
-        footer { 
-            margin-top: 60px; padding: 60px 5%; background: var(--dark); color: white;
-            text-align: center;
-        }
+        /* --- SIDE STACK (Responsive) --- */
+        .mag-stack { grid-column: span 12; display: flex; flex-direction: column; gap: 20px; }
+        @media (min-width: 1024px) { .mag-stack { grid-column: span 4; gap: 40px; } }
 
-        /* --- MOBIL DUZELTMELER --- */
-        @media (max-width: 600px) {
-            header { padding: 40px 20px; }
-            .hero-section { height: 50vh; }
-            nav ul { gap: 15px; }
+        .mag-item { 
+            background: white; padding: 30px; border-radius: 30px; 
+            border: 1px solid rgba(0,0,0,0.05); transition: 0.4s;
         }
+        @media (min-width: 1024px) { .mag-item { padding: 40px; border-radius: 40px; } }
+        .mag-item:hover { transform: translateY(-10px); border-color: var(--theme-accent); }
+
+        /* Kinetic Background */
+        .kinetic-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.4; pointer-events: none; }
     </style>
 </head>
-<body>
+<body class="theme-mardin">
 
-    <div class="ticker-container">
-        <div class="ticker-wrapper" id="ticker-text">
-            </div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+    <div class="kinetic-bg"></div>
+
+    <div class="glass-ticker">
+        <div class="ticker-content" id="dynamic-ticker">
+            INITIALIZING GLOBAL SYNERGY... ● FETCHING MARDIN DATA... ● CONNECTING BRAZIL BIOMES... ●
+        </div>
     </div>
 
     <header>
-        <p id="lang-sub" style="font-size: 10px; font-weight: 900; letter-spacing: 5px; opacity: 0.5; margin-bottom: 10px;">GLOBAL CULTURE & DATA</p>
-        <div class="brand">MARDIN<span style="color:var(--rio)">RIO</span></div>
+        <div class="brand-title" id="main-brand">MARDIN<br><span id="brazil-text" style="color:var(--brazil)">BRAZIL</span></div>
+        <div style="writing-mode: vertical-rl; font-size: 10px; font-weight: 900; letter-spacing: 5px; opacity: 0.3; height: 100px;">
+            <span id="local-time">00:00</span> © 2026
+        </div>
     </header>
 
-    <nav>
-        <ul id="nav-links">
-            </ul>
-    </nav>
-
-    <div class="main-container">
-        <div class="hero-section">
-            <img src="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200" alt="Mardin Rio">
-            <div class="hero-overlay">
-                <h2 id="hero-title" style="font-family: 'Playfair Display'; font-size: clamp(2rem, 5vw, 4rem);">...</h2>
-                <p id="hero-desc" style="font-family: 'Lora'; opacity: 0.8;"></p>
+    <div class="master-wrapper">
+        <div class="featured-mask" id="main-hero" style="background: #eee;">
+            <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1600" id="hero-img" onload="this.style.opacity=1">
+            <div class="overlay-content">
+                <span style="font-size: 10px; font-weight: 900; letter-spacing: 5px; color: var(--mardin); margin-bottom: 15px; display: block;">2026 EDITION</span>
+                <h2 id="hero-title">...</h2>
+                <p id="hero-desc" style="font-family: 'Lora'; margin-top: 20px; opacity: 0.7; max-width: 500px; font-size: clamp(0.9rem, 1.5vw, 1.1rem);"></p>
             </div>
         </div>
 
-        <div class="side-news" id="news-container">
+        <div class="mag-stack">
+            <div class="mag-item magnetic">
+                <span id="tag-1" style="font-weight:900; font-size:10px; color:var(--accent)">CROSS-CULTURE</span>
+                <h4 id="title-1" style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-top: 15px;">...</h4>
+                <p style="font-size: 13px; color: #666; margin-top: 10px;">Connecting Mesopotamian echoes with Amazonian rhythms.</p>
             </div>
-
-        <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/S_8qMvT2MvA?autoplay=1&mute=1&loop=1&playlist=S_8qMvT2MvA&controls=0"></iframe>
-            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;">
-                <h3 id="video-title" style="color: white; font-family: 'Playfair Display'; font-size: 2.5rem;">...</h3>
+            
+            <div class="mag-item magnetic" style="background:var(--ocean); color:white; border:none;">
+                <span style="font-weight:900; font-size:10px; opacity: 0.8;">BRAZIL REPORT</span>
+                <h4 id="title-2" style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-top: 15px;">...</h4>
+                <p style="font-size: 13px; opacity: 0.7; margin-top: 10px;">Exploring the digital future of the Southern Hemisphere.</p>
             </div>
         </div>
     </div>
 
-    <footer>
-        <h2 style="font-family: 'Playfair Display'; font-size: 3rem;">M|R</h2>
-        <p id="footer-note" style="font-size: 10px; letter-spacing: 3px; margin-top: 20px; opacity: 0.5;"></p>
-    </footer>
-
     <script>
-        // --- DİL VERİTABANI ---
-        const translations = {
-            tr: {
-                ticker: "● CANLI: RIO KARNAVALI HAZIRLIKLARI TAM GAZ ● MARDİN TAŞ İŞÇİLİĞİ DÜNYA MİRASI LİSTESİNDE ● 2026 VİZYONU AKTİF ●",
-                nav: ["HABERLER", "VERİ", "MAGAZİN", "KÜLTÜR"],
-                heroTitle: "İki Kıta, Tek Ruh",
-                heroDesc: "Mardin'in sessizliği ile Rio'nun enerjisi dijital bir köprüde buluşuyor.",
-                videoTitle: "Sentezin Ritmi",
-                footer: "© 2026 MARDINRIO DİJİTAL DENEYİM PORTALI",
-                sideNews: [
-                    { t: "Gastro Diplomasi", d: "Mezopotamya lezzetleri Rio sahillerinde." },
-                    { t: "Dijital Miras", d: "3000 yıllık tarih bulut sisteminde." }
-                ]
-            },
-            en: {
-                ticker: "● LIVE: RIO CARNIVAL PREPARATIONS ● MARDIN STONE MASONRY ON WORLD HERITAGE LIST ● 2026 VISION ACTIVE ●",
-                nav: ["NEWS", "DATA", "MAGAZINE", "CULTURE"],
-                heroTitle: "Two Continents, One Soul",
-                heroDesc: "The silence of Mardin and the energy of Rio meet on a digital bridge.",
-                videoTitle: "Rhythm of Synthesis",
-                footer: "© 2026 MARDINRIO DIGITAL EXPERIENCE PORTAL",
-                sideNews: [
-                    { t: "Gastro Diplomacy", d: "Mesopotamian flavors on Rio shores." },
-                    { t: "Digital Heritage", d: "3000 years of history in the cloud." }
-                ]
-            },
-            pt: {
-                ticker: "● AO VIVO: PREPARAÇÕES PARA O CARNAVAL DO RIO ● CANTARIA DE MARDIN NA LISTA DO PATRIMÔNIO MUNDIAL ● VISÃO 2026 ATIVA ●",
-                nav: ["NOTÍCIAS", "DADOS", "REVISTA", "CULTURA"],
-                heroTitle: "Dois Continentes, Uma Alma",
-                heroDesc: "O silêncio de Mardin e a energia do Rio encontram-se numa ponte digital.",
-                videoTitle: "Ritmo da Síntese",
-                footer: "© 2026 PORTAL DE EXPERIÊNCIA DIGITAL MARDINRIO",
-                sideNews: [
-                    { t: "Gastro Diplomacia", d: "Sabores mesopotâmicos nas costas do Rio." },
-                    { t: "Herança Digital", d: "3000 anos de história na nuvem." }
-                ]
-            }
-        };
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+        
+        // --- 1. LOCAL INTELLIGENCE & 4. TYPOGRAPHY ---
+        async function initIntelligence() {
+            // Dil ve Konum Simülasyonu
+            const userLang = navigator.language.startsWith('tr') ? 'tr' : 'en';
+            const isBrazilContext = Math.random() > 0.5; // Demo için rastgele tema seçimi
+            
+            // Hava Durumu/Sıcaklık Verisi (Tipografi için)
+            const temp = isBrazilContext ? 29 : 18; 
+            
+            // Tema ve Tipografi
+            document.body.className = isBrazilContext ? "theme-brazil" : "theme-mardin";
+            const weight = Math.min(900, Math.max(300, temp * 28));
+            document.documentElement.style.setProperty('--dynamic-weight', weight);
 
-        // --- DİL ALGILAMA VE UYGULAMA ---
-        function applyLanguage() {
-            const userLang = navigator.language.split('-')[0]; // Örn: 'tr' veya 'en'
-            const lang = translations[userLang] ? userLang : 'en'; // Desteklenmiyorsa İngilizce yap
-            const data = translations[lang];
+            const content = {
+                tr: { 
+                    hero: "Kadim Topraklar, Yeni Dünyalar",
+                    desc: "Mardin'in taş işçiliği ile Brezilya'nın biyolojik çeşitliliği arasındaki görünmez bağı keşfedin.",
+                    ticker: "● SİSTEM ÇALIŞIYOR ● KONUM: BREZİLYA / MARDİN AKTİF ● VERİ SENKRONİZASYONU %100 ●",
+                    t1: "Mezopotamya'nın Sesi", t2: "Amazon Dijital Arşivi"
+                },
+                en: { 
+                    hero: "Ancient Lands, New Worlds",
+                    desc: "Discover the invisible bond between Mardin's stonework and Brazil's biodiversity.",
+                    ticker: "● SYSTEM ACTIVE ● LOCATION: BRAZIL / MARDIN ● DATA SYNC 100% ●",
+                    t1: "Echoes of Mesopotamia", t2: "Amazon Digital Archive"
+                }
+            };
 
-            document.getElementById('ticker-text').innerText = (data.ticker + " ").repeat(5);
-            document.getElementById('hero-title').innerText = data.heroTitle;
-            document.getElementById('hero-desc').innerText = data.heroDesc;
-            document.getElementById('video-title').innerText = data.videoTitle;
-            document.getElementById('footer-note').innerText = data.footer;
-
-            // Navigasyon
-            const navUl = document.getElementById('nav-links');
-            navUl.innerHTML = data.nav.map(item => `<li><a href="#">${item}</a></li>`).join('');
-
-            // Yan Haberler
-            const newsCont = document.getElementById('news-container');
-            newsCont.innerHTML = data.sideNews.map(news => `
-                <div class="news-card">
-                    <h4 style="font-family: 'Playfair Display'; margin-bottom: 10px;">${news.t}</h4>
-                    <p style="font-size: 13px; color: #666;">${news.d}</p>
-                </div>
-            `).join('');
+            const active = content[userLang];
+            document.getElementById('hero-title').innerText = active.hero;
+            document.getElementById('hero-desc').innerText = active.desc;
+            document.getElementById('dynamic-ticker').innerText = (active.ticker + " ").repeat(8);
+            document.getElementById('title-1').innerText = active.t1;
+            document.getElementById('title-2').innerText = active.t2;
         }
 
-        window.onload = applyLanguage;
+        // --- 3. MAGNETIC INTERACTION & CURSOR ---
+        document.addEventListener('mousemove', (e) => {
+            const { clientX: x, clientY: y } = e;
+            if (dot) dot.style.transform = `translate(${x}px, ${y}px)`;
+            
+            let target = e.target.closest('.magnetic');
+            if(target && window.innerWidth > 1024) {
+                const rect = target.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                outline.style.transform = `translate(${centerX - 20}px, ${centerY - 20}px) scale(1.8)`;
+                outline.style.background = 'rgba(255,255,255,0.1)';
+                outline.style.borderColor = 'var(--theme-accent)';
+            } else if (outline) {
+                outline.style.transform = `translate(${x - 20}px, ${y - 20}px) scale(1)`;
+                outline.style.background = 'transparent';
+                outline.style.borderColor = 'var(--dark)';
+            }
+        });
+
+        // Time Update
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('local-time').innerText = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        }, 1000);
+
+        window.onload = initIntelligence;
     </script>
 </body>
 </html>
