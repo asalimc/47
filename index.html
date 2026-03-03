@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign | Mardin-Brezilya Kültür Diplomasisi</title>
+    <title>M|B SOVEREIGN - Next-Gen Culture Portal</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,500&family=Inter:wght@300;800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;700&family=Fraunces:ital,soft,wght@1,300;1,900&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        clay: '#B87333',     // Mardin Toprağı
-                        jungle: '#023020',   // Amazon Derinliği
-                        ink: '#0A0A0A',      // Premium Siyah
-                        sand: '#F4EFE6'      // Kağıt Dokusu
+                        neonStone: '#E5E5E5',
+                        mardinGold: '#C5A059',
+                        rioPulse: '#FF0055', // Brezilya enerjisi için radikal bir vurgu
+                        voidBlack: '#020202'
                     },
                     fontFamily: {
-                        serif: ['Cormorant Garamond', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Playfair Display', 'serif']
+                        display: ['Syncopate', 'sans-serif'],
+                        body: ['Space Grotesk', 'sans-serif'],
+                        serif: ['Fraunces', 'serif']
                     }
                 }
             }
@@ -32,229 +32,200 @@
     </script>
 
     <style>
-        body { background: #F4EFE6; color: #0A0A0A; overflow-x: hidden; }
-        .article-reveal { opacity: 0; transform: translateY(30px); }
-        .sidebar-item { border-bottom: 1px solid rgba(10, 10, 10, 0.1); transition: all 0.3s ease; }
-        .sidebar-item:hover { background: rgba(184, 115, 51, 0.05); padding-left: 10px; }
+        body { background: #020202; color: #E5E5E5; cursor: crosshair; }
+        .perspective-text { perspective: 1000px; }
+        .glitch-hover:hover { animation: glitch 0.3s infinite; }
+        @keyframes glitch { 
+            0% { transform: translate(0); text-shadow: -2px 0 #FF0055, 2px 0 #C5A059; }
+            20% { transform: translate(-2px, 2px); }
+            100% { transform: translate(0); }
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+        .glass-panel { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.05); }
         
-        /* Haber Başlıklarında İtalyan Tarzı Zarif Geçiş */
-        .headline-hover { position: relative; display: inline-block; }
-        .headline-hover::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background: #B87333; transition: width 0.4s ease; }
-        .headline-hover:hover::after { width: 100%; }
-
-        /* Admin Dashboard İçin Modern Cam Efekti */
-        .admin-glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(0,0,0,0.05); }
-        
-        /* Özel Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #B87333; }
+        /* Özel Kaydırma Çubuğu */
+        ::-webkit-scrollbar { width: 2px; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; }
     </style>
 </head>
-<body class="font-sans antialiased">
+<body class="font-body overflow-x-hidden">
 
-    <nav class="fixed top-0 w-full z-[100] px-8 py-6 flex justify-between items-center border-b border-black/5 bg-sand/80 backdrop-blur-md">
-        <div class="flex items-center gap-12">
-            <h1 onclick="showPage('home')" class="text-3xl font-display italic font-black tracking-tighter cursor-pointer">Sovereign.</h1>
-            <div class="hidden lg:flex gap-8 text-[10px] font-black uppercase tracking-[0.3em]">
-                <a href="#" onclick="showPage('home')" class="hover:text-clay transition">Kültür</a>
-                <a href="#" onclick="showPage('news')" class="hover:text-clay transition">Haberler</a>
-                <a href="#" onclick="showPage('authors')" class="hover:text-clay transition">Yazarlar</a>
-            </div>
-        </div>
-        <div class="flex items-center gap-8">
-            <span class="text-[10px] font-bold text-clay uppercase">Live: Mardin (09:14) - Rio (03:14)</span>
-            <button onclick="showPage('dashboard')" class="bg-ink text-sand px-6 py-2 rounded-full text-[10px] font-bold uppercase hover:bg-clay transition">Yönetim</button>
+    <div class="fixed inset-0 pointer-events-none z-[100] border-[20px] border-voidBlack"></div>
+    
+    <nav class="fixed top-0 w-full z-[110] px-12 py-10 flex justify-between items-center mix-blend-difference">
+        <h1 onclick="showPage('home')" class="font-display font-bold text-2xl tracking-tighter cursor-pointer glitch-hover">M|B_CORE</h1>
+        <div class="flex gap-12 text-[10px] font-bold uppercase tracking-[0.5em]">
+            <button onclick="showPage('archive')" class="hover:text-rioPulse transition">Archives</button>
+            <button onclick="showPage('authors')" class="hover:text-rioPulse transition">Thinkers</button>
+            <button onclick="showPage('terminal')" class="bg-white text-black px-6 py-2 rounded-full hover:bg-mardinGold transition">Terminal</button>
         </div>
     </nav>
 
-    <main id="home" class="page active pt-32">
-        <section class="px-8 grid grid-cols-12 gap-8 mb-20">
-            <div class="col-span-12 lg:col-span-8 group cursor-pointer" onclick="showPage('article')">
-                <div class="overflow-hidden rounded-sm mb-6">
-                    <img src="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1600" class="w-full h-[650px] object-cover group-hover:scale-105 transition-transform duration-1000">
-                </div>
-                <div class="max-w-3xl">
-                    <span class="text-clay font-black text-[11px] uppercase tracking-widest italic mb-4 block">Kapak Makalesi / Mart 2026</span>
-                    <h2 class="text-7xl font-serif italic font-bold leading-[0.9] headline-hover">Mezopotamya Toprağından Amazon Yağmurlarına: Sanatın Göçü.</h2>
-                </div>
+    <main id="home" class="page active min-h-screen">
+        <section class="h-screen flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20">
+                <img src="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1920" class="w-full h-full object-cover grayscale">
             </div>
-            <div class="col-span-12 lg:col-span-4 border-l border-black/10 pl-8">
-                <h3 class="text-[11px] font-black uppercase tracking-[0.4em] mb-12 text-black/40">Gündemdeki Akış</h3>
-                <div class="space-y-12">
-                    <div class="sidebar-item pb-6 cursor-pointer">
-                        <p class="text-[10px] font-bold text-clay uppercase mb-2">Haber</p>
-                        <h4 class="text-2xl font-serif font-bold italic">Mardin Bienali Rio de Janeiro'ya Taşınıyor.</h4>
-                    </div>
-                    <div class="sidebar-item pb-6 cursor-pointer">
-                        <p class="text-[10px] font-bold text-clay uppercase mb-2">Analiz</p>
-                        <h4 class="text-2xl font-serif font-bold italic">Brezilya Modernizmi ve Mezopotamya Mimarisi Arasındaki Gizli Bağlar.</h4>
-                    </div>
-                    <div class="sidebar-item pb-6 cursor-pointer">
-                        <p class="text-[10px] font-bold text-clay uppercase mb-2">Gastronomi</p>
-                        <h4 class="text-2xl font-serif font-bold italic">Mardin Şarapları ve Brezilya Mutfağı Füzyonu.</h4>
-                    </div>
+            <div class="text-center relative z-10">
+                <span class="text-mardinGold font-display text-[1vw] tracking-[2em] block mb-8">MESOPOTAMIA X AMAZONIA</span>
+                <h2 class="text-[12vw] font-serif italic font-black leading-none tracking-tighter">Stone <br> <span class="text-rioPulse">&</span> Rhythms</h2>
+            </div>
+            <div class="absolute bottom-20 left-12 max-w-xs">
+                <p class="text-[10px] font-bold tracking-widest text-white/40 leading-relaxed uppercase">
+                    Mardin'in sessizliği ile Rio'nun gürültüsünü aynı frekansta birleştiren kültürel veri portalı. 2026 Global Intelligence.
+                </p>
+            </div>
+        </nav>
+
+        <section class="px-12 py-40 grid grid-cols-1 md:grid-cols-3 gap-24">
+            <div class="space-y-8 group cursor-pointer" onclick="showPage('article')">
+                <div class="relative overflow-hidden aspect-[3/4] bg-neutral-900">
+                    <img src="https://images.unsplash.com/photo-1518998053574-53f0201f97ea?auto=format&fit=crop&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                </div>
+                <h3 class="text-4xl font-serif italic group-hover:text-rioPulse transition">Taş Ustalarının Brezilya Günlüğü.</h3>
+                <p class="text-white/40 text-sm italic tracking-wide">Mardin'den Rio'ya uzanan mimari göçün izleri.</p>
+            </div>
+            <div class="pt-24 space-y-8 group cursor-pointer">
+                <div class="relative overflow-hidden aspect-[3/4] bg-neutral-900">
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                </div>
+                <h3 class="text-4xl font-serif italic group-hover:text-rioPulse transition">Karnavalın Mezopotamya Kodları.</h3>
+                <p class="text-white/40 text-sm italic tracking-wide">Ritimlerin kökenine AI destekli bakış.</p>
+            </div>
+            <div class="flex flex-col justify-end pb-24 border-l border-white/5 pl-12">
+                <h4 class="font-display text-xs text-mardinGold mb-6 tracking-widest uppercase">Global Resonance</h4>
+                <div class="space-y-8">
+                    <div class="flex justify-between items-end"><span class="text-6xl font-serif italic">88%</span><span class="text-[9px] uppercase tracking-widest">Sync</span></div>
+                    <div class="flex justify-between items-end"><span class="text-6xl font-serif italic">1.4M</span><span class="text-[9px] uppercase tracking-widest">Reach</span></div>
                 </div>
             </div>
         </section>
     </main>
 
-    <main id="article" class="page pt-40 pb-40">
-        <div class="max-w-4xl mx-auto px-8">
-            <header class="mb-20 text-center">
-                <button onclick="showPage('home')" class="text-[10px] font-black uppercase tracking-widest text-clay mb-12 block mx-auto hover:underline">← Arşive Dön</button>
-                <h1 class="text-8xl font-serif italic font-bold leading-none mb-12">Taşın Belleği ve<br>Karnavalın Ruhu.</h1>
-                <div class="flex items-center justify-center gap-4 text-[10px] font-bold uppercase tracking-widest text-black/40">
-                    <span>Yazan: Yusuf El-Brezili</span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-clay"></span>
-                    <span>12 Dakika Okuma</span>
+    <main id="article" class="page py-40 px-12">
+        <div class="max-w-5xl mx-auto">
+            <button onclick="showPage('home')" class="text-[10px] font-bold tracking-[0.5em] uppercase text-rioPulse mb-24 hover:text-white transition">← [BACK_TO_CORE]</button>
+            <h1 class="text-[8vw] font-serif italic font-black leading-[0.85] tracking-tighter mb-20">Yıkılan Sınırlar: <br> İki Kıta, Tek Ruh.</h1>
+            <div class="grid grid-cols-12 gap-12">
+                <div class="col-span-12 lg:col-span-4 text-xs font-bold text-white/30 space-y-4 uppercase tracking-[0.2em]">
+                    <p>Yazar: Yusuf El-Brezili</p>
+                    <p>Konu: Antropolojik Analiz</p>
+                    <p>Frekans: 44.1 Hz</p>
                 </div>
-            </header>
-            <div class="prose prose-xl font-serif text-2xl italic leading-[1.8] text-black/80 space-y-12">
-                <p class="first-letter:text-9xl first-letter:font-display first-letter:mr-4 first-letter:float-left first-letter:text-clay">Mardin’in Mezopotamya güneşinde kavrulan taş evleri, aslında bir sessizlik senfonisidir. Rio de Janeiro’nun nemli ve gürültülü sokaklarında bu sessizliği aramak imkansız gibi görünse de...</p>
-                <img src="https://images.unsplash.com/photo-1518998053574-53f0201f97ea?auto=format&fit=crop&w=1200" class="w-full rounded-sm py-8">
-                <p>Editörlerimizin Brezilya Ulusal Müzesi arşivlerinde bulduğu yeni belgeler, 19. yüzyılda Mardin'den yola çıkan bir taş ustasının Rio'daki mimari dokuya nasıl dokunduğunu kanıtlıyor.</p>
+                <div class="col-span-12 lg:col-span-8 space-y-12">
+                    <p class="text-4xl font-serif italic leading-relaxed text-white/80">
+                        "Mardin’in kehribar rengi taşları, Rio’nun okyanus mavisiyle çarpıştığında ortaya çıkan enerji, sadece bir sanat eseri değil; yaşayan bir organizmadır."
+                    </p>
+                    <p class="text-lg text-white/50 leading-loose">
+                        Bu makale, yapay zeka tarafından analiz edilen kültürel veriler ışığında, Mardin'in dar sokaklarından Rio'nun favelalarına kadar uzanan estetik köprüleri inceliyor. Her bir vuruş, her bir taş yontusu aslında aynı hikayenin farklı dillerdeki anlatımıdır...
+                    </p>
+                </div>
             </div>
         </div>
     </main>
 
-    <main id="dashboard" class="page pt-32 px-12 pb-40">
+    <main id="terminal" class="page pt-40 px-12 pb-24">
         <div class="max-w-[1600px] mx-auto">
-            <div class="flex justify-between items-end mb-16">
-                <div>
-                    <h2 class="text-6xl font-display italic font-black tracking-tighter">Command Centre.</h2>
-                    <p class="text-clay font-bold text-[11px] uppercase tracking-[0.5em] mt-4">Kültür & Veri Senkronizasyonu</p>
+            <header class="mb-24 flex justify-between items-start">
+                <div class="perspective-text">
+                    <h2 class="text-8xl font-display font-black tracking-tighter leading-none">INTEL_HUD</h2>
+                    <p class="text-rioPulse font-bold text-xs tracking-[1em] mt-4 uppercase">Sovereign Management System v.02</p>
                 </div>
-                <div class="flex gap-4">
-                    <button class="bg-clay text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase shadow-xl hover:scale-105 transition">Yeni Makale Yaz</button>
-                    <button class="bg-white border border-black/10 px-8 py-3 rounded-full text-[10px] font-bold uppercase">Sistem Raporu</button>
+                <div class="flex flex-col items-end gap-2 text-right">
+                    <span class="text-[9px] font-black uppercase tracking-widest opacity-30">Status: Autonomous</span>
+                    <span class="text-2xl font-serif italic text-mardinGold tracking-widest">ENCRYPTED_LINK</span>
                 </div>
-            </div>
+            </header>
 
             <div class="grid grid-cols-12 gap-8">
-                <div class="col-span-12 lg:col-span-4 admin-glass p-10 rounded-2xl">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-black/40 mb-8">Okuyucu Duygu Analizi (AI)</h3>
-                    <div class="space-y-6">
-                        <div class="flex justify-between items-end">
-                            <span class="text-sm font-bold">Mistik Merak</span>
-                            <span class="text-clay font-bold text-xl">%88</span>
+                <div class="col-span-12 lg:col-span-3 glass-panel p-10 rounded-sm border-l-4 border-rioPulse">
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.3em] mb-12 text-rioPulse">Cognitive Sync</h3>
+                    <div class="space-y-12">
+                        <div class="relative h-20 w-20 mx-auto">
+                            <div class="absolute inset-0 border border-white/10 rounded-full animate-spin"></div>
+                            <div class="absolute inset-2 border border-rioPulse/40 rounded-full animate-ping"></div>
                         </div>
-                        <div class="w-full bg-black/5 h-1.5 rounded-full overflow-hidden">
-                            <div class="bg-clay h-full w-[88%]"></div>
-                        </div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-sm font-bold">Kültürel Bağdaşım</span>
-                            <span class="text-jungle font-bold text-xl">%72</span>
-                        </div>
-                        <div class="w-full bg-black/5 h-1.5 rounded-full overflow-hidden">
-                            <div class="bg-jungle h-full w-[72%]"></div>
-                        </div>
+                        <p class="text-center text-[10px] font-bold text-white/40 italic">AI şu an "Samba" ritimlerini Mardin "Reyhani" figürleriyle senkronize ediyor.</p>
                     </div>
                 </div>
 
-                <div class="col-span-12 lg:col-span-8 admin-glass p-10 rounded-2xl">
-                    <div class="flex justify-between items-center mb-8">
-                        <h3 class="text-[10px] font-black uppercase tracking-widest text-black/40 italic">Global Erişim Trendi (Mardin vs Brazil)</h3>
+                <div class="col-span-12 lg:col-span-6 glass-panel p-10 rounded-sm">
+                    <div class="flex justify-between items-center mb-10">
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 italic">Real-Time Resonance Graph</h3>
                         <div class="flex gap-4">
-                            <span class="flex items-center gap-2 text-[10px] font-bold uppercase"><span class="w-2 h-2 rounded-full bg-clay"></span> Mardin</span>
-                            <span class="flex items-center gap-2 text-[10px] font-bold uppercase"><span class="w-2 h-2 rounded-full bg-jungle"></span> Brazil</span>
+                            <div class="w-3 h-3 bg-mardinGold rounded-full animate-pulse"></div>
+                            <div class="w-3 h-3 bg-rioPulse rounded-full animate-pulse"></div>
                         </div>
                     </div>
-                    <div class="h-[300px]">
-                        <canvas id="sovereignChart"></canvas>
-                    </div>
+                    <canvas id="xChart" height="250"></canvas>
                 </div>
 
-                <div class="col-span-12 admin-glass p-10 rounded-2xl overflow-hidden">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-black/40 mb-10">Kıdemli Köşe Yazarları Performansı</h3>
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="text-[10px] font-black uppercase tracking-widest text-black/20 border-b border-black/5">
-                                <th class="pb-4">Yazar</th>
-                                <th class="pb-4">Aktif Makaleler</th>
-                                <th class="pb-4">Global Etki Skoru</th>
-                                <th class="pb-4">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-sm font-serif italic">
-                            <tr class="border-b border-black/5">
-                                <td class="py-6 flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-clay/20"></div>
-                                    <span class="font-bold">Yusuf El-Brezili</span>
-                                </td>
-                                <td>42</td>
-                                <td class="text-clay font-bold font-sans">9.8/10</td>
-                                <td><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[9px] font-bold uppercase">Aktif</span></td>
-                            </tr>
-                            <tr>
-                                <td class="py-6 flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-jungle/20"></div>
-                                    <span class="font-bold">Maria de Mardin</span>
-                                </td>
-                                <td>28</td>
-                                <td class="text-clay font-bold font-sans">8.4/10</td>
-                                <td><span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-[9px] font-bold uppercase">İncelemede</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col-span-12 lg:col-span-3 glass-panel p-10 rounded-sm">
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.3em] mb-10 text-white/30 italic">Neural Logs</h3>
+                    <div class="space-y-6 text-[9px] font-bold font-mono text-white/40 overflow-y-auto max-h-48">
+                        <p class="text-green-500">> [SUCCESS] Mardin Node Connected.</p>
+                        <p>> [WARN] Brazil Latency High: 42ms.</p>
+                        <p class="text-rioPulse">> [ALERT] Viral Trend Detected in Rio.</p>
+                        <p>> [INFO] Metadata Sync: 100%.</p>
+                        <p>> [SYSTEM] Waiting for User Interaction...</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // PAGE TRANSITION ENGINE
+        // PAGE TRANSITION
         function showPage(pageId) {
-            gsap.to(".page.active", { opacity: 0, y: 20, duration: 0.4, onComplete: () => {
+            gsap.to(".page.active", { opacity: 0, scale: 0.98, duration: 0.3, onComplete: () => {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                const next = document.getElementById(pageId);
-                next.classList.add('active');
-                gsap.fromTo(next, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" });
+                const target = document.getElementById(pageId);
+                target.classList.add('active');
+                gsap.fromTo(target, { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.6, ease: "expo.out" });
             }});
         }
 
-        // CHART ENGINE (Chart.js 4.x)
-        const ctx = document.getElementById('sovereignChart').getContext('2d');
+        // CHART: ULTRA-MINIMAL
+        const ctx = document.getElementById('xChart').getContext('2d');
         new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz'],
-                datasets: [
-                    {
-                        label: 'Mardin Sync',
-                        data: [45, 52, 48, 70, 65, 95],
-                        borderColor: '#B87333',
-                        backgroundColor: 'rgba(184, 115, 51, 0.05)',
-                        fill: true, tension: 0.4, borderWeight: 4, pointRadius: 0
-                    },
-                    {
-                        label: 'Brazil Sync',
-                        data: [30, 40, 60, 55, 85, 110],
-                        borderColor: '#023020',
-                        backgroundColor: 'rgba(2, 48, 32, 0.05)',
-                        fill: true, tension: 0.4, borderWeight: 4, pointRadius: 0
-                    }
-                ]
+                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                datasets: [{
+                    label: 'Resonance',
+                    data: [65, 59, 80, 81, 56, 95, 120],
+                    backgroundColor: '#C5A059',
+                    hoverBackgroundColor: '#FF0055',
+                    barThickness: 4
+                }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: { 
-                    y: { display: false },
-                    x: { grid: { display: false }, ticks: { font: { size: 10, weight: 'bold' }, color: '#999' } }
+                    y: { display: false }, 
+                    x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.2)', font: { size: 8 } } }
                 }
             }
         });
 
-        // INITIALIZE ICONS
         lucide.createIcons();
 
-        // SCROLL REVEAL ANIMATION
-        gsap.utils.toArray('.sidebar-item').forEach(item => {
-            gsap.from(item, {
-                scrollTrigger: { trigger: item, start: "top 90%" },
-                opacity: 0, x: -30, duration: 1
-            });
+        // SCROLL SKEW EFFECT
+        let proxy = { skew: 0 },
+            skewSetter = gsap.quickSetter(".page", "skewY", "deg"),
+            clamp = gsap.utils.clamp(-5, 5);
+
+        ScrollTrigger.create({
+          onUpdate: (self) => {
+            let skew = clamp(self.getVelocity() / -300);
+            if (Math.abs(skew) > Math.abs(proxy.skew)) {
+              proxy.skew = skew;
+              gsap.to(proxy, {skew: 0, duration: 0.8, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew)});
+            }
+          }
         });
     </script>
 </body>
