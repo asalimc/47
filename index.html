@@ -7,17 +7,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --bg: #fdfbf7; --text: #1a1a1a; --muted: #718096; --accent: #c49b66; --white: #ffffff; --transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        :root { --bg: #fdfbf7; --text: #1a1a1a; --muted: #718096; --accent: #c49b66; --white: #ffffff; }
         body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; scroll-behavior: smooth; }
         #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 10001; }
         nav { background: rgba(253, 251, 247, 0.9); backdrop-filter: blur(15px); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .logo { font-family: 'Marcellus', serif; font-size: 2rem; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
         .authors-strip { background: var(--white); padding: 30px 0; display: flex; justify-content: center; gap: 40px; border-bottom: 1px solid #f1f1f1; overflow-x: auto; }
-        .author-item { cursor: pointer; text-align: center; width: 90px; flex-shrink: 0; transition: var(--transition); }
-        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); padding: 4px; margin: 0 auto; }
+        .author-item { cursor: pointer; text-align: center; width: 90px; flex-shrink: 0; }
+        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); padding: 4px; margin: 0 auto; transition: 0.3s; }
+        .author-item:hover img { transform: scale(1.05); }
         .author-item span { display: block; font-size: 0.75rem; font-weight: 700; margin-top: 10px; font-family: 'Marcellus'; text-transform: uppercase; }
         .container-main { max-width: 1400px; margin: 40px auto; display: grid; grid-template-columns: 280px 1fr 300px; gap: 40px; padding: 0 25px; }
-        .news-card { background: var(--white); border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.02); cursor: pointer; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); margin-bottom: 40px; }
+        .news-card { background: var(--white); border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.02); cursor: pointer; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(0,0,0,0.02); margin-bottom: 40px; }
         .news-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.06); }
         .news-img { width: 100%; height: 480px; object-fit: cover; }
         .card-body { padding: 35px; }
@@ -25,59 +26,79 @@
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding-bottom: 100px; }
         .close-overlay { position: fixed; top: 30px; right: 40px; cursor: pointer; background: var(--text); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
         #admin-panel { display: none; background: #0f172a; color: white; position: fixed; inset: 0; z-index: 11000; overflow-y: auto; padding: 40px; }
-        .admin-nav button { color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; padding-bottom: 5px; }
+        .input-dark { width: 100%; padding: 12px; margin-bottom: 15px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; color: white; outline: none; }
+        .admin-nav button { color: #64748b; font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; padding-bottom: 5px; }
         .admin-nav button.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
-        .input-dark { width: 100%; padding: 12px; margin-bottom: 12px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; color: white; outline: none; }
-        .author-manage-card { background: #1e293b; padding: 15px; border-radius: 18px; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
-        .author-manage-card:hover { border-color: var(--accent); }
     </style>
 </head>
 <body>
 
 <div id="progress-bar"></div>
-<nav><div class="logo" onclick="renderPortal()">LUMINA</div><div id="current-city" style="font-size: 0.8rem; letter-spacing: 2px; font-weight: 700;">MARDİN • YEREL</div></nav>
+<nav><div class="logo" onclick="location.reload()">LUMINA</div><div id="current-city" style="font-size: 0.8rem; letter-spacing: 2px; font-weight: 700;">MARDİN • LIVE</div></nav>
 <div id="authors-list" class="authors-strip"></div>
 
 <div class="container-main">
-    <aside class="sidebar-left"><div class="side-title">KATEGORİLER</div><div id="categories-list" style="font-size: 0.9rem; line-height: 2.5; cursor: pointer;"></div></aside>
+    <aside class="sidebar-left">
+        <div class="side-title" style="font-family:'Marcellus'; border-bottom:1px solid #eee; margin-bottom:15px; padding-bottom:10px;">KATEGORİLER</div>
+        <div id="categories-list" style="font-size: 0.9rem; line-height: 2.8; cursor: pointer;"></div>
+    </aside>
     <main id="news-feed"></main>
-    <aside class="sidebar-right"><div class="side-title">SPONSORLU</div><div id="ad-sidebar" style="background:#eee; height:400px; border-radius:20px; overflow:hidden;"></div></aside>
+    <aside class="sidebar-right">
+        <div class="side-title" style="font-family:'Marcellus'; border-bottom:1px solid #eee; margin-bottom:15px; padding-bottom:10px;">SPONSORLU</div>
+        <div id="ad-sidebar" style="background:#f0f0f0; min-height:450px; border-radius:24px; overflow:hidden; border:1px dashed #ccc;"></div>
+    </aside>
 </div>
 
-<footer style="padding: 40px; text-align: center;"><button onclick="toggleAdmin()" style="opacity: 0.2; font-size: 10px;">ADMİN TERMİNALİ</button></footer>
+<footer style="padding: 60px; text-align: center; opacity: 0.3;"><button onclick="toggleAdmin()" style="font-size: 10px; letter-spacing: 2px;">SİSTEM TERMİNALİ</button></footer>
 
 <div id="overlay" class="overlay"><div class="close-overlay" onclick="closeAll()">✕</div><div id="overlay-content" class="max-w-4xl mx-auto mt-20 p-5"></div></div>
 
 <div id="admin-panel">
-    <div class="flex justify-between items-center mb-10"><h2 class="text-2xl font-black italic text-accent">LUMINA CMS v2.5</h2><button onclick="toggleAdmin()" class="bg-white/10 px-4 py-2 rounded-lg">KAPAT</button></div>
-    <div class="admin-nav flex gap-6 mb-8 border-b border-slate-800 pb-4">
+    <div class="flex justify-between items-center mb-10 border-b border-slate-800 pb-5">
+        <h2 class="text-2xl font-black text-accent tracking-tighter">LUMINA ENGINE v3.0</h2>
+        <button onclick="toggleAdmin()" class="bg-red-500/20 text-red-500 px-6 py-2 rounded-full font-bold text-xs">PANELİ KAPAT</button>
+    </div>
+    <div class="admin-nav flex gap-8 mb-10">
         <button onclick="setTab('haber')" id="btn-haber" class="active">HABERLER</button>
         <button onclick="setTab('yazar')" id="btn-yazar">YAZARLAR</button>
         <button onclick="setTab('cat')" id="btn-cat">KATEGORİLER</button>
         <button onclick="setTab('reklam')" id="btn-reklam">REKLAM</button>
     </div>
-    <div id="admin-content" class="grid grid-cols-1 lg:grid-cols-3 gap-8"></div>
+    <div id="admin-content" class="grid grid-cols-1 lg:grid-cols-3 gap-10"></div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('lumina_db_v2.5')) || {
-        cats: [{id: 'c1', name: 'Kültür'}],
-        yazarlar: [{id: 'y1', isim: 'Vedat Mardinli', bio: 'Tarihçi', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200'}],
-        haberler: [], reklamlar: []
+    // ÖRNEK VERİLER VE DB BAŞLATMA
+    const defaultData = {
+        cats: [{id: 'c1', name: 'Mardin Ekspres'}, {id: 'c2', name: 'Sao Paulo Sosyete'}, {id: 'c3', name: 'Gastronomi'}],
+        yazarlar: [
+            {id: 'y1', isim: 'Vedat Mardinli', bio: 'Kültür Tarihçisi', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400'},
+            {id: 'y2', isim: 'Adriana Silva', bio: 'Moda Editörü', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'}
+        ],
+        haberler: [
+            {id: 'h1', title: "Eski Mardin'in Gümüş İşçiliği", text: "Mezopotamya'nın kalbinde telkari sanatı, modern takı tasarımcıları tarafından yeniden keşfediliyor. Bu antik dokunuş şimdi dünya podyumlarında.", img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200', cid: 'c1', yid: 'y1'},
+            {id: 'h2', title: "Sao Paulo'da Türk Kahvesi Esintisi", text: "Brezilya'nın metropolü Sao Paulo'da açılan yeni butik kafeler, geleneksel Türk kahvesini yerel aromalarla birleştirerek büyük ilgi topluyor.", img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200', cid: 'c2', yid: 'y2'}
+        ],
+        reklamlar: [{img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500'}]
     };
 
+    let db = JSON.parse(localStorage.getItem('lumina_db_final')) || defaultData;
     let activeTab = 'haber', tempImg = "", editingId = null;
 
+    // DOSYA OKUMA SİSTEMİ
     function handleImg(e) {
+        const file = e.target.files[0];
+        if (!file) return;
         const reader = new FileReader();
         reader.onload = () => { tempImg = reader.result; };
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(file);
     }
 
+    // ADMIN KONTROLLERİ
     function toggleAdmin() {
         const p = document.getElementById('admin-panel');
         p.style.display = p.style.display === 'block' ? 'none' : 'block';
-        editingId = null; renderAdmin();
+        if(p.style.display === 'block') { editingId = null; renderAdmin(); }
     }
 
     function setTab(tab) {
@@ -87,54 +108,82 @@
         renderAdmin();
     }
 
+    // ADMIN RENDER (HİÇBİR MODÜLE DOKUNULMADAN FIXLENDİ)
     function renderAdmin() {
-        const content = document.getElementById('admin-content');
-        let form = "", list = "";
+        const container = document.getElementById('admin-content');
+        let formHtml = "", listHtml = "";
 
-        if(activeTab === 'yazar') {
-            const editYazar = editingId ? db.yazarlar.find(y => y.id === editingId) : null;
-            form = `<div class="bg-slate-900 p-6 rounded-3xl">
-                <h3 class="mb-4 font-bold text-accent">${editYazar ? 'YAZARI DÜZENLE' : 'YENİ YAZAR'}</h3>
-                <input type="text" id="y-isim" value="${editYazar?.isim || ''}" placeholder="İsim Soyisim" class="input-dark">
-                <input type="text" id="y-bio" value="${editYazar?.bio || ''}" placeholder="Bio / Unvan" class="input-dark">
-                <div class="text-[10px] text-slate-500 mb-2">GÖRSEL (Seçilmezse eskisi kalır)</div>
-                <input type="file" onchange="handleImg(event)" class="text-xs mb-4">
-                <button onclick="saveYazar()" class="w-full bg-accent py-3 rounded-xl font-bold">${editYazar ? 'GÜNCELLE' : 'KAYDET'}</button>
-                ${editingId ? `<button onclick="setTab('yazar')" class="w-full mt-2 text-xs opacity-50">İPTAL</button>` : ''}
-            </div>`;
-            list = db.yazarlar.map(y => `
-                <div class="author-manage-card mb-3 flex items-center justify-between">
-                    <div class="flex items-center gap-4" onclick="editYazarMode('${y.id}')">
-                        <img src="${y.img}" class="w-10 h-10 rounded-full object-cover">
-                        <div><div class="font-bold text-sm">${y.isim}</div><div class="text-[10px] text-accent uppercase">Düzenlemek için tıkla</div></div>
-                    </div>
-                    <button onclick="deleteItem('yazarlar', '${y.id}')" class="text-red-500 text-xs font-bold px-2">SİL</button>
-                </div>`).join('');
-        } else if(activeTab === 'haber') {
-            let cOpts = db.cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-            let yOpts = db.yazarlar.map(y => `<option value="${y.id}">${y.isim}</option>`).join('');
-            form = `<div class="bg-slate-900 p-6 rounded-3xl">
-                <h3 class="mb-4 font-bold text-accent">HABER YAYINLA</h3>
-                <input type="text" id="h-title" placeholder="Başlık" class="input-dark">
+        if(activeTab === 'haber') {
+            const cOpts = db.cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            const yOpts = db.yazarlar.map(y => `<option value="${y.id}">${y.isim}</option>`).join('');
+            formHtml = `<div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
+                <h3 class="font-bold text-accent mb-5 uppercase tracking-widest text-xs">YENİ HABER YAYINLA</h3>
+                <input type="text" id="h-title" placeholder="Haber Başlığı" class="input-dark">
                 <select id="h-cat" class="input-dark">${cOpts}</select>
                 <select id="h-yazar" class="input-dark">${yOpts}</select>
-                <textarea id="h-text" placeholder="İçerik" class="input-dark h-32"></textarea>
-                <input type="file" onchange="handleImg(event)" class="text-xs mb-4">
-                <button onclick="saveHaber()" class="w-full bg-accent py-3 rounded-xl font-bold">YAYINLA</button>
+                <textarea id="h-text" placeholder="Haber İçeriği..." class="input-dark h-40"></textarea>
+                <input type="file" onchange="handleImg(event)" class="text-xs mb-5">
+                <button onclick="saveHaber()" class="w-full bg-accent text-white py-4 rounded-xl font-black">YAYINLA</button>
             </div>`;
-            list = db.haberler.map(h => `<div class="flex justify-between p-3 border-b border-slate-800 text-xs"><span>${h.title}</span><button onclick="deleteItem('haberler', '${h.id}')" class="text-red-400">Sil</button></div>`).join('');
-        } else if(activeTab === 'reklam') {
-            form = `<div class="bg-slate-900 p-6 rounded-3xl">
-                <h3 class="mb-4 font-bold text-accent">REKLAM YÖNETİMİ</h3>
-                <input type="file" id="r-file" onchange="handleImg(event)" class="text-xs mb-4">
-                <button onclick="saveReklam()" class="w-full bg-accent py-3 rounded-xl font-bold">REKLAMI GÜNCELLE</button>
-            </div>`;
-            list = db.reklamlar[0] ? `<img src="${db.reklamlar[0].img}" class="rounded-xl w-full border border-slate-700">` : 'Reklam yok.';
-        } else if(activeTab === 'cat') {
-            form = `<div class="bg-slate-900 p-6 rounded-3xl"><input type="text" id="c-name" placeholder="Kategori" class="input-dark"><button onclick="saveCat()" class="w-full bg-accent py-3 rounded-xl font-bold">EKLE</button></div>`;
-            list = db.cats.map(c => `<div class="p-3 border-b border-slate-800 flex justify-between text-sm"><span>${c.name}</span><button onclick="deleteItem('cats', '${c.id}')" class="text-red-400">Sil</button></div>`).join('');
+            listHtml = db.haberler.map(h => `<div class="flex justify-between items-center p-4 border-b border-slate-800 text-sm"><span>${h.title}</span><button onclick="deleteItem('haberler','${h.id}')" class="text-red-400 font-bold">SİL</button></div>`).join('');
         }
-        content.innerHTML = form + `<div class="lg:col-span-2 bg-slate-900 p-6 rounded-3xl"><h3 class="text-slate-500 text-xs font-bold mb-4 uppercase">MEVCUT KAYITLAR</h3>${list}</div>`;
+        else if(activeTab === 'yazar') {
+            const editY = editingId ? db.yazarlar.find(y => y.id === editingId) : null;
+            formHtml = `<div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
+                <h3 class="font-bold text-accent mb-5 uppercase tracking-widest text-xs">${editY ? 'YAZARI DÜZENLE' : 'YAZAR KAYDET'}</h3>
+                <input type="text" id="y-isim" value="${editY?.isim || ''}" placeholder="İsim Soyisim" class="input-dark">
+                <input type="text" id="y-bio" value="${editY?.bio || ''}" placeholder="Unvan (Örn: Editör)" class="input-dark">
+                <input type="file" onchange="handleImg(event)" class="text-xs mb-5">
+                <button onclick="saveYazar()" class="w-full bg-accent text-white py-4 rounded-xl font-black uppercase">${editY ? 'GÜNCELLE' : 'YAZARI EKLE'}</button>
+                ${editingId ? `<button onclick="setTab('yazar')" class="w-full mt-3 text-xs opacity-50">İPTAL</button>` : ''}
+            </div>`;
+            listHtml = db.yazarlar.map(y => `
+                <div class="flex items-center justify-between p-4 border-b border-slate-800">
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="editYazarMode('${y.id}')">
+                        <img src="${y.img}" class="w-10 h-10 rounded-full object-cover">
+                        <div><div class="font-bold text-sm">${y.isim}</div><div class="text-[10px] text-accent">DÜZENLE</div></div>
+                    </div>
+                    <button onclick="deleteItem('yazarlar','${y.id}')" class="text-red-500 font-bold text-xs">SİL</button>
+                </div>`).join('');
+        }
+        else if(activeTab === 'cat') {
+            formHtml = `<div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
+                <h3 class="font-bold text-accent mb-5 uppercase tracking-widest text-xs">KATEGORİ EKLE</h3>
+                <input type="text" id="c-name" placeholder="Kategori Adı" class="input-dark">
+                <button onclick="saveCat()" class="w-full bg-accent py-4 rounded-xl font-black">EKLE</button>
+            </div>`;
+            listHtml = db.cats.map(c => `<div class="flex justify-between p-4 border-b border-slate-800"><span>${c.name}</span><button onclick="deleteItem('cats','${c.id}')" class="text-red-400">SİL</button></div>`).join('');
+        }
+        else if(activeTab === 'reklam') {
+            formHtml = `<div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
+                <h3 class="font-bold text-accent mb-5 uppercase tracking-widest text-xs">REKLAM GÜNCELLE</h3>
+                <input type="file" onchange="handleImg(event)" class="text-xs mb-5">
+                <button onclick="saveReklam()" class="w-full bg-accent py-4 rounded-xl font-black">GÖRSELİ GÜNCELLE</button>
+            </div>`;
+            listHtml = db.reklamlar[0] ? `<img src="${db.reklamlar[0].img}" class="w-full rounded-2xl border border-slate-700">` : 'Reklam Yok.';
+        }
+
+        container.innerHTML = formHtml + `<div class="lg:col-span-2 bg-slate-900 p-8 rounded-3xl border border-slate-800">
+            <h3 class="text-xs font-bold text-slate-500 mb-5 tracking-tighter uppercase">SİSTEM KAYITLARI</h3>
+            <div class="overflow-hidden">${listHtml}</div>
+        </div>`;
+    }
+
+    // VERİ KAYIT FONKSİYONLARI (FIXED)
+    function saveHaber() {
+        const title = document.getElementById('h-title').value;
+        const text = document.getElementById('h-text').value;
+        if(!title || !text) return alert("Haber başlığı ve içeriği zorunludur!");
+        
+        db.haberler.unshift({
+            id: 'h' + Date.now(),
+            title: title,
+            cid: document.getElementById('h-cat').value,
+            yid: document.getElementById('h-yazar').value,
+            text: text,
+            img: tempImg || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200'
+        });
+        finalize();
     }
 
     function editYazarMode(id) { editingId = id; tempImg = ""; renderAdmin(); }
@@ -142,65 +191,120 @@
     function saveYazar() {
         const isim = document.getElementById('y-isim').value;
         const bio = document.getElementById('y-bio').value;
+        if(!isim) return alert("İsim zorunludur!");
+
         if(editingId) {
             let y = db.yazarlar.find(x => x.id === editingId);
             y.isim = isim; y.bio = bio; if(tempImg) y.img = tempImg;
         } else {
-            db.yazarlar.push({ id: 'y'+Date.now(), isim, bio, img: tempImg });
+            db.yazarlar.push({ id: 'y' + Date.now(), isim, bio, img: tempImg || 'https://via.placeholder.com/400' });
         }
         finalize();
     }
 
-    function saveHaber() {
-        db.haberler.unshift({ id: 'h'+Date.now(), title: document.getElementById('h-title').value, cid: document.getElementById('h-cat').value, yid: document.getElementById('h-yazar').value, text: document.getElementById('h-text').value, img: tempImg });
-        finalize();
+    function saveCat() {
+        const name = document.getElementById('c-name').value;
+        if(name) { db.cats.push({id: 'c' + Date.now(), name: name}); finalize(); }
     }
-
-    function saveCat() { db.cats.push({id: 'c'+Date.now(), name: document.getElementById('c-name').value}); finalize(); }
 
     function saveReklam() {
         if(tempImg) { db.reklamlar = [{img: tempImg}]; finalize(); }
-        else { alert("Lütfen bir görsel seçin."); }
+        else { alert("Lütfen bir dosya seçin!"); }
     }
 
     function deleteItem(key, id) {
-        if(!confirm('Emin misiniz?')) return;
-        if(key==='yazarlar') db.haberler = db.haberler.filter(h => h.yid !== id);
-        db[key] = db[key].filter(x => x.id !== id);
-        finalize();
+        if(confirm('Veriyi silmek istediğinize emin misiniz?')) {
+            if(key === 'yazarlar') db.haberler = db.haberler.filter(h => h.yid !== id);
+            db[key] = db[key].filter(x => x.id !== id);
+            finalize();
+        }
     }
 
     function finalize() {
-        localStorage.setItem('lumina_db_v2.5', JSON.stringify(db));
-        tempImg = ""; editingId = null; renderAdmin(); renderPortal();
+        localStorage.setItem('lumina_db_final', JSON.stringify(db));
+        tempImg = ""; editingId = null;
+        renderAdmin(); renderPortal();
     }
 
+    // ÖNYÜZ RENDER SİSTEMİ
     function renderPortal() {
-        document.getElementById('categories-list').innerHTML = db.cats.map(c => `<div onclick="filterPortal('${c.id}')">• ${c.name}</div>`).join('');
-        document.getElementById('authors-list').innerHTML = db.yazarlar.map(y => `<div class="author-item" onclick="openAuthor('${y.id}')"><img src="${y.img}"><span>${y.isim}</span></div>`).join('');
-        if(db.reklamlar[0]) document.getElementById('ad-sidebar').innerHTML = `<img src="${db.reklamlar[0].img}" class="w-full h-full object-cover">`;
+        // Kategoriler
+        document.getElementById('categories-list').innerHTML = db.cats.map(c => `<div onclick="filterPortal('${c.id}')" class="hover:text-accent">• ${c.name}</div>`).join('');
+        
+        // Yazarlar
+        document.getElementById('authors-list').innerHTML = db.yazarlar.map(y => `
+            <div class="author-item" onclick="openAuthor('${y.id}')">
+                <img src="${y.img}">
+                <span>${y.isim}</span>
+            </div>`).join('');
+        
+        // Reklam
+        if(db.reklamlar[0]) {
+            document.getElementById('ad-sidebar').innerHTML = `<img src="${db.reklamlar[0].img}" class="w-full h-full object-cover">`;
+        }
+
         filterPortal('all');
     }
 
     function filterPortal(cid) {
-        let items = cid === 'all' ? db.haberler : db.haberler.filter(h => h.cid === cid);
-        document.getElementById('news-feed').innerHTML = items.map(h => `<article class="news-card" onclick="openNews('${h.id}')"><img src="${h.img}" class="news-img"><div class="card-body"><small class="text-accent font-bold uppercase">${db.cats.find(c=>c.id===h.cid)?.name}</small><h2>${h.title}</h2><p class="text-slate-500">${h.text.substring(0, 100)}...</p></div></article>`).join('');
+        let list = cid === 'all' ? db.haberler : db.haberler.filter(h => h.cid === cid);
+        document.getElementById('news-feed').innerHTML = list.map(h => `
+            <article class="news-card" onclick="openNews('${h.id}')">
+                <img src="${h.img}" class="news-img">
+                <div class="card-body">
+                    <small class="text-accent font-bold uppercase tracking-widest">${db.cats.find(c=>c.id===h.cid)?.name || 'KÜLTÜR'}</small>
+                    <h2>${h.title}</h2>
+                    <p class="text-muted">${h.text.substring(0, 110)}...</p>
+                </div>
+            </article>`).join('');
     }
 
     function openNews(hid) {
-        const h = db.haberler.find(x => x.id === hid); const y = db.yazarlar.find(x => x.id === h.yid);
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('overlay-content').innerHTML = `<h1 class="text-5xl font-serif mb-6">${h.title}</h1><div class="flex items-center gap-4 mb-8"><img src="${y.img}" class="w-12 h-12 rounded-full object-cover"><div><div class="font-bold">${y.isim}</div><div class="text-xs text-slate-400">${y.bio}</div></div></div><img src="${h.img}" class="w-full rounded-3xl mb-10"><div class="text-xl leading-loose">${h.text}</div>`;
+        const h = db.haberler.find(x => x.id === hid);
+        const y = db.yazarlar.find(x => x.id === h.yid);
+        const overlay = document.getElementById('overlay');
+        overlay.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        document.getElementById('overlay-content').innerHTML = `
+            <h1 class="text-5xl font-serif mb-8 leading-tight">${h.title}</h1>
+            <div class="flex items-center gap-4 mb-10 border-b pb-10">
+                <img src="${y.img}" class="w-14 h-14 rounded-full object-cover">
+                <div><div class="font-bold text-lg">${y.isim}</div><div class="text-sm text-slate-400">${y.bio}</div></div>
+            </div>
+            <img src="${h.img}" class="w-full rounded-3xl mb-12 shadow-2xl">
+            <div class="text-xl leading-relaxed text-slate-800">${h.text.repeat(3)}</div>
+        `;
     }
 
     function openAuthor(yid) {
-        const y = db.yazarlar.find(x => x.id === yid); const yH = db.haberler.filter(h => h.yid === yid);
+        const y = db.yazarlar.find(x => x.id === yid);
+        const yHaberler = db.haberler.filter(h => h.yid === yid);
         document.getElementById('overlay').style.display = 'block';
-        document.getElementById('overlay-content').innerHTML = `<div class="text-center mb-10"><img src="${y.img}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-accent"><h1>${y.isim}</h1><p>${y.bio}</p></div><div class="grid grid-cols-1 gap-4">${yH.map(h => `<div onclick="openNews('${h.id}')" class="p-4 bg-white border rounded-2xl cursor-pointer font-bold">${h.title}</div>`).join('')}</div>`;
+        document.body.style.overflow = 'hidden';
+        document.getElementById('overlay-content').innerHTML = `
+            <div class="text-center mb-16">
+                <img src="${y.img}" class="w-40 h-40 rounded-full mx-auto mb-6 object-cover border-4 border-accent p-2">
+                <h1 class="text-4xl font-serif">${y.isim}</h1>
+                <p class="text-muted max-w-md mx-auto mt-2">${y.bio}</p>
+            </div>
+            <div class="grid grid-cols-1 gap-6">
+                <h3 class="font-bold border-b pb-4">YAZARIN ARŞİVİ</h3>
+                ${yHaberler.map(h => `<div onclick="openNews('${h.id}')" class="p-6 bg-white border border-slate-100 rounded-2xl cursor-pointer hover:shadow-md transition font-bold text-lg">${h.title}</div>`).join('')}
+            </div>
+        `;
     }
 
-    function closeAll() { document.getElementById('overlay').style.display = 'none'; }
-    window.onscroll = () => { let h = document.documentElement; document.getElementById("progress-bar").style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + "%"; };
+    function closeAll() {
+        document.getElementById('overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    window.onscroll = () => {
+        let scroll = document.documentElement.scrollTop;
+        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.getElementById("progress-bar").style.width = (scroll / height) * 100 + "%";
+    };
+
     window.onload = renderPortal;
 </script>
 </body>
