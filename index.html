@@ -16,50 +16,50 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
 
-        /* --- HEADER & MASTER GRID --- */
-        header { padding: clamp(100px, 15vh, 180px) 5% 40px; }
+        /* --- HEADER AREA --- */
+        header { padding: clamp(80px, 12vh, 150px) 5% 20px; }
         .brand-title { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 9.5vw, 9rem); line-height: 0.8; display: flex; gap: 20px; }
         .brand-title .m-text { color: var(--mardin); }
         .brand-title .b-text { color: var(--brazil); font-weight: 900; }
 
+        /* YAZARLAR HEADER KISMINDA */
+        .header-authors { 
+            display: flex; gap: 30px; margin-top: 30px; padding: 15px 0;
+            border-top: 1px solid rgba(0,0,0,0.05); overflow-x: auto;
+        }
+        .author-box { display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+        .author-box img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--mardin); object-fit: cover; }
+        .author-box span { font-size: 10px; font-weight: 900; letter-spacing: 1px; color: var(--dark); }
+
+        /* --- MASTER GRID --- */
         .master-wrapper { padding: 0 5% 80px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; }
 
-        /* --- SEÇİLİ ALAN (THE SYNERGY) --- */
-        .featured-mask { grid-column: span 8; height: 70vh; border-radius: 50px 50px 0 0; overflow: hidden; position: relative; }
+        /* --- SEÇİLİ ALAN --- */
+        .featured-mask { grid-column: span 8; height: 70vh; border-radius: 50px; overflow: hidden; position: relative; }
         .featured-mask img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65); }
         .curator-layer { position: absolute; inset: 0; padding: 40px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
-
-        /* YAZARLAR BÖLÜMÜ (SEÇİLİ ALANIN HEMEN ALTINDA) */
-        .featured-authors-bar { 
-            grid-column: span 8; background: white; padding: 20px 40px; 
-            border-radius: 0 0 50px 50px; border: 1px solid rgba(0,0,0,0.03);
-            display: flex; align-items: center; gap: 30px; margin-top: -1px; /* Boşluk kalmaması için */
-        }
-        .author-item { display: flex; align-items: center; gap: 12px; }
-        .author-item img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--mardin); object-fit: cover; }
-        .author-item span { font-size: 10px; font-weight: 900; letter-spacing: 1px; color: var(--dark); text-transform: uppercase; }
-
-        /* --- VIDEO PORTAL & WEATHER --- */
-        .video-portal { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 40px; }
-        .v-container { display: flex; flex-direction: column; gap: 15px; }
-        .v-box { height: 40vh; border-radius: 40px; overflow: hidden; background: #000; position: relative; }
-        .v-box iframe { width: 100%; height: 100%; border: none; opacity: 0.6; pointer-events: none; }
-        .weather-info { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: white; border-radius: 30px; border: 1px solid rgba(0,0,0,0.03); }
 
         /* --- MAG STACK (SAĞ TARAF) --- */
         .mag-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; }
         .expand-card { background: white; padding: 35px; border-radius: 40px; border: 1px solid rgba(0,0,0,0.03); }
 
-        /* --- INTERACTIVE OVERLAY --- */
-        .interview-overlay { position: fixed; inset: 0; background: var(--white); z-index: 9999; padding: clamp(30px, 5vw, 80px); display: none; overflow-y: auto; }
-        .interview-overlay.active { display: block; animation: slideUp 0.5s ease; }
+        /* --- VIDEO PORTAL --- */
+        .video-portal { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px; }
+        .v-container { display: flex; flex-direction: column; gap: 15px; }
+        .v-box { height: 40vh; border-radius: 40px; overflow: hidden; background: #000; position: relative; }
+        .v-box iframe { width: 100%; height: 100%; border: none; opacity: 0.6; }
+        .weather-info { display: flex; justify-content: space-between; padding: 15px 30px; background: white; border-radius: 30px; border: 1px solid rgba(0,0,0,0.03); }
+
+        /* --- OVERLAY --- */
+        .interview-overlay { position: fixed; inset: 0; background: var(--white); z-index: 9999; padding: 5vw; display: none; overflow-y: auto; }
+        .interview-overlay.active { display: block; }
         .close-interview { position: fixed; top: 40px; right: 40px; background: var(--dark); color: white; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: 900; z-index: 10000; }
 
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* --- RESPONSIVE --- */
         @media (max-width: 1024px) { 
-            .featured-mask, .mag-stack, .video-portal, .featured-authors-bar { grid-column: span 12; } 
+            .featured-mask, .mag-stack, .video-portal { grid-column: span 12; } 
             .video-portal { grid-template-columns: 1fr; }
-            .featured-authors-bar { border-radius: 0 0 30px 30px; flex-wrap: wrap; }
+            .featured-mask { height: 50vh; }
         }
     </style>
 </head>
@@ -67,6 +67,16 @@
 
     <header>
         <div class="brand-title"><span class="m-text">MARDIN</span><span class="b-text">BRAZIL</span></div>
+        <div class="header-authors">
+            <div class="author-box">
+                <img src="https://i.pravatar.cc/100?u=elif">
+                <span>DR. ELİF MARDİNİ</span>
+            </div>
+            <div class="author-box">
+                <img src="https://i.pravatar.cc/100?u=ricardo">
+                <span>PROF. RICARDO SILVA</span>
+            </div>
+        </div>
     </header>
 
     <div class="master-wrapper">
@@ -76,32 +86,20 @@
             <div class="curator-layer">
                 <div style="background: var(--mardin); width: fit-content; color: white; padding: 6px 15px; border-radius: 20px; font-size: 9px; font-weight: 900; letter-spacing: 2px;">ÖZEL SÖYLEŞİ</div>
                 <div>
-                    <h2 style="font-family: 'Playfair Display'; font-size: clamp(2rem, 5vw, 4rem); color: white; margin-bottom: 25px;">"Taşın Hafızası ve <br>Ormanın Kalbi"</h2>
-                    <button onclick="openInterview()" style="background:white; border:none; padding:15px 35px; border-radius:50px; font-weight:900; font-size:10px; cursor:pointer;">İÇERİĞE GİT</button>
+                    <h2 style="font-family: 'Playfair Display'; font-size: clamp(1.8rem, 4vw, 3.5rem); color: white; margin-bottom: 20px;">"Taşın Hafızası ve <br>Ormanın Kalbi"</h2>
+                    <button onclick="openInterview()" style="background:white; border:none; padding:12px 30px; border-radius:50px; font-weight:900; font-size:9px; cursor:pointer;">OKUMAYA BAŞLA</button>
                 </div>
             </div>
         </div>
 
-        <div class="featured-authors-bar">
-            <div class="author-item">
-                <img src="https://i.pravatar.cc/100?u=elif">
-                <span>DR. ELİF MARDİNİ</span>
-            </div>
-            <div class="author-item">
-                <img src="https://i.pravatar.cc/100?u=ricardo">
-                <span>PROF. RICARDO SILVA</span>
-            </div>
-            <div style="margin-left: auto; opacity: 0.3; font-size: 9px; font-weight: 900; letter-spacing: 2px;">CURATORIAL TEAM // ASC 2026</div>
-        </div>
-
         <div class="mag-stack">
             <div class="expand-card">
-                <span style="font-weight:900; font-size:10px; color:var(--mardin)">HABER DOSYASI</span>
-                <h4 style="font-family: 'Playfair Display'; font-size: 1.5rem; margin-top: 10px;">Mezopotamya'nın Sesi</h4>
+                <span style="font-weight:900; font-size:9px; color:var(--mardin)">HABER DOSYASI</span>
+                <h4 style="font-family: 'Playfair Display'; font-size: 1.4rem; margin-top: 10px;">Mezopotamya'nın Sesi</h4>
             </div>
             <div class="expand-card">
-                <span style="font-weight:900; font-size:10px; color:var(--brazil)">DENEME</span>
-                <h4 style="font-family: 'Playfair Display'; font-size: 1.5rem; margin-top: 10px;">Amazon Dijital Arşivi</h4>
+                <span style="font-weight:900; font-size:9px; color:var(--brazil)">DENEME</span>
+                <h4 style="font-family: 'Playfair Display'; font-size: 1.4rem; margin-top: 10px;">Amazon Dijital Arşivi</h4>
             </div>
         </div>
 
@@ -109,15 +107,15 @@
             <div class="v-container">
                 <div class="v-box"><iframe src="https://www.youtube.com/embed/3r9cOuTmVu4?autoplay=1&mute=1&loop=1&playlist=3r9cOuTmVu4&controls=0"></iframe></div>
                 <div class="weather-info">
-                    <div style="font-weight:900; font-size:10px; letter-spacing:2px;">Mardin, TR</div>
-                    <div style="font-size:11px;">SAAT: <b id="mardin-time" style="color:var(--mardin)">--:--</b></div>
+                    <div style="font-weight:900; font-size:9px; letter-spacing:1px;">Mardin, TR</div>
+                    <div style="font-size:10px;">SAAT: <b id="mardin-time" style="color:var(--mardin)">--:--</b></div>
                 </div>
             </div>
             <div class="v-container">
                 <div class="v-box"><iframe src="https://www.youtube.com/embed/E6Ndg4pvLh8?autoplay=1&mute=1&loop=1&playlist=E6Ndg4pvLh8&controls=0"></iframe></div>
                 <div class="weather-info">
-                    <div style="font-weight:900; font-size:10px; letter-spacing:2px;">Manaus, BR</div>
-                    <div style="font-size:11px;">SAAT: <b id="brazil-time" style="color:var(--mardin)">--:--</b></div>
+                    <div style="font-weight:900; font-size:9px; letter-spacing:1px;">Manaus, BR</div>
+                    <div style="font-size:10px;">SAAT: <b id="brazil-time" style="color:var(--mardin)">--:--</b></div>
                 </div>
             </div>
         </div>
@@ -125,11 +123,9 @@
 
     <div class="interview-overlay" id="overlay">
         <div class="close-interview" onclick="closeInterview()">KAPAT [X]</div>
-        <div style="max-width: 900px; margin: 80px auto;">
-            <h1 style="font-family: 'Playfair Display'; font-size: 3.5rem; line-height: 1.1;">Küratörlerin Arşivinden</h1>
-            <div style="margin-top: 40px; font-family: 'Lora'; font-size: 1.4rem; line-height: 1.8;">
-                <p>Bu bölüm, Mardin ve Brezilya arasındaki derin bağları inceleyen makaleleri ve söyleşileri içermektedir.</p>
-            </div>
+        <div style="max-width: 800px; margin: 50px auto;">
+            <h1 style="font-family: 'Playfair Display'; font-size: 3rem;">Küratör Arşivi</h1>
+            <p style="font-family: 'Lora'; font-size: 1.2rem; line-height: 1.8; margin-top: 30px;">Makaleler ve derin okumalar burada listelenecek.</p>
         </div>
     </div>
 
