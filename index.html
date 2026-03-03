@@ -3,162 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina v16 | Professional Commercial OS</title>
+    <title>Lumina v17 | Soft Intelligence</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --bg: #F9F9F7; --accent: #C5A059; --text: #1A1A1A; }
-        * { -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+        :root { --bg: #F9F9F7; --soft-admin: #F4F4F1; --accent: #C5A059; --text: #1A1A1A; }
+        * { -webkit-font-smoothing: antialiased; transition: all 0.3s ease; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; }
         .serif { font-family: 'Cormorant Garamond', serif; }
 
-        /* Reklam Alanı Tasarımı */
-        .ad-space-container { width: 100%; height: 250px; border-radius: 40px; background: #eee; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
-        .ad-label { position: absolute; top: 15px; left: 20px; font-size: 8px; font-weight: 900; letter-spacing: 3px; opacity: 0.2; text-transform: uppercase; }
-
-        /* Admin Layout */
-        #admin-panel { display: none; position: fixed; inset: 0; background: #080808; color: white; z-index: 200000; flex-direction: row; }
-        .admin-sidebar { width: 320px; border-right: 1px solid #1A1A1A; padding: 50px 30px; background: #050505; }
-        .admin-main { flex: 1; padding: 60px; overflow-y: auto; background: #080808; }
-        .admin-card { background: #111; border: 1px solid #222; border-radius: 24px; padding: 24px; margin-bottom: 20px; }
-        .input-lux { background: #181818; border: 1px solid #333; border-radius: 12px; padding: 12px; width: 100%; color: white; outline: none; margin-bottom: 15px; }
+        /* Arayüz Sabitleri */
+        .ad-container { width: 100%; max-width: 1200px; margin: 0 auto 60px; height: 200px; border-radius: 40px; background: #fff; overflow: hidden; border: 1px solid rgba(0,0,0,0.03); display: flex; align-items: center; position: relative; }
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; padding: 0 5% 100px; }
         
+        /* Dünyanın En İyi Soft Admin Paneli */
+        #admin-panel { display: none; position: fixed; inset: 0; background: var(--soft-admin); z-index: 200000; flex-direction: row; animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .admin-sidebar { width: 300px; background: #fff; border-right: 1px solid rgba(0,0,0,0.05); padding: 50px 30px; }
+        .admin-content { flex: 1; padding: 60px 5%; overflow-y: auto; }
+        
+        .admin-btn { width: 100%; text-align: left; padding: 16px 20px; border-radius: 15px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: rgba(0,0,0,0.4); margin-bottom: 10px; }
+        .admin-btn.active { background: var(--bg); color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.02); }
+        
+        .input-lux { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 20px; padding: 18px 25px; width: 100%; outline: none; font-size: 14px; }
+        .input-lux:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1); }
+
+        .admin-card { background: #fff; border-radius: 30px; padding: 30px; border: 1px solid rgba(0,0,0,0.03); margin-bottom: 30px; }
         .modal-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100000; overflow-y: auto; }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .highlight { color: var(--accent); font-weight: 900; }
     </style>
 </head>
 <body class="no-scrollbar">
 
-<nav class="sticky top-0 z-[5000] px-12 py-6 flex justify-between items-center bg-white/80 backdrop-blur-xl border-b border-black/5">
-    <div class="flex items-center gap-12">
-        <h1 class="serif text-4xl font-light uppercase tracking-tighter cursor-pointer" onclick="location.reload()">Lumina</h1>
-        <div id="ui-meta" class="text-[10px] font-black uppercase tracking-[4px] opacity-30"></div>
+<nav class="sticky top-0 z-[5000] px-12 py-8 flex justify-between items-center bg-white/70 backdrop-blur-2xl">
+    <div class="flex items-center gap-16">
+        <h1 class="serif text-4xl font-light uppercase tracking-tighter cursor-pointer">Lumina</h1>
+        <div id="ui-meta" class="hidden md:block text-[10px] font-black uppercase tracking-[4px] opacity-20"></div>
     </div>
-    <button onclick="toggleAdmin('flex')" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition">
-        <i data-lucide="settings-2" class="w-5 h-5"></i>
+    <button onclick="toggleAdmin('flex')" class="group flex items-center gap-3 bg-black text-white px-8 py-4 rounded-full hover:bg-accent transition transform active:scale-95">
+        <span class="text-[10px] font-black uppercase tracking-widest">Master Console</span>
+        <i data-lucide="compass" class="w-4 h-4"></i>
     </button>
 </nav>
 
-<section class="px-[5%] py-8 border-b border-black/5 flex gap-12 overflow-x-auto no-scrollbar justify-center">
-    <div id="author-list-ui" class="flex gap-12 items-center"></div>
+<section class="px-[5%] py-12 flex justify-center gap-12 border-b border-black/5 bg-white/30">
+    <div id="ui-authors" class="flex gap-12 items-center"></div>
 </section>
 
-<header class="px-[5%] py-16">
-    <div id="ui-ad-space" class="ad-space-container group cursor-pointer">
-        <span class="ad-label">Sponsorlu İçerik</span>
-        <img id="ad-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition">
-        <div class="absolute inset-0 flex items-center justify-center">
-            <p id="ad-text" class="serif text-4xl italic text-white/40 group-hover:text-white transition uppercase tracking-widest">Premium Partner Space</p>
+<header class="px-[5%] pt-20 pb-10">
+    <div class="ad-container group cursor-pointer">
+        <img id="ad-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity">
+        <div class="z-10 px-20 w-full flex justify-between items-center">
+            <div>
+                <p class="text-[9px] font-black uppercase tracking-[5px] opacity-30 mb-2">Partner Spotlight</p>
+                <h2 id="ad-text" class="serif text-4xl italic opacity-60 group-hover:opacity-100">Excellence in Design & Culture</h2>
+            </div>
+            <button class="px-8 py-3 border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition">Explore</button>
         </div>
     </div>
 </header>
 
-<section id="ui-feed" class="bento-grid grid grid-cols-12 gap-8 px-[5%] py-10"></section>
+<section id="ui-feed" class="bento-grid"></section>
+
+<div id="admin-panel">
+    <div class="admin-sidebar shadow-2xl shadow-black/5">
+        <div class="mb-16">
+            <h2 class="serif text-4xl italic text-accent">Lumina OS</h2>
+            <p class="text-[9px] font-black uppercase tracking-widest opacity-20">Soft Management v17</p>
+        </div>
+        <nav>
+            <button onclick="switchTab('news')" class="admin-btn active"><i data-lucide="edit-3" class="inline w-4 h-4 mr-3"></i> İçerik Editörü</button>
+            <button onclick="switchTab('authors')" class="admin-btn"><i data-lucide="user" class="inline w-4 h-4 mr-3"></i> Yazarlar</button>
+            <button onclick="switchTab('ads')" class="admin-btn"><i data-lucide="image" class="inline w-4 h-4 mr-3"></i> Reklam & Medya</button>
+        </nav>
+        <button onclick="toggleAdmin('none')" class="absolute bottom-10 left-10 text-[10px] font-black uppercase text-red-400 hover:text-red-600">Sistemi Kapat</button>
+    </div>
+
+    <div class="admin-content no-scrollbar">
+        <div id="tab-news" class="admin-tab">
+            <div class="flex justify-between items-end mb-12">
+                <h3 class="serif text-6xl">Yayın Merkezi</h3>
+            </div>
+            <div class="admin-card">
+                <div class="grid grid-cols-2 gap-6 mb-6">
+                    <input id="in-news-title" placeholder="Makale Başlığı" class="input-lux">
+                    <select id="in-news-author" class="input-lux"></select>
+                </div>
+                <textarea id="in-news-text" placeholder="Hikayeyi detaylandırın..." class="input-lux h-40 mb-6"></textarea>
+                <div class="flex gap-4">
+                    <input type="file" id="in-news-file" class="hidden" onchange="handleFile(this, 'news')">
+                    <label for="in-news-file" class="flex-1 p-5 border-2 border-dashed border-black/5 rounded-3xl text-center text-[10px] font-black uppercase opacity-40 cursor-pointer hover:border-accent">Görsel Yükle</label>
+                    <button onclick="saveNews()" class="flex-1 bg-black text-white rounded-3xl font-black text-[10px] uppercase tracking-widest hover:bg-accent transition">Yayınla / Güncelle</button>
+                </div>
+            </div>
+            <div id="adm-news-list" class="space-y-4"></div>
+        </div>
+
+        <div id="tab-authors" class="admin-tab hidden">
+            <h3 class="serif text-6xl mb-12">Küratör Yönetimi</h3>
+            <div class="admin-card">
+                <input id="in-auth-name" placeholder="Yazar Adı" class="input-lux mb-6">
+                <div class="flex gap-4">
+                    <input type="file" id="in-auth-file" class="hidden" onchange="handleFile(this, 'auth')">
+                    <label for="in-auth-file" class="flex-1 p-5 border-2 border-dashed border-black/5 rounded-3xl text-center text-[10px] font-black uppercase opacity-40 cursor-pointer">Profil Fotoğrafı</label>
+                    <button onclick="saveAuthor()" class="flex-1 bg-accent text-white rounded-3xl font-black text-[10px] uppercase tracking-widest">Yazar Ekle</button>
+                </div>
+            </div>
+            <div id="adm-auth-list" class="grid grid-cols-2 gap-6"></div>
+        </div>
+    </div>
+</div>
 
 <div id="article-modal" class="modal-overlay">
     <div class="p-10 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-md">
-        <button onclick="closeModals()" class="text-[10px] font-black uppercase opacity-40 hover:opacity-100"><i data-lucide="arrow-left"></i> Kapat</button>
-        <button id="tts-btn" onclick="toggleKaraoke()" class="bg-black text-white px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest">Dinle</button>
+        <button onclick="closeModals()" class="text-[10px] font-black uppercase opacity-40 flex items-center gap-2"><i data-lucide="chevron-left"></i> Geri Dön</button>
+        <button onclick="toggleKaraoke()" class="bg-black text-white px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest">Sesli Deneyim</button>
     </div>
     <div id="article-content" class="max-w-4xl mx-auto py-24 px-10"></div>
 </div>
 
-<div id="admin-panel">
-    <div class="admin-sidebar">
-        <h2 class="serif text-4xl italic text-accent mb-16">Lumina Pro</h2>
-        <nav class="space-y-4">
-            <button onclick="switchTab('news')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="file-text"></i> Haber Yönetimi</button>
-            <button onclick="switchTab('authors')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="users"></i> Yazar Yönetimi</button>
-            <button onclick="switchTab('ad')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="layout"></i> Reklam Modülü</button>
-        </nav>
-        <button onclick="toggleAdmin('none')" class="mt-20 w-full py-4 border border-white/10 rounded-xl text-[10px] font-black uppercase">Sistemi Kapat</button>
-    </div>
-
-    <div class="admin-main">
-        <div id="tab-news" class="admin-tab">
-            <h3 class="serif text-5xl mb-10">Haber Editörü</h3>
-            <div class="admin-card">
-                <input id="in-news-id" type="hidden">
-                <input id="in-news-title" placeholder="Başlık" class="input-lux">
-                <textarea id="in-news-text" placeholder="İçerik..." class="input-lux h-40"></textarea>
-                <select id="in-news-author" class="input-lux"></select>
-                <input type="file" id="in-news-file" onchange="handleFile(this, 'news')" class="hidden">
-                <label for="in-news-file" class="block p-4 border border-dashed border-white/20 rounded-xl text-center text-[10px] mb-4 cursor-pointer">Görsel Seç</label>
-                <button onclick="saveNews()" class="bg-accent text-black font-black w-full py-4 rounded-xl text-[10px] uppercase">Kaydet / Güncelle</button>
-            </div>
-            <div id="adm-news-list" class="space-y-2"></div>
-        </div>
-
-        <div id="tab-authors" class="admin-tab hidden">
-            <h3 class="serif text-5xl mb-10">Yazar Kadrosu</h3>
-            <div class="admin-card">
-                <input id="in-auth-id" type="hidden">
-                <input id="in-auth-name" placeholder="Yazar Adı" class="input-lux">
-                <textarea id="in-auth-bio" placeholder="Biyografi..." class="input-lux h-24"></textarea>
-                <input type="file" id="in-auth-file" onchange="handleFile(this, 'auth')" class="hidden">
-                <label for="in-auth-file" class="block p-4 border border-dashed border-white/20 rounded-xl text-center text-[10px] mb-4 cursor-pointer">Profil Fotoğrafı</label>
-                <button onclick="saveAuthor()" class="bg-white text-black font-black w-full py-4 rounded-xl text-[10px] uppercase">Yazar Kaydet</button>
-            </div>
-            <div id="adm-auth-list" class="grid grid-cols-2 gap-4"></div>
-        </div>
-
-        <div id="tab-ad" class="admin-tab hidden">
-            <h3 class="serif text-5xl mb-10">Reklam Yönetimi</h3>
-            <div class="admin-card">
-                <input id="in-ad-text" placeholder="Reklam Başlığı" class="input-lux">
-                <input type="file" id="in-ad-file" onchange="handleFile(this, 'ad')" class="hidden">
-                <label for="in-ad-file" class="block p-8 border border-dashed border-white/20 rounded-xl text-center mb-6 cursor-pointer">Reklam Görselini Güncelle</label>
-                <button onclick="saveAd()" class="bg-accent text-black font-black w-full py-4 rounded-xl text-[10px] uppercase tracking-widest">Reklamı Yayına Al</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
-    // --- DB ENGINE ---
-    let DB = JSON.parse(localStorage.getItem('LUMINA_PRO_DB')) || {
-        ad: { text: "WORLD CLASS DESIGN PARTNER", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" },
+    let DB = JSON.parse(localStorage.getItem('LUMINA_V17_DB')) || {
+        ad: { text: "PREMIUM CULTURAL PARTNERSHIP", img: "" },
         authors: [
-            { id: 1, name: "Zeynep Mardini", bio: "Kültürel miras uzmanı.", img: "https://i.pravatar.cc/150?u=44" },
-            { id: 2, name: "Ricardo Silva", bio: "Brezilya modernizmi araştırmacısı.", img: "https://i.pravatar.cc/150?u=32" }
+            { id: 1, name: "Zeynep Mardini", img: "https://i.pravatar.cc/150?u=44" },
+            { id: 2, name: "Lucas Silva", img: "https://i.pravatar.cc/150?u=32" }
         ],
         news: [
-            { id: 101, authId: 1, title: "Sarı Taşların Şiiri", text: "Mardin'in dar sokaklarında zamanın nasıl durduğuna şahit olun. Taşın sabrı, güneşin rengiyle buluşuyor.", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200", type: "Kültür" }
+            { id: 101, authId: 1, title: "Taşın Sabrı: Mardin", text: "Mardin'in sarı taşları arasında zaman, kum saatindeki gibi değil, bir anıtın sessizliğiyle akar.", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200", type: "MİSTİK" }
         ]
     };
 
-    let currentImgs = { news: "", auth: "", ad: "" };
+    let currentImgs = { news: "", auth: "" };
 
-    function sync() { localStorage.setItem('LUMINA_PRO_DB', JSON.stringify(DB)); render(); }
+    function sync() { localStorage.setItem('LUMINA_V17_DB', JSON.stringify(DB)); render(); }
 
-    // --- RENDER ---
     function render() {
         lucide.createIcons();
-        
-        // UI Ad
-        document.getElementById('ad-img').src = DB.ad.img;
-        document.getElementById('ad-text').innerText = DB.ad.text;
+        document.getElementById('ui-meta').innerText = `Mardin 24°C / Sao Paulo 21°C • Distance: 10.604 KM`;
 
-        // UI Authors (Yamayan/Statik)
-        document.getElementById('author-list-ui').innerHTML = DB.authors.map(a => `
+        // UI Authors
+        document.getElementById('ui-authors').innerHTML = DB.authors.map(a => `
             <div class="flex items-center gap-4 cursor-pointer group" onclick="openAuthorDetail(${a.id})">
                 <img src="${a.img}" class="w-12 h-12 rounded-full border border-black/5 object-cover group-hover:scale-110 transition">
-                <span class="text-[10px] font-black uppercase tracking-widest opacity-40 group-hover:opacity-100">${a.name}</span>
+                <span class="text-[10px] font-black uppercase tracking-widest opacity-30 group-hover:opacity-100">${a.name}</span>
             </div>
         `).join('');
 
         // UI Feed
         document.getElementById('ui-feed').innerHTML = DB.news.map((n, idx) => `
-            <div class="bento-item h-[500px] rounded-[40px] overflow-hidden relative cursor-pointer group ${idx % 3 === 0 ? 'col-span-8' : 'col-span-4'}" onclick="openArticle(${n.id})">
+            <div class="bento-item h-[550px] rounded-[40px] overflow-hidden relative cursor-pointer group ${idx % 3 === 0 ? 'col-span-8' : 'col-span-4'}" onclick="openArticle(${n.id})">
                 <img src="${n.img}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                <div class="absolute bottom-0 p-10 text-white">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-0 p-12 text-white">
                     <p class="text-[9px] font-black uppercase tracking-[5px] text-accent mb-4">${n.type}</p>
-                    <h3 class="serif text-5xl leading-tight">${n.title}</h3>
+                    <h3 class="serif text-6xl leading-tight tracking-tighter">${n.title}</h3>
                 </div>
             </div>
         `).join('');
@@ -166,11 +171,11 @@
         // Admin Lists
         document.getElementById('in-news-author').innerHTML = DB.authors.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
         document.getElementById('adm-news-list').innerHTML = DB.news.map(n => `
-            <div class="p-4 bg-white/5 rounded-xl flex justify-between items-center text-[10px]">
-                <span>${n.title}</span>
+            <div class="admin-card flex justify-between items-center py-4 px-8">
+                <span class="text-xs font-bold uppercase opacity-60">${n.title}</span>
                 <div class="flex gap-4">
-                    <button onclick="editNews(${n.id})" class="text-accent uppercase font-black">Düzenle</button>
-                    <button onclick="deleteNews(${n.id})" class="text-red-500 uppercase font-black">Sil</button>
+                    <button onclick="editNews(${n.id})" class="text-accent text-[9px] font-black uppercase">Düzenle</button>
+                    <button onclick="deleteNews(${n.id})" class="text-red-400 text-[9px] font-black uppercase">Sil</button>
                 </div>
             </div>
         `).join('');
@@ -181,15 +186,12 @@
                     <img src="${a.img}" class="w-10 h-10 rounded-full object-cover">
                     <span class="text-[10px] font-black uppercase">${a.name}</span>
                 </div>
-                <div class="flex gap-4">
-                    <button onclick="editAuth(${a.id})" class="text-accent text-[9px] font-black uppercase">Düzenle</button>
-                    <button onclick="deleteAuth(${a.id})" class="text-red-500 text-[9px] font-black uppercase">Sil</button>
-                </div>
+                <button onclick="deleteAuth(${a.id})" class="text-red-400 text-[9px] font-black uppercase">Kaldır</button>
             </div>
         `).join('');
     }
 
-    // --- ACTIONS ---
+    // ACTIONS
     function handleFile(input, key) {
         const reader = new FileReader();
         reader.onload = e => currentImgs[key] = e.target.result;
@@ -197,69 +199,26 @@
     }
 
     function saveNews() {
-        const id = document.getElementById('in-news-id').value;
-        const n = { 
-            id: id ? parseInt(id) : Date.now(), 
-            authId: parseInt(document.getElementById('in-news-author').value),
-            title: document.getElementById('in-news-title').value,
-            text: document.getElementById('in-news-text').value,
-            img: currentImgs.news || "https://via.placeholder.com/1200",
-            type: "Kültür"
-        };
-        if(id) DB.news = DB.news.map(x => x.id === n.id ? n : x); else DB.news.unshift(n);
-        sync(); resetNewsForm();
+        const n = { id: Date.now(), authId: parseInt(document.getElementById('in-news-author').value), title: document.getElementById('in-news-title').value, text: document.getElementById('in-news-text').value, img: currentImgs.news || "https://via.placeholder.com/1200", type: "KÜLTÜR" };
+        DB.news.unshift(n); sync();
     }
 
-    function editNews(id) {
-        const n = DB.news.find(x => x.id === id);
-        document.getElementById('in-news-id').value = n.id;
-        document.getElementById('in-news-title').value = n.title;
-        document.getElementById('in-news-text').value = n.text;
-        document.getElementById('in-news-author').value = n.authId;
-        currentImgs.news = n.img;
-        switchTab('news');
+    function saveAuthor() {
+        const a = { id: Date.now(), name: document.getElementById('in-auth-name').value, img: currentImgs.auth || "https://i.pravatar.cc/150" };
+        DB.authors.push(a); sync();
     }
 
     function deleteNews(id) { DB.news = DB.news.filter(x => x.id !== id); sync(); }
-
-    function saveAuthor() {
-        const id = document.getElementById('in-auth-id').value;
-        const a = {
-            id: id ? parseInt(id) : Date.now(),
-            name: document.getElementById('in-auth-name').value,
-            bio: document.getElementById('in-auth-bio').value,
-            img: currentImgs.auth || "https://i.pravatar.cc/150"
-        };
-        if(id) DB.authors = DB.authors.map(x => x.id === a.id ? a : x); else DB.authors.push(a);
-        sync(); resetAuthForm();
-    }
-
-    function editAuth(id) {
-        const a = DB.authors.find(x => x.id === id);
-        document.getElementById('in-auth-id').value = a.id;
-        document.getElementById('in-auth-name').value = a.name;
-        document.getElementById('in-auth-bio').value = a.bio;
-        currentImgs.auth = a.img;
-        switchTab('authors');
-    }
-
     function deleteAuth(id) { DB.authors = DB.authors.filter(x => x.id !== id); sync(); }
 
-    function saveAd() {
-        DB.ad.text = document.getElementById('in-ad-text').value;
-        if(currentImgs.ad) DB.ad.img = currentImgs.ad;
-        sync();
-    }
-
-    // --- MODAL LOGIC ---
     function openArticle(id) {
         const n = DB.news.find(x => x.id === id);
         const a = DB.authors.find(x => x.id === n.authId);
         document.getElementById('article-content').innerHTML = `
-            <h1 class="serif text-8xl text-center leading-none mb-12 tracking-tighter">${n.title}</h1>
+            <h1 class="serif text-9xl text-center leading-[0.85] tracking-tighter mb-20">${n.title}</h1>
             <div class="flex items-center justify-center gap-4 mb-20">
-                <img src="${a.img}" class="w-10 h-10 rounded-full">
-                <span class="text-[10px] font-black uppercase tracking-widest">${a.name}</span>
+                <img src="${a.img}" class="w-12 h-12 rounded-full">
+                <span class="text-[11px] font-black uppercase tracking-widest opacity-40">${a.name}</span>
             </div>
             <div id="karaoke-text" class="serif text-4xl leading-relaxed text-justify opacity-80">
                 ${n.text.split(' ').map(w => `<span>${w}</span>`).join(' ')}
@@ -274,45 +233,23 @@
         document.getElementById('article-content').innerHTML = `
             <div class="text-center">
                 <img src="${a.img}" class="w-40 h-40 rounded-full mx-auto mb-10 object-cover border-4 border-accent p-2">
-                <h2 class="serif text-7xl mb-6">${a.name}</h2>
-                <p class="serif text-2xl italic opacity-60 mb-20 max-w-2xl mx-auto">${a.bio}</p>
-                <div class="text-left">
-                    <p class="text-[10px] font-black uppercase tracking-[5px] mb-10 opacity-30">Yazarın Yazıları</p>
-                    <div class="space-y-12">
-                        ${aNews.map(n => `
-                            <div class="group cursor-pointer" onclick="openArticle(${n.id})">
-                                <h4 class="serif text-5xl group-hover:text-accent transition">${n.title}</h4>
-                                <p class="text-[10px] font-black uppercase mt-4 opacity-40">Makaleyi Oku — ${n.type}</p>
-                            </div>
-                        `).join('')}
-                    </div>
+                <h2 class="serif text-8xl mb-24">${a.name}</h2>
+                <div class="text-left space-y-16">
+                    ${aNews.map(n => `<h4 class="serif text-6xl hover:text-accent cursor-pointer" onclick="openArticle(${n.id})">${n.title}</h4>`).join('')}
                 </div>
             </div>
         `;
         document.getElementById('article-modal').style.display = 'block';
     }
 
-    // --- UTILS ---
     function toggleAdmin(s) { document.getElementById('admin-panel').style.display = s; }
-    function switchTab(t) { document.querySelectorAll('.admin-tab').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); }
-    function closeModals() { window.speechSynthesis.cancel(); document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none'); }
-    function resetNewsForm() { document.getElementById('in-news-id').value = ""; document.getElementById('in-news-title').value = ""; document.getElementById('in-news-text').value = ""; currentImgs.news = ""; }
-    function resetAuthForm() { document.getElementById('in-auth-id').value = ""; document.getElementById('in-auth-name').value = ""; document.getElementById('in-auth-bio').value = ""; currentImgs.auth = ""; }
-
-    function toggleKaraoke() {
-        const spans = document.querySelectorAll('#karaoke-text span');
-        const utter = new SpeechSynthesisUtterance(document.getElementById('karaoke-text').innerText);
-        utter.lang = 'tr-TR'; utter.rate = 0.9;
-        let i = 0;
-        utter.onboundary = e => {
-            if(e.name === 'word') {
-                spans.forEach(s => s.classList.remove('highlight'));
-                if(spans[i]) spans[i].classList.add('highlight');
-                i++;
-            }
-        };
-        window.speechSynthesis.speak(utter);
+    function switchTab(t) { 
+        document.querySelectorAll('.admin-tab').forEach(x => x.classList.add('hidden')); 
+        document.querySelectorAll('.admin-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-'+t).classList.remove('hidden');
+        event.currentTarget.classList.add('active');
     }
+    function closeModals() { window.speechSynthesis.cancel(); document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none'); }
 
     window.onload = render;
 </script>
