@@ -41,7 +41,7 @@
         .front-overlay h4 { font-family: 'Playfair Display'; font-size: 1.6rem; margin-bottom: 5px; }
         .flip-back { color: white; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; }
 
-        /* --- 3. TAM EKRAN DETAY PANELİ (GÖRSELDEKİ MAVİ TON) --- */
+        /* --- 3. TAM EKRAN DETAY PANELİ --- */
         .detail-overlay { 
             position: fixed; inset: 0; 
             z-index: 10001; display: none; 
@@ -60,20 +60,24 @@
         .close-detail:hover { transform: rotate(90deg); opacity: 0.7; }
 
         .modal-img-full { width: 100%; height: auto; border-radius: 25px; margin-bottom: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-        .detail-body h2 { font-family: 'Playfair Display'; font-size: 3.5rem; margin-bottom: 25px; line-height: 1.1; letter-spacing: -2px; }
+        .detail-body h2 { font-family: 'Playfair Display'; font-size: 3.5rem; margin-bottom: 10px; line-height: 1.1; letter-spacing: -2px; }
         .detail-body p { font-family: 'Lora'; font-size: 1.4rem; line-height: 1.9; opacity: 0.9; }
 
-        /* --- 4. DİĞER BÖLÜMLER --- */
-        .video-section { position: relative; width: 100%; height: 400px; border-radius: 25px; overflow: hidden; margin-bottom: 60px; cursor: pointer; }
-        .video-section img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
-        .video-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
-        
-        .main-article { background: white; padding: 50px; border-radius: 25px; margin-bottom: 40px; cursor: pointer; }
+        .audio-btn { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; }
+
+        /* --- 4. VIDEO (KESİNLİKLE AYNI EBAT) --- */
+        .video-section { position: relative; width: 100%; height: 400px; border-radius: 25px; overflow: hidden; margin-bottom: 60px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .video-section iframe { width: 100%; height: 100%; border: none; }
+
+        .main-article { background: white; padding: 50px; border-radius: 25px; margin-bottom: 40px; }
         .dropcap { float: left; font-size: 4.5rem; font-weight: 900; line-height: 0.8; margin-right: 12px; color: var(--mardin); }
 
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; margin-bottom: 60px; background: white; padding: 30px; border-radius: 25px; }
         .stat-val { font-size: 2.2rem; font-weight: 900; color: var(--rio); display: block; }
-        .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #888; }
+        
+        .vote-section { text-align: center; background: white; padding: 40px; border-radius: 25px; margin-top: -30px; margin-bottom: 60px; }
+        .vote-btn { padding: 15px 30px; border-radius: 50px; border: 2px solid #eee; background: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 0 10px; }
+        .vote-btn:hover { border-color: var(--rio); color: var(--rio); }
 
         .live-pulse { width: 10px; height: 10px; background: #ff4b2b; border-radius: 50%; display: inline-block; margin-right: 8px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,75,43,0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,75,43,0); } 100% { box-shadow: 0 0 0 0 rgba(255,75,43,0); } }
@@ -84,6 +88,7 @@
 <body>
 
     <header id="top">
+        <p style="font-size: 10px; font-weight: bold; margin-bottom: 15px; letter-spacing: 2px; opacity: 0.6;">3 MART 2026 | CANLI AKIŞ</p>
         <h1>MARDIN<span>RIO</span></h1>
         <p style="letter-spacing: 5px; font-weight: bold; font-size: 12px; color: var(--mardin);">KÜLTÜREL SENTEZ • ESTETİK • YAŞAM</p>
     </header>
@@ -102,63 +107,68 @@
         
         <div class="gastro-grid">
             <div class="flip-card" data-type="news" data-color="var(--mardin)"
+                 data-time="4 dk okuma"
                  data-title="Taşın Mirası Geleceğe Aktarılıyor" 
                  data-img="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800&q=80"
-                 data-info="Mardin'in kadim çarşılarında başlatılan restorasyon seferberliği, şehrin binlerce yıllık silüetini koruma altına alıyor. UNESCO destekli projede, geleneksel taş işçiliği modern mühendislik ile buluşuyor.">
+                 data-info="Mardin'in kadim çarşılarında başlatılan restorasyon seferberliği, şehrin binlerce yıllık silüetini koruma altına alıyor. UNESCO destekli projede, geleneksel taş işçiliği 2026 teknolojisiyle buluşuyor.">
                 <div class="flip-inner">
                     <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800&q=80');">
                         <div class="front-overlay">
-                            <p style="font-size: 10px; font-weight: bold; color: var(--mardin);">MARDİN • RESTORASYON</p>
+                            <p style="font-size: 10px; font-weight: bold; color: var(--mardin);">MARDİN • 2026</p>
                             <h4>Taşın Mirası Geleceğe Aktarılıyor</h4>
                         </div>
                     </div>
                     <div class="flip-back" style="background: var(--mardin);">
                         <h2>GELENEĞİN İZİ</h2>
                         <p>Mezopotamya'nın altın rengi taşları uzman ellerde parlıyor.</p>
-                        <span style="margin-top:20px; font-weight: bold; border-bottom: 2px solid white;">VER DETALHES</span>
+                        <span style="margin-top:20px; font-weight: bold; border-bottom: 2px solid white;">DETAYLARI GÖR</span>
                     </div>
                 </div>
             </div>
 
             <div class="flip-card" data-type="news" data-color="var(--rio)"
-                 data-title="Alma Verde: Doğayı Teknolojiyle Korumak" 
+                 data-time="3 dk okuma"
+                 data-title="Alma Verde: Amazon'un Yapay Zekası" 
                  data-img="https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800&q=80"
-                 data-info="Doğayı teknolojiyle koruma vizyonu Rio'dan dünyaya yayılıyor. Brezilya hükümeti, Amazon ormanlarını korumak için dünyanın en gelişmiş uydu takip sistemini devreye soktu.">
+                 data-info="Rio merkezli start-up'lar, Amazon'un derinliklerini yapay zeka ile izliyor. Bu proje, bölgedeki biyoçeşitliliği korurken yerel halka yeni istihdam alanları yaratıyor.">
                 <div class="flip-inner">
                     <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800&q=80');">
                         <div class="front-overlay">
                             <p style="font-size: 10px; font-weight: bold; color: var(--rio);">RIO • TEKNOLOJİ</p>
-                            <h4>ALMA VERDE: Doğayı Koruma Vizyonu</h4>
+                            <h4>ALMA VERDE: Yeşil Ruh Projesi</h4>
                         </div>
                     </div>
                     <div class="flip-back" style="background: var(--rio);">
-                        <h2>YEŞİL VİZYON</h2>
-                        <p>Dünyanın akciğerleri artık daha güvende.</p>
+                        <h2>ALMA VERDE</h2>
+                        <p>Doğayı teknolojiyle koruma vizyonu Rio'dan dünyaya yayılıyor.</p>
                         <span style="margin-top:20px; font-weight: bold; border-bottom: 2px solid white;">VER DETALHES</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <section id="explore" class="video-section" data-type="video" data-color="#111" data-title="Işığın Peşinde" data-info="Mardin'den Rio'ya uzanan bu sinematik yolculuk, iki farklı kültürün güneş altındaki ortak dansını anlatıyor.">
-            <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5" alt="Rio">
-            <div class="video-overlay">
-                <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem;">İki Güneş Arasında</h2>
-                <p>Görsel Bir Kültür Köprüsü</p>
-            </div>
-        </section>
+        <h3 style="margin-bottom: 20px; font-family: 'Playfair Display';">İKİ GÜNEŞ ARASINDA: VİZYON</h3>
+        <div id="explore" class="video-section">
+            <iframe src="https://www.youtube.com/embed/S_8qMvT2MvA?autoplay=1&mute=1&loop=1&playlist=S_8qMvT2MvA" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
 
         <article class="main-article">
             <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 25px;">Mezopotamya Gümüşü Amazon Ritminde</h2>
             <div class="article-body">
-                <p><span class="dropcap">B</span>u yıl düzenlenen küresel sanat zirvesinde Mardin ve Rio de Janeiro kardeş şehir ilanı yolunda büyük bir adım attı. Taşın sessizliği ile Samba'nın coşkusunu bir araya getiren bu eşsiz işbirliği her alanda hissediliyor.</p>
+                <p><span class="dropcap">B</span>rezilya ve Türkiye arasındaki kültürel bağlar, 2026 yılında zirve noktasına ulaşıyor. Mardin'in gümüş telkâri sanatı, Rio podyumlarında modern tasarımlarla hayat bulurken, Samba ritimleri Mezopotamya'nın tarihi sokaklarında yankılanıyor.</p>
             </div>
         </article>
 
         <div class="stats-grid">
-            <div><span class="stat-val">10.500 km</span><span class="stat-label">Hava Hattı Mesafesi</span></div>
-            <div><span class="stat-val">24/7</span><span class="stat-label">Haber Akışı</span></div>
-            <div><span class="stat-val">2026</span><span class="stat-label">Hedef Yıl</span></div>
+            <div><span class="stat-val">10.500 km</span><span class="stat-label">Hava Hattı</span></div>
+            <div><span class="stat-val">24/7</span><span class="stat-label">Canlı Haber</span></div>
+            <div><span class="stat-val">2026</span><span class="stat-label">Stratejik Yıl</span></div>
+        </div>
+
+        <div class="vote-section">
+            <p style="font-weight: bold; margin-bottom: 20px; font-size: 0.8rem; letter-spacing: 2px; color: #888;">FAVORİ DESTİNASYONUNUZ?</p>
+            <button class="vote-btn">MARDİN</button>
+            <button class="vote-btn">RIO DE JANEIRO</button>
         </div>
     </div>
 
@@ -167,6 +177,8 @@
         <div class="detail-container">
             <img id="modalImage" class="modal-img-full" src="" alt="">
             <div id="detailBody" class="detail-body"></div>
+            <hr style="opacity: 0.2; margin: 40px 0;">
+            <p style="font-weight: bold; font-size: 0.9rem;">SIRADAKİ HABER: <span id="nextNews" style="text-decoration: underline; cursor: pointer;">Rio Karnavalı'nda Mardin Rüzgarı</span></p>
         </div>
     </div>
 
@@ -176,11 +188,16 @@
     </footer>
 
     <script>
-        function openDetail(title, content, img, color) {
+        function openDetail(title, content, img, color, time) {
             const overlay = document.getElementById('detailOverlay');
             overlay.style.backgroundColor = color || 'var(--rio)';
             document.getElementById('modalImage').src = img || '';
-            document.getElementById('detailBody').innerHTML = `<h2>${title}</h2><p>${content}</p>`;
+            document.getElementById('detailBody').innerHTML = `
+                <div class="audio-btn"><span>▶</span> HABERİ DİNLE (LISTEN)</div>
+                <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; opacity: 0.7;">${time}</p>
+                <h2>${title}</h2>
+                <p>${content}</p>
+            `;
             overlay.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
@@ -196,7 +213,8 @@
                 const info = item.getAttribute('data-info');
                 const img = item.getAttribute('data-img');
                 const color = item.getAttribute('data-color');
-                openDetail(title, info, img, color);
+                const time = item.getAttribute('data-time');
+                openDetail(title, info, img, color, time);
             });
         });
     </script>
