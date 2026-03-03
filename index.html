@@ -3,116 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mezopotamya'dan Amazon'a | Kültür & Magazin</title>
+    <title>Mardin-Rio Hattı | Kültür Magazin</title>
     <style>
-        /* Tematik Renk Paleti */
         :root {
-            --mardin-altini: #d4a373; /* Mardin taşı rengi */
-            --brezilya-yesili: #2d6a4f; /* Amazon ormanları */
-            --koyu-text: #1a1a1a;
-            --acik-gri: #fdfaf5;
+            --mardin-tas: #e3b04b;
+            --rio-deniz: #0081a7;
+            --amazon-yesil: #2a9d8f;
+            --koyu: #1d1d1d;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Georgia', serif; }
-        body { background-color: var(--acik-gri); color: var(--koyu-text); }
-
-        /* Header - Kültürel Sentez */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Playfair Display', serif; }
+        body { background-color: #fdfdfd; color: #333; line-height: 1.7; }
+        
+        /* Üst Başlık Alanı */
         header { 
-            background: white; 
-            padding: 40px; 
+            padding: 50px 20px; 
             text-align: center; 
-            border-bottom: 6px double var(--mardin-altini);
+            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1528127269322-539801943592'); /* Soyut arka plan */
+            background-size: cover;
+            border-bottom: 1px solid #ddd;
         }
-        header h1 { font-size: 2.8rem; letter-spacing: 1px; color: var(--brezilya-yesili); }
-        header p { font-style: italic; color: var(--mardin-altini); margin-top: 5px; }
+        header h1 { font-size: 3.5rem; color: var(--koyu); text-transform: uppercase; letter-spacing: 5px; }
+        header p { color: var(--mardin-tas); font-weight: bold; letter-spacing: 2px; }
 
-        /* Navigasyon */
-        nav { background: var(--koyu-text); padding: 12px; text-align: center; }
-        nav a { color: #fff; text-decoration: none; margin: 0 20px; font-size: 0.9rem; text-transform: uppercase; }
-        nav a:hover { color: var(--mardin-altini); }
+        /* Mega Menü */
+        nav { background: var(--koyu); padding: 15px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; }
+        nav a { color: #fff; text-decoration: none; margin: 0 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        nav a:hover { color: var(--rio-deniz); }
 
-        .container { max-width: 1100px; margin: 40px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; padding: 0 20px; }
+        .wrapper { max-width: 1300px; margin: 40px auto; padding: 0 20px; }
 
-        /* Haber Kartları */
-        .story-card { background: white; margin-bottom: 40px; border: 1px solid #eee; position: relative; }
-        .img-box { width: 100%; height: 350px; overflow: hidden; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.7s; }
-        .story-card:hover .img-box img { transform: scale(1.05); filter: sepia(30%); }
-        
-        .content { padding: 25px; border-top: 3px solid var(--mardin-altini); }
-        .tag { background: var(--brezilya-yesili); color: white; padding: 4px 12px; font-size: 0.7rem; position: absolute; top: 20px; left: 20px; }
+        /* Öne Çıkan Galeri (Yeni Bölüm) */
+        .culture-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 50px; }
+        .gallery-item { position: relative; height: 300px; overflow: hidden; border-radius: 4px; cursor: pointer; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-overlay { 
+            position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); 
+            color: white; padding: 15px; transform: translateY(100%); transition: 0.4s; 
+        }
+        .gallery-item:hover .gallery-overlay { transform: translateY(0); }
+        .gallery-item:hover img { transform: scale(1.1); filter: grayscale(50%); }
 
-        /* Sidebar: Kültür Karşılaştırması */
-        .sidebar-box { background: #fff; padding: 20px; border: 1px solid var(--mardin-altini); margin-bottom: 30px; }
-        .sidebar-box h3 { font-size: 1.2rem; margin-bottom: 15px; text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-        
-        .vs-item { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; font-size: 0.9rem; }
-        .vs-item span { font-weight: bold; color: var(--mardin-altini); }
+        /* Ana İçerik */
+        .main-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
 
-        /* Footer */
-        footer { background: var(--koyu-text); color: #888; text-align: center; padding: 50px; margin-top: 50px; }
+        .article-card { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .article-card img { width: 100%; border-radius: 5px; margin-bottom: 20px; }
+        .article-card h2 { margin-bottom: 15px; font-size: 2rem; color: var(--koyu); }
+        .article-card .meta { color: var(--mardin-tas); font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; display: block; }
 
-        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } }
+        /* Sidebar - Haftanın Rotası */
+        .route-box { background: var(--rio-deniz); color: white; padding: 25px; border-radius: 15px; text-align: center; }
+        .route-box h3 { margin-bottom: 15px; font-size: 1.5rem; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 10px; }
+        .stat-circle { 
+            width: 100px; height: 100px; border: 4px solid var(--mardin-tas); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; margin: 20px auto; font-weight: bold; font-size: 1.2rem;
+        }
+
+        footer { background: #111; color: #555; text-align: center; padding: 60px 20px; margin-top: 60px; }
+
+        @media (max-width: 900px) { 
+            .main-layout, .culture-gallery { grid-template-columns: 1fr; } 
+            header h1 { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>MARDİN <span>&</span> RIO</h1>
-        <p>Mezopotamya'nın Masalsı Dokusu, Brezilya'nın Ritmik Ruhuyla Buluşuyor</p>
+        <h1>MARDİN <span>TO</span> RIO</h1>
+        <p>DOĞUNUN GÜNEŞİNDEN GÜNEYİN RİTMİNE</p>
     </header>
 
     <nav>
-        <a href="#">Kültür</a>
-        <a href="#">Mutfak</a>
-        <a href="#">Müzik & Dans</a>
-        <a href="#">Gezi</a>
-        <a href="#">Magazin</a>
+        <a href="#">ANTİK MİRAS</a>
+        <a href="#">RIO RİTMİ</a>
+        <a href="#">GURME</a>
+        <a href="#">MODA SENTEZİ</a>
     </nav>
 
-    <div class="container">
-        <main>
-            <article class="story-card">
-                <span class="tag">ÖZEL HABER</span>
-                <div class="img-box">
-                    <img src="https://images.unsplash.com/photo-1540333673334-9707b9090fc7" alt="Mardin">
-                </div>
-                <div class="content">
-                    <h2>Mardin'in Gümüş İşlemeleri Rio Karnavalı Yolunda!</h2>
-                    <p>Mardinli telkâri ustaları, bu yılki Rio Karnavalı'nda kullanılacak özel kostümler için tasarımlar hazırlıyor. İki kadim kültür sanatla birleşiyor...</p>
-                </div>
-            </article>
-
-            <article class="story-card">
-                <span class="tag">MUTFAK KÜLTÜRÜ</span>
-                <div class="img-box">
-                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Brezilya Mutfağı">
-                </div>
-                <div class="content">
-                    <h2>Kahve ve Kakao: Mardin'in Dibek Kahvesi, Brezilya Çekirdekleriyle Yenileniyor</h2>
-                    <p>Dünyanın en iyi kahve çekirdekleri, Mardin'in geleneksel dibek dövme yöntemiyle buluştu. İlk tadım notları gurmelerden tam not aldı.</p>
-                </div>
-            </article>
-        </main>
-
-        <aside>
-            <div class="sidebar-box">
-                <h3>HAFTANIN KARŞILAŞTIRMASI</h3>
-                <div class="vs-item">Mardin Kalesi <span>vs</span> Kurtarıcı İsa</div>
-                <div class="vs-item">Reyhani Dansı <span>vs</span> Samba</div>
-                <div class="vs-item">Süryani Şarabı <span>vs</span> Caipirinha</div>
-                <div class="vs-item">Mezopotamya Güneşi <span>vs</span> Copacabana</div>
+    <div class="wrapper">
+        
+        <section class="culture-gallery">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1590418606746-018840fb9cd0" alt="Mardin">
+                <div class="gallery-overlay"><h4>Mardin Geceleri</h4><p>Taş evlerin ışıklı dansı.</p></div>
             </div>
-
-            <div class="sidebar-box" style="background: var(--brezilya-yesili); color: white;">
-                <h3>MAGAZİN FISILTISI</h3>
-                <p style="font-size: 0.85rem; line-height: 1.8;">Brezilyalı ünlü model, Mardin'deki tarihi bir konakta çekilecek olan yeni dizi projesi için Türkçe derslerine başladı!</p>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5" alt="Rio">
+                <div class="gallery-overlay"><h4>Rio Karnavalı</h4><p>Dünyanın en renkli haftası.</p></div>
             </div>
-        </aside>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1564619330107-73d8816f7300" alt="Mezopotamya">
+                <div class="gallery-overlay"><h4>Mezopotamya Ovası</h4><p>Sonsuzluğa açılan pencere.</p></div>
+            </div>
+        </section>
+
+        <div class="main-layout">
+            <main>
+                <article class="article-card">
+                    <span class="meta">KÜLTÜR SENTEZİ // MART 2026</span>
+                    <h2>Brezilya'da Mardin Rüzgarı: Tasarımcılar Buluşuyor</h2>
+                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b" alt="Moda">
+                    <p>Mardin'in geleneksel iğne oyaları, Rio'nun plaj modasıyla buluştu. Dünyaca ünlü bir bikini markası, yeni koleksiyonunda Mezopotamya motiflerini kullanacağını açıkladı. Bu iş birliği iki ülke arasındaki kültürel turizmi canlandıracak gibi görünüyor.</p>
+                </article>
+
+                <article class="article-card">
+                    <span class="meta">MAGAZİN // ÖZEL HABER</span>
+                    <h2>Dara Antik Kenti'nde Brezilyalı Klip Çekimi</h2>
+                    <p>Grammy ödüllü Brezilyalı sanatçı, yeni klibinin çekimleri için gizlice Mardin'e geldi. Dara Antik Kenti'nin büyüleyici atmosferinde çekilen klipte, yöresel kıyafetler ve Samba figürleri harmanlandı.</p>
+                </article>
+            </main>
+
+            <aside>
+                <div class="route-box">
+                    <h3>HAFTANIN ROTASI</h3>
+                    <p>Mardin'den Rio de Janeiro'ya</p>
+                    <div class="stat-circle">14s</div>
+                    <p><small>Ortalama Uçuş Süresi</small></p>
+                    <hr style="margin: 20px 0; opacity: 0.2;">
+                    <p><strong>Bunu Biliyor Muydunuz?</strong></p>
+                    <p style="font-size: 0.85rem; padding: 10px;">Mardin kahvesi ile Brezilya kahvesi arasındaki sertlik farkı, yerel halkların enerji ihtiyacına göre şekillenmiştir.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; border: 1px solid #ddd;">
+                    <h4 style="margin-bottom: 10px;">EN ÇOK KONUŞULANLAR</h4>
+                    <ul style="list-style: none; font-size: 0.9rem;">
+                        <li style="margin-bottom: 10px;"># MardinTattoo - Rio Tarzı Dövme</li>
+                        <li style="margin-bottom: 10px;"># AcılıSamba - Yemek Festivali</li>
+                        <li style="margin-bottom: 10px;"># MezopotamyaRio - Kardeş Şehirler</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Mardin-Rio Express. Kültürlerin Kesişme Noktası.</p>
+        <p>Mardin & Rio Kültür Magazin Portalı | 2026<br>İki Farklı Dünya, Tek Bir Platform.</p>
     </footer>
 
 </body>
