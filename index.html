@@ -3,318 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina v16 | Professional Commercial OS</title>
+    <title>Lumina v20 | Neural Finor Intelligence</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        :root { --bg: #F9F9F7; --accent: #C5A059; --text: #1A1A1A; }
-        * { -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+        :root { --bg: #F5F5F0; --accent: #C5A059; --text: #1A1A1A; }
+        * { -webkit-font-smoothing: antialiased; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-
-        /* Reklam Alanı Tasarımı */
-        .ad-space-container { width: 100%; height: 250px; border-radius: 40px; background: #eee; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
-        .ad-label { position: absolute; top: 15px; left: 20px; font-size: 8px; font-weight: 900; letter-spacing: 3px; opacity: 0.2; text-transform: uppercase; }
-
-        /* Admin Layout */
-        #admin-panel { display: none; position: fixed; inset: 0; background: #080808; color: white; z-index: 200000; flex-direction: row; }
-        .admin-sidebar { width: 320px; border-right: 1px solid #1A1A1A; padding: 50px 30px; background: #050505; }
-        .admin-main { flex: 1; padding: 60px; overflow-y: auto; background: #080808; }
-        .admin-card { background: #111; border: 1px solid #222; border-radius: 24px; padding: 24px; margin-bottom: 20px; }
-        .input-lux { background: #181818; border: 1px solid #333; border-radius: 12px; padding: 12px; width: 100%; color: white; outline: none; margin-bottom: 15px; }
         
-        .modal-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100000; overflow-y: auto; }
+        /* Arayüz Sabitleri */
+        .columnists-bar { background: white; border-bottom: 1px solid rgba(0,0,0,0.03); padding: 15px 5%; display: flex; gap: 30px; overflow-x: auto; scrollbar-width: none; }
+        .columnists-bar::-webkit-scrollbar { display: none; }
+        .col-card { display: flex; align-items: center; gap: 10px; flex-shrink: 0; opacity: 0.6; }
+
+        /* --- THE ULTIMATE NEURAL DASHBOARD (Görsellerdeki Tasarım) --- */
+        #admin-panel { 
+            display: none; position: fixed; inset: 0; 
+            background: rgba(245, 245, 240, 0.95); backdrop-filter: blur(40px); 
+            z-index: 100000; padding: 25px; 
+        }
+        .dashboard-wrapper { 
+            background: #F8F9FB; width: 100%; height: 100%; border-radius: 40px; 
+            display: flex; overflow: hidden; box-shadow: 0 50px 100px rgba(0,0,0,0.1);
+        }
+        .db-sidebar { width: 260px; background: white; border-right: 1px solid #EEF0F2; padding: 40px 25px; }
+        .db-content { flex: 1; padding: 40px; overflow-y: auto; background: #F8F9FB; }
+
+        /* Finor Style Cards */
+        .metric-card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        .stock-tag { padding: 4px 12px; border-radius: 100px; font-size: 10px; font-weight: 700; background: #F3F4F6; }
+        
+        .chart-box { background: white; border-radius: 30px; padding: 30px; height: 100%; }
+        
+        /* Portfolio Distribution Style */
+        .dist-bar { height: 8px; border-radius: 10px; background: #EEE; overflow: hidden; display: flex; }
+        .dist-segment { height: 100%; }
+
+        /* Status Badges */
+        .badge-up { color: #10B981; background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 6px; font-size: 11px; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .highlight { color: var(--accent); font-weight: 900; }
     </style>
 </head>
 <body class="no-scrollbar">
 
-<nav class="sticky top-0 z-[5000] px-12 py-6 flex justify-between items-center bg-white/80 backdrop-blur-xl border-b border-black/5">
-    <div class="flex items-center gap-12">
-        <h1 class="serif text-4xl font-light uppercase tracking-tighter cursor-pointer" onclick="location.reload()">Lumina</h1>
-        <div id="ui-meta" class="text-[10px] font-black uppercase tracking-[4px] opacity-30"></div>
+<nav class="sticky top-0 z-[5000] px-10 py-6 flex justify-between items-center bg-white/70 backdrop-blur-2xl border-b border-black/5">
+    <h1 class="serif text-4xl font-light uppercase tracking-tighter">Lumina</h1>
+    <div class="flex items-center gap-6">
+        <span class="text-[10px] font-black uppercase tracking-[3px] opacity-30">Mardin 07:06 • Sao Paulo 01:06</span>
+        <button onclick="toggleAdmin('flex')" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition shadow-xl">
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+        </button>
     </div>
-    <button onclick="toggleAdmin('flex')" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition">
-        <i data-lucide="settings-2" class="w-5 h-5"></i>
-    </button>
 </nav>
 
-<section class="px-[5%] py-8 border-b border-black/5 flex gap-12 overflow-x-auto no-scrollbar justify-center">
-    <div id="author-list-ui" class="flex gap-12 items-center"></div>
-</section>
-
-<header class="px-[5%] py-16">
-    <div id="ui-ad-space" class="ad-space-container group cursor-pointer">
-        <span class="ad-label">Sponsorlu İçerik</span>
-        <img id="ad-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition">
-        <div class="absolute inset-0 flex items-center justify-center">
-            <p id="ad-text" class="serif text-4xl italic text-white/40 group-hover:text-white transition uppercase tracking-widest">Premium Partner Space</p>
-        </div>
-    </div>
-</header>
-
-<section id="ui-feed" class="bento-grid grid grid-cols-12 gap-8 px-[5%] py-10"></section>
-
-<div id="article-modal" class="modal-overlay">
-    <div class="p-10 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-md">
-        <button onclick="closeModals()" class="text-[10px] font-black uppercase opacity-40 hover:opacity-100"><i data-lucide="arrow-left"></i> Kapat</button>
-        <button id="tts-btn" onclick="toggleKaraoke()" class="bg-black text-white px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest">Dinle</button>
-    </div>
-    <div id="article-content" class="max-w-4xl mx-auto py-24 px-10"></div>
+<div class="columnists-bar">
+    <div class="col-card"><img src="https://i.pravatar.cc/100?img=11" class="w-8 h-8 rounded-full"><span class="text-[9px] font-bold uppercase tracking-widest">M. Al-Khafaji</span></div>
+    <div class="col-card"><img src="https://i.pravatar.cc/100?img=32" class="w-8 h-8 rounded-full"><span class="text-[9px] font-bold uppercase tracking-widest">Elena Rossi</span></div>
+    <div class="col-card"><img src="https://i.pravatar.cc/100?img=44" class="w-8 h-8 rounded-full"><span class="text-[9px] font-bold uppercase tracking-widest">Julian Thorne</span></div>
 </div>
 
+<section class="p-10"><div class="bg-black h-[400px] rounded-[60px] relative overflow-hidden">
+    <div class="absolute bottom-12 left-12 text-white"><p class="serif text-6xl">10.840 KM</p></div>
+</div></section>
+
 <div id="admin-panel">
-    <div class="admin-sidebar">
-        <h2 class="serif text-4xl italic text-accent mb-16">Lumina Pro</h2>
-        <nav class="space-y-4">
-            <button onclick="switchTab('news')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="file-text"></i> Haber Yönetimi</button>
-            <button onclick="switchTab('authors')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="users"></i> Yazar Yönetimi</button>
-            <button onclick="switchTab('ad')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 uppercase text-[10px] font-black tracking-widest opacity-40 hover:opacity-100"><i data-lucide="layout"></i> Reklam Modülü</button>
-        </nav>
-        <button onclick="toggleAdmin('none')" class="mt-20 w-full py-4 border border-white/10 rounded-xl text-[10px] font-black uppercase">Sistemi Kapat</button>
-    </div>
-
-    <div class="admin-main">
-        <div id="tab-news" class="admin-tab">
-            <h3 class="serif text-5xl mb-10">Haber Editörü</h3>
-            <div class="admin-card">
-                <input id="in-news-id" type="hidden">
-                <input id="in-news-title" placeholder="Başlık" class="input-lux">
-                <textarea id="in-news-text" placeholder="İçerik..." class="input-lux h-40"></textarea>
-                <select id="in-news-author" class="input-lux"></select>
-                <input type="file" id="in-news-file" onchange="handleFile(this, 'news')" class="hidden">
-                <label for="in-news-file" class="block p-4 border border-dashed border-white/20 rounded-xl text-center text-[10px] mb-4 cursor-pointer">Görsel Seç</label>
-                <button onclick="saveNews()" class="bg-accent text-black font-black w-full py-4 rounded-xl text-[10px] uppercase">Kaydet / Güncelle</button>
+    <div class="dashboard-wrapper">
+        <aside class="db-sidebar">
+            <div class="flex items-center gap-3 mb-12">
+                <div class="w-8 h-8 bg-black rounded-lg"></div>
+                <span class="font-black text-lg tracking-tighter">Lumina OS</span>
             </div>
-            <div id="adm-news-list" class="space-y-2"></div>
-        </div>
+            <nav class="space-y-2">
+                <div class="p-3 bg-gray-100 rounded-xl font-bold text-xs flex items-center gap-3"><i data-lucide="pie-chart" class="w-4 h-4"></i> Investment</div>
+                <div class="p-3 text-gray-400 font-bold text-xs flex items-center gap-3"><i data-lucide="activity" class="w-4 h-4"></i> Activity</div>
+                <div class="p-3 text-gray-400 font-bold text-xs flex items-center gap-3"><i data-lucide="globe" class="w-4 h-4"></i> Market Insight</div>
+            </nav>
+            <button onclick="toggleAdmin('none')" class="mt-auto block w-full py-4 text-[10px] font-black uppercase opacity-30">Close System</button>
+        </aside>
 
-        <div id="tab-authors" class="admin-tab hidden">
-            <h3 class="serif text-5xl mb-10">Yazar Kadrosu</h3>
-            <div class="admin-card">
-                <input id="in-auth-id" type="hidden">
-                <input id="in-auth-name" placeholder="Yazar Adı" class="input-lux">
-                <textarea id="in-auth-bio" placeholder="Biyografi..." class="input-lux h-24"></textarea>
-                <input type="file" id="in-auth-file" onchange="handleFile(this, 'auth')" class="hidden">
-                <label for="in-auth-file" class="block p-4 border border-dashed border-white/20 rounded-xl text-center text-[10px] mb-4 cursor-pointer">Profil Fotoğrafı</label>
-                <button onclick="saveAuthor()" class="bg-white text-black font-black w-full py-4 rounded-xl text-[10px] uppercase">Yazar Kaydet</button>
+        <main class="db-content no-scrollbar">
+            <div class="flex gap-4 mb-8 overflow-x-auto no-scrollbar">
+                <div class="metric-card flex items-center gap-4 min-w-[200px]">
+                    <div class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold">A</div>
+                    <div><p class="text-[10px] font-black opacity-30 uppercase">AAPL</p><p class="font-bold">$150.22 <span class="badge-up">+1.2%</span></p></div>
+                </div>
+                <div class="metric-card flex items-center gap-4 min-w-[200px]">
+                    <div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">N</div>
+                    <div><p class="text-[10px] font-black opacity-30 uppercase">NVDA</p><p class="font-bold">$420.10 <span class="badge-up">+3.5%</span></p></div>
+                </div>
             </div>
-            <div id="adm-auth-list" class="grid grid-cols-2 gap-4"></div>
-        </div>
 
-        <div id="tab-ad" class="admin-tab hidden">
-            <h3 class="serif text-5xl mb-10">Reklam Yönetimi</h3>
-            <div class="admin-card">
-                <input id="in-ad-text" placeholder="Reklam Başlığı" class="input-lux">
-                <input type="file" id="in-ad-file" onchange="handleFile(this, 'ad')" class="hidden">
-                <label for="in-ad-file" class="block p-8 border border-dashed border-white/20 rounded-xl text-center mb-6 cursor-pointer">Reklam Görselini Güncelle</label>
-                <button onclick="saveAd()" class="bg-accent text-black font-black w-full py-4 rounded-xl text-[10px] uppercase tracking-widest">Reklamı Yayına Al</button>
+            <div class="grid grid-cols-12 gap-6">
+                <div class="col-span-8 chart-box">
+                    <div class="flex justify-between items-center mb-8">
+                        <div><p class="text-xs font-bold text-gray-400 uppercase">Portfolio Value</p><h3 class="text-4xl font-black tracking-tighter">$134,815.00</h3></div>
+                        <select class="bg-gray-50 border-none text-xs font-bold p-2 rounded-lg"><option>Yearly</option></select>
+                    </div>
+                    <canvas id="portfolioChart" height="250"></canvas>
+                </div>
+
+                <div class="col-span-4 chart-box">
+                    <p class="text-xs font-bold text-gray-400 uppercase mb-4">Total Profits</p>
+                    <div class="relative h-48 flex items-center justify-center">
+                        <canvas id="profitDonut"></canvas>
+                        <div class="absolute text-center">
+                            <p class="text-3xl font-black">$8,436</p>
+                            <p class="text-[10px] font-bold opacity-30">+12% vs last year</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 space-y-3">
+                        <div class="flex justify-between text-xs font-bold"><span>Stocks</span><span class="text-blue-500">45%</span></div>
+                        <div class="dist-bar"><div class="dist-segment bg-blue-500" style="width: 45%"></div><div class="dist-segment bg-purple-500" style="width: 30%"></div><div class="dist-segment bg-orange-500" style="width: 25%"></div></div>
+                    </div>
+                </div>
+
+                <div class="col-span-12 metric-card">
+                    <p class="text-xs font-bold text-gray-400 uppercase mb-6">Market Insight & Reach Analysis</p>
+                    <div class="grid grid-cols-4 gap-8">
+                        <div class="border-r border-gray-100">
+                            <p class="text-2xl font-black">13M</p>
+                            <p class="text-[10px] font-bold opacity-30 uppercase">Total Views</p>
+                        </div>
+                        <div class="border-r border-gray-100">
+                            <p class="text-2xl font-black">14M</p>
+                            <p class="text-[10px] font-bold opacity-30 uppercase">Estimated Reach</p>
+                        </div>
+                        <div class="border-r border-gray-100">
+                            <p class="text-2xl font-black">644K</p>
+                            <p class="text-[10px] font-bold opacity-30 uppercase">Shares</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-black text-green-500">24.4%</p>
+                            <p class="text-[10px] font-bold opacity-30 uppercase">In Review Rate</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
     </div>
 </div>
 
 <script>
-    // --- DB ENGINE ---
-    let DB = JSON.parse(localStorage.getItem('LUMINA_PRO_DB')) || {
-        ad: { text: "WORLD CLASS DESIGN PARTNER", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" },
-        authors: [
-            { id: 1, name: "Zeynep Mardini", bio: "Kültürel miras uzmanı.", img: "https://i.pravatar.cc/150?u=44" },
-            { id: 2, name: "Ricardo Silva", bio: "Brezilya modernizmi araştırmacısı.", img: "https://i.pravatar.cc/150?u=32" }
-        ],
-        news: [
-            { id: 101, authId: 1, title: "Sarı Taşların Şiiri", text: "Mardin'in dar sokaklarında zamanın nasıl durduğuna şahit olun. Taşın sabrı, güneşin rengiyle buluşuyor.", img: "https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200", type: "Kültür" }
-        ]
-    };
-
-    let currentImgs = { news: "", auth: "", ad: "" };
-
-    function sync() { localStorage.setItem('LUMINA_PRO_DB', JSON.stringify(DB)); render(); }
-
-    // --- RENDER ---
-    function render() {
-        lucide.createIcons();
-        
-        // UI Ad
-        document.getElementById('ad-img').src = DB.ad.img;
-        document.getElementById('ad-text').innerText = DB.ad.text;
-
-        // UI Authors (Yamayan/Statik)
-        document.getElementById('author-list-ui').innerHTML = DB.authors.map(a => `
-            <div class="flex items-center gap-4 cursor-pointer group" onclick="openAuthorDetail(${a.id})">
-                <img src="${a.img}" class="w-12 h-12 rounded-full border border-black/5 object-cover group-hover:scale-110 transition">
-                <span class="text-[10px] font-black uppercase tracking-widest opacity-40 group-hover:opacity-100">${a.name}</span>
-            </div>
-        `).join('');
-
-        // UI Feed
-        document.getElementById('ui-feed').innerHTML = DB.news.map((n, idx) => `
-            <div class="bento-item h-[500px] rounded-[40px] overflow-hidden relative cursor-pointer group ${idx % 3 === 0 ? 'col-span-8' : 'col-span-4'}" onclick="openArticle(${n.id})">
-                <img src="${n.img}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                <div class="absolute bottom-0 p-10 text-white">
-                    <p class="text-[9px] font-black uppercase tracking-[5px] text-accent mb-4">${n.type}</p>
-                    <h3 class="serif text-5xl leading-tight">${n.title}</h3>
-                </div>
-            </div>
-        `).join('');
-
-        // Admin Lists
-        document.getElementById('in-news-author').innerHTML = DB.authors.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-        document.getElementById('adm-news-list').innerHTML = DB.news.map(n => `
-            <div class="p-4 bg-white/5 rounded-xl flex justify-between items-center text-[10px]">
-                <span>${n.title}</span>
-                <div class="flex gap-4">
-                    <button onclick="editNews(${n.id})" class="text-accent uppercase font-black">Düzenle</button>
-                    <button onclick="deleteNews(${n.id})" class="text-red-500 uppercase font-black">Sil</button>
-                </div>
-            </div>
-        `).join('');
-
-        document.getElementById('adm-auth-list').innerHTML = DB.authors.map(a => `
-            <div class="admin-card flex justify-between items-center">
-                <div class="flex items-center gap-4">
-                    <img src="${a.img}" class="w-10 h-10 rounded-full object-cover">
-                    <span class="text-[10px] font-black uppercase">${a.name}</span>
-                </div>
-                <div class="flex gap-4">
-                    <button onclick="editAuth(${a.id})" class="text-accent text-[9px] font-black uppercase">Düzenle</button>
-                    <button onclick="deleteAuth(${a.id})" class="text-red-500 text-[9px] font-black uppercase">Sil</button>
-                </div>
-            </div>
-        `).join('');
+    function toggleAdmin(v) { 
+        document.getElementById('admin-panel').style.display = v; 
+        if(v === 'flex') initCharts();
     }
 
-    // --- ACTIONS ---
-    function handleFile(input, key) {
-        const reader = new FileReader();
-        reader.onload = e => currentImgs[key] = e.target.result;
-        reader.readAsDataURL(input.files[0]);
+    function initCharts() {
+        // Portfolio Line Chart
+        const ctxLine = document.getElementById('portfolioChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Value',
+                    data: [110, 125, 118, 140, 132, 145, 134],
+                    borderColor: '#6366F1',
+                    borderWidth: 4,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: (context) => {
+                        const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 400);
+                        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.1)');
+                        gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
+                        return gradient;
+                    }
+                }]
+            },
+            options: { plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
+        });
+
+        // Profit Donut
+        const ctxDonut = document.getElementById('profitDonut').getContext('2d');
+        new Chart(ctxDonut, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [45, 25, 30],
+                    backgroundColor: ['#6366F1', '#A855F7', '#F97316'],
+                    borderWidth: 0,
+                    borderRadius: 10
+                }]
+            },
+            options: { cutout: '85%' }
+        });
     }
 
-    function saveNews() {
-        const id = document.getElementById('in-news-id').value;
-        const n = { 
-            id: id ? parseInt(id) : Date.now(), 
-            authId: parseInt(document.getElementById('in-news-author').value),
-            title: document.getElementById('in-news-title').value,
-            text: document.getElementById('in-news-text').value,
-            img: currentImgs.news || "https://via.placeholder.com/1200",
-            type: "Kültür"
-        };
-        if(id) DB.news = DB.news.map(x => x.id === n.id ? n : x); else DB.news.unshift(n);
-        sync(); resetNewsForm();
-    }
-
-    function editNews(id) {
-        const n = DB.news.find(x => x.id === id);
-        document.getElementById('in-news-id').value = n.id;
-        document.getElementById('in-news-title').value = n.title;
-        document.getElementById('in-news-text').value = n.text;
-        document.getElementById('in-news-author').value = n.authId;
-        currentImgs.news = n.img;
-        switchTab('news');
-    }
-
-    function deleteNews(id) { DB.news = DB.news.filter(x => x.id !== id); sync(); }
-
-    function saveAuthor() {
-        const id = document.getElementById('in-auth-id').value;
-        const a = {
-            id: id ? parseInt(id) : Date.now(),
-            name: document.getElementById('in-auth-name').value,
-            bio: document.getElementById('in-auth-bio').value,
-            img: currentImgs.auth || "https://i.pravatar.cc/150"
-        };
-        if(id) DB.authors = DB.authors.map(x => x.id === a.id ? a : x); else DB.authors.push(a);
-        sync(); resetAuthForm();
-    }
-
-    function editAuth(id) {
-        const a = DB.authors.find(x => x.id === id);
-        document.getElementById('in-auth-id').value = a.id;
-        document.getElementById('in-auth-name').value = a.name;
-        document.getElementById('in-auth-bio').value = a.bio;
-        currentImgs.auth = a.img;
-        switchTab('authors');
-    }
-
-    function deleteAuth(id) { DB.authors = DB.authors.filter(x => x.id !== id); sync(); }
-
-    function saveAd() {
-        DB.ad.text = document.getElementById('in-ad-text').value;
-        if(currentImgs.ad) DB.ad.img = currentImgs.ad;
-        sync();
-    }
-
-    // --- MODAL LOGIC ---
-    function openArticle(id) {
-        const n = DB.news.find(x => x.id === id);
-        const a = DB.authors.find(x => x.id === n.authId);
-        document.getElementById('article-content').innerHTML = `
-            <h1 class="serif text-8xl text-center leading-none mb-12 tracking-tighter">${n.title}</h1>
-            <div class="flex items-center justify-center gap-4 mb-20">
-                <img src="${a.img}" class="w-10 h-10 rounded-full">
-                <span class="text-[10px] font-black uppercase tracking-widest">${a.name}</span>
-            </div>
-            <div id="karaoke-text" class="serif text-4xl leading-relaxed text-justify opacity-80">
-                ${n.text.split(' ').map(w => `<span>${w}</span>`).join(' ')}
-            </div>
-        `;
-        document.getElementById('article-modal').style.display = 'block';
-    }
-
-    function openAuthorDetail(id) {
-        const a = DB.authors.find(x => x.id === id);
-        const aNews = DB.news.filter(n => n.authId === id);
-        document.getElementById('article-content').innerHTML = `
-            <div class="text-center">
-                <img src="${a.img}" class="w-40 h-40 rounded-full mx-auto mb-10 object-cover border-4 border-accent p-2">
-                <h2 class="serif text-7xl mb-6">${a.name}</h2>
-                <p class="serif text-2xl italic opacity-60 mb-20 max-w-2xl mx-auto">${a.bio}</p>
-                <div class="text-left">
-                    <p class="text-[10px] font-black uppercase tracking-[5px] mb-10 opacity-30">Yazarın Yazıları</p>
-                    <div class="space-y-12">
-                        ${aNews.map(n => `
-                            <div class="group cursor-pointer" onclick="openArticle(${n.id})">
-                                <h4 class="serif text-5xl group-hover:text-accent transition">${n.title}</h4>
-                                <p class="text-[10px] font-black uppercase mt-4 opacity-40">Makaleyi Oku — ${n.type}</p>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            </div>
-        `;
-        document.getElementById('article-modal').style.display = 'block';
-    }
-
-    // --- UTILS ---
-    function toggleAdmin(s) { document.getElementById('admin-panel').style.display = s; }
-    function switchTab(t) { document.querySelectorAll('.admin-tab').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); }
-    function closeModals() { window.speechSynthesis.cancel(); document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none'); }
-    function resetNewsForm() { document.getElementById('in-news-id').value = ""; document.getElementById('in-news-title').value = ""; document.getElementById('in-news-text').value = ""; currentImgs.news = ""; }
-    function resetAuthForm() { document.getElementById('in-auth-id').value = ""; document.getElementById('in-auth-name').value = ""; document.getElementById('in-auth-bio').value = ""; currentImgs.auth = ""; }
-
-    function toggleKaraoke() {
-        const spans = document.querySelectorAll('#karaoke-text span');
-        const utter = new SpeechSynthesisUtterance(document.getElementById('karaoke-text').innerText);
-        utter.lang = 'tr-TR'; utter.rate = 0.9;
-        let i = 0;
-        utter.onboundary = e => {
-            if(e.name === 'word') {
-                spans.forEach(s => s.classList.remove('highlight'));
-                if(spans[i]) spans[i].classList.add('highlight');
-                i++;
-            }
-        };
-        window.speechSynthesis.speak(utter);
-    }
-
-    window.onload = render;
+    lucide.createIcons();
 </script>
 </body>
 </html>
