@@ -3,174 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSP Global | Premium Interface</title>
+    <title>MERIDIAN PORTAL | Master Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --bg-main: #f3f4f9; 
-            --card-white: #ffffff;
-            --msp-blue: #3b82f6;
-            --text-dark: #1e293b;
+            --meridian-orange: #f59e0b; 
+            --meridian-dark: #0f172a;
+            --gold-gradient: linear-gradient(45deg, #d4af37, #f7e7ce, #b8860b);
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-dark); }
-        .msp-title { font-family: 'Playfair Display', serif; }
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; color: var(--meridian-dark); }
+        .meridian-header { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
         
-        /* Görseldeki Soft Kavisli Yapı */
-        .glass-card { 
-            background: var(--card-white); 
-            border-radius: 3.5rem; 
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.8);
+        /* Yazarların Altın Çerçeve Tasarımı (Görseldeki gibi) */
+        .author-circle-wrapper {
+            position: relative;
+            width: 80px; height: 80px;
+            padding: 4px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-
-        /* Yazar Kartları (2. Resimdeki Stil) */
-        .author-slot {
-            background: #f8fafc;
-            border-radius: 2.5rem;
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-        .author-slot:hover {
-            transform: translateY(-5px);
-            background: white;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-            border-color: #e2e8f0;
-        }
-        .author-img {
-            width: 65px;
-            height: 65px;
-            border-radius: 1.8rem;
+        .author-circle-img {
+            width: 100%; height: 100%;
+            border-radius: 50%;
             object-fit: cover;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 3px solid var(--meridian-dark);
         }
 
-        /* Haber Görsel Kilidi */
-        .news-img {
-            width: 100%;
-            aspect-ratio: 16/10;
-            object-fit: cover;
-            border-radius: 3rem;
-        }
-
-        /* Admin & View Switch */
-        .view-node { display: none; animation: fadeIn 0.5s ease; }
+        /* Admin Kartları */
+        .glass-ui { background: rgba(255,255,255,0.9); backdrop-blur: 10px; border-radius: 2rem; border: 1px solid white; }
+        .view-node { display: none; animation: slideUp 0.4s ease-out; }
         .active-view { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+        
+        /* Modern Scroll */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--meridian-orange); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <nav class="h-24 flex items-center bg-white/50 backdrop-blur-md sticky top-0 z-[100]">
-        <div class="container mx-auto px-8 flex justify-between items-center">
-            <div onclick="router('home')" class="cursor-pointer">
-                <h1 class="text-2xl font-black tracking-tighter italic uppercase text-slate-800">MSP<span class="text-blue-600">.</span>GLOBAL</h1>
-                <p class="text-[8px] font-bold tracking-[0.4em] text-slate-400 -mt-1 uppercase">Local Media Integration</p>
+    <div class="h-14 bg-[#f59e0b] flex items-center justify-center shadow-lg">
+        <h1 class="meridian-header text-xl font-black text-black uppercase">MERIDIAN PORTAL</h1>
+    </div>
+
+    <header class="h-20 bg-white border-b sticky top-0 z-50 flex items-center px-8 shadow-sm">
+        <div class="container mx-auto flex justify-between items-center">
+            <div onclick="router('home')" class="cursor-pointer flex items-center gap-3">
+                <div class="w-10 h-10 bg-black rounded-lg flex items-center justify-center text-white font-black italic">M</div>
+                <span class="text-xl font-black tracking-tighter">MSP<span class="text-orange-500">.</span>GLOBAL</span>
             </div>
-            <div class="flex items-center gap-6">
-                <button onclick="router('home')" class="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-600 transition">Ana Sayfa</button>
-                <button onclick="router('admin')" class="bg-slate-900 text-white text-[10px] font-black px-8 py-4 rounded-full shadow-2xl hover:bg-blue-600 transition uppercase tracking-widest">Yönetim Paneli</button>
+            <div class="flex gap-4">
+                <button onclick="router('home')" class="text-xs font-bold uppercase hover:text-orange-500 transition">Portal</button>
+                <button onclick="router('admin')" class="bg-black text-white text-[10px] font-black px-6 py-3 rounded-full hover:bg-orange-500 transition uppercase tracking-widest">DashBoard</button>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <main id="view-home" class="view-node active-view container mx-auto px-6 py-10">
-        <div class="grid grid-cols-12 gap-10">
-            
-            <div class="col-span-12 lg:col-span-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="space-y-8">
-                        <div class="flex items-center gap-3 ml-4">
-                            <span class="w-1.5 h-6 bg-amber-500 rounded-full"></span>
-                            <h2 class="text-xs font-black uppercase tracking-widest text-slate-400">Mardin Flow</h2>
-                        </div>
-                        <div id="mardin-list" class="space-y-10"></div>
-                    </div>
-                    <div class="space-y-8">
-                        <div class="flex items-center gap-3 ml-4">
-                            <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span>
-                            <h2 class="text-xs font-black uppercase tracking-widest text-slate-400">Brazil Flow</h2>
-                        </div>
-                        <div id="brazil-list" class="space-y-10"></div>
-                    </div>
+    <main id="view-home" class="view-node active-view container mx-auto px-4 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8" id="news-grid">
                 </div>
-            </div>
 
-            <aside class="col-span-12 lg:col-span-4 space-y-10">
-                <div class="glass-card p-10">
-                    <div class="flex items-center gap-3 mb-10">
-                        <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
-                        <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-800">KÖŞE YAZARLARI</h3>
+            <aside class="lg:col-span-4 space-y-8">
+                <div class="glass-ui p-8 shadow-xl">
+                    <div class="flex items-center gap-3 mb-8 border-l-4 border-orange-500 pl-4">
+                        <h3 class="text-sm font-black uppercase tracking-widest">KÖŞE YAZARLARI</h3>
                     </div>
-                    <div id="author-list" class="space-y-4">
+                    <div id="author-grid" class="space-y-6">
                         </div>
                 </div>
 
-                <div id="ad-area" class="relative group cursor-pointer overflow-hidden rounded-[4rem] shadow-2xl">
+                <div id="ad-banner" class="rounded-[2.5rem] overflow-hidden shadow-2xl relative h-96">
                     </div>
             </aside>
         </div>
     </main>
 
-    <main id="view-detail" class="view-node container mx-auto px-6 py-16 max-w-4xl">
-        <button onclick="router('home')" class="mb-12 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 flex items-center gap-2">
-            <i class="fas fa-chevron-left"></i> Geri Dön
-        </button>
-        <div id="detail-box"></div>
-    </main>
+    <main id="view-admin" class="view-node min-h-screen bg-slate-900 text-white">
+        <div class="flex h-screen overflow-hidden">
+            <nav class="w-64 bg-black p-8 flex flex-col gap-2">
+                <p class="text-[10px] font-black text-slate-600 uppercase mb-10 tracking-[0.3em]">Meridian Admin</p>
+                <button onclick="setMod('haber')" id="m-haber" class="p-4 rounded-xl text-left font-bold text-xs uppercase hover:bg-orange-500 transition">Haber Yönetimi</button>
+                <button onclick="setMod('yazar')" id="m-yazar" class="p-4 rounded-xl text-left font-bold text-xs uppercase hover:bg-orange-500 transition">Yazar Kadrosu</button>
+                <button onclick="setMod('reklam')" id="m-reklam" class="p-4 rounded-xl text-left font-bold text-xs uppercase hover:bg-orange-500 transition">Reklam Slotları</button>
+                <button onclick="router('home')" class="mt-auto p-4 bg-orange-500 text-black font-black text-[10px] rounded-xl uppercase">Portala Dön</button>
+            </nav>
 
-    <main id="view-admin" class="view-node bg-white min-h-screen">
-        <div class="flex flex-col lg:flex-row min-h-screen">
-            <div class="w-full lg:w-80 bg-slate-50 p-10 border-r flex flex-col gap-3">
-                <h4 class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-6">Veri Merkezi</h4>
-                <button onclick="setMod('haber')" id="b-haber" class="text-left p-5 rounded-3xl font-bold text-sm transition uppercase">Haberler</button>
-                <button onclick="setMod('yazar')" id="b-yazar" class="text-left p-5 rounded-3xl font-bold text-sm transition uppercase">Yazarlar</button>
-                <button onclick="setMod('reklam')" id="b-reklam" class="text-left p-5 rounded-3xl font-bold text-sm transition uppercase">Reklamlar</button>
-                <button onclick="router('home')" class="mt-auto bg-red-50 text-red-600 p-5 rounded-3xl font-black text-[10px] uppercase">Güvenli Çıkış</button>
-            </div>
-            <div class="flex-1 p-12">
-                <div class="flex justify-between items-center mb-12">
-                    <h2 id="adm-title" class="text-4xl font-black italic">Modül</h2>
-                    <button onclick="openModal()" class="bg-blue-600 text-white px-10 py-5 rounded-full font-black text-xs shadow-xl shadow-blue-200">YENİ EKLE</button>
+            <section class="flex-1 p-12 overflow-y-auto">
+                <div class="flex justify-between items-center mb-10">
+                    <h2 id="adm-title" class="text-4xl font-black italic uppercase">Modül</h2>
+                    <button onclick="openModal()" class="bg-white text-black px-8 py-4 rounded-xl font-black text-xs hover:bg-orange-500 transition tracking-widest">+ YENİ KAYIT</button>
                 </div>
-                <div class="bg-slate-50 rounded-[3rem] p-4"><table class="w-full text-left"><tbody id="adm-table"></tbody></table></div>
-            </div>
+                
+                <div class="bg-white/5 rounded-3xl p-6 border border-white/10">
+                    <table class="w-full text-left">
+                        <thead class="text-orange-500 text-[10px] font-black uppercase border-b border-white/10">
+                            <tr><th class="p-4">Görsel</th><th class="p-4">Başlık / İsim</th><th class="p-4 text-right">İşlemler</th></tr>
+                        </thead>
+                        <tbody id="adm-tbody" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     </main>
 
-    <div id="modal" class="fixed inset-0 z-[200] bg-slate-900/40 backdrop-blur-xl flex items-center justify-center p-6 hidden">
-        <div class="bg-white w-full max-w-xl rounded-[4rem] p-12 shadow-2xl relative overflow-y-auto max-h-[90vh]">
-            <h3 class="text-2xl font-black italic mb-8">İçerik Editörü</h3>
-            <div class="space-y-4">
-                <img id="prev" src="" class="w-full h-44 object-cover rounded-[2.5rem] hidden shadow-inner">
-                <input type="file" onchange="encode(event)" class="w-full p-6 bg-slate-50 rounded-3xl border-2 border-dashed text-xs font-bold uppercase">
-                <select id="in-loc" class="w-full p-5 bg-slate-100 rounded-3xl font-bold text-xs outline-none">
-                    <option value="Mardin">Mardin</option>
-                    <option value="Brezilya">Brezilya</option>
+    <main id="view-detail" class="view-node container mx-auto px-4 py-16 max-w-4xl">
+        <button onclick="router('home')" class="mb-10 text-[10px] font-black uppercase text-orange-500 tracking-widest">← Geri Dön</button>
+        <div id="detail-render"></div>
+    </main>
+
+    <div id="modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-6 hidden">
+        <div class="bg-white text-black w-full max-w-xl rounded-[3rem] p-10 shadow-2xl relative overflow-y-auto max-h-[90vh]">
+            <h3 class="text-2xl font-black italic mb-8 border-b pb-4">Meridian İçerik Girişi</h3>
+            <div class="space-y-5">
+                <div class="relative group h-40 bg-slate-100 rounded-3xl overflow-hidden flex items-center justify-center border-2 border-dashed">
+                    <img id="prev" src="" class="absolute inset-0 w-full h-full object-cover hidden">
+                    <input type="file" onchange="encode(event)" class="opacity-0 absolute inset-0 cursor-pointer">
+                    <span class="text-[10px] font-black uppercase text-slate-400">Resim Seç (PC'den)</span>
+                </div>
+                
+                <select id="in-loc" class="w-full p-4 bg-slate-100 rounded-2xl font-bold text-xs outline-none">
+                    <option value="Mardin">Mardin Sütunu</option>
+                    <option value="Brezilya">Brezilya Sütunu</option>
                 </select>
-                <input id="in-title" type="text" placeholder="Başlık / İsim" class="w-full p-6 bg-slate-100 rounded-3xl font-bold outline-none border-none">
-                <textarea id="in-text" placeholder="Metin içeriği..." class="w-full p-6 bg-slate-100 rounded-3xl h-40 outline-none border-none"></textarea>
-                <input id="in-sub" type="text" placeholder="Yazar Branşı veya Kategori" class="w-full p-6 bg-slate-100 rounded-3xl text-xs font-bold outline-none border-none">
+
+                <input id="in-title" type="text" placeholder="Başlık veya İsim" class="w-full p-5 bg-slate-100 rounded-2xl font-black outline-none border-none">
+                <textarea id="in-text" placeholder="İçerik detayı..." class="w-full p-5 bg-slate-100 rounded-2xl h-32 outline-none border-none"></textarea>
+                <input id="in-sub" type="text" placeholder="Alt Başlık / Kategori / Branş" class="w-full p-5 bg-slate-100 rounded-2xl text-xs font-bold outline-none border-none">
             </div>
             <div class="mt-10 flex gap-4">
-                <button onclick="closeModal()" class="flex-1 font-bold text-slate-400">Vazgeç</button>
-                <button onclick="save()" class="flex-[2] bg-blue-600 text-white p-6 rounded-3xl font-black uppercase text-xs shadow-lg">Değişiklikleri Kaydet</button>
+                <button onclick="closeModal()" class="flex-1 font-bold text-slate-400">VAZGEÇ</button>
+                <button onclick="save()" class="flex-[2] bg-black text-white p-5 rounded-2xl font-black uppercase text-xs hover:bg-orange-500 transition">KAYDET VE SENKRONİZE ET</button>
             </div>
         </div>
     </div>
 
     <script>
-        // DATA
-        let db = JSON.parse(localStorage.getItem('msp_final_v1')) || { haber: [], yazar: [], reklam: [] };
-        let current = 'haber';
-        let editId = null;
-        let bufferImg = "";
+        // MASTER DATABASE (KALICI HAFIZA)
+        let masterDB = JSON.parse(localStorage.getItem('meridian_v10')) || { haber: [], yazar: [], reklam: [] };
+        let activeMod = 'haber';
+        let editingId = null;
+        let imgTemp = "";
 
         function router(v) {
             document.querySelectorAll('.view-node').forEach(n => n.classList.remove('active-view'));
@@ -181,128 +158,150 @@
         }
 
         function encode(e) {
-            const f = e.target.files[0];
             const r = new FileReader();
-            r.onloadend = () => { bufferImg = r.result; document.getElementById('prev').src = bufferImg; document.getElementById('prev').classList.remove('hidden'); };
-            if(f) r.readAsDataURL(f);
+            r.onload = () => { imgTemp = r.result; document.getElementById('prev').src = imgTemp; document.getElementById('prev').classList.remove('hidden'); };
+            r.readAsDataURL(e.target.files[0]);
         }
 
-        // ADMIN
+        // ADMIN ENGINE
         function setMod(m) {
-            current = m;
-            document.querySelectorAll('aside button, .w-80 button').forEach(b => b.classList.remove('bg-blue-600', 'text-white'));
-            document.getElementById('b-'+m).classList.add('bg-blue-600', 'text-white');
-            document.getElementById('adm-title').innerText = m.toUpperCase();
+            activeMod = m;
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('bg-orange-500', 'text-black'));
+            document.getElementById('m-'+m).classList.add('bg-orange-500', 'text-black');
+            document.getElementById('adm-title').innerText = m.toUpperCase() + " YÖNETİMİ";
             renderAdmin();
         }
 
         function renderAdmin() {
-            const t = document.getElementById('adm-table'); t.innerHTML = '';
-            db[current].forEach(i => {
-                t.innerHTML += `
-                    <tr class="border-b border-white/50">
-                        <td class="p-6 w-24"><img src="${i.img}" class="w-14 h-14 rounded-2xl object-cover shadow-md"></td>
-                        <td class="p-6 font-bold text-slate-700">${i.title}</td>
-                        <td class="p-6 text-right">
-                            <button onclick="editItem('${i.id}')" class="text-blue-500 mr-4"><i class="fas fa-pen"></i></button>
-                            <button onclick="delItem('${i.id}')" class="text-red-400"><i class="fas fa-trash"></i></button>
+            const tbody = document.getElementById('adm-tbody');
+            tbody.innerHTML = '';
+            masterDB[activeMod].forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-4"><img src="${item.img}" class="w-12 h-12 rounded-lg object-cover"></td>
+                        <td class="p-4"><p class="font-bold text-sm">${item.title}</p><p class="text-[9px] opacity-40 uppercase">${item.loc || ''}</p></td>
+                        <td class="p-4 text-right">
+                            <button onclick="editItem('${item.id}')" class="text-blue-400 mr-4 hover:text-white"><i class="fas fa-edit"></i></button>
+                            <button onclick="delItem('${item.id}')" class="text-red-500 hover:text-white"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>`;
             });
         }
 
         function save() {
-            const obj = {
-                id: editId || 'ID'+Date.now(),
+            const data = {
+                id: editingId || 'UID' + Date.now(),
                 title: document.getElementById('in-title').value,
                 text: document.getElementById('in-text').value,
                 sub: document.getElementById('in-sub').value,
                 loc: document.getElementById('in-loc').value,
-                img: bufferImg || 'https://via.placeholder.com/800'
+                img: imgTemp || 'https://via.placeholder.com/800'
             };
-            if(editId) {
-                const idx = db[current].findIndex(x => x.id === editId);
-                db[current][idx] = obj;
-            } else { db[current].unshift(obj); }
-            localStorage.setItem('msp_final_v1', JSON.stringify(db));
-            closeModal(); renderAdmin();
+
+            if(editingId) {
+                const idx = masterDB[activeMod].findIndex(x => x.id === editingId);
+                masterDB[activeMod][idx] = data;
+            } else {
+                masterDB[activeMod].unshift(data);
+            }
+
+            localStorage.setItem('meridian_v10', JSON.stringify(masterDB));
+            closeModal();
+            renderAdmin();
         }
 
-        function delItem(id) { if(confirm('Silinsin mi?')) { db[current] = db[current].filter(x => x.id !== id); localStorage.setItem('msp_final_v1', JSON.stringify(db)); renderAdmin(); } }
+        function delItem(id) {
+            if(confirm('Veriyi kalıcı olarak silmek istiyor musunuz?')) {
+                masterDB[activeMod] = masterDB[activeMod].filter(x => x.id !== id);
+                localStorage.setItem('meridian_v10', JSON.stringify(masterDB));
+                renderAdmin();
+            }
+        }
 
         function editItem(id) {
-            editId = id; const itm = db[current].find(x => x.id === id);
-            document.getElementById('in-title').value = itm.title;
-            document.getElementById('in-text').value = itm.text;
-            document.getElementById('in-sub').value = itm.sub;
-            document.getElementById('in-loc').value = itm.loc || 'Mardin';
-            bufferImg = itm.img; document.getElementById('prev').src = itm.img; document.getElementById('prev').classList.remove('hidden');
+            editingId = id;
+            const item = masterDB[activeMod].find(x => x.id === id);
+            document.getElementById('in-title').value = item.title;
+            document.getElementById('in-text').value = item.text;
+            document.getElementById('in-sub').value = item.sub;
+            imgTemp = item.img;
+            document.getElementById('prev').src = item.img;
+            document.getElementById('prev').classList.remove('hidden');
             document.getElementById('modal').classList.remove('hidden');
         }
 
-        // HOME
+        // PORTAL RENDER ENGINE
         function renderHome() {
-            const mBox = document.getElementById('mardin-list');
-            const bBox = document.getElementById('brazil-list');
-            const aBox = document.getElementById('author-list');
-            const rBox = document.getElementById('ad-area');
+            const nGrid = document.getElementById('news-grid');
+            const aGrid = document.getElementById('author-grid');
+            const rBox = document.getElementById('ad-banner');
 
-            mBox.innerHTML = ''; bBox.innerHTML = ''; aBox.innerHTML = '';
+            nGrid.innerHTML = ''; aGrid.innerHTML = '';
 
-            db.haber.forEach(h => {
-                const card = `
-                <div onclick="openDet('haber','${h.id}')" class="glass-card p-8 group cursor-pointer transition-all hover:shadow-2xl">
-                    <img src="${h.img}" class="news-img mb-8 group-hover:scale-[0.98] transition">
-                    <h3 class="msp-title text-2xl font-black mb-4 leading-tight">${h.title}</h3>
-                    <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">${h.sub}</p>
+            masterDB.haber.forEach(h => {
+                nGrid.innerHTML += `
+                <div onclick="openDetail('haber','${h.id}')" class="bg-white rounded-[2.5rem] p-6 shadow-sm hover:shadow-2xl transition-all cursor-pointer group border border-slate-100">
+                    <img src="${h.img}" class="w-full h-52 object-cover rounded-[2rem] mb-6 group-hover:scale-95 transition duration-500">
+                    <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${h.loc === 'Mardin' ? 'bg-orange-500 text-black' : 'bg-slate-900 text-white'}">${h.loc}</span>
+                    <h3 class="text-xl font-black mt-4 leading-tight">${h.title}</h3>
+                    <p class="text-[10px] font-bold text-slate-400 mt-2 uppercase">${h.sub}</p>
                 </div>`;
-                if(h.loc === 'Mardin') mBox.innerHTML += card; else bBox.innerHTML += card;
             });
 
-            db.yazar.forEach(y => {
-                aBox.innerHTML += `
-                <div onclick="openDet('yazar','${y.id}')" class="author-slot">
-                    <img src="${y.img}" class="author-img">
+            masterDB.yazar.forEach(y => {
+                aGrid.innerHTML += `
+                <div onclick="openDetail('yazar','${y.id}')" class="flex items-center gap-5 group cursor-pointer p-2 hover:bg-slate-50 rounded-3xl transition">
+                    <div class="author-circle-wrapper">
+                        <img src="${y.img}" class="author-circle-img">
+                    </div>
                     <div>
-                        <h4 class="text-[11px] font-black uppercase tracking-wider text-slate-800">${y.title}</h4>
-                        <p class="text-[9px] font-bold text-blue-500 uppercase mt-1 tracking-widest">${y.sub}</p>
+                        <h4 class="text-[11px] font-black uppercase text-slate-800 group-hover:text-orange-500 transition">${y.title}</h4>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${y.sub}</p>
                     </div>
                 </div>`;
             });
 
-            if(db.reklam.length > 0) {
-                const r = db.reklam[0];
+            if(masterDB.reklam.length > 0) {
+                const r = masterDB.reklam[0];
                 rBox.innerHTML = `
-                <img src="${r.img}" class="w-full h-[500px] object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent p-12 flex flex-col justify-end text-white">
-                    <p class="text-[9px] font-black uppercase tracking-[0.3em] mb-4 opacity-60 italic">Sponsorlu İçerik</p>
-                    <h4 class="msp-title text-4xl mb-6">${r.title}</h4>
-                    <button class="bg-white text-slate-900 py-5 rounded-3xl font-black text-xs uppercase tracking-widest">Keşfet</button>
+                <img src="${r.img}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black p-8 flex flex-col justify-end text-white">
+                    <h4 class="text-2xl font-black italic">${r.title}</h4>
+                    <p class="text-xs opacity-60 mt-2">${r.sub}</p>
                 </div>`;
             }
         }
 
-        function openDet(type, id) {
-            const i = db[type].find(x => x.id === id);
-            const box = document.getElementById('detail-box');
+        function openDetail(type, id) {
+            const item = masterDB[type].find(x => x.id === id);
+            const render = document.getElementById('detail-render');
             if(type === 'haber') {
-                box.innerHTML = `<h1 class="msp-title text-6xl font-black mb-10 leading-tight">${i.title}</h1>
-                                <img src="${i.img}" class="w-full rounded-[4rem] shadow-2xl mb-12 border-8 border-white">
-                                <div class="text-xl leading-relaxed text-slate-600 space-y-6">${i.text}</div>`;
+                render.innerHTML = `
+                    <h1 class="text-5xl font-black mb-10 leading-tight tracking-tighter">${item.title}</h1>
+                    <img src="${item.img}" class="w-full rounded-[3.5rem] shadow-2xl mb-12 border-[12px] border-white">
+                    <div class="text-xl leading-relaxed text-slate-700 font-medium">${item.text}</div>`;
             } else {
-                box.innerHTML = `<div class="flex flex-col md:flex-row gap-16 items-center">
-                                    <img src="${i.img}" class="w-80 h-80 rounded-[4rem] object-cover shadow-2xl">
-                                    <div>
-                                        <h1 class="msp-title text-5xl font-black mb-4">${i.title}</h1>
-                                        <p class="text-blue-600 font-black uppercase tracking-[0.3em] text-sm mb-10">${i.sub}</p>
-                                        <div class="text-xl text-slate-600 leading-relaxed italic border-l-4 border-slate-200 pl-8">${i.text}</div>
-                                    </div>
-                                </div>`;
+                render.innerHTML = `
+                    <div class="flex flex-col md:flex-row gap-16 items-center">
+                        <div class="author-circle-wrapper !w-64 !h-64 shadow-2xl">
+                            <img src="${item.img}" class="author-circle-img">
+                        </div>
+                        <div class="flex-1">
+                            <h1 class="text-5xl font-black mb-4">${item.title}</h1>
+                            <p class="text-orange-500 font-black uppercase tracking-[0.3em] text-sm mb-8">${item.sub}</p>
+                            <div class="text-xl italic text-slate-600 border-l-4 border-orange-500 pl-8">${item.text}</div>
+                        </div>
+                    </div>`;
             }
             router('detail');
         }
 
-        function openModal() { editId = null; bufferImg = ""; document.getElementById('prev').classList.add('hidden'); document.getElementById('modal').classList.remove('hidden'); }
+        function openModal() { 
+            editingId = null; imgTemp = ""; 
+            document.getElementById('prev').classList.add('hidden');
+            document.querySelectorAll('#modal input, #modal textarea').forEach(i => i.value = '');
+            document.getElementById('modal').classList.remove('hidden'); 
+        }
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
         window.onload = () => { renderHome(); setMod('haber'); };
