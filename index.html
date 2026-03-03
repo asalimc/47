@@ -3,217 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina v20 | Neural Cultural OS</title>
+    <title>Lumina Obsidian | The Cultural OS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --bg: #F9F9F7; --accent: #C5A059; --text: #1A1A1A; --glass: rgba(255, 255, 255, 0.7); }
-        * { -webkit-font-smoothing: antialiased; box-sizing: border-box; scroll-behavior: smooth; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; margin: 0; }
+        :root {
+            --bg-light: #F9F9F7; --bg-dark: #0A0A0A;
+            --accent: #C5A059; --text-main: #1A1A1A;
+            --card-border: rgba(0,0,0,0.06);
+        }
+
+        /* Smooth System Overrides */
+        * { -webkit-font-smoothing: antialiased; selection-background: var(--accent); selection-color: #fff; }
+        body { background: var(--bg-light); color: var(--text-main); font-family: 'Inter', sans-serif; transition: background 0.5s ease; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-        
-        /* --- Authors Strip (Yeni Eklenen Sabit Şerit) --- */
-        .authors-strip { border-bottom: 1px solid rgba(0,0,0,0.05); padding: 15px 5%; display: flex; align-items: center; gap: 40px; background: white; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
-        .authors-strip::-webkit-scrollbar { display: none; }
-        .author-node { display: flex; align-items: center; gap: 12px; }
-        .author-avatar { width: 32px; height: 32px; border-radius: 50%; background: #eee; border: 1px solid rgba(0,0,0,0.1); object-fit: cover; }
-        .author-name { font-[10px]; font-weight: 800; text-transform: uppercase; tracking: 2px; opacity: 0.6; }
 
-        /* Bento Grid */
+        /* Modern UI Glassmorphism */
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--card-border); }
+        
+        /* The "Obsidian" Dashboard Grid */
+        .admin-sidebar { background: #0F0F0F; border-right: 1px solid #1F1F1F; }
+        .stat-card { background: #151515; border: 1px solid #222; border-radius: 24px; transition: 0.3s; }
+        .stat-card:hover { border-color: var(--accent); background: #1A1A1A; }
+
+        /* Immersive Reader Engine */
+        #reader-modal { display: none; background: var(--bg-light); z-index: 100000; overflow-y: scroll; scroll-behavior: smooth; }
+        .reader-mode-sepia { background: #F4ECD8 !important; color: #433422 !important; }
+        .reader-mode-dark { background: #0A0A0A !important; color: #EAEAEA !important; }
+        
+        /* Custom Animations */
+        @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-reveal { animation: reveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+        /* Bento Grid Layout */
         .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 40px 5%; }
-        .bento-item { border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid rgba(0,0,0,0.05); height: 500px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .bento-item:hover { transform: scale(0.98); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
+        .bento-item { border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid var(--card-border); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-item:hover { transform: scale(0.985); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
 
-        /* --- THE NEURAL ADMIN (Dünyanın En İyisi) --- */
-        #admin-panel { display: none; position: fixed; inset: 0; background: rgba(244, 244, 241, 0.95); backdrop-filter: blur(40px); z-index: 200000; padding: 40px; animation: neuralReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes neuralReveal { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: scale(1); } }
-        
-        .admin-window { background: white; width: 100%; height: 100%; border-radius: 50px; display: flex; overflow: hidden; box-shadow: 0 50px 100px rgba(0,0,0,0.1); border: 1px solid white; }
-        .admin-sidebar { width: 300px; background: #fafafa; border-right: 1px solid rgba(0,0,0,0.03); padding: 60px 40px; }
-        .admin-content { flex: 1; padding: 80px; overflow-y: auto; }
-        
-        .nav-link { padding: 20px 0; display: flex; align-items: center; gap: 15px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; color: rgba(0,0,0,0.2); transition: 0.3s; width: 100%; text-align: left; }
-        .nav-link.active { color: var(--accent); }
-        
-        .input-neural { background: #f5f5f3; border: 1px solid transparent; border-radius: 24px; padding: 22px 30px; width: 100%; transition: 0.4s; font-size: 15px; }
-        .input-neural:focus { background: white; border-color: var(--accent); box-shadow: 0 10px 40px rgba(197, 160, 89, 0.1); outline: none; }
-
-        /* Atlas Koruma */
-        .atlas-container { background: #0A0A0A; padding: 60px 5%; border-radius: 60px; margin: 20px 5%; position: relative; height: 350px; overflow: hidden; }
-        .pulse-point { position: absolute; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 20px var(--accent); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
-
-        .highlight { color: var(--accent); font-weight: 700; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body>
+<body class="no-scrollbar">
 
-<nav class="sticky top-0 z-[5000] px-10 py-6 flex justify-between items-center bg-white/80 backdrop-blur-2xl border-b border-black/5">
+<nav class="glass sticky top-0 z-[5000] px-10 py-5 flex justify-between items-center">
     <div class="flex items-center gap-12">
-        <h1 class="serif text-4xl font-light uppercase tracking-tighter">Lumina</h1>
-        <div id="ui-global-clock" class="hidden lg:flex gap-6 text-[10px] font-black uppercase tracking-[3px] opacity-40"></div>
+        <h1 class="serif text-4xl font-light tracking-tighter uppercase">Lumina</h1>
+        <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-[3px] opacity-40">
+            <a href="#" class="hover:text-accent transition">Koleksiyonlar</a>
+            <a href="#" class="hover:text-accent transition">Harita</a>
+            <a href="#" class="hover:text-accent transition">Arşiv</a>
+        </div>
     </div>
+    
     <div class="flex items-center gap-6">
-        <button onclick="toggleAdmin('flex')" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition-all shadow-xl shadow-black/10">
-            <i data-lucide="command" class="w-5 h-5"></i>
+        <div id="top-weather" class="text-[10px] font-bold opacity-30 text-right">
+            MARDIN 24°C / RIO 31°C
+        </div>
+        <button onclick="toggleAdmin()" class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-accent transition">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
         </button>
     </div>
 </nav>
 
-<div class="authors-strip no-scrollbar">
-    <div class="text-[9px] font-black uppercase tracking-[4px] opacity-20 mr-4">Active Authors</div>
-    <div class="author-node"><img class="author-avatar" src="https://i.pravatar.cc/100?img=11"><span class="author-name">M. Al-Khafaji</span></div>
-    <div class="author-node"><img class="author-avatar" src="https://i.pravatar.cc/100?img=32"><span class="author-name">Lara Santos</span></div>
-    <div class="author-node"><img class="author-avatar" src="https://i.pravatar.cc/100?img=44"><span class="author-name">Elias Thorne</span></div>
-    <div class="author-node"><img class="author-avatar" src="https://i.pravatar.cc/100?img=51"><span class="author-name">Yasmine B.</span></div>
-    <div class="author-node"><img class="author-avatar" src="https://i.pravatar.cc/100?img=17"><span class="author-name">Julian Rocha</span></div>
+<header class="px-[5%] py-20 flex flex-col md:flex-row justify-between items-end gap-10">
+    <div class="max-w-3xl">
+        <p class="text-[12px] font-black uppercase tracking-[6px] text-accent mb-6">World Class Culture Interface</p>
+        <h2 class="serif text-7xl md:text-9xl font-light leading-none">Mardin & <br><i>Rio de Janeiro</i></h2>
+    </div>
+    <div class="flex gap-4 mb-4">
+        <div class="bg-white p-6 rounded-[30px] border border-black/5 shadow-sm">
+            <p class="text-[9px] font-black opacity-30 uppercase mb-2">Mesafe</p>
+            <p id="ui-dist" class="serif text-3xl font-bold">10.840 KM</p>
+        </div>
+    </div>
+</header>
+
+<section id="ui-feed" class="bento-grid">
+    </section>
+
+<div id="reader-modal" class="fixed inset-0">
+    <div class="sticky top-0 p-8 flex justify-between items-center z-[200]">
+        <button onclick="closeReader()" class="w-14 h-14 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition">
+            <i data-lucide="arrow-left" class="w-6 h-6"></i>
+        </button>
+        <div class="flex gap-2 bg-black/5 p-2 rounded-full backdrop-blur-md">
+            <button onclick="setTheme('light')" class="w-8 h-8 rounded-full bg-white border border-black/10"></button>
+            <button onclick="setTheme('sepia')" class="w-8 h-8 rounded-full bg-[#F4ECD8] border border-black/10"></button>
+            <button onclick="setTheme('dark')" class="w-8 h-8 rounded-full bg-[#0A0A0A] border border-white/10"></button>
+        </div>
+        <div class="flex gap-4">
+            <button id="tts-trigger" onclick="handleTTS()" class="px-8 py-3 bg-accent text-white rounded-full font-black text-[10px] uppercase tracking-widest flex items-center gap-3">
+                <i data-lucide="volume-2" class="w-4 h-4"></i> <span id="tts-text">Sesi Dinle</span>
+            </button>
+        </div>
+    </div>
+    <article id="reader-body" class="max-w-5xl mx-auto px-10 pt-20 pb-40">
+        </article>
 </div>
 
-<section class="atlas-container">
-    <div class="pulse-point" style="top: 42%; left: 58%;"></div> 
-    <div class="pulse-point" style="top: 75%; left: 32%;"></div> 
-    <svg class="absolute inset-0 w-full h-full opacity-20" style="stroke: var(--accent); stroke-width: 1; stroke-dasharray: 6;">
-        <path d="M 720 120 Q 550 200 400 250" fill="transparent"/>
-    </svg>
-    <div class="absolute bottom-10 left-10 flex gap-10 items-end">
+<div id="admin-panel" class="fixed inset-0 hidden z-[100000] flex">
+    <div class="admin-sidebar w-72 h-full p-8 flex flex-col justify-between">
         <div>
-            <p class="text-[8px] font-black uppercase tracking-[4px] text-accent mb-2">Distance Engine</p>
-            <p id="ui-distance" class="serif text-5xl text-white font-light">10.604 KM</p>
-        </div>
-        <div class="h-12 w-[1px] bg-white/10 mb-2"></div>
-        <div class="text-white/30 serif italic text-xl mb-1">Mardin — Sao Paulo</div>
-    </div>
-</section>
-
-<section id="ui-feed" class="bento-grid"></section>
-
-<div id="admin-panel">
-    <div class="admin-window">
-        <div class="admin-sidebar">
-            <div class="serif text-3xl italic text-accent mb-20">Neural Control</div>
+            <h3 class="serif text-2xl text-white mb-12 italic">Lumina Core</h3>
             <nav class="space-y-4">
-                <button onclick="switchTab('dash')" class="nav-link active" id="btn-dash"><i data-lucide="layout-grid" class="w-4 h-4"></i> Overview</button>
-                <button onclick="switchTab('news')" class="nav-link" id="btn-news"><i data-lucide="plus-circle" class="w-4 h-4"></i> New Entry</button>
-                <button onclick="switchTab('sys')" class="nav-link" id="btn-sys"><i data-lucide="settings" class="w-4 h-4"></i> System</button>
+                <button onclick="switchTab('dash')" class="flex items-center gap-4 text-white/50 hover:text-white transition w-full py-2"><i data-lucide="pie-chart" class="w-5 h-5"></i> Dashboard</button>
+                <button onclick="switchTab('content')" class="flex items-center gap-4 text-white/50 hover:text-white transition w-full py-2"><i data-lucide="pen-tool" class="w-5 h-5"></i> İçerik Yaz</button>
+                <button onclick="switchTab('global')" class="flex items-center gap-4 text-white/50 hover:text-white transition w-full py-2"><i data-lucide="globe" class="w-5 h-5"></i> Global Ayarlar</button>
             </nav>
-            <button onclick="toggleAdmin('none')" class="mt-40 text-[9px] font-black uppercase tracking-[4px] opacity-30 hover:opacity-100 transition">Exit Console</button>
         </div>
+        <button onclick="toggleAdmin()" class="py-4 bg-red-950 text-red-500 rounded-2xl text-[10px] font-black uppercase tracking-widest">Sistemi Kapat</button>
+    </div>
+    
+    <div class="flex-1 h-full bg-[#050505] p-12 overflow-y-auto">
         
-        <div class="admin-content no-scrollbar">
-            <div id="tab-dash" class="admin-tab">
-                <h2 class="serif text-7xl font-light mb-12 leading-none">Intelligence <br><i>Report</i></h2>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="p-10 border border-black/5 rounded-[40px] bg-gray-50">
-                        <p class="text-[10px] font-black uppercase opacity-30 mb-4 tracking-widest">Global IQ</p>
-                        <p class="text-6xl serif text-accent">99.8%</p>
-                    </div>
-                    <div class="p-10 border border-black/5 rounded-[40px] bg-gray-50">
-                        <p class="text-[10px] font-black uppercase opacity-30 mb-4 tracking-widest">Active Links</p>
-                        <p class="text-6xl serif">1.2k</p>
-                    </div>
+        <div id="tab-dash" class="admin-tab">
+            <div class="flex justify-between items-end mb-12">
+                <h2 class="text-4xl text-white font-bold">Hoş Geldin, <span class="text-accent">Master</span></h2>
+                <p class="text-white/20 text-[10px] uppercase font-black tracking-[4px]">System Online: Stable</p>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-8 mb-12">
+                <div class="stat-card p-8">
+                    <p class="text-white/30 text-[10px] font-black uppercase tracking-widest mb-4">Toplam Okunma</p>
+                    <p class="text-5xl text-white font-light">12.482</p>
+                </div>
+                <div class="stat-card p-8">
+                    <p class="text-white/30 text-[10px] font-black uppercase tracking-widest mb-4">Kültürel Etkileşim</p>
+                    <p class="text-5xl text-white font-light">%94.2</p>
+                </div>
+                <div class="stat-card p-8">
+                    <p class="text-white/30 text-[10px] font-black uppercase tracking-widest mb-4">Sunucu Yükü</p>
+                    <p class="text-5xl text-white font-light">0.02s</p>
                 </div>
             </div>
 
-            <div id="tab-news" class="admin-tab hidden">
-                <h2 class="serif text-7xl font-light mb-12">Composer</h2>
-                <div class="space-y-6">
-                    <input id="in-news-title" placeholder="Story Title" class="input-neural serif text-3xl">
-                    <textarea id="in-news-text" placeholder="Deep dive into the culture..." class="input-neural h-64 resize-none"></textarea>
-                    
-                    <div class="flex gap-4">
-                        <input type="file" id="in-news-file" class="hidden" onchange="handleFile(this)">
-                        <label for="in-news-file" class="flex-1 p-6 border-2 border-dashed border-black/5 rounded-3xl text-center cursor-pointer hover:border-accent transition">
-                            <i data-lucide="image" class="mx-auto mb-2 opacity-20"></i>
-                            <span class="text-[9px] font-black uppercase opacity-40">Add Visual Asset</span>
-                        </label>
-                        <button onclick="addNews()" class="px-20 bg-black text-white rounded-3xl font-black text-[10px] uppercase tracking-[4px] hover:bg-accent transition">Publish</button>
+            <div class="stat-card p-10">
+                <h3 class="text-white text-xs font-black uppercase mb-8 opacity-40">Son Yayınlananlar</h3>
+                <div id="admin-recent-list" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <div id="tab-content" class="admin-tab hidden space-y-8">
+            <div class="grid grid-cols-12 gap-10">
+                <div class="col-span-8 space-y-6">
+                    <input id="in-title" placeholder="Başlığı Buraya Nakşet..." class="w-full bg-transparent border-b border-white/10 text-5xl text-white serif py-4 focus:border-accent outline-none">
+                    <textarea id="in-text" placeholder="Hikaye başlıyor..." class="w-full h-[50vh] bg-transparent text-white/70 text-xl font-light outline-none resize-none leading-relaxed"></textarea>
+                </div>
+                <div class="col-span-4 space-y-6">
+                    <div class="stat-card p-8 space-y-6">
+                        <input id="in-img" placeholder="Visual URL" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white text-xs">
+                        <input id="in-type" placeholder="Tema (Mistik, Modern vb.)" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white text-xs">
+                        <button onclick="saveContent()" class="w-full bg-accent text-black font-black py-5 rounded-2xl uppercase text-[11px] tracking-widest hover:scale-[1.02] transition">Dünyaya Duyur</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div id="article-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:white; z-index:100000; overflow-y:auto;">
-    <div class="p-10 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-md">
-        <button onclick="closeModals()" class="font-black text-[10px] uppercase opacity-40 tracking-widest">Close</button>
-        <button onclick="toggleKaraoke()" class="bg-black text-white px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-[3px]">Voice Mode</button>
     </div>
-    <div id="article-content" class="max-w-4xl mx-auto py-24 px-10"></div>
 </div>
 
 <script>
-    let DB = JSON.parse(localStorage.getItem('LUMINA_V20_DB')) || {
-        global: { mardin: '26°C', sp: '22°C', dist: '10.604 KM' },
-        news: [
-            { id: 1, title: 'Mezopotamya\'nın Sessiz Yankısı', text: 'Mardin taşlarının her birinde Sao Paulo gökdelenlerinin betonarme dürüstlüğünü bulabilirsiniz.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200', type: 'Architecture' }
-        ]
+    // --- NUCLEUS: THE DATABASE ---
+    let DB = JSON.parse(localStorage.getItem('LUMINA_ULTIMATE')) || {
+        articles: [
+            { id: 1, title: 'Kasımiye\'de Zamanın Durduğu An', type: 'Mimari', text: 'Mardin\'in sarı taşları arasında güneş batarken, Kasımiye Medresesi\'nin havuzunda suların sesiyle tarihin nabzını tutarsınız. Her damla bir asır, her taş bir hatıradır.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200' },
+            { id: 2, title: 'Ipanema Dalgaları ve Bossa Nova', type: 'Ritim', text: 'Rio de Janeiro\'nun beyaz kumlarında Vinicius de Moraes\'in dizeleri yankılanır. Denizden gelen esinti, sadece tuzu değil, bir halkın melankolik neşesini (Saudade) taşır.', img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200' }
+        ],
+        settings: { dist: '10.840 KM', weather: 'MARDIN 24°C / RIO 31°C' }
     };
 
-    function sync() { localStorage.setItem('LUMINA_V20_DB', JSON.stringify(DB)); render(); }
+    function sync() { localStorage.setItem('LUMINA_ULTIMATE', JSON.stringify(DB)); init(); }
 
-    function updateClocks() {
-        const t1 = new Date().toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
-        const t2 = new Date().toLocaleTimeString('tr-TR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
-        document.getElementById('ui-global-clock').innerHTML = `MARDIN ${t1} • ${DB.global.mardin} <span class="mx-4 opacity-10">/</span> SAO PAULO ${t2} • ${DB.global.sp}`;
-    }
-    setInterval(updateClocks, 1000);
-
-    function render() {
+    // --- RENDER ENGINE ---
+    function init() {
         lucide.createIcons();
-        document.getElementById('ui-distance').innerText = DB.global.dist;
+        
+        // Render Feed (Bento Style)
         const feed = document.getElementById('ui-feed');
-        feed.innerHTML = DB.news.map((n, idx) => `
-            <div class="bento-item ${idx % 3 === 0 ? 'col-span-8' : 'col-span-4'}" onclick="openArticle(${n.id})">
-                <img src="${n.img}" class="absolute inset-0 w-full h-full object-cover">
+        feed.innerHTML = DB.articles.map((art, idx) => `
+            <div class="bento-item animate-reveal ${idx % 3 === 0 ? 'col-span-12 md:col-span-8 h-[600px]' : 'col-span-12 md:col-span-4 h-[600px]'}" onclick="openReader(${art.id})">
+                <img src="${art.img}" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div class="absolute bottom-0 p-12 text-white">
-                    <span class="text-[9px] font-black uppercase tracking-[5px] text-accent mb-4 block">${n.type}</span>
-                    <h3 class="serif text-5xl leading-tight tracking-tighter">${n.title}</h3>
+                    <span class="text-[10px] font-black uppercase tracking-[5px] text-accent mb-4 block">${art.type}</span>
+                    <h3 class="serif text-5xl leading-none">${art.title}</h3>
                 </div>
             </div>
         `).join('');
+
+        // Admin Recent List
+        document.getElementById('admin-recent-list').innerHTML = DB.articles.map(art => `
+            <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
+                <p class="text-white text-sm font-medium">${art.title}</p>
+                <div class="flex gap-4">
+                    <button class="text-white/20 hover:text-white transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                    <button onclick="deleteArt(${art.id})" class="text-red-900 hover:text-red-500 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        `).join('');
+        lucide.createIcons();
     }
 
-    let lastImg = "";
-    function handleFile(input) {
-        const reader = new FileReader();
-        reader.onload = (e) => lastImg = e.target.result;
-        reader.readAsDataURL(input.files[0]);
-    }
-
-    function openArticle(id) {
-        const n = DB.news.find(x => x.id === id);
-        document.getElementById('article-content').innerHTML = `
-            <h1 class="serif text-8xl leading-[0.85] tracking-tighter mb-16 text-center">${n.title}</h1>
-            <div id="karaoke-text" class="serif text-4xl leading-relaxed text-justify opacity-80">
-                ${n.text.split(' ').map(word => `<span>${word}</span>`).join(' ')}
+    // --- READER & TTS LOGIC ---
+    let currentVoice = null;
+    function openReader(id) {
+        const art = DB.articles.find(a => a.id === id);
+        const reader = document.getElementById('reader-modal');
+        document.getElementById('reader-body').innerHTML = `
+            <p class="text-accent font-black uppercase tracking-[8px] text-[12px] mb-8 text-center">${art.type}</p>
+            <h1 class="serif text-8xl leading-none mb-16 text-center">${art.title}</h1>
+            <div id="reader-text-content" class="serif text-4xl leading-relaxed text-justify opacity-80 first-letter:text-8xl first-letter:font-bold first-letter:text-accent">
+                ${art.text}
             </div>
         `;
-        document.getElementById('article-modal').style.display = 'block';
+        reader.style.display = 'block';
+        document.body.style.overflow = 'hidden';
     }
 
-    function toggleAdmin(val) { document.getElementById('admin-panel').style.display = val; }
-    
-    function switchTab(t) { 
-        document.querySelectorAll('.admin-tab').forEach(x => x.classList.add('hidden'));
-        document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('active'));
-        document.getElementById('tab-'+t).classList.remove('hidden');
-        document.getElementById('btn-'+t).classList.add('active');
+    function closeReader() {
+        window.speechSynthesis.cancel();
+        document.getElementById('reader-modal').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 
-    function addNews() {
-        const n = { id: Date.now(), title: document.getElementById('in-news-title').value, text: document.getElementById('in-news-text').value, img: lastImg || 'https://via.placeholder.com/1200', type: 'Culture' };
-        DB.news.unshift(n); sync(); toggleAdmin('none');
+    function handleTTS() {
+        const text = document.getElementById('reader-text-content').innerText;
+        if(window.speechSynthesis.speaking) {
+            window.speechSynthesis.cancel();
+            document.getElementById('tts-text').innerText = "Sesi Dinle";
+        } else {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'tr-TR';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+            document.getElementById('tts-text').innerText = "Durdur";
+        }
     }
 
-    function closeModals() { document.getElementById('article-modal').style.display='none'; window.speechSynthesis.cancel(); }
+    function setTheme(mode) {
+        const body = document.getElementById('reader-modal');
+        body.classList.remove('reader-mode-sepia', 'reader-mode-dark');
+        if(mode === 'sepia') body.classList.add('reader-mode-sepia');
+        if(mode === 'dark') body.classList.add('reader-mode-dark');
+    }
 
-    window.onload = () => { render(); updateClocks(); };
+    // --- ADMIN ACTIONS ---
+    function toggleAdmin() {
+        const panel = document.getElementById('admin-panel');
+        panel.classList.toggle('hidden');
+    }
+
+    function switchTab(tab) {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+    }
+
+    function saveContent() {
+        const newArt = {
+            id: Date.now(),
+            title: document.getElementById('in-title').value,
+            text: document.getElementById('in-text').value,
+            img: document.getElementById('in-img').value,
+            type: document.getElementById('in-type').value
+        };
+        DB.articles.unshift(newArt);
+        sync();
+        toggleAdmin();
+    }
+
+    function deleteArt(id) {
+        DB.articles = DB.articles.filter(a => a.id !== id);
+        sync();
+    }
+
+    window.onload = init;
 </script>
 </body>
 </html>
