@@ -13,7 +13,7 @@
             --white: #F5F5F7;
         }
 
-        /* --- 4. GRID BACKGROUND --- */
+        /* --- GRID BACKGROUND --- */
         body { 
             background-color: #fafaf9;
             background-image: 
@@ -26,7 +26,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
 
-        /* --- TICKER (YAVAŞLATILMIŞ) --- */
+        /* --- TICKER --- */
         .glass-ticker {
             position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
             width: 95%; max-width: 1200px; padding: 12px 20px;
@@ -52,7 +52,7 @@
         .side-line { width: 1px; height: clamp(60px, 12vh, 140px); background: var(--dark); opacity: 0.1; }
         .side-timestamp { font-size: 9px; font-family: monospace; font-weight: 900; color: var(--brazil); }
 
-        /* --- HEADER & YAN YANA BAŞLIK --- */
+        /* --- HEADER --- */
         header { padding: clamp(120px, 18vh, 200px) 5% 40px; }
         .brand-title { 
             font-family: 'Playfair Display'; font-size: clamp(2.5rem, 9.5vw, 9rem); 
@@ -61,7 +61,7 @@
         .brand-title .m-text { color: var(--mardin); }
         .brand-title .b-text { color: var(--brazil); font-weight: 900; }
 
-        /* --- DATA PANEL (Siyah Bant Yerine Şeffaf) --- */
+        /* --- DATA PANEL --- */
         .data-shuttle {
             grid-column: span 12; display: flex; justify-content: space-between;
             padding: 25px 40px; background: rgba(255,255,255,0.4); 
@@ -71,7 +71,7 @@
         .stat-value { font-family: 'Playfair Display'; font-size: 1.6rem; font-weight: 900; color: var(--dark); }
         .stat-label { font-size: 8px; font-weight: 900; letter-spacing: 2px; opacity: 0.4; margin-top: 5px; }
 
-        /* --- MASTER WRAPPER (RESPONSIVE GRID) --- */
+        /* --- MASTER WRAPPER --- */
         .master-wrapper { padding: 0 5% 80px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; }
 
         .featured-mask { 
@@ -84,7 +84,7 @@
         }
         .featured-mask img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- MAG STACK (YAZARLAR DAHİL) --- */
+        /* --- MAG STACK --- */
         .mag-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; }
         @media (max-width: 1024px) { .mag-stack { grid-column: span 12; } }
 
@@ -97,12 +97,16 @@
             padding: clamp(40px, 6vw, 80px); border-radius: 50px; overflow-y: auto;
         }
 
-        /* Yazar İmzası */
+        /* Yazar Kutusu (Seçili Alana Eklenen Bölüm) */
         .author-box {
             display: flex; align-items: center; gap: 12px; margin-top: 25px;
-            font-size: 10px; font-weight: 900; color: var(--dark); opacity: 0.5;
+            font-size: 10px; font-weight: 900; color: var(--dark); opacity: 0.7;
+            text-transform: uppercase; letter-spacing: 1px;
         }
-        .author-box img { width: 22px; height: 22px; border-radius: 50%; background: #eee; }
+        .author-box img { 
+            width: 28px; height: 28px; border-radius: 50%; 
+            background: #eee; object-fit: cover; border: 1px solid rgba(0,0,0,0.05);
+        }
 
         .expand-card .detail-content { display: none; margin-top: 30px; font-family: 'Lora'; font-size: 1.2rem; line-height: 1.8; }
         .expand-card.active .detail-content { display: block; animation: fadeInUp 0.7s ease; }
@@ -165,10 +169,12 @@
                 <div class="close-btn">CLOSE [X]</div>
                 <span style="font-weight:900; font-size:10px; color:var(--mardin)">ARCHIVE // 01</span>
                 <h4 style="font-family: 'Playfair Display'; font-size: 1.6rem; margin-top: 15px;">Taşın Matematiği</h4>
+                
                 <div class="author-box">
-                    <img src="https://i.pravatar.cc/100?u=elif" alt="">
+                    <img src="https://i.pravatar.cc/150?u=elif_m" alt="Dr. Elif Mardini">
                     <span>DR. ELİF MARDİNİ</span>
                 </div>
+
                 <div class="detail-content">
                     Mardin'in kadim mimarisindeki geometrik oranlar, doğanın evrensel diliyle konuşuyor. Bu makalede, taş işçiliğinin dijital koruma altına alınma süreçlerini inceliyoruz.
                 </div>
@@ -178,10 +184,12 @@
                 <div class="close-btn">CLOSE [X]</div>
                 <span style="font-weight:900; font-size:10px; color:var(--brazil)">ARCHIVE // 02</span>
                 <h4 style="font-family: 'Playfair Display'; font-size: 1.6rem; margin-top: 15px;">Amazon Dijital Raporu</h4>
+                
                 <div class="author-box">
-                    <img src="https://i.pravatar.cc/100?u=ricardo" alt="">
+                    <img src="https://i.pravatar.cc/150?u=ricardo_s" alt="Prof. Ricardo Silva">
                     <span>PROF. RICARDO SILVA</span>
                 </div>
+
                 <div class="detail-content">
                     Amazon ormanlarından gelen anlık biyo-veriler, küresel ekosistemin nabzını tutuyor. ASC 2026 sistemiyle bu veriler artık şeffaf birer açık kaynak.
                 </div>
