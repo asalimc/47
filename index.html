@@ -30,12 +30,12 @@
 
         .wrapper { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-        /* --- 2. GASTRONOMİ --- */
+        /* --- 2. HABER DÜELLOSU (Eski Gastro) --- */
         .gastro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
         .flip-card { height: 350px; perspective: 1000px; cursor: pointer; }
         .flip-inner { position: relative; width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; }
         .flip-card:hover .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; }
         .flip-front { background: white; border: 2px solid var(--mardin); }
         .flip-back { background: var(--rio); color: white; transform: rotateY(180deg); }
 
@@ -62,26 +62,17 @@
         .event-item:hover { background: #fffcf8; }
         .date-badge { background: var(--dark); color: white; padding: 10px; border-radius: 10px; min-width: 60px; text-align: center; font-weight: bold; }
 
-        /* --- 7. ADMIN PANEL --- */
-        .admin-panel { background: white; padding: 40px; border-radius: 25px; border-top: 10px solid var(--rio); margin-bottom: 50px; }
-        .editor-mock { min-height: 150px; background: #fafafa; border: 1px dashed #ccc; padding: 20px; border-radius: 15px; margin: 20px 0; color: #666; font-style: italic; }
-
-        /* --- 8. MODAL --- */
+        /* --- 7. MODAL --- */
         .detail-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 10001; backdrop-filter: blur(10px); padding: 20px; }
         .detail-content { background: var(--bg); width: 100%; max-width: 800px; max-height: 90vh; border-radius: 25px; overflow-y: auto; position: relative; border-top: 10px solid var(--mardin); padding: 40px; }
         .close-detail { position: sticky; top: 0; float: right; font-size: 2rem; cursor: pointer; color: var(--mardin); font-weight: bold; }
         .detail-body h2 { font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 20px; }
         .detail-body p { font-family: 'Lora'; line-height: 1.8; font-size: 1.1rem; margin-bottom: 15px; }
 
-        /* --- 9. MOBİL DOCK --- */
-        .mobile-dock { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(18, 18, 18, 0.9); backdrop-filter: blur(10px); width: 90%; max-width: 400px; height: 65px; border-radius: 35px; display: none; justify-content: space-around; align-items: center; z-index: 10000; border: 1px solid rgba(255,255,255,0.1); }
-        .dock-btn { color: #888; font-size: 10px; text-decoration: none; text-align: center; }
-        .dock-btn.active { color: var(--mardin); }
-
         .live-pulse { width: 10px; height: 10px; background: #ff4b2b; border-radius: 50%; display: inline-block; margin-right: 8px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,75,43,0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,75,43,0); } 100% { box-shadow: 0 0 0 0 rgba(255,75,43,0); } }
 
-        @media (max-width: 768px) { header h1 { font-size: 3rem; } .mobile-dock { display: flex; } .stats-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { header h1 { font-size: 3rem; } .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -94,7 +85,7 @@
     <nav>
         <ul>
             <li><a href="#explore">KEŞFET</a></li>
-            <li><a href="#gastronomy">GASTRONOMİ</a></li>
+            <li><a href="#news">HABERLER</a></li>
             <li><a href="#agenda">AJANDA</a></li>
             <li><a href="#editor">EDİTÖR</a></li>
         </ul>
@@ -102,60 +93,60 @@
 
     <div class="wrapper">
         
-        <h3 id="gastronomy" style="margin-bottom: 30px; font-family: 'Playfair Display'; scroll-margin-top: 100px;"><span class="live-pulse"></span>LEZZET SENTEZİ</h3>
+        <h3 id="news" style="margin-bottom: 30px; font-family: 'Playfair Display'; scroll-margin-top: 100px;"><span class="live-pulse"></span>GÜNCEL AKIŞ: İKİ DÜNYA</h3>
         <div class="gastro-grid">
-            <div class="flip-card" data-type="gastro" data-title="Kutkute & Coxinha Düellosu" data-info="Mardin'in haşlama içli köftesi ile Brezilya'nın tavuklu hamur topu Coxinha arasındaki doku benzerliği, şeflerimizi yeni bir füzyon mutfağına itti. Her iki lezzet de elle yenen, toplumsal paylaşımı simgeleyen sokak lezzetlerinin kralıdır.">
+            <div class="flip-card" data-type="news" data-title="Mardin: UNESCO'dan Yeni Tescil" data-info="Mardin'in tarihi çarşılarındaki 'Sokak Sağlıklaştırma' projesi, UNESCO tarafından en iyi koruma uygulaması seçildi. Tarihi taşların restorasyonunda tamamen geleneksel horasan harcı ve özgün kesim teknikleri kullanıldı. Bu başarı, Mezopotamya turizmine yeni bir soluk getirecek.">
                 <div class="flip-inner">
-                    <div class="flip-front"><h2 style="color: var(--mardin)">MARDİN</h2><p>İçli Köfte (Kutkute)</p></div>
-                    <div class="flip-back"><h2>RIO BAĞLANTISI</h2><p>Coxinha'nın çıtırlığı Mardin'in iç harcıyla buluşuyor.</p></div>
+                    <div class="flip-front"><h2 style="color: var(--mardin)">MARDİN</h2><p>Tarihi Çarşı Restorasyonu Tamamlandı</p></div>
+                    <div class="flip-back"><h2>UNESCO BAŞARISI</h2><p>Binlerce yıllık taşlar yeniden hayat buldu.</p></div>
                 </div>
             </div>
-            <div class="flip-card" data-type="gastro" data-title="Harire & Acai Sinerjisi" data-info="Mezopotamya'nın üzüm şırasından yapılan Harire tatlısı, Amazon'un enerji deposu Acai meyvesiyle buluştuğunda ortaya çıkan antioksidan bombası, Rio plajlarının yeni favorisi oldu.">
+            <div class="flip-card" data-type="news" data-title="Brezilya: Amazon Ormanlarında Dijital Dönüşüm" data-info="Brezilya hükümeti, Amazon havzasındaki yerli kabilelerin sürdürülebilir tarım ürünlerini dünyaya pazarlayabilmesi için 'Green-Connect' projesini başlattı. Artık Amazon'un en ücra köşelerinden çıkan organik ürünler, blokzincir teknolojisiyle Avrupa ve Asya pazarlarına doğrudan ulaşıyor.">
                 <div class="flip-inner">
-                    <div class="flip-front"><h2 style="color: var(--rio)">RIO</h2><p>Acai Meyvesi</p></div>
-                    <div class="flip-back"><h2>MARDİN BAĞLANTISI</h2><p>Üzüm şırası ve tarçınlı Harire dokunuşu.</p></div>
+                    <div class="flip-front"><h2 style="color: var(--rio)">BREZİLYA</h2><p>Amazon'da Sürdürülebilir Teknoloji Devrimi</p></div>
+                    <div class="flip-back"><h2>YEŞİL EKONOMİ</h2><p>Yerel üreticiler küresel pazara açılıyor.</p></div>
                 </div>
             </div>
         </div>
 
-        <section id="explore" class="video-section" data-type="video" data-title="Taş ve Dansın Belgeseli" data-info="Mardin'in sarı kalker taşlarından Rio'nun altın kumlarına uzanan bu belgesel, iki farklı kıtadaki insanın 'güneşle' olan imtihanını anlatıyor. 2026 yılı yapımı bu kısa film, UNESCO tarafından özel ödüle layık görüldü." style="scroll-margin-top: 100px;">
+        <section id="explore" class="video-section" data-type="video" data-title="Işığın Peşinde: Belgesel" data-info="Mardin'in turuncu gün batımı ile Rio'nun masmavi şafağını birleştiren bu sinematik çalışma, doğanın evrensel dilini konuşuyor." style="scroll-margin-top: 100px;">
             <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5" alt="Rio Coastline">
             <div class="video-overlay">
                 <div class="play-btn">▶</div>
                 <h2 style="font-family: 'Playfair Display'; font-size: 2rem;">İki Güneş Arasında</h2>
-                <p>Mardin'den Rio de Janeiro'ya Bir Göç Hikayesi</p>
+                <p>Mardin'den Rio de Janeiro'ya Bir Görsel Yolculuk</p>
             </div>
         </section>
 
-        <article class="main-article" data-type="article" data-title="Mardin Telkârisi Rio Podyumlarında" data-info="Brezilya Moda Haftası'nın açılışında, Mardinli gümüş ustalarının elinden çıkan telkâri maskeler damga vurdu. Tasarımcı Gisele Santos, 'Mardin'in gümüşü, Rio'nun ritmiyle birleşince ortaya bir sanat eseri çıktı' dedi. Koleksiyonun tüm geliri, iki şehirdeki çocuk eğitim vakıflarına bağışlandı.">
+        <article class="main-article" data-type="article" data-title="Gümüş ve Samba: Kültürel Bağlar" data-info="Rio Karnavalı'nın baş tasarımcıları, kostümlerde Mardin Telkârisi kullanma kararını açıkladı. Bu karar, tarihin en büyük kültürel takaslarından biri olarak görülüyor.">
             <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 25px;">Mezopotamya Gümüşü Amazon Ritminde</h2>
             <div class="article-body">
-                <p><span class="dropcap">B</span>u yıl 34. kez düzenlenen Rio Kültür Galası'nda tüm gözler Türkiye'den gelen bir esintideydi. Mardin'in milimetrik gümüş işçiliği olan telkâri, Rio karnaval kostümlerinin omuz detaylarına işlendi. Binlerce yıllık taş konakların sessizliği, Copacabana sahilinin coşkulu müziğiyle ilk kez bu kadar uyumlu bir şekilde harmanlandı.</p>
+                <p><span class="dropcap">B</span>u yıl düzenlenen küresel sanat zirvesinde Mardin ve Rio de Janeiro kardeş şehir ilanı yolunda büyük bir adım attı. Taşın sessizliği ile Samba'nın coşkusunu bir araya getiren bu eşsiz işbirliği, moda dünyasından gastronomiye kadar her alanda hissediliyor.</p>
             </div>
         </article>
 
         <div class="stats-grid">
-            <div><span class="stat-val">10.500 km</span><span class="stat-label">Kültürel Mesafe</span></div>
-            <div style="border-left: 1px solid #eee; border-right: 1px solid #eee;"><span class="stat-val">12</span><span class="stat-label">Ortak Festival</span></div>
-            <div><span class="stat-val">2026</span><span class="stat-label">Stratejik Ortaklık</span></div>
+            <div><span class="stat-val">10.500 km</span><span class="stat-label">Hava Hattı Mesafesi</span></div>
+            <div style="border-left: 1px solid #eee; border-right: 1px solid #eee;"><span class="stat-val">24/7</span><span class="stat-label">Canlı Haber Akışı</span></div>
+            <div><span class="stat-val">2026</span><span class="stat-label">Stratejik Hedef Yılı</span></div>
         </div>
 
         <section id="agenda" class="agenda-section" style="scroll-margin-top: 100px;">
-            <h3 style="margin-bottom: 20px; font-family: 'Playfair Display';">ETKİNLİK TAKVİMİ 2026</h3>
-            <div class="event-item" data-type="event" data-title="Mardin Reyhani vs Rio Samba" data-info="Dünyanın ilk dans düellosu! Mardin Kalesi'nin eteklerinde gerçekleşecek bu gecede, Reyhani müziğinin ağırbaşlılığı Samba'nın hızıyla çarpışıyor. Biletler Biletix'te.">
+            <h3 style="margin-bottom: 20px; font-family: 'Playfair Display';">KÜLTÜR AJANDASI 2026</h3>
+            <div class="event-item" data-type="event" data-title="Mardin Reyhani & Samba Gecesi" data-info="Eski Mardin Kalesi'nde gerçekleşecek bu gecede iki ülkenin en ünlü dansçıları sahne alacak.">
                 <div class="date-badge">12 <span>MAY</span></div>
-                <div><strong>Reyhani & Samba Gecesi</strong><p style="font-size: 0.8rem; color: #777;">Mardin Kalesi - Saat 20:00</p></div>
+                <div><strong>Reyhani & Samba Gecesi</strong><p style="font-size: 0.8rem; color: #777;">Mardin Kalesi - 20:00</p></div>
             </div>
-            <div class="event-item" data-type="event" data-title="Rio'da Mardin Gastronomi Haftası" data-info="Rio'nun en ünlü restoranları bir hafta boyunca menülerinde Mardin mutfağına yer veriyor. Semsek, Sembusek ve Kaburga Dolması Brezilyalı gurmelerin beğenisine sunuluyor.">
+            <div class="event-item" data-type="event" data-title="Amazon Gastronomi Fuarı" data-info="Rio'da kurulacak dev çadırda Mardin yemekleri ve Brezilya içecekleri buluşacak.">
                 <div class="date-badge">05 <span>HAZ</span></div>
                 <div><strong>Mezopotamya Mutfak Haftası</strong><p style="font-size: 0.8rem; color: #777;">Rio de Janeiro - Gastronomi Merkezi</p></div>
             </div>
         </section>
 
         <section id="editor" class="admin-panel" style="scroll-margin-top: 100px;">
-            <h4 style="font-family: 'Playfair Display'; margin-bottom: 10px;">YAZAR PANELİ</h4>
-            <div class="editor-mock" contenteditable="true">Yeni bir kültürel keşif mi yaptınız? Buraya yazın ve dünyayla paylaşın...</div>
-            <button onclick="alert('İçeriğiniz incelenmek üzere editörlerimize gönderildi!')" style="background: var(--rio); color: white; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: bold; font-family: 'Montserrat';">YAYINLA</button>
+            <h4 style="font-family: 'Playfair Display'; margin-bottom: 10px;">EDİTÖR PANELİ</h4>
+            <div class="editor-mock" contenteditable="true">Mardin veya Brezilya'dan yeni bir haber girin...</div>
+            <button onclick="alert('Haberiniz onay için gönderildi!')" style="background: var(--rio); color: white; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: bold;">YAYINLA</button>
         </section>
     </div>
 
@@ -166,46 +157,27 @@
         </div>
     </div>
 
-    <div class="mobile-dock">
-        <a href="#top" class="dock-btn active"><span>🏠</span><br>Home</a>
-        <a href="#gastronomy" class="dock-btn"><span>🍴</span><br>Gastro</a>
-        <a href="#agenda" class="dock-btn"><span>📅</span><br>Ajanda</a>
-        <a href="#editor" class="dock-btn"><span>⚙️</span><br>Panel</a>
-    </div>
-
     <footer style="text-align: center; padding: 60px 40px; background: white; border-top: 1px solid #eee;">
         <p style="font-weight: 900; letter-spacing: 2px;">MARDINRIO PORTAL</p>
-        <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">© 2026 | Taşın ve Dansın Hikayesi. Tüm Hakları Saklıdır.</p>
+        <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">© 2026 | Kültürel Diplomasi Projesi. Tüm Hakları Saklıdır.</p>
     </footer>
 
     <script>
-        // MODAL FONKSİYONLARI
         function openDetail(title, content) {
-            document.getElementById('detailBody').innerHTML = `<h2>${title}</h2><p>${content}</p><br><p style='color:#777; font-size:0.9rem;'>Kategori: Kültürel Sentez 2026</p>`;
+            document.getElementById('detailBody').innerHTML = `<h2>${title}</h2><p>${content}</p>`;
             document.getElementById('detailOverlay').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
-
         function closeDetail() {
             document.getElementById('detailOverlay').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-
-        // TIKLAMA YÖNETİMİ (VERİ ÇEKME)
         document.querySelectorAll('[data-type]').forEach(item => {
             item.addEventListener('click', () => {
-                const title = item.getAttribute('data-title') || "Detaylı Bilgi";
-                const info = item.getAttribute('data-info') || "İçerik yakında eklenecek.";
+                const title = item.getAttribute('data-title');
+                const info = item.getAttribute('data-info');
                 openDetail(title, info);
             });
-        });
-
-        // EDİTÖR TEMİZLEME
-        const editor = document.querySelector('.editor-mock');
-        editor.addEventListener('focus', function() {
-            if(this.innerText === 'Yeni bir kültürel keşif mi yaptınız? Buraya yazın ve dünyayla paylaşın...') {
-                this.innerText = '';
-            }
         });
     </script>
 </body>
