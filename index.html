@@ -3,125 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magazin Dünyası | Premium Haber Portalı</title>
+    <title>Mezopotamya'dan Amazon'a | Kültür & Magazin</title>
     <style>
-        /* Temel Ayarlar */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #f8f9fa; color: #222; }
-        a { text-decoration: none; transition: 0.3s; }
+        /* Tematik Renk Paleti */
+        :root {
+            --mardin-altini: #d4a373; /* Mardin taşı rengi */
+            --brezilya-yesili: #2d6a4f; /* Amazon ormanları */
+            --koyu-text: #1a1a1a;
+            --acik-gri: #fdfaf5;
+        }
 
-        /* Kayan Yazı (Breaking News) */
-        .ticker-wrapper { background: #e74c3c; color: white; padding: 10px 0; overflow: hidden; position: relative; }
-        .ticker-text { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; font-weight: bold; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Georgia', serif; }
+        body { background-color: var(--acik-gri); color: var(--koyu-text); }
 
-        /* Header */
-        header { background: #fff; padding: 30px; text-align: center; border-bottom: 4px solid #e74c3c; }
-        header h1 { font-size: 3rem; font-weight: 900; letter-spacing: -1px; color: #111; }
-        header span { color: #e74c3c; }
+        /* Header - Kültürel Sentez */
+        header { 
+            background: white; 
+            padding: 40px; 
+            text-align: center; 
+            border-bottom: 6px double var(--mardin-altini);
+        }
+        header h1 { font-size: 2.8rem; letter-spacing: 1px; color: var(--brezilya-yesili); }
+        header p { font-style: italic; color: var(--mardin-altini); margin-top: 5px; }
 
-        nav { background: #111; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; }
-        nav a { color: white; margin: 0 15px; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; }
-        nav a:hover { color: #e74c3c; }
+        /* Navigasyon */
+        nav { background: var(--koyu-text); padding: 12px; text-align: center; }
+        nav a { color: #fff; text-decoration: none; margin: 0 20px; font-size: 0.9rem; text-transform: uppercase; }
+        nav a:hover { color: var(--mardin-altini); }
 
-        .container { max-width: 1200px; margin: 30px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 40px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; padding: 0 20px; }
 
-        /* Zoom Efektli Kartlar */
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        .img-container { overflow: hidden; height: 250px; position: relative; }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .card:hover .img-container img { transform: scale(1.1); }
-        .card-content { padding: 20px; }
-        .category { color: #e74c3c; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; }
+        /* Haber Kartları */
+        .story-card { background: white; margin-bottom: 40px; border: 1px solid #eee; position: relative; }
+        .img-box { width: 100%; height: 350px; overflow: hidden; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.7s; }
+        .story-card:hover .img-box img { transform: scale(1.05); filter: sepia(30%); }
+        
+        .content { padding: 25px; border-top: 3px solid var(--mardin-altini); }
+        .tag { background: var(--brezilya-yesili); color: white; padding: 4px 12px; font-size: 0.7rem; position: absolute; top: 20px; left: 20px; }
 
-        /* Haftanın Şıkı Bölümü (Yeni) */
-        .best-dressed { background: #fff; padding: 20px; border-radius: 12px; border: 2px dashed #e74c3c; text-align: center; }
-        .best-dressed img { width: 100%; border-radius: 8px; margin-top: 15px; }
-        .best-dressed h4 { background: #e74c3c; color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; }
+        /* Sidebar: Kültür Karşılaştırması */
+        .sidebar-box { background: #fff; padding: 20px; border: 1px solid var(--mardin-altini); margin-bottom: 30px; }
+        .sidebar-box h3 { font-size: 1.2rem; margin-bottom: 15px; text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        
+        .vs-item { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; font-size: 0.9rem; }
+        .vs-item span { font-weight: bold; color: var(--mardin-altini); }
 
-        /* Sidebar Stil */
-        aside h3 { border-left: 5px solid #e74c3c; padding-left: 10px; margin-bottom: 20px; }
-        .trend-item { display: flex; align-items: center; margin-bottom: 15px; font-size: 0.9rem; }
-        .trend-number { font-size: 1.5rem; font-weight: 900; color: #ddd; margin-right: 15px; }
+        /* Footer */
+        footer { background: var(--koyu-text); color: #888; text-align: center; padding: 50px; margin-top: 50px; }
 
-        footer { background: #111; color: #666; text-align: center; padding: 40px; margin-top: 50px; }
-
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div class="ticker-wrapper">
-        <div class="ticker-text">
-            SON DAKİKA: Ünlü popçu yeni albüm lansmanında gözyaşlarını tutamadı! ● Paris Moda Haftası'nda Türk rüzgarı esiyor... ● Yılın düğününden ilk kareler geldi!
-        </div>
-    </div>
-
     <header>
-        <h1>MAGAZİN<span>LOG</span></h1>
+        <h1>MARDİN <span>&</span> RIO</h1>
+        <p>Mezopotamya'nın Masalsı Dokusu, Brezilya'nın Ritmik Ruhuyla Buluşuyor</p>
     </header>
 
     <nav>
-        <a href="#">Ana Sayfa</a>
-        <a href="#">Gıybet</a>
-        <a href="#">Stil</a>
-        <a href="#">Galeri</a>
-        <a href="#">TV Rehberi</a>
+        <a href="#">Kültür</a>
+        <a href="#">Mutfak</a>
+        <a href="#">Müzik & Dans</a>
+        <a href="#">Gezi</a>
+        <a href="#">Magazin</a>
     </nav>
 
     <div class="container">
         <main>
-            <article class="card">
-                <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f" alt="Haber">
+            <article class="story-card">
+                <span class="tag">ÖZEL HABER</span>
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1540333673334-9707b9090fc7" alt="Mardin">
                 </div>
-                <div class="card-content">
-                    <span class="category">Sokak Stili</span>
-                    <h2>Hafta Sonunun En Dikkat Çeken Kombinleri</h2>
-                    <p>Nişantaşı sokaklarında objektiflerimize takılan yıldız isimler, bahar trendlerini şimdiden belirledi.</p>
+                <div class="content">
+                    <h2>Mardin'in Gümüş İşlemeleri Rio Karnavalı Yolunda!</h2>
+                    <p>Mardinli telkâri ustaları, bu yılki Rio Karnavalı'nda kullanılacak özel kostümler için tasarımlar hazırlıyor. İki kadim kültür sanatla birleşiyor...</p>
                 </div>
             </article>
 
-            <article class="card">
-                <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745" alt="Haber">
+            <article class="story-card">
+                <span class="tag">MUTFAK KÜLTÜRÜ</span>
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Brezilya Mutfağı">
                 </div>
-                <div class="card-content">
-                    <span class="category">Gece Hayatı</span>
-                    <h2>Boğaz'da Yıldızlar Geçidi: Dev Kutlama</h2>
-                    <p>Ünlü iş insanının doğum günü partisinde tüm sanat dünyası bir araya geldi. İşte o geceden özel detaylar...</p>
+                <div class="content">
+                    <h2>Kahve ve Kakao: Mardin'in Dibek Kahvesi, Brezilya Çekirdekleriyle Yenileniyor</h2>
+                    <p>Dünyanın en iyi kahve çekirdekleri, Mardin'in geleneksel dibek dövme yöntemiyle buluştu. İlk tadım notları gurmelerden tam not aldı.</p>
                 </div>
             </article>
         </main>
 
         <aside>
-            <div class="best-dressed">
-                <h4>GÜNÜN KOMBİNİ</h4>
-                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f" alt="Günün Şıkı">
-                <p style="margin-top:10px; font-weight:bold;">Selin Işık</p>
-                <p style="font-size:0.8rem; color:#777;">Minimalist şıklığın zirvesi.</p>
+            <div class="sidebar-box">
+                <h3>HAFTANIN KARŞILAŞTIRMASI</h3>
+                <div class="vs-item">Mardin Kalesi <span>vs</span> Kurtarıcı İsa</div>
+                <div class="vs-item">Reyhani Dansı <span>vs</span> Samba</div>
+                <div class="vs-item">Süryani Şarabı <span>vs</span> Caipirinha</div>
+                <div class="vs-item">Mezopotamya Güneşi <span>vs</span> Copacabana</div>
             </div>
 
-            <div style="margin-top: 40px;">
-                <h3>TRENDLER</h3>
-                <div class="trend-item">
-                    <span class="trend-number">01</span>
-                    <p>Oscar töreninde kim ne giydi?</p>
-                </div>
-                <div class="trend-item">
-                    <span class="trend-number">02</span>
-                    <p>Yazın en popüler tatil rotaları</p>
-                </div>
-                <div class="trend-item">
-                    <span class="trend-number">03</span>
-                    <p>Ünlü oyuncudan samimi itiraflar</p>
-                </div>
+            <div class="sidebar-box" style="background: var(--brezilya-yesili); color: white;">
+                <h3>MAGAZİN FISILTISI</h3>
+                <p style="font-size: 0.85rem; line-height: 1.8;">Brezilyalı ünlü model, Mardin'deki tarihi bir konakta çekilecek olan yeni dizi projesi için Türkçe derslerine başladı!</p>
             </div>
         </aside>
     </div>
 
     <footer>
-        <p>&copy; 2026 MAGAZINLOG. Her hakkı dedikoduya tabidir.</p>
+        <p>&copy; 2026 Mardin-Rio Express. Kültürlerin Kesişme Noktası.</p>
     </footer>
 
 </body>
