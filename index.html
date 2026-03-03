@@ -3,237 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina | Cultural Intelligence v11</title>
-    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Lumina Obsidian | The Cultural OS</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
-        :root { --bg: #f4ecd8; --card-bg: #fdfbf7; --text: #433422; --accent: #a67c52; --admin-bg: #050505; }
-        * { -webkit-font-smoothing: antialiased; box-sizing: border-box; scroll-behavior: smooth; }
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
-        
-        /* Pusula (Sidebar) */
-        .compass-sidebar { position: fixed; right: 0; top: 20%; height: 60%; width: 5px; background: var(--accent); opacity: 0.4; transition: 0.5s; z-index: 2000; cursor: pointer; border-radius: 10px 0 0 10px; }
-        .compass-sidebar:hover { width: 280px; opacity: 1; background: #1a1a1a; color: white; padding: 30px; box-shadow: -10px 0 50px rgba(0,0,0,0.2); }
-        .compass-content { display: none; }
-        .compass-sidebar:hover .compass-content { display: block; }
+        :root {
+            --bg-light: #F9F9F7; --bg-dark: #0A0A0A;
+            --accent: #C5A059; --text-main: #1A1A1A;
+            --card-border: rgba(0,0,0,0.06);
+        }
 
-        /* Yazarlar */
-        .authors-strip { background: var(--card-bg); padding: 20px 5%; display: flex; gap: 40px; border-bottom: 1px solid rgba(0,0,0,0.05); overflow-x: auto; scrollbar-width: none; }
-        .author-item { text-align: center; min-width: 100px; transition: 0.3s; }
-        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); margin-bottom: 10px; }
+        /* Smooth System Overrides */
+        * { -webkit-font-smoothing: antialiased; selection-background: var(--accent); selection-color: #fff; }
+        body { background: var(--bg-light); color: var(--text-main); font-family: 'Inter', sans-serif; transition: background 0.5s ease; }
+        .serif { font-family: 'Cormorant Garamond', serif; }
 
-        /* Haber Kartları */
-        .news-feed { min-height: 600px; display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; padding: 50px 5%; }
-        .news-card { background: var(--card-bg); border-radius: 35px; overflow: hidden; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
-        .news-card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
+        /* Modern UI Glassmorphism */
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--card-border); }
         
-        /* Parallax */
-        .parallax-box { height: 450px; overflow: hidden; border-radius: 40px; position: relative; margin: 40px 0; background: #ddd; }
-        .parallax-box img { width: 100%; height: 160%; object-fit: cover; position: absolute; top: -30%; transition: 0.1s linear; }
+        /* The "Obsidian" Dashboard Grid */
+        .admin-sidebar { background: #0F0F0F; border-right: 1px solid #1F1F1F; }
+        .stat-card { background: #151515; border: 1px solid #222; border-radius: 24px; transition: 0.3s; }
+        .stat-card:hover { border-color: var(--accent); background: #1A1A1A; }
 
-        /* Admin Panel */
-        #admin-panel { display: none; background: var(--admin-bg); color: #fff; position: fixed; inset: 0; z-index: 10000; overflow-y: auto; padding: 50px; }
-        .input-master { background: #111; border: 1px solid #333; border-radius: 15px; padding: 15px; width: 100%; color: #eee; outline: none; transition: 0.3s; }
-        .input-master:focus { border-color: var(--accent); }
+        /* Immersive Reader Engine */
+        #reader-modal { display: none; background: var(--bg-light); z-index: 100000; overflow-y: scroll; scroll-behavior: smooth; }
+        .reader-mode-sepia { background: #F4ECD8 !important; color: #433422 !important; }
+        .reader-mode-dark { background: #0A0A0A !important; color: #EAEAEA !important; }
         
-        .term { border-bottom: 2px dotted var(--accent); cursor: help; font-weight: 700; color: var(--accent); }
+        /* Custom Animations */
+        @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-reveal { animation: reveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+        /* Bento Grid Layout */
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 40px 5%; }
+        .bento-item { border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid var(--card-border); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-item:hover { transform: scale(0.985); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body>
+<body class="no-scrollbar">
 
-<div class="compass-sidebar">
-    <div class="compass-content">
-        <h4 class="font-serif text-accent tracking-[5px] text-xs mb-8 uppercase">Dijital Pusula</h4>
-        <div id="ui-compass" class="space-y-6 text-[11px] font-bold uppercase tracking-widest text-stone-400">
-            </div>
+<nav class="glass sticky top-0 z-[5000] px-10 py-5 flex justify-between items-center">
+    <div class="flex items-center gap-12">
+        <h1 class="serif text-4xl font-light tracking-tighter uppercase">Lumina</h1>
+        <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-[3px] opacity-40">
+            <a href="#" class="hover:text-accent transition">Koleksiyonlar</a>
+            <a href="#" class="hover:text-accent transition">Harita</a>
+            <a href="#" class="hover:text-accent transition">Arşiv</a>
+        </div>
     </div>
-</div>
-
-<nav class="flex justify-between items-center px-[5%] py-8 bg-white/50 backdrop-blur-xl sticky top-0 z-[1000]">
-    <div class="logo font-serif text-3xl tracking-[8px] font-black uppercase">Lumina</div>
-    <div id="ui-wisdom" class="text-[10px] font-black tracking-[4px] uppercase opacity-40 italic"></div>
+    
+    <div class="flex items-center gap-6">
+        <div id="top-weather" class="text-[10px] font-bold opacity-30 text-right">
+            MARDIN 24°C / RIO 31°C
+        </div>
+        <button onclick="toggleAdmin()" class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-accent transition">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+        </button>
+    </div>
 </nav>
 
-<div id="ui-authors" class="authors-strip"></div>
-
-<main id="ui-news-feed" class="news-feed"></main>
-
-<div id="article-overlay" class="fixed inset-0 bg-[#f4ecd8] hidden z-[5000] overflow-y-auto">
-    <div class="sticky top-0 bg-[#f4ecd8]/95 p-6 border-b border-black/5 flex justify-between items-center px-[5%]">
-        <div id="ui-article-meta" class="flex items-center gap-6"></div>
-        <button onclick="closeArticle()" class="text-2xl opacity-30 hover:opacity-100">✕</button>
+<header class="px-[5%] py-20 flex flex-col md:flex-row justify-between items-end gap-10">
+    <div class="max-w-3xl">
+        <p class="text-[12px] font-black uppercase tracking-[6px] text-accent mb-6">World Class Culture Interface</p>
+        <h2 class="serif text-7xl md:text-9xl font-light leading-none">Mardin & <br><i>Rio de Janeiro</i></h2>
     </div>
-    <div id="ui-article-body" class="max-w-4xl mx-auto py-24 px-8"></div>
+    <div class="flex gap-4 mb-4">
+        <div class="bg-white p-6 rounded-[30px] border border-black/5 shadow-sm">
+            <p class="text-[9px] font-black opacity-30 uppercase mb-2">Mesafe</p>
+            <p id="ui-dist" class="serif text-3xl font-bold">10.840 KM</p>
+        </div>
+    </div>
+</header>
+
+<section id="ui-feed" class="bento-grid">
+    </section>
+
+<div id="reader-modal" class="fixed inset-0">
+    <div class="sticky top-0 p-8 flex justify-between items-center z-[200]">
+        <button onclick="closeReader()" class="w-14 h-14 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition">
+            <i data-lucide="arrow-left" class="w-6 h-6"></i>
+        </button>
+        <div class="flex gap-2 bg-black/5 p-2 rounded-full backdrop-blur-md">
+            <button onclick="setTheme('light')" class="w-8 h-8 rounded-full bg-white border border-black/10"></button>
+            <button onclick="setTheme('sepia')" class="w-8 h-8 rounded-full bg-[#F4ECD8] border border-black/10"></button>
+            <button onclick="setTheme('dark')" class="w-8 h-8 rounded-full bg-[#0A0A0A] border border-white/10"></button>
+        </div>
+        <div class="flex gap-4">
+            <button id="tts-trigger" onclick="handleTTS()" class="px-8 py-3 bg-accent text-white rounded-full font-black text-[10px] uppercase tracking-widest flex items-center gap-3">
+                <i data-lucide="volume-2" class="w-4 h-4"></i> <span id="tts-text">Sesi Dinle</span>
+            </button>
+        </div>
+    </div>
+    <article id="reader-body" class="max-w-5xl mx-auto px-10 pt-20 pb-40">
+        </article>
 </div>
 
-<footer class="py-20 text-center">
-    <button onclick="toggleAdmin()" class="opacity-20 text-[9px] tracking-[8px] font-bold border-b border-black uppercase">CORE SYSTEM V11 | MASTER CONSOLE</button>
-</footer>
-
-<div id="admin-panel">
-    <div class="max-w-7xl mx-auto">
-        <div class="flex justify-between items-end mb-16 border-b border-white/10 pb-10">
-            <div>
-                <h1 class="text-4xl font-serif">MASTER <span class="text-accent">CONSOLE</span></h1>
-                <p class="text-[10px] font-black text-stone-500 mt-2 tracking-[5px] uppercase">Kültürel IQ & Arayüz Kontrolörü</p>
+<div id="admin-panel" class="fixed inset-0 hidden z-[100000] flex">
+    <div class="admin-sidebar w-72 h-full p-8 flex flex-col justify-between">
+        <div>
+            <h3 class="serif text-2xl text-white mb-12 italic">Lumina Core</h3>
+            <nav class="space-y-4">
+                <button onclick="switchTab('dash')" class="flex items-center gap-4 text-white/50 hover:text-white transition w-full py-2"><i data-lucide="pie-chart" class="w-5 h-5"></i> Dashboard</button>
+                <button onclick="switchTab('content')" class="flex items-center gap-4 text-white/50 hover:text-white transition w-full py-2"><i data-lucide="pen-tool" class="w-5 h-5"></i> İçerik Yaz</button>
+                <button onclick="switchTab('global')" class="flex items-center gap-4 text-white/50 hover:text-white transition w-full py-2"><i data-lucide="globe" class="w-5 h-5"></i> Global Ayarlar</button>
+            </nav>
+        </div>
+        <button onclick="toggleAdmin()" class="py-4 bg-red-950 text-red-500 rounded-2xl text-[10px] font-black uppercase tracking-widest">Sistemi Kapat</button>
+    </div>
+    
+    <div class="flex-1 h-full bg-[#050505] p-12 overflow-y-auto">
+        
+        <div id="tab-dash" class="admin-tab">
+            <div class="flex justify-between items-end mb-12">
+                <h2 class="text-4xl text-white font-bold">Hoş Geldin, <span class="text-accent">Master</span></h2>
+                <p class="text-white/20 text-[10px] uppercase font-black tracking-[4px]">System Online: Stable</p>
             </div>
-            <button onclick="toggleAdmin()" class="bg-red-600 px-10 py-3 rounded-full text-[10px] font-black uppercase tracking-widest">Paneli Kapat</button>
+            
+            <div class="grid grid-cols-3 gap-8 mb-12">
+                <div class="stat-card p-8">
+                    <p class="text-white/30 text-[10px] font-black uppercase tracking-widest mb-4">Toplam Okunma</p>
+                    <p class="text-5xl text-white font-light">12.482</p>
+                </div>
+                <div class="stat-card p-8">
+                    <p class="text-white/30 text-[10px] font-black uppercase tracking-widest mb-4">Kültürel Etkileşim</p>
+                    <p class="text-5xl text-white font-light">%94.2</p>
+                </div>
+                <div class="stat-card p-8">
+                    <p class="text-white/30 text-[10px] font-black uppercase tracking-widest mb-4">Sunucu Yükü</p>
+                    <p class="text-5xl text-white font-light">0.02s</p>
+                </div>
+            </div>
+
+            <div class="stat-card p-10">
+                <h3 class="text-white text-xs font-black uppercase mb-8 opacity-40">Son Yayınlananlar</h3>
+                <div id="admin-recent-list" class="space-y-4"></div>
+            </div>
         </div>
 
-        <div class="grid grid-cols-12 gap-10">
-            <div class="col-span-12 lg:col-span-7 space-y-6">
-                <div class="p-8 border border-white/5 rounded-[30px] bg-white/5">
-                    <h2 class="text-xs font-black text-accent mb-6 uppercase tracking-widest">İçerik & IQ Tanımı</h2>
-                    <div class="space-y-4">
-                        <input id="adm-title" placeholder="Makale Başlığı" class="input-master font-serif text-xl">
-                        <textarea id="adm-text" placeholder="Hikaye..." class="input-master h-40 resize-none"></textarea>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="adm-img" placeholder="Görsel URL (Parallax)" class="input-master">
-                            <input id="adm-dna" type="number" placeholder="DNA Match % (0-100)" class="input-master">
-                        </div>
-                        <div class="grid grid-cols-3 gap-4">
-                            <select id="adm-author" class="input-master"></select>
-                            <select id="adm-type" class="input-master">
-                                <option>Mistik</option><option>Tarihi</option><option>Modern</option>
-                            </select>
-                            <button onclick="publishContent()" class="bg-accent text-black font-black uppercase text-[10px] rounded-xl tracking-widest">Yayınla</button>
-                        </div>
+        <div id="tab-content" class="admin-tab hidden space-y-8">
+            <div class="grid grid-cols-12 gap-10">
+                <div class="col-span-8 space-y-6">
+                    <input id="in-title" placeholder="Başlığı Buraya Nakşet..." class="w-full bg-transparent border-b border-white/10 text-5xl text-white serif py-4 focus:border-accent outline-none">
+                    <textarea id="in-text" placeholder="Hikaye başlıyor..." class="w-full h-[50vh] bg-transparent text-white/70 text-xl font-light outline-none resize-none leading-relaxed"></textarea>
+                </div>
+                <div class="col-span-4 space-y-6">
+                    <div class="stat-card p-8 space-y-6">
+                        <input id="in-img" placeholder="Visual URL" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white text-xs">
+                        <input id="in-type" placeholder="Tema (Mistik, Modern vb.)" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white text-xs">
+                        <button onclick="saveContent()" class="w-full bg-accent text-black font-black py-5 rounded-2xl uppercase text-[11px] tracking-widest hover:scale-[1.02] transition">Dünyaya Duyur</button>
                     </div>
                 </div>
             </div>
-
-            <div class="col-span-12 lg:col-span-5 space-y-8">
-                <div class="p-8 border border-white/5 rounded-[30px] bg-white/5">
-                    <h2 class="text-xs font-black text-accent mb-6 uppercase tracking-widest">Pusula & Global Veri</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <input id="adm-dist" placeholder="Mesafe (KM)" class="input-master">
-                        <input id="adm-m-temp" placeholder="Mardin Derece" class="input-master">
-                        <input id="adm-r-temp" placeholder="Rio Derece" class="input-master">
-                        <button onclick="saveCompass()" class="bg-stone-800 py-3 rounded-xl font-bold text-[10px] uppercase">Pusulayı Eşitle</button>
-                    </div>
-                </div>
-                <div class="p-8 border border-white/5 rounded-[30px] bg-white/5 text-center">
-                    <h3 class="text-[10px] font-black opacity-30 uppercase tracking-[5px]">Sözlük & Bilgelik</h3>
-                    <button class="mt-4 text-accent text-xs font-bold border-b border-accent">YÖNETİMİ AÇ</button>
-                </div>
-            </div>
         </div>
+
     </div>
 </div>
 
 <script>
-    // --- VERİ TABANI ---
-    let db = JSON.parse(localStorage.getItem('lumina_v11')) || {
-        authors: [
-            {id: 'a1', name: 'Caner Elmas', img: 'https://i.pravatar.cc/150?u=1'},
-            {id: 'a2', name: 'Livia Santos', img: 'https://i.pravatar.cc/150?u=2'}
+    // --- NUCLEUS: THE DATABASE ---
+    let DB = JSON.parse(localStorage.getItem('LUMINA_ULTIMATE')) || {
+        articles: [
+            { id: 1, title: 'Kasımiye\'de Zamanın Durduğu An', type: 'Mimari', text: 'Mardin\'in sarı taşları arasında güneş batarken, Kasımiye Medresesi\'nin havuzunda suların sesiyle tarihin nabzını tutarsınız. Her damla bir asır, her taş bir hatıradır.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200' },
+            { id: 2, title: 'Ipanema Dalgaları ve Bossa Nova', type: 'Ritim', text: 'Rio de Janeiro\'nun beyaz kumlarında Vinicius de Moraes\'in dizeleri yankılanır. Denizden gelen esinti, sadece tuzu değil, bir halkın melankolik neşesini (Saudade) taşır.', img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200' }
         ],
-        news: [
-            {id: 1, aid: 'a1', title: 'Mezopotamya\'nın Altın Kapısı', text: 'Mardin sokaklarında her Abbara bir zaman tünelidir. Taşların fısıltısını duymak için durmanız yeterli.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800', dna: 92, type: 'Mistik'},
-            {id: 2, aid: 'a2', title: 'Rio Karnavalı ve Gelecek', text: 'Amazon ruhu ile modern dünyanın dansı burada başlar. Samba bir ritimden fazlasıdır.', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800', dna: 35, type: 'Modern'}
-        ],
-        compass: { dist: '10.840 KM', mardin: '24°C', rio: '31°C' },
-        wisdom: 'Sabır taşın kalbinde, neşe sokağın ritmindedir.'
+        settings: { dist: '10.840 KM', weather: 'MARDIN 24°C / RIO 31°C' }
     };
 
-    function save() { localStorage.setItem('lumina_v11', JSON.stringify(db)); render(); }
+    function sync() { localStorage.setItem('LUMINA_ULTIMATE', JSON.stringify(DB)); init(); }
 
-    // --- RENDER MOTORU ---
-    function render() {
-        // Yazarlar
-        document.getElementById('ui-authors').innerHTML = db.authors.map(a => `
-            <div class="author-item"><img src="${a.img}"><p class="font-black text-[10px] uppercase opacity-60">${a.name}</p></div>
-        `).join('');
-
-        // Haberler
-        document.getElementById('ui-news-feed').innerHTML = db.news.map(n => `
-            <article class="news-card" onclick="openH(${n.id})">
-                <img src="${n.img}" class="w-full h-72 object-cover">
-                <div class="p-8">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-[9px] font-black text-accent uppercase tracking-widest">${n.type}</span>
-                        <span class="text-[9px] font-bold opacity-30">DNA %${n.dna}</span>
-                    </div>
-                    <h2 class="text-xl font-serif mb-4 leading-tight">${n.title}</h2>
-                    <p class="text-sm opacity-50 line-clamp-2">${n.text}</p>
-                </div>
-            </article>
-        `).join('');
-
-        // Pusula & Bilgelik
-        document.getElementById('ui-compass').innerHTML = `
-            <div class="flex justify-between border-b border-white/5 pb-2"><span>Mesafe</span><span class="text-white">${db.compass.dist}</span></div>
-            <div class="flex justify-between border-b border-white/5 pb-2"><span>Mardin</span><span class="text-white">${db.compass.mardin}</span></div>
-            <div class="flex justify-between border-b border-white/5 pb-2"><span>Rio</span><span class="text-white">${db.compass.rio}</span></div>
-        `;
-        document.getElementById('ui-wisdom').innerText = db.wisdom;
-
-        // Admin Select
-        document.getElementById('adm-author').innerHTML = db.authors.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-    }
-
-    // --- MAKALE & SES ---
-    const synth = window.speechSynthesis;
-    function openH(id) {
-        const h = db.news.find(x => x.id === id);
-        const a = db.authors.find(x => x.id === h.aid);
+    // --- RENDER ENGINE ---
+    function init() {
+        lucide.createIcons();
         
-        document.getElementById('ui-article-meta').innerHTML = `
-            <img src="${a.img}" class="w-12 h-12 rounded-full border border-accent">
-            <span class="text-[11px] font-black uppercase tracking-widest">${a.name}</span>
-            <div class="flex gap-2">
-                <button onclick="speak()" class="text-[9px] font-bold border border-accent px-4 py-1 rounded-full text-accent hover:bg-accent hover:text-white transition">OKU</button>
-                <button onclick="stopS()" class="text-[9px] font-bold border border-red-800 px-4 py-1 rounded-full text-red-800 hover:bg-red-800 hover:text-white transition">DUR</button>
+        // Render Feed (Bento Style)
+        const feed = document.getElementById('ui-feed');
+        feed.innerHTML = DB.articles.map((art, idx) => `
+            <div class="bento-item animate-reveal ${idx % 3 === 0 ? 'col-span-12 md:col-span-8 h-[600px]' : 'col-span-12 md:col-span-4 h-[600px]'}" onclick="openReader(${art.id})">
+                <img src="${art.img}" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-0 p-12 text-white">
+                    <span class="text-[10px] font-black uppercase tracking-[5px] text-accent mb-4 block">${art.type}</span>
+                    <h3 class="serif text-5xl leading-none">${art.title}</h3>
+                </div>
             </div>
-        `;
+        `).join('');
 
-        document.getElementById('ui-article-body').innerHTML = `
-            <h1 class="text-6xl font-serif mb-12 leading-tight">${h.title}</h1>
-            <div class="parallax-box"><img src="${h.img}" id="para-img"></div>
-            <div id="p-text" class="text-2xl font-light leading-relaxed text-justify">${h.text}</div>
-            <div class="mt-20 p-10 bg-black text-white rounded-[40px] text-center">
-                <p class="text-[10px] font-bold uppercase tracking-[5px] text-accent mb-4">Kültürel IQ Analizi</p>
-                <h3 class="text-4xl font-serif">%${h.dna} Mardin Mistiği • %${100-h.dna} Rio Modernizmi</h3>
+        // Admin Recent List
+        document.getElementById('admin-recent-list').innerHTML = DB.articles.map(art => `
+            <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
+                <p class="text-white text-sm font-medium">${art.title}</p>
+                <div class="flex gap-4">
+                    <button class="text-white/20 hover:text-white transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                    <button onclick="deleteArt(${art.id})" class="text-red-900 hover:text-red-500 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>
             </div>
-        `;
-
-        document.getElementById('article-overlay').style.display = 'block';
-        const overlay = document.getElementById('article-overlay');
-        overlay.onscroll = () => {
-            const img = document.getElementById('para-img');
-            if(img) img.style.top = (overlay.scrollTop * 0.15) - 250 + 'px';
-        };
+        `).join('');
+        lucide.createIcons();
     }
 
-    // --- ADMIN FONKSİYONLARI ---
-    function publishContent() {
-        const n = {
+    // --- READER & TTS LOGIC ---
+    let currentVoice = null;
+    function openReader(id) {
+        const art = DB.articles.find(a => a.id === id);
+        const reader = document.getElementById('reader-modal');
+        document.getElementById('reader-body').innerHTML = `
+            <p class="text-accent font-black uppercase tracking-[8px] text-[12px] mb-8 text-center">${art.type}</p>
+            <h1 class="serif text-8xl leading-none mb-16 text-center">${art.title}</h1>
+            <div id="reader-text-content" class="serif text-4xl leading-relaxed text-justify opacity-80 first-letter:text-8xl first-letter:font-bold first-letter:text-accent">
+                ${art.text}
+            </div>
+        `;
+        reader.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeReader() {
+        window.speechSynthesis.cancel();
+        document.getElementById('reader-modal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function handleTTS() {
+        const text = document.getElementById('reader-text-content').innerText;
+        if(window.speechSynthesis.speaking) {
+            window.speechSynthesis.cancel();
+            document.getElementById('tts-text').innerText = "Sesi Dinle";
+        } else {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'tr-TR';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+            document.getElementById('tts-text').innerText = "Durdur";
+        }
+    }
+
+    function setTheme(mode) {
+        const body = document.getElementById('reader-modal');
+        body.classList.remove('reader-mode-sepia', 'reader-mode-dark');
+        if(mode === 'sepia') body.classList.add('reader-mode-sepia');
+        if(mode === 'dark') body.classList.add('reader-mode-dark');
+    }
+
+    // --- ADMIN ACTIONS ---
+    function toggleAdmin() {
+        const panel = document.getElementById('admin-panel');
+        panel.classList.toggle('hidden');
+    }
+
+    function switchTab(tab) {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+    }
+
+    function saveContent() {
+        const newArt = {
             id: Date.now(),
-            aid: document.getElementById('adm-author').value,
-            title: document.getElementById('adm-title').value,
-            text: document.getElementById('adm-text').value,
-            img: document.getElementById('adm-img').value,
-            dna: document.getElementById('adm-dna').value,
-            type: document.getElementById('adm-type').value
+            title: document.getElementById('in-title').value,
+            text: document.getElementById('in-text').value,
+            img: document.getElementById('in-img').value,
+            type: document.getElementById('in-type').value
         };
-        db.news.unshift(n); save();
+        DB.articles.unshift(newArt);
+        sync();
+        toggleAdmin();
     }
 
-    function saveCompass() {
-        db.compass = {
-            dist: document.getElementById('adm-dist').value,
-            mardin: document.getElementById('adm-m-temp').value,
-            rio: document.getElementById('adm-r-temp').value
-        };
-        save();
+    function deleteArt(id) {
+        DB.articles = DB.articles.filter(a => a.id !== id);
+        sync();
     }
 
-    function toggleAdmin() { const p = document.getElementById('admin-panel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; }
-    function speak() { synth.cancel(); const u = new SpeechSynthesisUtterance(document.getElementById('p-text').innerText); u.lang='tr-TR'; synth.speak(u); }
-    function stopS() { synth.cancel(); }
-    function closeArticle() { stopS(); document.getElementById('article-overlay').style.display = 'none'; }
-
-    window.onload = render;
+    window.onload = init;
 </script>
 </body>
 </html>
