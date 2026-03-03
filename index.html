@@ -3,175 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin-Brazil: Mezopotamya & Amazon Hattı</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Magazin Dünyası | Premium Haber Portalı</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&family=Playfair+Display:ital,wght@0,900;1,900&display=swap');
-        
-        :root { --mardin-gold: #d4af37; --brazil-green: #009739; --bg: #050505; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; transition: all 0.5s ease; }
-        .glass { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); }
-        .mardin-text { font-family: 'Playfair Display', serif; }
-        .hidden { display: none; }
-        .active-tab { border-bottom: 2px solid var(--mardin-gold); color: var(--mardin-gold); }
-        
-        /* Animasyonlar */
-        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); } }
-        .ai-status { animation: pulse-gold 2s infinite; }
+        /* Temel Ayarlar */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f8f9fa; color: #222; }
+        a { text-decoration: none; transition: 0.3s; }
+
+        /* Kayan Yazı (Breaking News) */
+        .ticker-wrapper { background: #e74c3c; color: white; padding: 10px 0; overflow: hidden; position: relative; }
+        .ticker-text { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; font-weight: bold; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* Header */
+        header { background: #fff; padding: 30px; text-align: center; border-bottom: 4px solid #e74c3c; }
+        header h1 { font-size: 3rem; font-weight: 900; letter-spacing: -1px; color: #111; }
+        header span { color: #e74c3c; }
+
+        nav { background: #111; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; }
+        nav a { color: white; margin: 0 15px; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; }
+        nav a:hover { color: #e74c3c; }
+
+        .container { max-width: 1200px; margin: 30px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; padding: 0 20px; }
+
+        /* Zoom Efektli Kartlar */
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .img-container { overflow: hidden; height: 250px; position: relative; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .img-container img { transform: scale(1.1); }
+        .card-content { padding: 20px; }
+        .category { color: #e74c3c; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; }
+
+        /* Haftanın Şıkı Bölümü (Yeni) */
+        .best-dressed { background: #fff; padding: 20px; border-radius: 12px; border: 2px dashed #e74c3c; text-align: center; }
+        .best-dressed img { width: 100%; border-radius: 8px; margin-top: 15px; }
+        .best-dressed h4 { background: #e74c3c; color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; }
+
+        /* Sidebar Stil */
+        aside h3 { border-left: 5px solid #e74c3c; padding-left: 10px; margin-bottom: 20px; }
+        .trend-item { display: flex; align-items: center; margin-bottom: 15px; font-size: 0.9rem; }
+        .trend-number { font-size: 1.5rem; font-weight: 900; color: #ddd; margin-right: 15px; }
+
+        footer { background: #111; color: #666; text-align: center; padding: 40px; margin-top: 50px; }
+
+        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <nav class="fixed top-0 w-full z-[100] glass px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-4">
-            <span class="mardin-text text-2xl font-black italic tracking-tighter">M<span class="text-amber-500">B</span></span>
-            <div class="h-6 w-[1px] bg-white/10"></div>
-            <span id="view-title" class="text-xs font-bold uppercase tracking-widest text-amber-500">Kullanıcı Arayüzü</span>
+    <div class="ticker-wrapper">
+        <div class="ticker-text">
+            SON DAKİKA: Ünlü popçu yeni albüm lansmanında gözyaşlarını tutamadı! ● Paris Moda Haftası'nda Türk rüzgarı esiyor... ● Yılın düğününden ilk kareler geldi!
         </div>
-        
-        <div class="flex gap-2">
-            <button onclick="switchView('user')" id="btn-user" class="px-4 py-2 rounded-lg text-xs font-bold transition glass active-tab">USER UI</button>
-            <button onclick="switchView('admin')" id="btn-admin" class="px-4 py-2 rounded-lg text-xs font-bold transition glass">ADMIN PANEL</button>
-        </div>
+    </div>
+
+    <header>
+        <h1>MAGAZİN<span>LOG</span></h1>
+    </header>
+
+    <nav>
+        <a href="#">Ana Sayfa</a>
+        <a href="#">Gıybet</a>
+        <a href="#">Stil</a>
+        <a href="#">Galeri</a>
+        <a href="#">TV Rehberi</a>
     </nav>
 
-    <div id="user-view" class="pt-24 min-h-screen">
-        <section class="px-6 py-12 text-center">
-            <h1 class="mardin-text text-6xl md:text-9xl mb-6">Taşın ve <span class="text-green-500 italic">Ormanın</span> Şiiri</h1>
-            <p class="max-w-2xl mx-auto opacity-60 text-lg mb-10">Mardin'den Rio'ya uzanan, sanatın ve kültürün en saf haliyle buluştuğu dijital kütüphane.</p>
-        </section>
+    <div class="container">
+        <main>
+            <article class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f" alt="Haber">
+                </div>
+                <div class="card-content">
+                    <span class="category">Sokak Stili</span>
+                    <h2>Hafta Sonunun En Dikkat Çeken Kombinleri</h2>
+                    <p>Nişantaşı sokaklarında objektiflerimize takılan yıldız isimler, bahar trendlerini şimdiden belirledi.</p>
+                </div>
+            </article>
 
-        <section class="px-6 grid md:grid-cols-3 gap-8 max-w-7xl mx-auto pb-20">
-            <div class="glass rounded-3xl overflow-hidden group">
-                <div class="h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768b921?q=80&w=500');"></div>
-                <div class="p-6">
-                    <span class="text-[10px] text-amber-500 font-bold uppercase tracking-widest">Sanat & Mimari</span>
-                    <h3 class="mardin-text text-2xl mt-2 group-hover:text-amber-500 transition">Mardin Evleri ve Favela Estetiği: Bir Karşılaştırma</h3>
-                    <p class="text-sm opacity-50 mt-4 italic">Editör: Gabriel Mardini</p>
+            <article class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745" alt="Haber">
+                </div>
+                <div class="card-content">
+                    <span class="category">Gece Hayatı</span>
+                    <h2>Boğaz'da Yıldızlar Geçidi: Dev Kutlama</h2>
+                    <p>Ünlü iş insanının doğum günü partisinde tüm sanat dünyası bir araya geldi. İşte o geceden özel detaylar...</p>
+                </div>
+            </article>
+        </main>
+
+        <aside>
+            <div class="best-dressed">
+                <h4>GÜNÜN KOMBİNİ</h4>
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f" alt="Günün Şıkı">
+                <p style="margin-top:10px; font-weight:bold;">Selin Işık</p>
+                <p style="font-size:0.8rem; color:#777;">Minimalist şıklığın zirvesi.</p>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3>TRENDLER</h3>
+                <div class="trend-item">
+                    <span class="trend-number">01</span>
+                    <p>Oscar töreninde kim ne giydi?</p>
+                </div>
+                <div class="trend-item">
+                    <span class="trend-number">02</span>
+                    <p>Yazın en popüler tatil rotaları</p>
+                </div>
+                <div class="trend-item">
+                    <span class="trend-number">03</span>
+                    <p>Ünlü oyuncudan samimi itiraflar</p>
                 </div>
             </div>
-            <div class="glass rounded-3xl overflow-hidden group">
-                <div class="h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=500');"></div>
-                <div class="p-6">
-                    <span class="text-[10px] text-green-500 font-bold uppercase tracking-widest">Yaşam & Festival</span>
-                    <h3 class="mardin-text text-2xl mt-2 group-hover:text-green-500 transition">Karnavalın Mezopotamya Esintili Maskeleri</h3>
-                    <p class="text-sm opacity-50 mt-4 italic">Editör: Elif Silva</p>
-                </div>
-            </div>
-            <div class="glass rounded-3xl overflow-hidden group">
-                <div class="h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500');"></div>
-                <div class="p-6">
-                    <span class="text-[10px] text-blue-500 font-bold uppercase tracking-widest">Müzik</span>
-                    <h3 class="mardin-text text-2xl mt-2 group-hover:text-blue-500 transition">Reyhani ve Bossa Nova: Ritmik Akrabalık</h3>
-                    <p class="text-sm opacity-50 mt-4 italic">Editör: Carlos Aksoy</p>
-                </div>
-            </div>
-        </section>
+        </aside>
     </div>
 
-    <div id="admin-view" class="pt-24 min-h-screen hidden">
-        <div class="px-6 grid grid-cols-12 gap-6 max-w-[1600px] mx-auto">
-            
-            <aside class="col-span-12 lg:col-span-2 space-y-4">
-                <div class="glass p-4 rounded-2xl">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-2 h-2 rounded-full bg-green-500 ai-status"></div>
-                        <span class="text-[10px] font-bold opacity-70">AI ENGINE ONLINE</span>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li class="p-2 hover:bg-white/5 rounded-lg cursor-pointer text-amber-500"><i class="fa-solid fa-gauge mr-2"></i> Özet</li>
-                        <li class="p-2 hover:bg-white/5 rounded-lg cursor-pointer"><i class="fa-solid fa-file-pen mr-2"></i> Yazı Ekle</li>
-                        <li class="p-2 hover:bg-white/5 rounded-lg cursor-pointer"><i class="fa-solid fa-users mr-2"></i> Yazarlar</li>
-                        <li class="p-2 hover:bg-white/5 rounded-lg cursor-pointer"><i class="fa-solid fa-chart-pie mr-2"></i> Analitik</li>
-                    </ul>
-                </div>
-            </aside>
+    <footer>
+        <p>&copy; 2026 MAGAZINLOG. Her hakkı dedikoduya tabidir.</p>
+    </footer>
 
-            <main class="col-span-12 lg:col-span-7 space-y-6">
-                <div class="glass p-8 rounded-3xl border-l-4 border-amber-500">
-                    <h2 class="text-xl font-bold mb-6">Yeni İçerik Oluştur <span class="text-xs font-normal opacity-40 ml-2">ID: #MAR-BRA-2026</span></h2>
-                    <input type="text" placeholder="Haber Başlığı..." class="w-full bg-transparent text-3xl font-bold border-b border-white/10 pb-4 mb-6 focus:outline-none mardin-text">
-                    <textarea class="w-full h-64 bg-transparent resize-none opacity-70 focus:outline-none leading-loose" placeholder="İçeriğinizi buraya yazın, AI kültürel adaptasyonu otomatik yapacaktır..."></textarea>
-                    
-                    <div class="flex justify-between items-center mt-6">
-                        <div class="flex gap-4">
-                            <button class="bg-amber-500 text-black px-6 py-2 rounded-full font-bold text-xs uppercase hover:bg-white transition">YAYINLA</button>
-                            <button class="glass px-6 py-2 rounded-full font-bold text-xs uppercase hover:bg-amber-500/20 transition">TASLAK</button>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs opacity-50">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Otomatik Kaydedildi: 03:34
-                        </div>
-                    </div>
-                </div>
-            </main>
-
-            <aside class="col-span-12 lg:col-span-3 space-y-6">
-                <div class="glass p-6 rounded-3xl">
-                    <h4 class="text-[10px] font-bold uppercase tracking-widest opacity-50 mb-4">Gerçek Zamanlı Okuma</h4>
-                    <canvas id="adminChart" height="200"></canvas>
-                </div>
-                <div class="glass p-6 rounded-3xl">
-                    <h4 class="text-[10px] font-bold uppercase tracking-widest opacity-50 mb-4">AI Kültürel Skor</h4>
-                    <div class="flex items-end gap-2">
-                        <span class="text-4xl font-black text-green-500">9.8</span>
-                        <span class="text-xs opacity-50 mb-1">/ 10.0</span>
-                    </div>
-                    <p class="text-[10px] mt-2 opacity-40 italic">Yazı, Brezilya Portekizcesi kültürel dinamiklerine tam uyumludur.</p>
-                </div>
-            </aside>
-
-        </div>
-    </div>
-
-    <script>
-        // Görünüm Değiştirme Fonksiyonu
-        function switchView(view) {
-            const userView = document.getElementById('user-view');
-            const adminView = document.getElementById('admin-view');
-            const title = document.getElementById('view-title');
-            const btnUser = document.getElementById('btn-user');
-            const btnAdmin = document.getElementById('btn-admin');
-
-            if(view === 'admin') {
-                userView.classList.add('hidden');
-                adminView.classList.remove('hidden');
-                title.innerText = 'Admin Dashboard';
-                btnAdmin.classList.add('active-tab');
-                btnUser.classList.remove('active-tab');
-                initChart(); // Grafiği yükle
-            } else {
-                adminView.classList.add('hidden');
-                userView.classList.remove('hidden');
-                title.innerText = 'Kullanıcı Arayüzü';
-                btnUser.classList.add('active-tab');
-                btnAdmin.classList.remove('active-tab');
-            }
-        }
-
-        // Grafik Fonksiyonu (Admin için)
-        function initChart() {
-            const ctx = document.getElementById('adminChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['12:00', '13:00', '14:00', '15:00'],
-                    datasets: [{
-                        label: 'Ziyaretçi',
-                        data: [450, 820, 610, 950],
-                        borderColor: '#d4af37',
-                        tension: 0.4,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#444' } } }
-                }
-            });
-        }
-    </script>
 </body>
 </html>
