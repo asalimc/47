@@ -12,23 +12,36 @@
         #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 10001; }
         nav { background: rgba(253, 251, 247, 0.9); backdrop-filter: blur(15px); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .logo { font-family: 'Marcellus', serif; font-size: 2rem; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
-        .authors-strip { background: var(--white); padding: 30px 0; display: flex; justify-content: center; gap: 40px; border-bottom: 1px solid #f1f1f1; overflow-x: auto; }
+
+        .authors-strip { background: var(--white); padding: 30px 0; display: flex; justify-content: center; gap: 40px; border-bottom: 1px solid #f1f1f1; overflow-x: auto; scrollbar-width: none; }
         .author-item { cursor: pointer; text-align: center; width: 90px; flex-shrink: 0; }
-        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); padding: 4px; margin: 0 auto; transition: 0.3s; }
-        .author-item:hover img { transform: scale(1.05); }
+        .author-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); padding: 4px; margin: 0 auto; }
         .author-item span { display: block; font-size: 0.75rem; font-weight: 700; margin-top: 10px; font-family: 'Marcellus'; text-transform: uppercase; }
+
+        /* Haber Akışı: Alt Alta ve Sıralı Gelmesi İçin */
         .container-main { max-width: 1400px; margin: 40px auto; display: grid; grid-template-columns: 280px 1fr 300px; gap: 40px; padding: 0 25px; }
-        .news-card { background: var(--white); border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.02); cursor: pointer; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(0,0,0,0.02); margin-bottom: 40px; }
-        .news-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.06); }
-        .news-img { width: 100%; height: 480px; object-fit: cover; }
+        #news-feed { display: flex; flex-direction: column; gap: 40px; }
+        
+        .news-card { background: var(--white); border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.02); cursor: pointer; transition: 0.4s; border: 1px solid rgba(0,0,0,0.02); opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        .news-img { width: 100%; height: 500px; object-fit: cover; }
         .card-body { padding: 35px; }
         .card-body h2 { font-family: 'Marcellus', serif; font-size: 2.2rem; margin: 0 0 15px 0; line-height: 1.2; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding-bottom: 100px; }
-        .close-overlay { position: fixed; top: 30px; right: 40px; cursor: pointer; background: var(--text); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+
+        /* Admin Paneli Sabitleme */
         #admin-panel { display: none; background: #0f172a; color: white; position: fixed; inset: 0; z-index: 11000; overflow-y: auto; padding: 40px; }
         .input-dark { width: 100%; padding: 12px; margin-bottom: 15px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; color: white; outline: none; }
-        .admin-nav button { color: #64748b; font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; padding-bottom: 5px; }
-        .admin-nav button.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+        .admin-nav button { color: #64748b; font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; padding: 10px; border-radius: 8px; transition: 0.3s; }
+        .admin-nav button.active { color: var(--accent); background: rgba(196, 155, 102, 0.1); }
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding-bottom: 100px; }
+        .close-overlay { position: fixed; top: 30px; right: 40px; cursor: pointer; background: var(--text); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+
+        @media (max-width: 1024px) {
+            .container-main { grid-template-columns: 1fr; }
+            .sidebar-left, .sidebar-right { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -38,27 +51,21 @@
 <div id="authors-list" class="authors-strip"></div>
 
 <div class="container-main">
-    <aside class="sidebar-left">
-        <div class="side-title" style="font-family:'Marcellus'; border-bottom:1px solid #eee; margin-bottom:15px; padding-bottom:10px;">KATEGORİLER</div>
-        <div id="categories-list" style="font-size: 0.9rem; line-height: 2.8; cursor: pointer;"></div>
-    </aside>
+    <aside class="sidebar-left"><div id="categories-list" style="font-size: 0.9rem; line-height: 2.8; cursor: pointer;"></div></aside>
     <main id="news-feed"></main>
-    <aside class="sidebar-right">
-        <div class="side-title" style="font-family:'Marcellus'; border-bottom:1px solid #eee; margin-bottom:15px; padding-bottom:10px;">SPONSORLU</div>
-        <div id="ad-sidebar" style="background:#f0f0f0; min-height:450px; border-radius:24px; overflow:hidden; border:1px dashed #ccc;"></div>
-    </aside>
+    <aside class="sidebar-right"><div id="ad-sidebar" style="background:#f0f0f0; min-height:450px; border-radius:24px; overflow:hidden;"></div></aside>
 </div>
 
-<footer style="padding: 60px; text-align: center; opacity: 0.3;"><button onclick="toggleAdmin()" style="font-size: 10px; letter-spacing: 2px;">SİSTEM TERMİNALİ</button></footer>
+<footer style="padding: 60px; text-align: center; opacity: 0.3;"><button onclick="toggleAdmin()" style="font-size: 10px; letter-spacing: 2px;">PANEL</button></footer>
 
 <div id="overlay" class="overlay"><div class="close-overlay" onclick="closeAll()">✕</div><div id="overlay-content" class="max-w-4xl mx-auto mt-20 p-5"></div></div>
 
 <div id="admin-panel">
     <div class="flex justify-between items-center mb-10 border-b border-slate-800 pb-5">
-        <h2 class="text-2xl font-black text-accent tracking-tighter">LUMINA ENGINE v3.0</h2>
-        <button onclick="toggleAdmin()" class="bg-red-500/20 text-red-500 px-6 py-2 rounded-full font-bold text-xs">PANELİ KAPAT</button>
+        <h2 class="text-2xl font-black text-accent tracking-tighter">LUMINA ENGINE v3.1</h2>
+        <button onclick="toggleAdmin()" class="bg-red-500/20 text-red-500 px-6 py-2 rounded-full font-bold text-xs uppercase">Paneli Kapat</button>
     </div>
-    <div class="admin-nav flex gap-8 mb-10">
+    <div class="admin-nav flex gap-4 mb-10">
         <button onclick="setTab('haber')" id="btn-haber" class="active">HABERLER</button>
         <button onclick="setTab('yazar')" id="btn-yazar">YAZARLAR</button>
         <button onclick="setTab('cat')" id="btn-cat">KATEGORİLER</button>
@@ -68,37 +75,32 @@
 </div>
 
 <script>
-    // ÖRNEK VERİLER VE DB BAŞLATMA
-    const defaultData = {
-        cats: [{id: 'c1', name: 'Mardin Ekspres'}, {id: 'c2', name: 'Sao Paulo Sosyete'}, {id: 'c3', name: 'Gastronomi'}],
+    // Dinamik DB yapısı ve Örnek Veriler
+    const defaultDB = {
+        cats: [{id: 'c1', name: 'Siyaset'}, {id: 'c2', name: 'Analiz'}, {id: 'c3', name: 'Yaşam'}],
         yazarlar: [
-            {id: 'y1', isim: 'Vedat Mardinli', bio: 'Kültür Tarihçisi', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400'},
+            {id: 'y1', isim: 'Ahmet ÇINARBAŞ', bio: 'Siyasi Analiz', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'},
             {id: 'y2', isim: 'Adriana Silva', bio: 'Moda Editörü', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'}
         ],
         haberler: [
-            {id: 'h1', title: "Eski Mardin'in Gümüş İşçiliği", text: "Mezopotamya'nın kalbinde telkari sanatı, modern takı tasarımcıları tarafından yeniden keşfediliyor. Bu antik dokunuş şimdi dünya podyumlarında.", img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200', cid: 'c1', yid: 'y1'},
-            {id: 'h2', title: "Sao Paulo'da Türk Kahvesi Esintisi", text: "Brezilya'nın metropolü Sao Paulo'da açılan yeni butik kafeler, geleneksel Türk kahvesini yerel aromalarla birleştirerek büyük ilgi topluyor.", img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200', cid: 'c2', yid: 'y2'}
+            {id: 'h1', title: "Analiz: Yerel Seçim Sonuçları", text: "Mardin ve çevresindeki seçim atmosferini Ahmet Çınarbaş değerlendiriyor...", img: 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=1200', cid: 'c1', yid: 'y1'}
         ],
         reklamlar: [{img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500'}]
     };
 
-    let db = JSON.parse(localStorage.getItem('lumina_db_final')) || defaultData;
+    let db = JSON.parse(localStorage.getItem('lumina_db_stable')) || defaultDB;
     let activeTab = 'haber', tempImg = "", editingId = null;
 
-    // DOSYA OKUMA SİSTEMİ
     function handleImg(e) {
-        const file = e.target.files[0];
-        if (!file) return;
         const reader = new FileReader();
         reader.onload = () => { tempImg = reader.result; };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(e.target.files[0]);
     }
 
-    // ADMIN KONTROLLERİ
     function toggleAdmin() {
         const p = document.getElementById('admin-panel');
-        p.style.display = p.style.display === 'block' ? 'none' : 'block';
-        if(p.style.display === 'block') { editingId = null; renderAdmin(); }
+        p.style.display = (p.style.display === 'block') ? 'none' : 'block';
+        if(p.style.display === 'block') { editingId = null; tempImg = ""; renderAdmin(); }
     }
 
     function setTab(tab) {
@@ -108,163 +110,113 @@
         renderAdmin();
     }
 
-    // ADMIN RENDER (HİÇBİR MODÜLE DOKUNULMADAN FIXLENDİ)
     function renderAdmin() {
-        const container = document.getElementById('admin-content');
-        let formHtml = "", listHtml = "";
+        const content = document.getElementById('admin-content');
+        let form = "", list = "";
 
         if(activeTab === 'haber') {
-            const cOpts = db.cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-            const yOpts = db.yazarlar.map(y => `<option value="${y.id}">${y.isim}</option>`).join('');
-            formHtml = `<div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
-                <h3 class="font-bold text-accent mb-5 uppercase tracking-widest text-xs">YENİ HABER YAYINLA</h3>
-                <input type="text" id="h-title" placeholder="Haber Başlığı" class="input-dark">
-                <select id="h-cat" class="input-dark">${cOpts}</select>
-                <select id="h-yazar" class="input-dark">${yOpts}</select>
-                <textarea id="h-text" placeholder="Haber İçeriği..." class="input-dark h-40"></textarea>
-                <input type="file" onchange="handleImg(event)" class="text-xs mb-5">
-                <button onclick="saveHaber()" class="w-full bg-accent text-white py-4 rounded-xl font-black">YAYINLA</button>
-            </div>`;
-            listHtml = db.haberler.map(h => `<div class="flex justify-between items-center p-4 border-b border-slate-800 text-sm"><span>${h.title}</span><button onclick="deleteItem('haberler','${h.id}')" class="text-red-400 font-bold">SİL</button></div>`).join('');
+            const cO = db.cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            const yO = db.yazarlar.map(y => `<option value="${y.id}">${y.isim}</option>`).join('');
+            form = `<div class="bg-slate-900 p-6 rounded-3xl"><h3 class="text-accent font-bold mb-4 uppercase text-xs">Yeni Haber</h3>
+                <input type="text" id="h-t" placeholder="Başlık" class="input-dark">
+                <select id="h-c" class="input-dark">${cO}</select>
+                <select id="h-y" class="input-dark">${yO}</select>
+                <textarea id="h-x" placeholder="İçerik" class="input-dark h-32"></textarea>
+                <input type="file" onchange="handleImg(event)" class="text-xs mb-4">
+                <button onclick="saveHaber()" class="w-full bg-accent py-3 rounded-xl font-bold">YAYINLA</button></div>`;
+            list = db.haberler.map(h => `<div class="flex justify-between p-3 border-b border-slate-800 text-xs"><span>${h.title}</span><button onclick="del('haberler','${h.id}')" class="text-red-400">SİL</button></div>`).join('');
         }
         else if(activeTab === 'yazar') {
             const editY = editingId ? db.yazarlar.find(y => y.id === editingId) : null;
-            formHtml = `<div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
-                <h3 class="font-bold text-accent mb-5 uppercase tracking-widest text-xs">${editY ? 'YAZARI DÜZENLE' : 'YAZAR KAYDET'}</h3>
-                <input type="text" id="y-isim" value="${editY?.isim || ''}" placeholder="İsim Soyisim" class="input-dark">
-                <input type="text" id="y-bio" value="${editY?.bio || ''}" placeholder="Unvan (Örn: Editör)" class="input-dark">
-                <input type="file" onchange="handleImg(event)" class="text-xs mb-5">
-                <button onclick="saveYazar()" class="w-full bg-accent text-white py-4 rounded-xl font-black uppercase">${editY ? 'GÜNCELLE' : 'YAZARI EKLE'}</button>
-                ${editingId ? `<button onclick="setTab('yazar')" class="w-full mt-3 text-xs opacity-50">İPTAL</button>` : ''}
-            </div>`;
-            listHtml = db.yazarlar.map(y => `
-                <div class="flex items-center justify-between p-4 border-b border-slate-800">
-                    <div class="flex items-center gap-3 cursor-pointer" onclick="editYazarMode('${y.id}')">
-                        <img src="${y.img}" class="w-10 h-10 rounded-full object-cover">
-                        <div><div class="font-bold text-sm">${y.isim}</div><div class="text-[10px] text-accent">DÜZENLE</div></div>
-                    </div>
-                    <button onclick="deleteItem('yazarlar','${y.id}')" class="text-red-500 font-bold text-xs">SİL</button>
-                </div>`).join('');
+            form = `<div class="bg-slate-900 p-6 rounded-3xl"><h3 class="text-accent font-bold mb-4 uppercase text-xs">${editY ? 'Yazarı Düzenle' : 'Yazar Ekle'}</h3>
+                <input type="text" id="y-i" value="${editY?.isim || ''}" placeholder="İsim" class="input-dark">
+                <input type="text" id="y-b" value="${editY?.bio || ''}" placeholder="Bio" class="input-dark">
+                <input type="file" onchange="handleImg(event)" class="text-xs mb-4">
+                <button onclick="saveYazar()" class="w-full bg-accent py-3 rounded-xl font-bold">${editY ? 'GÜNCELLE' : 'KAYDET'}</button>
+                ${editingId ? `<button onclick="setTab('yazar')" class="mt-2 text-xs opacity-50 block w-full">İPTAL</button>` : ''}</div>`;
+            list = db.yazarlar.map(y => `<div class="flex items-center justify-between p-3 border-b border-slate-800">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="editY('${y.id}')">
+                <img src="${y.img}" class="w-8 h-8 rounded-full object-cover">
+                <span class="text-xs font-bold">${y.isim}</span></div>
+                <button onclick="del('yazarlar','${y.id}')" class="text-red-400 text-xs">SİL</button></div>`).join('');
         }
         else if(activeTab === 'cat') {
-            formHtml = `<div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
-                <h3 class="font-bold text-accent mb-5 uppercase tracking-widest text-xs">KATEGORİ EKLE</h3>
-                <input type="text" id="c-name" placeholder="Kategori Adı" class="input-dark">
-                <button onclick="saveCat()" class="w-full bg-accent py-4 rounded-xl font-black">EKLE</button>
-            </div>`;
-            listHtml = db.cats.map(c => `<div class="flex justify-between p-4 border-b border-slate-800"><span>${c.name}</span><button onclick="deleteItem('cats','${c.id}')" class="text-red-400">SİL</button></div>`).join('');
+            form = `<div class="bg-slate-900 p-6 rounded-3xl"><input type="text" id="c-n" placeholder="Kategori Adı" class="input-dark"><button onclick="saveCat()" class="w-full bg-accent py-3 rounded-xl font-bold">EKLE</button></div>`;
+            list = db.cats.map(c => `<div class="flex justify-between p-3 border-b border-slate-800 text-xs"><span>${c.name}</span><button onclick="del('cats','${c.id}')" class="text-red-400">SİL</button></div>`).join('');
         }
         else if(activeTab === 'reklam') {
-            formHtml = `<div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
-                <h3 class="font-bold text-accent mb-5 uppercase tracking-widest text-xs">REKLAM GÜNCELLE</h3>
-                <input type="file" onchange="handleImg(event)" class="text-xs mb-5">
-                <button onclick="saveReklam()" class="w-full bg-accent py-4 rounded-xl font-black">GÖRSELİ GÜNCELLE</button>
-            </div>`;
-            listHtml = db.reklamlar[0] ? `<img src="${db.reklamlar[0].img}" class="w-full rounded-2xl border border-slate-700">` : 'Reklam Yok.';
+            form = `<div class="bg-slate-900 p-6 rounded-3xl"><input type="file" onchange="handleImg(event)" class="mb-4"><button onclick="saveReklam()" class="w-full bg-accent py-3 rounded-xl font-bold">REKLAMI GÜNCELLE</button></div>`;
+            list = db.reklamlar[0] ? `<img src="${db.reklamlar[0].img}" class="w-full rounded-2xl">` : '';
         }
 
-        container.innerHTML = formHtml + `<div class="lg:col-span-2 bg-slate-900 p-8 rounded-3xl border border-slate-800">
-            <h3 class="text-xs font-bold text-slate-500 mb-5 tracking-tighter uppercase">SİSTEM KAYITLARI</h3>
-            <div class="overflow-hidden">${listHtml}</div>
-        </div>`;
+        content.innerHTML = form + `<div class="lg:col-span-2 bg-slate-900 p-6 rounded-3xl overflow-y-auto max-h-[500px]">
+            <h3 class="text-xs text-slate-500 mb-4 uppercase">Kayıtlar</h3>${list || '<p class="text-xs opacity-30">Henüz kayıt yok.</p>'}</div>`;
     }
 
-    // VERİ KAYIT FONKSİYONLARI (FIXED)
     function saveHaber() {
-        const title = document.getElementById('h-title').value;
-        const text = document.getElementById('h-text').value;
-        if(!title || !text) return alert("Haber başlığı ve içeriği zorunludur!");
-        
-        db.haberler.unshift({
-            id: 'h' + Date.now(),
-            title: title,
-            cid: document.getElementById('h-cat').value,
-            yid: document.getElementById('h-yazar').value,
-            text: text,
-            img: tempImg || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200'
-        });
-        finalize();
+        const h = { id: 'h'+Date.now(), title: document.getElementById('h-t').value, cid: document.getElementById('h-c').value, yid: document.getElementById('h-y').value, text: document.getElementById('h-x').value, img: tempImg || 'https://via.placeholder.com/1200' };
+        if(!h.title || !h.text) return alert("Eksik bilgi!");
+        db.haberler.unshift(h); fin();
     }
 
-    function editYazarMode(id) { editingId = id; tempImg = ""; renderAdmin(); }
+    function editY(id) { editingId = id; renderAdmin(); }
 
     function saveYazar() {
-        const isim = document.getElementById('y-isim').value;
-        const bio = document.getElementById('y-bio').value;
-        if(!isim) return alert("İsim zorunludur!");
-
+        const isim = document.getElementById('y-i').value;
+        const bio = document.getElementById('y-b').value;
         if(editingId) {
             let y = db.yazarlar.find(x => x.id === editingId);
             y.isim = isim; y.bio = bio; if(tempImg) y.img = tempImg;
         } else {
-            db.yazarlar.push({ id: 'y' + Date.now(), isim, bio, img: tempImg || 'https://via.placeholder.com/400' });
+            db.yazarlar.push({ id: 'y'+Date.now(), isim, bio, img: tempImg || 'https://via.placeholder.com/400' });
         }
-        finalize();
+        fin();
     }
 
-    function saveCat() {
-        const name = document.getElementById('c-name').value;
-        if(name) { db.cats.push({id: 'c' + Date.now(), name: name}); finalize(); }
+    function saveCat() { db.cats.push({id: 'c'+Date.now(), name: document.getElementById('c-n').value}); fin(); }
+    function saveReklam() { if(tempImg) { db.reklamlar = [{img: tempImg}]; fin(); } }
+
+    function del(k, i) { 
+        if(!confirm('Silinsin mi?')) return;
+        if(k === 'yazarlar') db.haberler = db.haberler.filter(h => h.yid !== i);
+        db[k] = db[k].filter(x => x.id !== i); 
+        fin(); 
     }
 
-    function saveReklam() {
-        if(tempImg) { db.reklamlar = [{img: tempImg}]; finalize(); }
-        else { alert("Lütfen bir dosya seçin!"); }
-    }
-
-    function deleteItem(key, id) {
-        if(confirm('Veriyi silmek istediğinize emin misiniz?')) {
-            if(key === 'yazarlar') db.haberler = db.haberler.filter(h => h.yid !== id);
-            db[key] = db[key].filter(x => x.id !== id);
-            finalize();
-        }
-    }
-
-    function finalize() {
-        localStorage.setItem('lumina_db_final', JSON.stringify(db));
+    function fin() {
+        localStorage.setItem('lumina_db_stable', JSON.stringify(db));
         tempImg = ""; editingId = null;
         renderAdmin(); renderPortal();
     }
 
-    // ÖNYÜZ RENDER SİSTEMİ
     function renderPortal() {
-        // Kategoriler
-        document.getElementById('categories-list').innerHTML = db.cats.map(c => `<div onclick="filterPortal('${c.id}')" class="hover:text-accent">• ${c.name}</div>`).join('');
-        
-        // Yazarlar
-        document.getElementById('authors-list').innerHTML = db.yazarlar.map(y => `
-            <div class="author-item" onclick="openAuthor('${y.id}')">
-                <img src="${y.img}">
-                <span>${y.isim}</span>
-            </div>`).join('');
-        
-        // Reklam
-        if(db.reklamlar[0]) {
-            document.getElementById('ad-sidebar').innerHTML = `<img src="${db.reklamlar[0].img}" class="w-full h-full object-cover">`;
-        }
-
+        document.getElementById('categories-list').innerHTML = `<div onclick="filterPortal('all')" class="font-bold mb-4 opacity-50">TÜMÜ</div>` + db.cats.map(c => `<div onclick="filterPortal('${c.id}')">• ${c.name}</div>`).join('');
+        document.getElementById('authors-list').innerHTML = db.yazarlar.map(y => `<div class="author-item" onclick="openAuthor('${y.id}')"><img src="${y.img}"><span>${y.isim}</span></div>`).join('');
+        if(db.reklamlar[0]) document.getElementById('ad-sidebar').innerHTML = `<img src="${db.reklamlar[0].img}" class="w-full h-full object-cover">`;
         filterPortal('all');
     }
 
     function filterPortal(cid) {
-        let list = cid === 'all' ? db.haberler : db.haberler.filter(h => h.cid === cid);
-        document.getElementById('news-feed').innerHTML = list.map(h => `
-            <article class="news-card" onclick="openNews('${h.id}')">
-                <img src="${h.img}" class="news-img">
-                <div class="card-body">
-                    <small class="text-accent font-bold uppercase tracking-widest">${db.cats.find(c=>c.id===h.cid)?.name || 'KÜLTÜR'}</small>
-                    <h2>${h.title}</h2>
-                    <p class="text-muted">${h.text.substring(0, 110)}...</p>
-                </div>
-            </article>`).join('');
+        const feed = document.getElementById('news-feed');
+        feed.innerHTML = "";
+        let items = cid === 'all' ? db.haberler : db.haberler.filter(h => h.cid === cid);
+        
+        items.forEach((h, index) => {
+            const card = document.createElement('article');
+            card.className = "news-card";
+            card.style.animationDelay = `${index * 0.1}s`;
+            card.onclick = () => openNews(h.id);
+            card.innerHTML = `<img src="${h.img}" class="news-img"><div class="card-body">
+                <small class="text-accent font-bold uppercase tracking-widest">${db.cats.find(c=>c.id===h.cid)?.name || 'Haber'}</small>
+                <h2>${h.title}</h2><p class="text-muted">${h.text.substring(0, 120)}...</p></div>`;
+            feed.appendChild(card);
+        });
     }
 
     function openNews(hid) {
         const h = db.haberler.find(x => x.id === hid);
         const y = db.yazarlar.find(x => x.id === h.yid);
-        const overlay = document.getElementById('overlay');
-        overlay.style.display = 'block';
-        document.body.style.overflow = 'hidden';
+        document.getElementById('overlay').style.display = 'block';
         document.getElementById('overlay-content').innerHTML = `
             <h1 class="text-5xl font-serif mb-8 leading-tight">${h.title}</h1>
             <div class="flex items-center gap-4 mb-10 border-b pb-10">
@@ -272,33 +224,21 @@
                 <div><div class="font-bold text-lg">${y.isim}</div><div class="text-sm text-slate-400">${y.bio}</div></div>
             </div>
             <img src="${h.img}" class="w-full rounded-3xl mb-12 shadow-2xl">
-            <div class="text-xl leading-relaxed text-slate-800">${h.text.repeat(3)}</div>
-        `;
+            <div class="text-xl leading-relaxed text-slate-800">${h.text}</div>`;
     }
 
     function openAuthor(yid) {
         const y = db.yazarlar.find(x => x.id === yid);
-        const yHaberler = db.haberler.filter(h => h.yid === yid);
+        const yH = db.haberler.filter(h => h.yid === yid);
         document.getElementById('overlay').style.display = 'block';
-        document.body.style.overflow = 'hidden';
         document.getElementById('overlay-content').innerHTML = `
-            <div class="text-center mb-16">
-                <img src="${y.img}" class="w-40 h-40 rounded-full mx-auto mb-6 object-cover border-4 border-accent p-2">
-                <h1 class="text-4xl font-serif">${y.isim}</h1>
-                <p class="text-muted max-w-md mx-auto mt-2">${y.bio}</p>
-            </div>
-            <div class="grid grid-cols-1 gap-6">
-                <h3 class="font-bold border-b pb-4">YAZARIN ARŞİVİ</h3>
-                ${yHaberler.map(h => `<div onclick="openNews('${h.id}')" class="p-6 bg-white border border-slate-100 rounded-2xl cursor-pointer hover:shadow-md transition font-bold text-lg">${h.title}</div>`).join('')}
-            </div>
-        `;
+            <div class="text-center mb-16"><img src="${y.img}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-accent">
+            <h1 class="text-4xl font-serif">${y.isim}</h1><p class="text-muted">${y.bio}</p></div>
+            <div class="space-y-4">${yH.map(h => `<div onclick="openNews('${h.id}')" class="p-6 bg-white border rounded-2xl cursor-pointer hover:shadow-lg transition font-bold text-lg">${h.title}</div>`).join('')}</div>`;
     }
 
-    function closeAll() {
-        document.getElementById('overlay').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
+    function closeAll() { document.getElementById('overlay').style.display = 'none'; }
+    
     window.onscroll = () => {
         let scroll = document.documentElement.scrollTop;
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
