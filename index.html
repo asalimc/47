@@ -2,138 +2,115 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDIN & RIO | Ultra Elite Portal 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --mardin: #d4a373;
-            --rio: #0077b6;
-            --dark: #121212;
-            --white: #ffffff;
-            --bg: #f9f7f2;
+        /* Arayüzü koruyan eklemeler */
+
+        /* 1. SESLİ MAKALE OYNATICI (AUDIO UI) */
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--mardin);
+            margin-bottom: 30px;
+            max-width: fit-content;
+        }
+        .play-pause-btn {
+            width: 35px;
+            height: 35px;
+            background: var(--rio);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+        .audio-wave {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+        }
+        .wave-bar {
+            width: 3px;
+            height: 15px;
+            background: var(--mardin);
+            border-radius: 2px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg); color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; padding-bottom: 80px; }
+        /* 2. CANLI HABER BANDI (NEWS TICKER) */
+        .news-ticker-container {
+            background: white;
+            border-bottom: 1px solid #eee;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .ticker-label {
+            background: var(--rio);
+            color: white;
+            padding: 5px 15px;
+            font-size: 10px;
+            font-weight: 900;
+            margin-left: 20px;
+            z-index: 2;
+        }
+        .ticker-text-wrapper {
+            display: inline-block;
+            animation: tickerScroll 30s linear infinite;
+        }
+        @keyframes tickerScroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
 
-        /* --- 1. HEADER & NAV --- */
-        header { background: white; padding: 60px 20px; text-align: center; border-bottom: 5px solid var(--mardin); }
-        header h1 { font-family: 'Playfair Display', serif; font-size: 5rem; letter-spacing: -4px; }
-        header h1 span { color: var(--rio); }
-        
-        nav { background: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #eee; padding: 15px; }
-        nav ul { display: flex; justify-content: center; list-style: none; gap: 30px; }
-        nav a { font-weight: 700; font-size: 12px; text-transform: uppercase; }
-
-        .wrapper { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-
-        /* --- 2. DÜELLO & GASTRONOMİ (FLIP) --- */
-        .gastro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
-        .flip-card { height: 350px; perspective: 1000px; }
-        .flip-inner { position: relative; width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; cursor: pointer; }
-        .flip-card:hover .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .flip-front { background: white; border: 2px solid var(--mardin); }
-        .flip-back { background: var(--rio); color: white; transform: rotateY(180deg); }
-
-        /* --- 3. MAKALE OKUMA ALANI --- */
-        .main-article { background: white; padding: 50px; border-radius: 25px; margin-bottom: 50px; }
-        .dropcap { float: left; font-size: 4.5rem; font-weight: 900; line-height: 0.8; margin-right: 12px; color: var(--mardin); }
-        .article-body { font-family: 'Lora', serif; font-size: 1.2rem; line-height: 1.9; }
-
-        /* --- 4. KÜLTÜR AJANDASI --- */
-        .agenda-section { background: white; padding: 40px; border-radius: 25px; margin-bottom: 50px; }
-        .event-item { display: flex; align-items: center; gap: 20px; padding: 15px 0; border-bottom: 1px solid #eee; }
-        .date-badge { background: var(--dark); color: white; padding: 10px; border-radius: 10px; min-width: 60px; text-align: center; }
-
-        /* --- 5. ADMIN EDİTÖR --- */
-        .admin-panel { background: white; padding: 40px; border-radius: 25px; border-top: 10px solid var(--rio); margin-bottom: 50px; }
-        .editor-mock { min-height: 150px; background: #fafafa; border: 1px dashed #ccc; padding: 20px; border-radius: 15px; margin: 20px 0; }
-
-        /* --- 6. MOBİL DOCK BAR --- */
-        .mobile-dock { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(18, 18, 18, 0.9); backdrop-filter: blur(10px); width: 90%; max-width: 400px; height: 65px; border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 10000; border: 1px solid rgba(255,255,255,0.1); }
-        .dock-btn { color: #888; font-size: 10px; text-decoration: none; text-align: center; }
-        .dock-btn.active { color: var(--mardin); }
-
-        /* --- ESTETİK PULSE --- */
-        .live-pulse { width: 10px; height: 10px; background: #ff4b2b; border-radius: 50%; display: inline-block; margin-right: 8px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,75,43,0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,75,43,0); } 100% { box-shadow: 0 0 0 0 rgba(255,75,43,0); } }
-
-        @media (max-width: 768px) { header h1 { font-size: 3rem; } .mobile-dock { display: flex; } }
+        /* 3. SOSYAL KANIT MODÜLÜ (USER PRESENCE) */
+        .user-counter-badge {
+            font-size: 11px;
+            color: #777;
+            text-align: right;
+            margin-top: -20px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>MARDIN<span>RIO</span></h1>
-        <p style="letter-spacing: 5px; font-weight: bold; font-size: 12px; color: var(--mardin);">KÜLTÜR • STİL • YAŞAM</p>
-    </header>
-
-    <nav>
-        <ul>
-            <li><a href="#">KEŞFET</a></li>
-            <li><a href="#">GASTRONOMİ</a></li>
-            <li><a href="#">AJANDA</a></li>
-            <li><a href="#">EDİTÖR</a></li>
-        </ul>
-    </nav>
+    <div class="news-ticker-container">
+        <div class="ticker-label">SON DAKİKA</div>
+        <div class="ticker-text-wrapper">
+            <span style="margin-right: 50px;">• Brezilyalı süper model Adriana, Mardin'in dar sokaklarında görüldü.</span>
+            <span style="margin-right: 50px;">• Rio Karnavalı'nın bu yılki teması: Mezopotamya Güneşi!</span>
+            <span style="margin-right: 50px;">• Yeni "Samba-Reyhani" albümü Spotify global listelerinde yükseliyor.</span>
+        </div>
+    </div>
 
     <div class="wrapper">
         
-        <h3 style="margin-bottom: 30px; font-family: 'Playfair Display';"><span class="live-pulse"></span>LEZZET DÜELLOSU</h3>
-        <div class="gastro-grid">
-            <div class="flip-card">
-                <div class="flip-inner">
-                    <div class="flip-front"><h2>MARDİN</h2><p>İçli Köfte</p></div>
-                    <div class="flip-back"><h2>RIO STYLE</h2><p>Coxinha ile egzotik buluşma.</p></div>
-                </div>
+        <div class="user-counter-badge">
+            <span style="color: green;">●</span> Şu an bu makaleyi 142 kişi okuyor.
+        </div>
+
+        <div class="audio-player">
+            <div class="play-pause-btn">▶</div>
+            <div style="font-size: 12px; font-weight: bold;">BU HABERİ DİNLE</div>
+            <div class="audio-wave">
+                <div class="wave-bar" style="height: 10px;"></div>
+                <div class="wave-bar" style="height: 20px;"></div>
+                <div class="wave-bar" style="height: 15px;"></div>
+                <div class="wave-bar" style="height: 25px;"></div>
             </div>
-            <div class="flip-card">
-                <div class="flip-inner">
-                    <div class="flip-front"><h2>RIO</h2><p>Acai Bowl</p></div>
-                    <div class="flip-back"><h2>MARDİN STYLE</h2><p>Harire tatlısı dokunuşuyla.</p></div>
-                </div>
-            </div>
+            <span style="font-size: 10px; color: #888;">04:22</span>
         </div>
 
         <article class="main-article">
-            <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 25px;">Mardin Gümüşü Rio Galasında</h2>
-            <div class="article-body">
-                <p><span class="dropcap">B</span>rezilya'nın en büyük moda galasında bu yıl Mezopotamya rüzgarları esti. Mardin'in binlerce yıllık telkâri sanatı, Samba kostümleriyle birleşerek izleyicileri büyüledi. Tasarımcılar, taşın ve gümüşün bu eşsiz uyumunu "Yılın Kültürel Sentezi" olarak adlandırıyor.</p>
-            </div>
-        </article>
-
-        <section class="agenda-section">
-            <h3 style="margin-bottom: 20px;">KÜLTÜR AJANDASI 2026</h3>
-            <div class="event-item">
-                <div class="date-badge">15 <span>MRT</span></div>
-                <div><strong>Mardin Film Festivali</strong><p>Tarihi kışla açılışı.</p></div>
-            </div>
-            <div class="event-item">
-                <div class="date-badge">22 <span>MRT</span></div>
-                <div><strong>Rio Karnavalı Finali</strong><p>Copacabana Meydanı.</p></div>
-            </div>
-        </section>
-
-        <section class="admin-panel">
-            <h4>HIZLI İÇERİK EDİTÖRÜ</h4>
-            <div class="editor-mock">Mezopotamya'dan Amazon'a yeni bir hikaye yazın...</div>
-            <button style="background: var(--rio); color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer;">YAYINLA</button>
-        </section>
+            </article>
 
     </div>
 
-    <div class="mobile-dock">
-        <a href="#" class="dock-btn active"><span>🏠</span><br>Home</a>
-        <a href="#" class="dock-btn"><span>🍴</span><br>Gastro</a>
-        <a href="#" class="dock-btn"><span>📅</span><br>Ajanda</a>
-        <a href="#" class="dock-btn"><span>⚙️</span><br>Panel</a>
-    </div>
-
-    <footer style="text-align: center; padding: 40px; background: white; border-top: 1px solid #eee;">
-        <p>© 2026 MARDINRIO | Kültürün Dijital Başkenti</p>
-    </footer>
-
-</body>
+    </body>
 </html>
