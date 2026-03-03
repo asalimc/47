@@ -3,246 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin-Brazil OS | The Ultimate Media Architecture 2026</title>
+    <title>Mardin-Brazil: Mezopotamya & Amazon Hattı</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Playfair+Display:ital,wght@0,900;1,900&display=swap');
-
-        :root {
-            --mardin-gold: #d4af37;
-            --brazil-green: #009739;
-            --system-bg: #030303;
-        }
-
-        body {
-            background-color: var(--system-bg);
-            color: #f0f0f0;
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-        }
-
-        .neon-border {
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
-        }
-
-        .glass-panel {
-            background: rgba(15, 15, 15, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .ai-glow {
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
-        }
-
-        .writing-area:focus {
-            outline: none;
-            border-bottom: 2px solid var(--mardin-gold);
-        }
-
-        .loading-bar {
-            height: 2px;
-            background: linear-gradient(90deg, var(--mardin-gold), var(--brazil-green));
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        /* 2026 Dashboard Animasyonları */
-        @keyframes flow {
-            from { background-position: 0% 50%; }
-            to { background-position: 100% 50%; }
-        }
-
-        .dynamic-bg {
-            background: linear-gradient(-45deg, #050505, #101010, #050505);
-            background-size: 400% 400%;
-            animation: flow 15s ease infinite;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&family=Playfair+Display:ital,wght@0,900;1,900&display=swap');
+        
+        :root { --mardin-gold: #d4af37; --brazil-green: #009739; --bg: #050505; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; transition: all 0.5s ease; }
+        .glass { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); }
+        .mardin-text { font-family: 'Playfair Display', serif; }
+        .hidden { display: none; }
+        .active-tab { border-bottom: 2px solid var(--mardin-gold); color: var(--mardin-gold); }
+        
+        /* Animasyonlar */
+        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); } }
+        .ai-status { animation: pulse-gold 2s infinite; }
     </style>
 </head>
-<body class="dynamic-bg min-h-screen">
+<body>
 
-    <header class="fixed top-0 w-full z-50 glass-panel border-b border-white/10 px-6 py-3 flex justify-between items-center">
+    <nav class="fixed top-0 w-full z-[100] glass px-6 py-4 flex justify-between items-center">
         <div class="flex items-center gap-4">
-            <div class="px-3 py-1 bg-amber-500 text-black text-xs font-black rounded italic">CORE v3.0</div>
-            <h1 class="text-xl font-bold tracking-tighter uppercase italic">Mardin<span class="text-amber-500">Brazil</span></h1>
+            <span class="mardin-text text-2xl font-black italic tracking-tighter">M<span class="text-amber-500">B</span></span>
+            <div class="h-6 w-[1px] bg-white/10"></div>
+            <span id="view-title" class="text-xs font-bold uppercase tracking-widest text-amber-500">Kullanıcı Arayüzü</span>
         </div>
-        <div id="clock" class="text-xs font-mono text-amber-500">03:32:15 MAR 2026</div>
-        <div class="flex gap-4 items-center">
-            <span class="text-[10px] opacity-50"><i class="fa-solid fa-bolt"></i> RUST ENGINE: ACTIVE</span>
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-green-600 p-[1px]">
-                <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-[10px]">AD</div>
-            </div>
-        </div>
-    </header>
-
-    <main class="pt-24 px-6 pb-12 max-w-[1600px] mx-auto grid grid-cols-12 gap-6">
         
-        <aside class="col-span-12 lg:col-span-2 flex flex-col gap-6">
-            <nav class="glass-panel rounded-2xl p-4 flex flex-col gap-2">
-                <button class="flex items-center gap-3 p-3 rounded-xl bg-amber-500/10 text-amber-500 font-bold text-sm">
-                    <i class="fa-solid fa-house"></i> Dashboard
-                </button>
-                <button class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition text-sm opacity-70">
-                    <i class="fa-solid fa-newspaper"></i> Makaleler
-                </button>
-                <button class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition text-sm opacity-70">
-                    <i class="fa-solid fa-palette"></i> Kültür Hattı
-                </button>
-                <button class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition text-sm opacity-70">
-                    <i class="fa-solid fa-gear"></i> Ayarlar
-                </button>
-            </nav>
+        <div class="flex gap-2">
+            <button onclick="switchView('user')" id="btn-user" class="px-4 py-2 rounded-lg text-xs font-bold transition glass active-tab">USER UI</button>
+            <button onclick="switchView('admin')" id="btn-admin" class="px-4 py-2 rounded-lg text-xs font-bold transition glass">ADMIN PANEL</button>
+        </div>
+    </nav>
 
-            <div class="glass-panel rounded-2xl p-5">
-                <h4 class="text-[10px] uppercase font-bold text-gray-500 mb-4 tracking-widest">Global Trafik</h4>
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between text-[10px] mb-1"><span>Mardin</span><span class="text-amber-500">42k</span></div>
-                        <div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
-                            <div class="bg-amber-500 h-full" style="width: 75%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-[10px] mb-1"><span>Rio de Janeiro</span><span class="text-green-500">89k</span></div>
-                        <div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
-                            <div class="bg-green-500 h-full" style="width: 90%"></div>
-                        </div>
-                    </div>
+    <div id="user-view" class="pt-24 min-h-screen">
+        <section class="px-6 py-12 text-center">
+            <h1 class="mardin-text text-6xl md:text-9xl mb-6">Taşın ve <span class="text-green-500 italic">Ormanın</span> Şiiri</h1>
+            <p class="max-w-2xl mx-auto opacity-60 text-lg mb-10">Mardin'den Rio'ya uzanan, sanatın ve kültürün en saf haliyle buluştuğu dijital kütüphane.</p>
+        </section>
+
+        <section class="px-6 grid md:grid-cols-3 gap-8 max-w-7xl mx-auto pb-20">
+            <div class="glass rounded-3xl overflow-hidden group">
+                <div class="h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768b921?q=80&w=500');"></div>
+                <div class="p-6">
+                    <span class="text-[10px] text-amber-500 font-bold uppercase tracking-widest">Sanat & Mimari</span>
+                    <h3 class="mardin-text text-2xl mt-2 group-hover:text-amber-500 transition">Mardin Evleri ve Favela Estetiği: Bir Karşılaştırma</h3>
+                    <p class="text-sm opacity-50 mt-4 italic">Editör: Gabriel Mardini</p>
                 </div>
             </div>
-        </aside>
-
-        <section class="col-span-12 lg:col-span-7 flex flex-col gap-6">
-            <div class="glass-panel rounded-3xl p-8 neon-border">
-                <div class="flex justify-between items-center mb-6">
-                    <input type="text" placeholder="Haber Başlığı Girin..." class="bg-transparent text-3xl font-bold w-full border-none focus:outline-none placeholder:opacity-20 italic" style="font-family: 'Playfair Display', serif;">
-                    <div class="flex gap-2">
-                        <button onclick="simulateAI()" class="px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-400 text-black font-bold text-xs rounded-lg whitespace-nowrap">AI OPTİMİZE</button>
-                    </div>
-                </div>
-                
-                <textarea id="editor" class="w-full h-64 bg-transparent resize-none leading-relaxed text-lg opacity-80 focus:outline-none" placeholder="Mardin ve Brezilya arasındaki kültürel bağı anlatmaya başlayın..."></textarea>
-                
-                <div class="loading-bar mb-6" id="ai-loader"></div>
-
-                <div id="ai-insight" class="hidden p-6 bg-white/5 rounded-2xl border border-white/10 animate-pulse">
-                    <h5 class="text-xs font-bold text-amber-500 uppercase mb-2"><i class="fa-solid fa-robot"></i> AI Kültürel Analiz Sonucu:</h5>
-                    <p id="insight-text" class="text-sm italic opacity-70"></p>
+            <div class="glass rounded-3xl overflow-hidden group">
+                <div class="h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=500');"></div>
+                <div class="p-6">
+                    <span class="text-[10px] text-green-500 font-bold uppercase tracking-widest">Yaşam & Festival</span>
+                    <h3 class="mardin-text text-2xl mt-2 group-hover:text-green-500 transition">Karnavalın Mezopotamya Esintili Maskeleri</h3>
+                    <p class="text-sm opacity-50 mt-4 italic">Editör: Elif Silva</p>
                 </div>
             </div>
-
-            <div class="grid grid-cols-2 gap-6">
-                <div class="glass-panel rounded-2xl p-6">
-                    <h4 class="text-sm font-bold mb-4 italic text-amber-500 uppercase">Kültürel Köprü Eşleşmesi</h4>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 bg-black/40 rounded-xl border border-white/5">
-                            <span class="text-xs">Reyhani Dansı</span>
-                            <i class="fa-solid fa-arrow-right-arrow-left text-[10px] opacity-30"></i>
-                            <span class="text-xs text-green-500">Samba Roots</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 bg-black/40 rounded-xl border border-white/5">
-                            <span class="text-xs">Mardin Telkâri</span>
-                            <i class="fa-solid fa-arrow-right-arrow-left text-[10px] opacity-30"></i>
-                            <span class="text-xs text-green-500">Bahia Filigran</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-panel rounded-2xl p-6">
-                    <h4 class="text-sm font-bold mb-4 italic text-amber-500 uppercase">Multi-Publish Status</h4>
-                    <div class="flex gap-4 justify-around py-2 text-2xl">
-                        <i class="fa-brands fa-instagram text-pink-500"></i>
-                        <i class="fa-brands fa-tiktok text-white"></i>
-                        <i class="fa-brands fa-whatsapp text-green-500"></i>
-                        <i class="fa-brands fa-apple text-gray-400"></i>
-                    </div>
-                    <p class="text-[10px] text-center mt-4 opacity-50 font-mono tracking-tighter italic">AUTO-LAYOUT: OPTIMIZED FOR ALL DEVICES</p>
+            <div class="glass rounded-3xl overflow-hidden group">
+                <div class="h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500');"></div>
+                <div class="p-6">
+                    <span class="text-[10px] text-blue-500 font-bold uppercase tracking-widest">Müzik</span>
+                    <h3 class="mardin-text text-2xl mt-2 group-hover:text-blue-500 transition">Reyhani ve Bossa Nova: Ritmik Akrabalık</h3>
+                    <p class="text-sm opacity-50 mt-4 italic">Editör: Carlos Aksoy</p>
                 </div>
             </div>
         </section>
+    </div>
 
-        <aside class="col-span-12 lg:col-span-3 flex flex-col gap-6">
-            <div class="glass-panel rounded-3xl p-6 flex-1">
-                <h3 class="text-sm font-bold uppercase mb-6 flex items-center justify-between">
-                    Canlı Isı Haritası
-                    <span class="flex h-2 w-2 rounded-full bg-red-500 animate-ping"></span>
-                </h3>
-                
-                <canvas id="analyticsChart" class="mb-8"></canvas>
-
-                <div class="space-y-6">
-                    <h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">En Çok Okunan Köşe Yazarları</h4>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-gray-800"></div>
-                        <div>
-                            <p class="text-xs font-bold">Mardinli Gezgin</p>
-                            <p class="text-[10px] opacity-50">Amazon Günlükleri #12</p>
-                        </div>
+    <div id="admin-view" class="pt-24 min-h-screen hidden">
+        <div class="px-6 grid grid-cols-12 gap-6 max-w-[1600px] mx-auto">
+            
+            <aside class="col-span-12 lg:col-span-2 space-y-4">
+                <div class="glass p-4 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 rounded-full bg-green-500 ai-status"></div>
+                        <span class="text-[10px] font-bold opacity-70">AI ENGINE ONLINE</span>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-gray-800"></div>
-                        <div>
-                            <p class="text-xs font-bold">Rio Sanatçı</p>
-                            <p class="text-[10px] opacity-50">Mezopotamya'nın Renkleri</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="p-2 hover:bg-white/5 rounded-lg cursor-pointer text-amber-500"><i class="fa-solid fa-gauge mr-2"></i> Özet</li>
+                        <li class="p-2 hover:bg-white/5 rounded-lg cursor-pointer"><i class="fa-solid fa-file-pen mr-2"></i> Yazı Ekle</li>
+                        <li class="p-2 hover:bg-white/5 rounded-lg cursor-pointer"><i class="fa-solid fa-users mr-2"></i> Yazarlar</li>
+                        <li class="p-2 hover:bg-white/5 rounded-lg cursor-pointer"><i class="fa-solid fa-chart-pie mr-2"></i> Analitik</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <main class="col-span-12 lg:col-span-7 space-y-6">
+                <div class="glass p-8 rounded-3xl border-l-4 border-amber-500">
+                    <h2 class="text-xl font-bold mb-6">Yeni İçerik Oluştur <span class="text-xs font-normal opacity-40 ml-2">ID: #MAR-BRA-2026</span></h2>
+                    <input type="text" placeholder="Haber Başlığı..." class="w-full bg-transparent text-3xl font-bold border-b border-white/10 pb-4 mb-6 focus:outline-none mardin-text">
+                    <textarea class="w-full h-64 bg-transparent resize-none opacity-70 focus:outline-none leading-loose" placeholder="İçeriğinizi buraya yazın, AI kültürel adaptasyonu otomatik yapacaktır..."></textarea>
+                    
+                    <div class="flex justify-between items-center mt-6">
+                        <div class="flex gap-4">
+                            <button class="bg-amber-500 text-black px-6 py-2 rounded-full font-bold text-xs uppercase hover:bg-white transition">YAYINLA</button>
+                            <button class="glass px-6 py-2 rounded-full font-bold text-xs uppercase hover:bg-amber-500/20 transition">TASLAK</button>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs opacity-50">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Otomatik Kaydedildi: 03:34
                         </div>
                     </div>
                 </div>
-            </div>
-        </aside>
+            </main>
 
-    </main>
+            <aside class="col-span-12 lg:col-span-3 space-y-6">
+                <div class="glass p-6 rounded-3xl">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest opacity-50 mb-4">Gerçek Zamanlı Okuma</h4>
+                    <canvas id="adminChart" height="200"></canvas>
+                </div>
+                <div class="glass p-6 rounded-3xl">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest opacity-50 mb-4">AI Kültürel Skor</h4>
+                    <div class="flex items-end gap-2">
+                        <span class="text-4xl font-black text-green-500">9.8</span>
+                        <span class="text-xs opacity-50 mb-1">/ 10.0</span>
+                    </div>
+                    <p class="text-[10px] mt-2 opacity-40 italic">Yazı, Brezilya Portekizcesi kültürel dinamiklerine tam uyumludur.</p>
+                </div>
+            </aside>
+
+        </div>
+    </div>
 
     <script>
-        // Saat Güncelleme
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit', day: '2-digit', month: 'short', year: 'numeric' });
-        }
-        setInterval(updateClock, 1000);
+        // Görünüm Değiştirme Fonksiyonu
+        function switchView(view) {
+            const userView = document.getElementById('user-view');
+            const adminView = document.getElementById('admin-view');
+            const title = document.getElementById('view-title');
+            const btnUser = document.getElementById('btn-user');
+            const btnAdmin = document.getElementById('btn-admin');
 
-        // AI Simülasyonu
-        function simulateAI() {
-            const bar = document.getElementById('ai-loader');
-            const insight = document.getElementById('ai-insight');
-            const text = document.getElementById('insight-text');
-            const content = document.getElementById('editor').value;
-
-            bar.style.width = '100%';
-            
-            setTimeout(() => {
-                insight.classList.remove('hidden');
-                text.innerText = "Yazınız analiz edildi. Mardin ve Brezilya arasındaki 'Büyülü Gerçekçilik' teması tespit edildi. Makalenin %82'si Portekizceye kültürel olarak mükemmel uyum sağlıyor. SEO skoru: 94/100.";
-                bar.style.width = '0%';
-            }, 1500);
-        }
-
-        // Analitik Grafik (Chart.js)
-        const ctx = document.getElementById('analyticsChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-                datasets: [{
-                    label: 'Canlı Okuma Oranı',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderColor: '#d4af37',
-                    tension: 0.4,
-                    fill: true,
-                    backgroundColor: 'rgba(212, 175, 55, 0.1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: { 
-                    y: { display: false },
-                    x: { ticks: { color: '#555', font: { size: 9 } } }
-                }
+            if(view === 'admin') {
+                userView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                title.innerText = 'Admin Dashboard';
+                btnAdmin.classList.add('active-tab');
+                btnUser.classList.remove('active-tab');
+                initChart(); // Grafiği yükle
+            } else {
+                adminView.classList.add('hidden');
+                userView.classList.remove('hidden');
+                title.innerText = 'Kullanıcı Arayüzü';
+                btnUser.classList.add('active-tab');
+                btnAdmin.classList.remove('active-tab');
             }
-        });
+        }
+
+        // Grafik Fonksiyonu (Admin için)
+        function initChart() {
+            const ctx = document.getElementById('adminChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['12:00', '13:00', '14:00', '15:00'],
+                    datasets: [{
+                        label: 'Ziyaretçi',
+                        data: [450, 820, 610, 950],
+                        borderColor: '#d4af37',
+                        tension: 0.4,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#444' } } }
+                }
+            });
+        }
     </script>
 </body>
 </html>
