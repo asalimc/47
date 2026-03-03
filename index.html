@@ -3,257 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina Obsidian | Final Engine</title>
+    <title>Lumina Obsidian v13 | Cultural OS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --bg: #F9F9F7; --accent: #C5A059; --text: #1A1A1A; }
-        * { -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        :root { --bg: #F9F9F7; --accent: #C5A059; --text: #1A1A1A; --dark: #0A0A0A; }
+        * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; margin: 0; }
         .serif { font-family: 'Cormorant Garamond', serif; }
         
-        /* Overlays */
+        /* Modal & Overlays */
         .modal-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100000; overflow-y: auto; }
         
         /* Bento Grid */
         .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 20px 5%; }
-        .bento-item { border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid rgba(0,0,0,0.05); transition: 0.5s; height: 500px; }
-        .bento-item:hover { transform: scale(0.99); }
+        .bento-item { border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid rgba(0,0,0,0.05); transition: 0.6s cubic-bezier(0.2, 1, 0.2, 1); height: 500px; }
+        .bento-item:hover { transform: scale(0.98); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
 
-        /* Admin Styles */
-        #admin-panel { display: none; position: fixed; inset: 0; background: #050505; color: white; z-index: 200000; padding: 40px; overflow-y: auto; }
-        .input-lux { background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; width: 100%; color: white; outline: none; }
-        .admin-tab { display: none; }
-        .admin-tab.active { display: block; }
+        /* Admin Dashboard (Control Tower) */
+        #admin-panel { display: none; position: fixed; inset: 0; background: var(--dark); color: white; z-index: 200000; display: flex; }
+        .admin-sidebar { width: 280px; border-right: 1px solid #1F1F1F; padding: 40px; }
+        .admin-main { flex: 1; padding: 60px; overflow-y: auto; }
+        .admin-card { background: #111; border: 1px solid #222; border-radius: 24px; padding: 24px; }
+        .input-lux { background: #181818; border: 1px solid #333; border-radius: 12px; padding: 12px; width: 100%; color: white; outline: none; transition: 0.3s; }
+        .input-lux:focus { border-color: var(--accent); }
         
+        /* Karaoke Reader */
+        .highlight { color: var(--accent); font-weight: 700; transition: 0.2s; }
+
+        /* Atlas */
+        .atlas-container { background: var(--dark); padding: 60px 5%; border-radius: 60px; margin: 40px 5%; position: relative; height: 400px; overflow: hidden; }
+        .world-map { opacity: 0.1; width: 100%; height: 100%; object-fit: contain; filter: invert(1); }
+        .pulse-point { position: absolute; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 20px var(--accent); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="no-scrollbar">
 
-<nav class="sticky top-0 z-[5000] px-10 py-5 flex justify-between items-center bg-white/70 backdrop-blur-xl border-b border-black/5">
-    <div class="flex items-center gap-10">
-        <h1 class="serif text-4xl font-light uppercase tracking-tighter cursor-pointer" onclick="location.reload()">Lumina</h1>
-        <div id="ui-weather" class="text-[10px] font-black opacity-30 tracking-[3px] uppercase hidden md:block">
+<nav class="sticky top-0 z-[5000] px-10 py-5 flex justify-between items-center bg-white/80 backdrop-blur-xl border-b border-black/5">
+    <div class="flex items-center gap-12">
+        <h1 class="serif text-4xl font-light uppercase tracking-tighter">Lumina</h1>
+        <div id="ui-global-clock" class="hidden lg:flex gap-6 text-[10px] font-black uppercase tracking-[3px] opacity-40">
             </div>
     </div>
-    <button onclick="toggleAdmin()" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition">
-        <i data-lucide="settings" class="w-4 h-4"></i>
-    </button>
+    <div class="flex items-center gap-6">
+        <button onclick="toggleAdmin('block')" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition">
+            <i data-lucide="command" class="w-4 h-4"></i>
+        </button>
+    </div>
 </nav>
-
-<section id="ui-authors-strip" class="flex gap-8 px-[5%] py-10 overflow-x-auto no-scrollbar border-b border-black/5">
-    </section>
 
 <header class="px-[5%] py-16 flex flex-col md:flex-row justify-between items-end border-b border-black/5">
     <div class="max-w-4xl">
-        <p class="text-[11px] font-black uppercase tracking-[5px] text-accent mb-4">The Bridge Between Worlds</p>
-        <h2 class="serif text-7xl md:text-9xl font-light leading-none">Mardin & Rio</h2>
+        <p class="text-[11px] font-black uppercase tracking-[8px] text-accent mb-4">Master Console v13</p>
+        <h2 class="serif text-7xl md:text-9xl font-light leading-none">Mardin <br><i>Sao Paulo</i></h2>
     </div>
-    <div class="bg-white p-8 rounded-[30px] shadow-sm border border-black/5 text-right mt-10 md:mt-0">
-        <p class="text-[9px] font-black opacity-20 uppercase">Cultural Distance</p>
-        <p id="ui-distance" class="serif text-4xl font-bold">10.840 KM</p>
+    <div class="text-right">
+        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-black/5">
+            <p class="text-[9px] font-black opacity-20 uppercase tracking-widest">Calculated Distance</p>
+            <p id="ui-distance" class="serif text-5xl font-bold">10.604 KM</p>
+        </div>
     </div>
 </header>
+
+<section class="atlas-container">
+    <div class="pulse-point" style="top: 42%; left: 58%;"></div> <div class="pulse-point" style="top: 75%; left: 32%;"></div> <svg class="absolute inset-0 w-full h-full pointer-events-none" style="stroke: var(--accent); stroke-width: 1; stroke-dasharray: 5; opacity: 0.3;">
+        <path d="M 720 160 Q 550 250 400 300" fill="transparent"/>
+    </svg>
+    <div class="absolute bottom-10 left-10 text-white/20 serif italic text-xl">Transcontinental Bridge: Middle East — South America</div>
+</section>
 
 <section id="ui-feed" class="bento-grid"></section>
 
 <div id="article-modal" class="modal-overlay">
-    <div class="p-8 flex justify-between items-center sticky top-0 bg-white/80 backdrop-blur-md z-10">
-        <button onclick="closeModals()" class="flex items-center gap-2 font-black text-[10px] uppercase opacity-40 hover:opacity-100"><i data-lucide="arrow-left"></i> Geri Dön</button>
-        <button id="tts-btn" onclick="toggleTTS()" class="bg-accent text-white px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest">Sesi Dinle</button>
+    <div class="p-8 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-md z-10">
+        <button onclick="closeModals()" class="font-black text-[10px] uppercase opacity-40"><i data-lucide="arrow-left"></i> Geri Dön</button>
+        <button id="tts-btn" onclick="toggleKaraoke()" class="bg-black text-white px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-[3px]">Sesli Deneyim</button>
     </div>
     <div id="article-content" class="max-w-4xl mx-auto py-20 px-10"></div>
 </div>
 
-<div id="author-modal" class="modal-overlay">
-    <div class="p-8 flex justify-between items-center sticky top-0 bg-white/80 backdrop-blur-md z-10">
-        <button onclick="closeModals()" class="font-black text-[10px] uppercase opacity-40"><i data-lucide="x"></i> Kapat</button>
+<div id="admin-panel" style="display:none">
+    <div class="admin-sidebar">
+        <h2 class="serif text-3xl italic text-accent mb-12">Lumina OS</h2>
+        <nav class="space-y-6">
+            <button onclick="switchTab('dash')" class="flex items-center gap-4 text-white/40 hover:text-white transition uppercase text-[10px] font-black tracking-widest"><i data-lucide="bar-chart-3"></i> Dashboard</button>
+            <button onclick="switchTab('news')" class="flex items-center gap-4 text-white/40 hover:text-white transition uppercase text-[10px] font-black tracking-widest"><i data-lucide="file-text"></i> İçerik Editörü</button>
+            <button onclick="switchTab('media')" class="flex items-center gap-4 text-white/40 hover:text-white transition uppercase text-[10px] font-black tracking-widest"><i data-lucide="image"></i> Medya Kütüphanesi</button>
+        </nav>
+        <button onclick="toggleAdmin('none')" class="mt-24 w-full py-4 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest">Kapat</button>
     </div>
-    <div id="author-content" class="max-w-4xl mx-auto py-20 px-10 text-center"></div>
-</div>
-
-<div id="admin-panel">
-    <div class="max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-12">
-            <h2 class="serif text-4xl italic">Obsidian Control Center</h2>
-            <button onclick="toggleAdmin()" class="text-xs font-black uppercase border-b border-white/20">Kaydet ve Çık</button>
-        </div>
-
-        <div class="flex gap-8 mb-10 border-b border-white/5 pb-4">
-            <button onclick="showTab('news')" class="text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100">İçerik</button>
-            <button onclick="showTab('authors')" class="text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100">Yazarlar</button>
-            <button onclick="showTab('global')" class="text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100">Global</button>
-        </div>
-
-        <div id="tab-news" class="admin-tab active">
-            <div class="grid grid-cols-2 gap-6">
-                <input id="in-news-title" placeholder="Başlık" class="input-lux col-span-2">
-                <textarea id="in-news-text" placeholder="İçerik..." class="input-lux col-span-2 h-40"></textarea>
-                <input id="in-news-img" placeholder="Görsel URL" class="input-lux">
-                <select id="in-news-auth" class="input-lux"></select>
-                <button onclick="addNews()" class="col-span-2 bg-accent p-4 rounded-xl text-black font-black uppercase text-[10px]">Yayınla</button>
-            </div>
-            <div id="adm-news-list" class="mt-10 space-y-2"></div>
-        </div>
-
-        <div id="tab-authors" class="admin-tab">
-            <div class="grid grid-cols-2 gap-6">
-                <input id="in-auth-name" placeholder="Yazar Adı" class="input-lux">
-                <input id="in-auth-img" placeholder="Profil Görsel URL" class="input-lux">
-                <textarea id="in-auth-bio" placeholder="Biyografi..." class="input-lux col-span-2 h-32"></textarea>
-                <button onclick="addAuthor()" class="col-span-2 bg-white text-black p-4 rounded-xl font-black uppercase text-[10px]">Yazar Ekle</button>
-            </div>
-            <div id="adm-auth-list" class="mt-10 space-y-2"></div>
-        </div>
-
-        <div id="tab-global" class="admin-tab">
-            <div class="grid grid-cols-2 gap-6">
-                <div>
-                    <label class="text-[10px] font-black opacity-30 uppercase">Mesafe (KM)</label>
-                    <input id="in-glob-dist" class="input-lux mt-2">
+    
+    <div class="admin-main">
+        <div id="tab-dash" class="admin-tab">
+            <div class="grid grid-cols-3 gap-6 mb-12">
+                <div class="admin-card">
+                    <p class="text-[9px] uppercase opacity-40 mb-2">Kültürel IQ</p>
+                    <p class="text-4xl serif text-accent">%98.4</p>
                 </div>
-                <div>
-                    <label class="text-[10px] font-black opacity-30 uppercase">Hava Durumu (Metin)</label>
-                    <input id="in-glob-weather" class="input-lux mt-2">
+                <div class="admin-card">
+                    <p class="text-[9px] uppercase opacity-40 mb-2">Aktif Yazarlar</p>
+                    <p class="text-4xl serif">12</p>
                 </div>
-                <button onclick="saveGlobal()" class="col-span-2 bg-stone-800 p-4 rounded-xl font-black uppercase text-[10px]">Global Ayarları Güncelle</button>
+                <div class="admin-card">
+                    <p class="text-[9px] uppercase opacity-40 mb-2">API Durumu</p>
+                    <p class="text-4xl serif text-green-500">Online</p>
+                </div>
+            </div>
+            <div class="admin-card">
+                <h3 class="text-xs font-black uppercase tracking-widest mb-6">Hızlı Global Ayarlar</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <input id="in-glob-mardin" placeholder="Mardin Derece" class="input-lux">
+                    <input id="in-glob-sp" placeholder="Sao Paulo Derece" class="input-lux">
+                    <button onclick="saveQuickGlobal()" class="col-span-2 bg-accent p-4 rounded-xl text-black font-black uppercase text-[10px]">Verileri Güncelle</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-news" class="admin-tab hidden">
+            <div class="grid grid-cols-12 gap-8">
+                <div class="col-span-8 space-y-4">
+                    <input id="in-news-title" placeholder="Makale Başlığı" class="input-lux text-2xl serif py-6">
+                    <textarea id="in-news-text" placeholder="Hikayeyi anlat..." class="input-lux h-64"></textarea>
+                </div>
+                <div class="col-span-4 space-y-4">
+                    <div class="admin-card">
+                        <label class="text-[9px] uppercase opacity-40 block mb-4">Görsel Yükle (Yerel)</label>
+                        <input type="file" id="in-news-file" class="hidden" onchange="handleFile(this, 'news-preview')">
+                        <label for="in-news-file" class="cursor-pointer block border-2 border-dashed border-white/10 p-10 text-center rounded-xl hover:border-accent">
+                            <i data-lucide="upload" class="mx-auto mb-2"></i>
+                            <span class="text-[9px] font-black uppercase">Dosya Seç</span>
+                        </label>
+                        <img id="news-preview" class="mt-4 w-full h-32 object-cover rounded-xl hidden">
+                        <button onclick="addNews()" class="mt-6 w-full bg-accent text-black font-black p-4 rounded-xl text-[10px] uppercase">Yayınla</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // --- DATABASE & ENGINE ---
-    let DB = JSON.parse(localStorage.getItem('LUMINA_OB_DATABASE')) || {
-        global: { dist: '10.840 KM', weather: 'MARDİN 24°C / RİO 31°C' },
-        authors: [
-            { id: 1, name: 'Zeynep Mardini', img: 'https://i.pravatar.cc/150?u=44', bio: 'Mezopotamya mimarisi ve Mardin taş işçiliği üzerine uzmanlaşmış bir sanat tarihçisi.' },
-            { id: 2, name: 'Ricardo Silva', img: 'https://i.pravatar.cc/150?u=32', bio: 'Rio sokak kültürü, Samba ritimleri ve Brezilya modernizmi üzerine çalışan bir antropolog.' }
-        ],
+    // --- NUCLEUS DATABASE ---
+    let DB = JSON.parse(localStorage.getItem('LUMINA_V13_DB')) || {
+        global: { mardin: '26°C', sp: '22°C', dist: '10.604 KM' },
         news: [
-            { id: 101, authId: 1, title: 'Kasımiye\'nin Gizli Suyu', text: 'Mardin\'in Kasımiye Medresesi\'nde akan su, sadece bir peyzaj öğesi değil, bir yaşam döngüsüdür. Havuzun her santimi insan hayatının evrelerini temsil eder. Taşların arasındaki serinlik, tarihin nefes alışıdır.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200', type: 'Mistik' },
-            { id: 102, authId: 2, title: 'Ipanema\'da Bir Gün', text: 'Güneş Ipanema sahillerinde batarken, Bossa Nova ritimleri rüzgara karışır. Modern Brezilya mimarisi ile okyanusun vahşi doğası burada kusursuz bir uyum yakalar.', img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200', type: 'Ritüel' }
-        ]
+            { id: 1, title: 'Mezopotamya\'dan Sao Paulo\'ya: Taşın ve Betonun Şiiri', text: 'Mardin\'in bin yıllık taş evleri, Sao Paulo\'nun brütalist gökdelenleriyle aynı dili konuşur: Dayanıklılık ve hafıza. Bir yanda sessizliğin hakim olduğu dar abbaralar, diğer yanda dünyanın en kalabalık bulvarları. Bu iki şehir, insanlığın yerleşik hayattaki en uç ve en estetik duraklarıdır.', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200', type: 'Mimari' }
+        ],
+        media: []
     };
 
-    function sync() {
-        localStorage.setItem('LUMINA_OB_DATABASE', JSON.stringify(DB));
-        renderUI();
-    }
+    function sync() { localStorage.setItem('LUMINA_V13_DB', JSON.stringify(DB)); render(); }
 
-    // --- UI RENDERER ---
-    function renderUI() {
+    // --- AUTOMATION ENGINE ---
+    function updateClocks() {
+        const mardinTime = new Date().toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' });
+        const spTime = new Date().toLocaleTimeString('tr-TR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
+        document.getElementById('ui-global-clock').innerHTML = `
+            <span>Mardin ${mardinTime} • ${DB.global.mardin}</span>
+            <span class="opacity-20">|</span>
+            <span>Sao Paulo ${spTime} • ${DB.global.sp}</span>
+        `;
+    }
+    setInterval(updateClocks, 1000);
+
+    // --- RENDER ---
+    function render() {
         lucide.createIcons();
-        
-        // Global
-        document.getElementById('ui-weather').innerText = DB.global.weather;
         document.getElementById('ui-distance').innerText = DB.global.dist;
-        document.getElementById('in-glob-dist').value = DB.global.dist;
-        document.getElementById('in-glob-weather').value = DB.global.weather;
-
-        // Authors Strip
-        document.getElementById('ui-authors-strip').innerHTML = DB.authors.map(a => `
-            <div class="flex items-center gap-4 cursor-pointer min-w-max group" onclick="openAuthor(${a.id})">
-                <img src="${a.img}" class="w-14 h-14 rounded-full border-2 border-transparent group-hover:border-accent transition object-cover">
-                <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest">${a.name}</p>
-                    <p class="text-[9px] opacity-30 font-bold uppercase">Yazarı İncele</p>
-                </div>
-            </div>
-        `).join('');
-
-        // News Feed (Bento)
-        document.getElementById('ui-feed').innerHTML = DB.news.map((n, idx) => `
-            <div class="bento-item ${idx % 3 === 0 ? 'col-span-12 md:col-span-8' : 'col-span-12 md:col-span-4'}" onclick="openArticle(${n.id})">
+        
+        const feed = document.getElementById('ui-feed');
+        feed.innerHTML = DB.news.map((n, idx) => `
+            <div class="bento-item ${idx % 3 === 0 ? 'col-span-8' : 'col-span-4'}" onclick="openArticle(${n.id})">
                 <img src="${n.img}" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 <div class="absolute bottom-0 p-10 text-white">
-                    <span class="text-[10px] font-black uppercase tracking-[5px] text-accent block mb-4">${n.type}</span>
-                    <h3 class="serif text-4xl leading-tight">${n.title}</h3>
+                    <span class="text-[9px] font-black uppercase tracking-[5px] text-accent mb-4 block">${n.type}</span>
+                    <h3 class="serif text-5xl leading-tight">${n.title}</h3>
                 </div>
             </div>
         `).join('');
-
-        // Admin Lists
-        document.getElementById('in-news-auth').innerHTML = DB.authors.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-        document.getElementById('adm-news-list').innerHTML = DB.news.map(n => `<div class="p-3 bg-white/5 rounded flex justify-between text-[10px]"><span>${n.title}</span><button onclick="deleteNews(${n.id})" class="text-red-500">Sil</button></div>`).join('');
-        document.getElementById('adm-auth-list').innerHTML = DB.authors.map(a => `<div class="p-3 bg-white/5 rounded flex justify-between text-[10px]"><span>${a.name}</span><button onclick="deleteAuth(${a.id})" class="text-red-500">Sil</button></div>`).join('');
     }
 
-    // --- MODAL ENGINE ---
+    // --- FILE HANDLING (BASE64) ---
+    let lastUploadedImg = "";
+    function handleFile(input, previewId) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            lastUploadedImg = e.target.result;
+            const preview = document.getElementById(previewId);
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // --- KARAOKE READER ---
     function openArticle(id) {
         const n = DB.news.find(x => x.id === id);
-        const a = DB.authors.find(x => x.id === n.authId);
         document.getElementById('article-content').innerHTML = `
-            <p class="text-center text-accent font-black tracking-[10px] text-[12px] mb-8 uppercase">${n.type}</p>
-            <h1 class="serif text-7xl md:text-9xl text-center leading-none mb-12">${n.title}</h1>
-            <div class="flex items-center justify-center gap-4 mb-20">
-                <img src="${a.img}" class="w-12 h-12 rounded-full">
-                <span class="text-[11px] font-black uppercase tracking-widest">${a.name}</span>
+            <h1 class="serif text-8xl leading-none mb-12 text-center">${n.title}</h1>
+            <div id="karaoke-text" class="serif text-4xl leading-relaxed text-justify opacity-80">
+                ${n.text.split(' ').map(word => `<span>${word}</span>`).join(' ')}
             </div>
-            <div id="tts-source" class="serif text-3xl md:text-4xl leading-relaxed text-justify opacity-80">${n.text}</div>
         `;
         document.getElementById('article-modal').style.display = 'block';
     }
 
-    function openAuthor(id) {
-        const a = DB.authors.find(x => x.id === id);
-        document.getElementById('author-content').innerHTML = `
-            <img src="${a.img}" class="w-40 h-40 rounded-full mx-auto mb-10 border-4 border-accent p-2">
-            <h2 class="serif text-6xl mb-6">${a.name}</h2>
-            <p class="serif text-2xl italic opacity-60 max-w-2xl mx-auto">${a.bio}</p>
-            <div class="mt-16 grid grid-cols-2 gap-4">
-                <div class="p-10 bg-black/5 rounded-[40px]"><p class="text-[10px] font-black uppercase tracking-widest mb-2">Yayınlar</p><p class="text-4xl serif">12</p></div>
-                <div class="p-10 bg-black/5 rounded-[40px]"><p class="text-[10px] font-black uppercase tracking-widest mb-2">Okunma</p><p class="text-4xl serif">4.2K</p></div>
-            </div>
-        `;
-        document.getElementById('author-modal').style.display = 'block';
-    }
+    function toggleKaraoke() {
+        const spans = document.querySelectorAll('#karaoke-text span');
+        const utter = new SpeechSynthesisUtterance(document.getElementById('karaoke-text').innerText);
+        utter.lang = 'tr-TR'; utter.rate = 0.9;
 
-    function closeModals() {
-        window.speechSynthesis.cancel();
-        document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
-    }
-
-    // --- TTS ---
-    function toggleTTS() {
-        if(window.speechSynthesis.speaking) {
-            window.speechSynthesis.cancel();
-            document.getElementById('tts-btn').innerText = "Sesi Dinle";
-        } else {
-            const text = document.getElementById('tts-source').innerText;
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.lang = 'tr-TR';
-            window.speechSynthesis.speak(utter);
-            document.getElementById('tts-btn').innerText = "Durdur";
-        }
+        let wordIndex = 0;
+        utter.onboundary = (event) => {
+            if (event.name === 'word') {
+                spans.forEach(s => s.classList.remove('highlight'));
+                if(spans[wordIndex]) spans[wordIndex].classList.add('highlight');
+                wordIndex++;
+            }
+        };
+        window.speechSynthesis.speak(utter);
     }
 
     // --- ADMIN ACTIONS ---
-    function toggleAdmin() { const p = document.getElementById('admin-panel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; }
-    function showTab(t) { document.querySelectorAll('.admin-tab').forEach(x => x.classList.remove('active')); document.getElementById('tab-'+t).classList.add('active'); }
+    function toggleAdmin(val) { document.getElementById('admin-panel').style.display = val; }
+    function switchTab(t) { document.querySelectorAll('.admin-tab').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); }
     
     function addNews() {
-        const n = { id: Date.now(), authId: parseInt(document.getElementById('in-news-auth').value), title: document.getElementById('in-news-title').value, text: document.getElementById('in-news-text').value, img: document.getElementById('in-news-img').value, type: 'Kültür' };
-        DB.news.unshift(n); sync();
+        const n = {
+            id: Date.now(),
+            title: document.getElementById('in-news-title').value,
+            text: document.getElementById('in-news-text').value,
+            img: lastUploadedImg || 'https://via.placeholder.com/1200',
+            type: 'Kültür'
+        };
+        DB.news.unshift(n); sync(); toggleAdmin('none');
     }
-    function addAuthor() {
-        const a = { id: Date.now(), name: document.getElementById('in-auth-name').value, img: document.getElementById('in-auth-img').value, bio: document.getElementById('in-auth-bio').value };
-        DB.authors.push(a); sync();
-    }
-    function saveGlobal() {
-        DB.global.dist = document.getElementById('in-glob-dist').value;
-        DB.global.weather = document.getElementById('in-glob-weather').value;
+
+    function saveQuickGlobal() {
+        DB.global.mardin = document.getElementById('in-glob-mardin').value;
+        DB.global.sp = document.getElementById('in-glob-sp').value;
         sync();
     }
-    function deleteNews(id) { DB.news = DB.news.filter(x => x.id !== id); sync(); }
-    function deleteAuth(id) { DB.authors = DB.authors.filter(x => x.id !== id); sync(); }
 
-    window.onload = renderUI;
+    function closeModals() { window.speechSynthesis.cancel(); document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none'); }
+
+    window.onload = () => { render(); updateClocks(); };
 </script>
 </body>
 </html>
