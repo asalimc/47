@@ -3,206 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina v20 | Editorial Intelligence</title>
+    <title>Lumina | Mardin & Brazil Cultural Bridge</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { 
-            --bg: #F5F5F0; /* Görseldeki orijinal soft krem */
-            --accent: #C5A059; 
-            --text: #1A1A1A; 
-            --admin-glass: rgba(255, 255, 255, 0.7);
+        :root {
+            --bg: #F5F2EB; /* Göz yormayan antik kağıt tonu */
+            --text: #2D241E;
+            --accent: #A67C52;
+            --card: #FDFBF7;
+            --admin-bg: #0A0A0A;
+            --fs-base: 16px;
         }
-        * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
-        .serif { font-family: 'Cormorant Garamond', serif; }
+
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: var(--fs-base);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-serif { font-family: 'Marcellus', serif; }
+
+        /* --- MODERN UI ELEMENTS --- */
+        .glass-nav { background: rgba(245, 242, 235, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
         
-        /* --- KÖŞE YAZARLARI ŞERİDİ (Yeni Eklenen Kısım) --- */
-        .columnists-section {
-            background: white;
-            border-bottom: 1px solid rgba(0,0,0,0.03);
-            padding: 20px 5%;
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            overflow-x: auto;
-            scrollbar-width: none;
+        .compass-trigger {
+            position: fixed; right: 0; top: 25%; height: 50vh; width: 6px;
+            background: var(--accent); border-radius: 20px 0 0 20px;
+            z-index: 1000; cursor: pointer; transition: 0.6s cubic-bezier(0.8, 0, 0.2, 1);
         }
-        .columnists-section::-webkit-scrollbar { display: none; }
-        .columnist-node {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-shrink: 0;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .columnist-node:hover { opacity: 0.7; }
-        .columnist-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(0,0,0,0.05); }
-        .columnist-meta { display: flex; flex-direction: column; }
-        .columnist-name { font-[10px]; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
-        .columnist-title { font-size: 11px; font-family: 'Cormorant Garamond', serif; italic; opacity: 0.5; }
+        .compass-trigger:hover { width: 320px; background: var(--admin-bg); color: white; padding: 40px; }
+        .compass-data { opacity: 0; pointer-events: none; transition: 0.3s; }
+        .compass-trigger:hover .compass-data { opacity: 1; pointer-events: auto; }
 
-        /* --- BENTO GRID & DİĞERLERİ (Aynı Kaldı) --- */
-        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 40px 5%; }
-        .bento-item { border-radius: 40px; overflow: hidden; position: relative; height: 500px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; border: 1px solid rgba(0,0,0,0.03); }
-        .bento-item:hover { transform: scale(0.99); }
-
-        .atlas-box { background: #0A0A0A; padding: 60px 5%; border-radius: 60px; margin: 0 5% 20px 5%; position: relative; height: 380px; overflow: hidden; }
-        .pulse { position: absolute; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 20px var(--accent); animation: pulse-ring 2s infinite; }
-        @keyframes pulse-ring { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
-
-        /* --- ADMIN PANEL (Soft & Modern Dashboard) --- */
-        #admin-panel { 
-            display: none; position: fixed; inset: 0; 
-            background: rgba(245, 245, 240, 0.85); backdrop-filter: blur(40px); 
-            z-index: 99999; padding: 40px; 
-            animation: neuralIn 0.5s ease-out;
-        }
-        @keyframes neuralIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .admin-wrap { background: white; width: 100%; height: 100%; border-radius: 50px; display: flex; overflow: hidden; box-shadow: 0 60px 120px rgba(0,0,0,0.1); }
-        .admin-sidebar { width: 300px; border-right: 1px solid rgba(0,0,0,0.03); padding: 60px 40px; }
-        .admin-body { flex: 1; padding: 80px; overflow-y: auto; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 50px; padding: 60px 5%; }
         
-        .nav-btn { width: 100%; text-align: left; padding: 15px 0; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; color: rgba(0,0,0,0.2); transition: 0.3s; display: flex; align-items: center; gap: 15px; }
-        .nav-btn.active { color: var(--accent); }
-        
-        .soft-input { background: #F9F9F7; border: 1px solid transparent; border-radius: 20px; padding: 20px; width: 100%; outline: none; transition: 0.3s; }
-        .soft-input:focus { border-color: var(--accent); background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .mag-card {
+            background: var(--card); border-radius: 40px; overflow: hidden;
+            transition: 0.6s; border: 1px solid rgba(0,0,0,0.03);
+            display: flex; flex-direction: column;
+        }
+        .mag-card:hover { transform: translateY(-20px); box-shadow: 0 50px 100px rgba(67, 52, 34, 0.15); }
+        .mag-card img { height: 300px; width: 100%; object-fit: cover; transition: 1s; }
+        .mag-card:hover img { scale: 1.1; }
+
+        /* --- ACCESSIBILITY: TEXT SIZE & READER --- */
+        .reader-controls { display: flex; gap: 15px; align-items: center; background: rgba(0,0,0,0.05); padding: 10px 20px; border-radius: 50px; }
+        .fs-btn { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; transition: 0.3s; }
+        .fs-btn:hover { background: var(--accent); color: white; }
+
+        /* --- PARALLAX OVERLAY --- */
+        #reader-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
+        .parallax-header { height: 70vh; position: relative; overflow: hidden; }
+        .parallax-img { width: 100%; height: 140%; object-fit: cover; position: absolute; top: -20%; transition: 0.1s linear; }
+
+        /* --- MASTER CONSOLE v12 --- */
+        #admin-panel { display: none; position: fixed; inset: 0; background: var(--admin-bg); color: #fff; z-index: 100000; padding: 40px; overflow-y: auto; }
+        .admin-tab { display: none; }
+        .admin-tab.active { display: block; }
+        .input-lux { background: #151515; border: 1px solid #222; border-radius: 12px; padding: 15px; width: 100%; color: #eee; outline: none; transition: 0.3s; }
+        .input-lux:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(166, 124, 82, 0.2); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-<nav class="sticky top-0 z-[5000] px-10 py-6 flex justify-between items-center bg-white/80 backdrop-blur-2xl border-b border-black/5">
-    <div class="flex items-center gap-12">
-        <h1 class="serif text-4xl font-light uppercase tracking-tighter">Lumina</h1>
-        <div id="top-clock" class="hidden lg:flex gap-6 text-[10px] font-black uppercase tracking-[3px] opacity-30"></div>
-    </div>
-    <button onclick="toggleAdmin('flex')" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-accent transition shadow-xl">
-        <i data-lucide="command" class="w-5 h-5"></i>
-    </button>
-</nav>
-
-<div class="columnists-section no-scrollbar">
-    <div class="text-[8px] font-black uppercase tracking-[4px] opacity-20 mr-4">Featured Columnists</div>
-    <div class="columnist-node">
-        <img class="columnist-avatar" src="https://i.pravatar.cc/100?img=11">
-        <div class="columnist-meta">
-            <span class="columnist-name">M. Al-Khafaji</span>
-            <span class="columnist-title">Mimari Etik</span>
+<div class="compass-trigger">
+    <div class="compass-data h-full flex flex-col justify-between">
+        <div>
+            <h4 class="font-serif text-accent tracking-[5px] text-xs mb-10 uppercase">Cultural Axis</h4>
+            <div id="ui-compass-stats" class="space-y-8">
+                </div>
         </div>
-    </div>
-    <div class="columnist-node">
-        <img class="columnist-avatar" src="https://i.pravatar.cc/100?img=32">
-        <div class="columnist-meta">
-            <span class="columnist-name">Elena Rossi</span>
-            <span class="columnist-title">Dijital Antropoloji</span>
-        </div>
-    </div>
-    <div class="columnist-node">
-        <img class="columnist-avatar" src="https://i.pravatar.cc/100?img=44">
-        <div class="columnist-meta">
-            <span class="columnist-name">Can Mardinli</span>
-            <span class="columnist-title">Taşın Şiiri</span>
+        <div class="pt-10 border-t border-white/10">
+            <p class="text-[9px] tracking-[3px] uppercase opacity-40">Lumina Engine v12.0</p>
         </div>
     </div>
 </div>
 
-<section class="atlas-box">
-    <div class="pulse" style="top: 45%; left: 58%;"></div> 
-    <div class="pulse" style="top: 70%; left: 32%;"></div> 
-    <svg class="absolute inset-0 w-full h-full opacity-10" style="stroke: var(--accent); stroke-width: 1;">
-        <path d="M 750 150 Q 550 250 400 300" fill="transparent"/>
-    </svg>
-    <div class="absolute bottom-12 left-12 flex items-end gap-12 text-white">
-        <div>
-            <p class="text-[9px] font-black uppercase tracking-[5px] text-accent mb-2">Distance Engine</p>
-            <p id="dist-val" class="serif text-6xl font-light">10.840 KM</p>
+<nav class="glass-nav sticky top-0 z-[5000] px-[5%] py-6 flex justify-between items-center">
+    <div class="logo font-serif text-3xl tracking-[10px] font-black uppercase">Lumina</div>
+    
+    <div class="flex items-center gap-10">
+        <div id="ui-wisdom" class="hidden lg:block text-[10px] font-bold tracking-[4px] uppercase opacity-40 italic"></div>
+        <div class="reader-controls">
+            <span class="text-[9px] font-black uppercase tracking-widest opacity-40">Metin</span>
+            <div onclick="changeFS(-2)" class="fs-btn">A-</div>
+            <div onclick="changeFS(2)" class="fs-btn">A+</div>
         </div>
-        <div class="serif italic text-2xl opacity-40 mb-1">Mardin — Rio de Janeiro</div>
     </div>
-</section>
+</nav>
 
-<section id="feed" class="bento-grid"></section>
+<section id="ui-authors" class="flex gap-12 px-[5%] py-12 overflow-x-auto no-scrollbar border-b border-black/5 bg-white/30">
+    </section>
+
+<main id="ui-feed" class="news-grid">
+    </main>
+
+<div id="reader-overlay">
+    <div class="fixed top-0 w-full z-[100] px-10 py-6 flex justify-between items-center bg-gradient-to-b from-black/20 to-transparent">
+        <button onclick="closeReader()" class="bg-white/10 backdrop-blur-md text-white w-12 h-12 rounded-full hover:bg-white hover:text-black transition">✕</button>
+        <div class="flex gap-4">
+            <button id="tts-btn" onclick="toggleTTS()" class="bg-accent text-black px-8 py-3 rounded-full font-black text-[10px] tracking-widest uppercase">🔊 Sesli Oku</button>
+        </div>
+    </div>
+    
+    <div id="reader-content">
+        </div>
+</div>
+
+<footer class="py-24 text-center border-t border-black/5">
+    <button onclick="toggleAdmin()" class="opacity-10 hover:opacity-100 transition text-[10px] font-black tracking-[10px] uppercase">
+        Open Master Console v12
+    </button>
+</footer>
 
 <div id="admin-panel">
-    <div class="admin-wrap">
-        <div class="admin-sidebar">
-            <div class="serif text-3xl italic text-accent mb-20">Lumina Admin</div>
-            <nav>
-                <button onclick="tab('stat')" class="nav-btn active" id="b-stat"><i data-lucide="activity"></i> Raporlar</button>
-                <button onclick="tab('new')" class="nav-btn" id="b-new"><i data-lucide="pen"></i> Yeni İçerik</button>
-                <button onclick="toggleAdmin('none')" class="mt-40 nav-btn text-red-400"><i data-lucide="log-out"></i> Kapat</button>
-            </nav>
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-16">
+            <h1 class="text-5xl font-serif">MASTER <span class="text-accent">CONSOLE</span></h1>
+            <button onclick="toggleAdmin()" class="bg-red-600 px-10 py-3 rounded-full text-[10px] font-black uppercase">Sistemi Kilitle</button>
         </div>
-        <div class="admin-body no-scrollbar">
-            <div id="t-stat">
-                <h2 class="serif text-7xl font-light mb-12">Veri <i>Akışı</i></h2>
-                <div class="grid grid-cols-2 gap-8">
-                    <div class="p-12 bg-gray-50 rounded-[40px] border border-black/5">
-                        <span class="text-[10px] font-black opacity-30 tracking-widest uppercase">Okunma</span>
-                        <p class="text-6xl serif mt-4">12.4K</p>
-                    </div>
-                    <div class="p-12 bg-gray-50 rounded-[40px] border border-black/5">
-                        <span class="text-[10px] font-black opacity-30 tracking-widest uppercase">Etkileşim</span>
-                        <p class="text-6xl serif text-accent mt-4">88%</p>
-                    </div>
-                </div>
+
+        <div class="flex gap-6 mb-12 border-b border-white/5 pb-6">
+            <button onclick="showTab('tab-news')" class="text-[11px] font-black tracking-widest uppercase opacity-50 hover:opacity-100">İçerik Yönetimi</button>
+            <button onclick="showTab('tab-global')" class="text-[11px] font-black tracking-widest uppercase opacity-50 hover:opacity-100">Global Veri & Pusula</button>
+            <button onclick="showTab('tab-authors')" class="text-[11px] font-black tracking-widest uppercase opacity-50 hover:opacity-100">Yazar Kadrosu</button>
+        </div>
+
+        <div id="tab-news" class="admin-tab active space-y-8">
+            <div class="grid grid-cols-2 gap-6">
+                <input id="adm-title" placeholder="Makale Başlığı" class="input-lux col-span-2 text-2xl font-serif">
+                <textarea id="adm-text" placeholder="Kültürel Anlatı..." class="input-lux col-span-2 h-64"></textarea>
+                <input id="adm-img" placeholder="Parallax Görsel URL" class="input-lux">
+                <input id="adm-dna" type="number" placeholder="Mardin DNA % (0-100)" class="input-lux">
+                <select id="adm-auth-sel" class="input-lux"></select>
+                <select id="adm-type" class="input-lux">
+                    <option>Mistik</option><option>Ritüel</option><option>Karnaval</option><option>Mimari</option>
+                </select>
+                <button onclick="saveContent()" class="col-span-2 bg-accent py-5 rounded-2xl text-black font-black uppercase text-xs tracking-widest">Arayüze Enjekte Et</button>
             </div>
-            <div id="t-new" class="hidden">
-                <h2 class="serif text-7xl font-light mb-12">Yeni Yazı</h2>
-                <div class="space-y-6">
-                    <input id="p-title" placeholder="Başlık" class="soft-input serif text-3xl">
-                    <textarea id="p-text" placeholder="Hikaye burada başlar..." class="soft-input h-48"></textarea>
-                    <button onclick="post()" class="px-16 py-5 bg-black text-white rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-accent transition">Yayınla</button>
-                </div>
+        </div>
+
+        <div id="tab-global" class="admin-tab space-y-8">
+            <div class="grid grid-cols-3 gap-6">
+                <input id="adm-dist" placeholder="Mesafe (KM)" class="input-lux">
+                <input id="adm-m-temp" placeholder="Mardin Isı" class="input-lux">
+                <input id="adm-r-temp" placeholder="Rio Isı" class="input-lux">
+                <input id="adm-wisdom" placeholder="Günün Bilgeliği" class="input-lux col-span-3">
+                <button onclick="saveGlobal()" class="col-span-3 bg-stone-800 py-4 rounded-xl font-bold uppercase text-[10px]">Verileri Güncelle</button>
+            </div>
+        </div>
+
+        <div id="tab-authors" class="admin-tab">
+            <div class="flex gap-4">
+                <input id="adm-a-name" placeholder="Yazar Adı" class="input-lux">
+                <input id="adm-a-img" placeholder="Avatar URL" class="input-lux">
+                <button onclick="saveAuthor()" class="bg-accent px-10 text-black font-black uppercase text-[10px] rounded-xl">Ekle</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    let data = JSON.parse(localStorage.getItem('LUMINA_DB')) || {
-        news: [{ id: 1, title: 'Sarı Taşların Şiiri', text: 'Mardin...', img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800', type: 'Kültür' }]
+    // --- CORE DATABASE ---
+    let lumina = JSON.parse(localStorage.getItem('lumina_v12')) || {
+        config: { fs: 16, wisdom: "Toprak hafızadır, dans ise gelecektir." },
+        global: { dist: '10.840 KM', mardin: '28°C', rio: '32°C' },
+        authors: [
+            {id: 1, name: 'Gabriel Garcia', img: 'https://i.pravatar.cc/150?u=44'},
+            {id: 2, name: 'Zeynep Mardini', img: 'https://i.pravatar.cc/150?u=32'}
+        ],
+        news: [
+            {
+                id: 101, authId: 2, type: 'Mistik', 
+                title: 'Abbaraların Altındaki Sessiz Şehir', 
+                text: 'Mardin sokaklarında yürümek, tarihin damarlarında dolaşmaktır. Her taş, bir zamanlar burada yaşamış kadim ruhların fısıltısını taşır. Gökyüzü ile yeryüzünün birleştiği bu tepede, zaman kavramı sadece bir illüzyondan ibarettir.', 
+                img: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=1200',
+                dna: 88
+            }
+        ]
     };
 
+    function sync() { localStorage.setItem('lumina_v12', JSON.stringify(lumina)); render(); }
+
+    // --- UI RENDER ENGINE ---
     function render() {
-        lucide.createIcons();
-        document.getElementById('feed').innerHTML = data.news.map((n, i) => `
-            <div class="bento-item ${i % 3 === 0 ? 'col-span-8' : 'col-span-4'}">
-                <img src="${n.img}" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-10 p-10 text-white">
-                    <span class="text-[9px] font-black uppercase tracking-[4px] text-accent mb-3 block">${n.type}</span>
-                    <h3 class="serif text-5xl leading-tight">${n.title}</h3>
-                </div>
+        // Font size
+        document.documentElement.style.setProperty('--fs-base', lumina.config.fs + 'px');
+        
+        // Wisdom
+        document.getElementById('ui-wisdom').innerText = lumina.config.wisdom;
+
+        // Compass
+        document.getElementById('ui-compass-stats').innerHTML = `
+            <div class="group">
+                <p class="text-[9px] text-accent mb-1 uppercase tracking-tighter">Cultural Gap</p>
+                <p class="text-2xl font-serif text-white">${lumina.global.dist}</p>
+            </div>
+            <div class="flex gap-10">
+                <div><p class="text-[9px] text-accent mb-1 uppercase">Mardin</p><p class="text-xl text-white">${lumina.global.mardin}</p></div>
+                <div><p class="text-[9px] text-accent mb-1 uppercase">Rio</p><p class="text-xl text-white">${lumina.global.rio}</p></div>
+            </div>
+        `;
+
+        // Authors
+        document.getElementById('ui-authors').innerHTML = lumina.authors.map(a => `
+            <div class="author-item text-center min-w-[120px]">
+                <img src="${a.img}" class="w-20 h-20 rounded-full border-2 border-accent mx-auto mb-4 hover:scale-110 transition cursor-pointer">
+                <p class="text-[10px] font-black uppercase tracking-widest opacity-60">${a.name}</p>
             </div>
         `).join('');
+
+        // News Feed
+        document.getElementById('ui-feed').innerHTML = lumina.news.map(n => `
+            <article class="mag-card" onclick="openReader(${n.id})">
+                <img src="${n.img}">
+                <div class="p-10 flex-1 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="bg-accent/10 text-accent px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">${n.type}</span>
+                        <span class="text-[9px] font-bold opacity-30 uppercase tracking-[2px]">IQ Profile: %${n.dna} Mardin</span>
+                    </div>
+                    <h2 class="text-2xl mb-6 leading-tight flex-1">${n.title}</h2>
+                    <div class="flex items-center gap-3 pt-6 border-t border-black/5">
+                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-40">Okumaya Hazır</span>
+                    </div>
+                </div>
+            </article>
+        `).join('');
+
+        // Admin Auth Select
+        document.getElementById('adm-auth-sel').innerHTML = lumina.authors.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
     }
 
-    function toggleAdmin(v) { document.getElementById('admin-panel').style.display = v; }
-    function tab(t) { 
-        document.getElementById('t-stat').classList.add('hidden'); document.getElementById('t-new').classList.add('hidden');
-        document.getElementById('t-'+t).classList.remove('hidden');
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('b-'+t).classList.add('active');
+    // --- ACCESSIBILITY & READER ---
+    function changeFS(delta) { lumina.config.fs += delta; sync(); }
+
+    const synth = window.speechSynthesis;
+    let isSpeaking = false;
+
+    function toggleTTS() {
+        if(isSpeaking) { synth.cancel(); isSpeaking = false; document.getElementById('tts-btn').innerText = "🔊 Sesli Oku"; }
+        else {
+            const text = document.getElementById('reader-text-content').innerText;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'tr-TR'; utter.rate = 0.9;
+            utter.onend = () => { isSpeaking = false; document.getElementById('tts-btn').innerText = "🔊 Sesli Oku"; };
+            synth.speak(utter);
+            isSpeaking = true;
+            document.getElementById('tts-btn').innerText = "🛑 Durdur";
+        }
     }
 
-    function post() {
-        const n = { id: Date.now(), title: document.getElementById('p-title').value, text: document.getElementById('p-text').value, img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800', type: 'Yeni Era' };
-        data.news.unshift(n); localStorage.setItem('LUMINA_DB', JSON.stringify(data)); render(); toggleAdmin('none');
+    function openReader(id) {
+        const n = lumina.news.find(x => x.id === id);
+        const a = lumina.authors.find(x => x.id === n.authId);
+        
+        document.getElementById('reader-content').innerHTML = `
+            <div class="parallax-header">
+                <img src="${n.img}" class="parallax-img" id="p-img">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#F5F2EB] via-transparent to-transparent"></div>
+            </div>
+            <div class="max-w-4xl mx-auto px-10 pb-32 -mt-32 relative z-10">
+                <div class="flex items-center gap-6 mb-12">
+                    <img src="${a.img}" class="w-16 h-16 rounded-full border-2 border-accent">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-[4px] opacity-40">Yazar</p>
+                        <p class="font-serif text-xl">${a.name}</p>
+                    </div>
+                </div>
+                <h1 class="text-7xl font-serif mb-16 leading-tight">${n.title}</h1>
+                <div id="reader-text-content" class="text-3xl font-light leading-relaxed text-justify opacity-90 mb-20">
+                    ${n.text}
+                </div>
+                <div class="bg-black text-white p-12 rounded-[50px]">
+                    <p class="text-center text-[10px] font-black tracking-[10px] uppercase text-accent mb-10">Kültürel IQ Analiz Raporu</p>
+                    <div class="flex justify-between items-end gap-1 px-10">
+                        <div class="w-full bg-accent/20 rounded-t-2xl relative" style="height: ${n.dna*2}px">
+                            <span class="absolute -top-10 left-0 right-0 text-center font-serif text-2xl">%${n.dna}</span>
+                            <p class="absolute -bottom-8 left-0 right-0 text-center text-[9px] font-bold uppercase tracking-widest">Mardin (Mistisizm)</p>
+                        </div>
+                        <div class="w-full bg-white/10 rounded-t-2xl relative" style="height: ${(100-n.dna)*2}px">
+                            <span class="absolute -top-10 left-0 right-0 text-center font-serif text-2xl">%${100-n.dna}</span>
+                            <p class="absolute -bottom-8 left-0 right-0 text-center text-[9px] font-bold uppercase tracking-widest">Brezilya (Modernite)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('reader-overlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        const overlay = document.getElementById('reader-overlay');
+        overlay.onscroll = () => {
+            const img = document.getElementById('p-img');
+            if(img) img.style.top = (overlay.scrollTop * 0.2) - (overlay.offsetHeight * 0.2) + 'px';
+        };
     }
 
-    setInterval(() => {
-        const now = new Date();
-        document.getElementById('top-clock').innerText = `MARDIN ${now.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})} • 24°C / RIO 18:04 • 31°C`;
-    }, 1000);
+    function closeReader() { 
+        synth.cancel(); isSpeaking = false;
+        document.getElementById('reader-overlay').style.display = 'none'; 
+        document.body.style.overflow = 'auto';
+    }
+
+    // --- ADMIN ENGINE ---
+    function toggleAdmin() { const p = document.getElementById('admin-panel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; }
+    function showTab(id) {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function saveContent() {
+        const n = {
+            id: Date.now(),
+            authId: parseInt(document.getElementById('adm-auth-sel').value),
+            title: document.getElementById('adm-title').value,
+            text: document.getElementById('adm-text').value,
+            img: document.getElementById('adm-img').value,
+            dna: parseInt(document.getElementById('adm-dna').value),
+            type: document.getElementById('adm-type').value
+        };
+        lumina.news.unshift(n); sync();
+    }
+
+    function saveGlobal() {
+        lumina.global = {
+            dist: document.getElementById('adm-dist').value,
+            mardin: document.getElementById('adm-m-temp').value,
+            rio: document.getElementById('adm-r-temp').value
+        };
+        lumina.config.wisdom = document.getElementById('adm-wisdom').value;
+        sync();
+    }
 
     window.onload = render;
 </script>
+
 </body>
 </html>
