@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mardin-Brazil: The Living Portal 2026</title>
+    <title>Mardin-Brazil: Cultural Pulse 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <script>
@@ -15,240 +14,246 @@
             theme: {
                 extend: {
                     colors: {
-                        stoneYellow: '#E2C799', amberRed: '#B45309', amazonGreen: '#064E3B', oceanBlue: '#0077B6', ivorySoft: '#FDFCF8'
+                        stoneYellow: '#E2C799', // Mardin Taşı
+                        amberRed: '#B45309',    // Kızıl Kehribar
+                        amazonGreen: '#064E3B', // Brezilya Ormanı
+                        oceanBlue: '#0077B6',   // Rio Okyanusu
+                        ivorySoft: '#FDFCF8'
                     },
-                    fontFamily: { serif: ['Playfair Display', 'serif'], sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #FDFCF8; scroll-behavior: smooth; overflow-x: hidden; }
-        .page { display: none; animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        body { background-color: #FDFCF8; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        .page { display: none; animation: slideUp 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
         .page.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Dashboard Gelişmiş Efektler */
-        .module-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid rgba(226, 199, 153, 0.1); }
-        .module-card:hover { transform: translateY(-5px); border-color: #E2C799; box-shadow: 0 20px 40px -15px rgba(180, 83, 9, 0.1); }
-        .module-card:active { transform: scale(0.98); }
+        .anti-grid-card { transition: all 0.5s ease; cursor: pointer; border: 1px solid rgba(226, 199, 153, 0.1); }
+        .anti-grid-card:hover { transform: translateY(-10px) scale(1.02); border-color: #E2C799; box-shadow: 0 30px 60px -20px rgba(6, 78, 59, 0.15); }
         
-        /* Ses Dalga Animasyonu */
-        .playing .bar { animation: bounce 0.8s infinite alternate; }
-        .bar { width: 3px; height: 4px; background: #B45309; transition: height 0.3s; }
+        .playing-bar { width: 3px; height: 4px; background: #B45309; animation: bounce 0.8s infinite alternate; }
         @keyframes bounce { from { height: 4px; } to { height: 20px; } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #FDFCF8; }
+        ::-webkit-scrollbar-thumb { background: #064E3B; border-radius: 10px; }
     </style>
 </head>
 <body class="font-sans text-slate-900">
 
-    <div id="audio-engine" class="fixed bottom-6 left-6 z-[100] bg-white/80 backdrop-blur-xl border border-stoneYellow/30 p-3 rounded-2xl flex items-center gap-4 shadow-2xl transition-all">
-        <button onclick="toggleAudio()" id="audio-btn" class="w-10 h-10 rounded-full bg-amazonGreen text-white flex items-center justify-center hover:bg-amberRed transition">
-            <i data-lucide="play" id="play-icon" size="18"></i>
+    <div id="audio-engine" class="fixed bottom-8 left-8 z-[100] bg-white/80 backdrop-blur-2xl border border-stoneYellow/40 p-4 rounded-3xl flex items-center gap-5 shadow-2xl transition-all hover:scale-105">
+        <button onclick="toggleGlobalAudio()" id="audio-btn" class="w-12 h-12 rounded-full bg-amazonGreen text-white flex items-center justify-center hover:bg-amberRed transition-colors">
+            <i data-lucide="play" id="audio-icon" size="20"></i>
         </button>
-        <div class="flex flex-col">
-            <span class="text-[9px] font-bold uppercase tracking-tighter text-amberRed">Ambiyans Aktif</span>
-            <span class="text-[11px] font-serif italic text-amazonGreen">Mardin Ud & Bossa Nova</span>
+        <div class="flex flex-col pr-4">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-amberRed">Sesli Makale & Ambiyans</span>
+            <span class="text-sm font-serif italic text-amazonGreen font-bold">Mardin Ud & Rio Bossa</span>
         </div>
-        <div class="sound-wave flex items-end gap-1 h-5 px-2" id="wave-container">
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="flex items-end gap-1 h-6 hidden" id="audio-waves">
+            <div class="playing-bar"></div><div class="playing-bar" style="animation-delay: 0.2s"></div>
+            <div class="playing-bar" style="animation-delay: 0.4s"></div><div class="playing-bar" style="animation-delay: 0.1s"></div>
         </div>
     </div>
 
-    <div id="ai-status" class="fixed bottom-6 right-6 z-[100] bg-amazonGreen text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10">
-        <i data-lucide="cpu" size="16" class="animate-pulse text-stoneYellow"></i>
-        <span id="ai-msg" class="text-[10px] font-bold tracking-widest uppercase italic">Sistem Hazır</span>
+    <div id="ai-status" class="fixed bottom-8 right-8 z-[100] bg-amazonGreen text-white px-6 py-4 rounded-[2rem] shadow-2xl flex items-center gap-4 border border-white/10">
+        <div class="relative">
+            <i data-lucide="cpu" size="18" class="text-stoneYellow animate-pulse"></i>
+        </div>
+        <div class="flex flex-col leading-tight">
+            <span class="text-[9px] font-extrabold uppercase tracking-widest text-stoneYellow/80 italic">AI Co-Pilot</span>
+            <span id="ai-message" class="text-[11px] font-bold uppercase tracking-tight">Sistem Yayında</span>
+        </div>
     </div>
 
-    <nav class="fixed top-0 w-full z-50 bg-ivorySoft/90 backdrop-blur-2xl border-b border-stoneYellow/10 px-6 py-4">
-        <div class="max-w-[1600px] mx-auto flex justify-between items-center">
-            <div onclick="showPage('home')" class="cursor-pointer">
-                <h1 class="text-2xl font-serif font-bold tracking-tighter text-amazonGreen uppercase leading-none">Mardin <span class="text-stoneYellow italic">&</span> Brazil</h1>
-            </div>
-            <div class="hidden lg:flex items-center space-x-10 text-[10px] font-extrabold uppercase tracking-widest">
-                <button onclick="showPage('home')" class="hover:text-amberRed transition">Arşiv</button>
-                <button onclick="showPage('map')" class="hover:text-amberRed transition">3D Harita</button>
-                <button onclick="showPage('dashboard')" class="bg-amberRed text-white px-5 py-2 rounded-xl shadow-lg shadow-amberRed/20">Dashboard</button>
-            </div>
+    <nav class="fixed top-0 w-full z-50 bg-ivorySoft/90 backdrop-blur-xl border-b border-stoneYellow/10 px-6 md:px-12 py-5 flex justify-between items-center">
+        <div onclick="showPage('home')" class="cursor-pointer group">
+            <h1 class="text-2xl font-serif font-bold text-amazonGreen leading-none uppercase tracking-tighter">
+                Mardin <span class="text-stoneYellow italic">&</span> Brazil
+            </h1>
+            <p class="text-[9px] font-extrabold tracking-[0.4em] text-amberRed mt-1">CULTURAL DIPLOMACY PORTAL</p>
+        </div>
+        <div class="hidden lg:flex items-center space-x-12 text-[10px] font-extrabold uppercase tracking-[0.3em]">
+            <button onclick="showPage('home')" class="hover:text-amberRed transition">Arşiv</button>
+            <button onclick="showPage('map')" class="hover:text-amberRed transition">3D Harita</button>
+            <button onclick="showPage('dashboard')" class="bg-stoneYellow text-white px-6 py-2 rounded-full hover:bg-amazonGreen transition shadow-md shadow-stoneYellow/20">Dashboard</button>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="text-[10px] font-bold text-gray-400">LATENCY: <span class="text-amazonGreen">14ms</span></span>
+            <i data-lucide="search" size="18" class="text-amazonGreen cursor-pointer"></i>
         </div>
     </nav>
 
-    <main id="home" class="page active pt-32 pb-20 px-8">
+    <main id="home" class="page active pt-32 pb-20 px-6 md:px-12">
         <div class="max-w-[1600px] mx-auto">
-            <div onclick="showPage('article')" class="relative group cursor-pointer overflow-hidden rounded-[3rem] h-[600px] shadow-2xl border border-stoneYellow/20">
-                <img src="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1600" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3s]">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-12 flex flex-col justify-end">
-                    <h2 class="text-6xl font-serif text-white italic leading-tight mb-4">Taşın ve Ritm’in Günlüğü</h2>
-                    <p class="text-white/70 max-w-lg italic border-l-2 border-stoneYellow pl-6">Mardin'den Rio'ya uzanan frekanslar.</p>
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-20">
+                <div onclick="showPage('article')" class="lg:col-span-8 anti-grid-card relative overflow-hidden rounded-[3.5rem] h-[600px] shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1600" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent p-12 flex flex-col justify-end">
+                        <span class="bg-amberRed text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase w-fit mb-6">Başyazı</span>
+                        <h2 class="text-5xl md:text-7xl font-serif text-white italic mb-6 leading-[1.1]">Taşın ve Ritm’in <br>Kültürel Senkronu</h2>
+                        <p class="text-white/70 max-w-xl text-lg italic border-l-2 border-stoneYellow pl-6">Mezopotamya'nın kadim sessizliği, Rio'nun karnaval enerjisiyle aynı dijital frekansta buluşuyor.</p>
+                    </div>
                 </div>
-            </div>
+                <div class="lg:col-span-4 space-y-10">
+                    <div class="anti-grid-card bg-white p-10 rounded-[3rem] shadow-sm border border-stoneYellow/10">
+                        <h3 class="text-amberRed font-bold text-[10px] uppercase tracking-widest mb-4 italic">Gastronomi Köprüsü</h3>
+                        <h4 class="text-3xl font-serif font-bold italic text-amazonGreen leading-tight mb-4">Sumaklı Kibe: Bir Göç Hikayesi</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed italic">Mardin baharatlarının Amazon meyveleriyle olan şaşırtıcı uyumu AI tadım testlerinde %94 başarı sağladı.</p>
+                        <button class="mt-6 text-[10px] font-bold uppercase border-b border-stoneYellow pb-1">Detayları Keşfet</button>
+                    </div>
+                    <div class="anti-grid-card bg-amazonGreen text-white p-10 rounded-[3rem] shadow-xl relative overflow-hidden group">
+                        <i data-lucide="mic" class="absolute -right-5 -top-5 opacity-10 group-hover:rotate-12 transition-transform" size="150"></i>
+                        <h3 class="text-stoneYellow font-bold text-[10px] uppercase tracking-widest mb-4 italic">Podcast</h3>
+                        <h4 class="text-2xl font-serif italic mb-6">"Ud Tellerinden Bossa Nova'ya Geçiş"</h4>
+                        <button class="flex items-center gap-3 bg-white/10 hover:bg-white/20 px-5 py-2 rounded-full transition text-[10px] font-bold uppercase">
+                            <i data-lucide="play" size="14"></i> Şimdi Dinle
+                        </button>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
-    <main id="article" class="page pt-32 bg-ivorySoft min-h-screen">
-        <div class="max-w-4xl mx-auto px-8 py-20">
-            <button onclick="showPage('home')" class="mb-10 text-[10px] font-bold text-amberRed tracking-[0.3em] uppercase italic border border-amberRed/20 px-6 py-2 rounded-full hover:bg-amberRed hover:text-white transition">← Geri Dön</button>
-            <h1 class="text-7xl font-serif italic mb-10 leading-tight text-amazonGreen">Kadim Yankılar: <br> İki Kıta Tek Frekans</h1>
-            <div class="prose prose-2xl font-serif text-slate-800 leading-[1.8] italic space-y-10">
-                <p>Mardin'in güneşle yıkanmış taşları ve Rio'nun nemli ormanları... İkisi de aynı evrensel matematiği kullanır.</p>
-                <img src="https://images.unsplash.com/photo-1518998053574-53f0201f97ea?auto=format&fit=crop&w=1200" class="rounded-[3rem] shadow-2xl">
-            </div>
+    <main id="article" class="page pt-32 pb-20 bg-ivorySoft">
+        <div class="max-w-4xl mx-auto px-6 py-20">
+            <button onclick="showPage('home')" class="mb-12 flex items-center gap-2 text-[10px] font-bold text-amberRed uppercase tracking-[0.2em] hover:opacity-70 transition">
+                <i data-lucide="arrow-left" size="16"></i> Geri Dön
+            </button>
+            <article class="space-y-12">
+                <header class="text-center space-y-6">
+                    <div class="flex justify-center gap-2 text-amazonGreen font-bold text-[10px] uppercase tracking-widest">
+                        <i data-lucide="cpu" size="14"></i> AI Analiz Modu: Aktif
+                    </div>
+                    <h1 class="text-6xl md:text-8xl font-serif italic text-amazonGreen leading-none">Kadim Yankılar</h1>
+                    <div class="flex items-center justify-center gap-4 py-8 border-y border-stoneYellow/20">
+                        <img src="https://i.pravatar.cc/100?u=yusuf" class="w-14 h-14 rounded-full border-2 border-stoneYellow">
+                        <div class="text-left">
+                            <p class="font-bold text-sm">Yusuf El-Brezili</p>
+                            <p class="text-[10px] text-amberRed font-bold uppercase tracking-widest italic">Kültür Diplomatı & Yazar</p>
+                        </div>
+                    </div>
+                </header>
+                <div class="prose prose-2xl font-serif italic text-slate-800 leading-[1.8] space-y-8">
+                    <p class="first-letter:text-8xl first-letter:font-serif first-letter:text-amberRed first-letter:mr-4 first-letter:float-left">Mardin’in dar sokaklarındaki yankı, aslında Rio’nun favelalarındaki ritmin tersyüz edilmiş halidir.</p>
+                    <p>Yapay zeka analizlerimiz gösteriyor ki; taş ustalarının çekiç vuruşları ile Bossa Nova'nın aksak ritmi (syncopation) arasında %98'lik bir frekans eşleşmesi bulunuyor.</p>
+                    <img src="https://images.unsplash.com/photo-1518998053574-53f0201f97ea?auto=format&fit=crop&w=1200" class="rounded-[3rem] shadow-2xl my-16">
+                    <p>Mardin Bienali’ndeki bir heykelin gölgesi, Rio de Janeiro’daki Kurtarıcı İsa heykelinin gün batımı açısıyla aynı estetik matematik üzerine kuruludur...</p>
+                </div>
+            </article>
         </div>
     </main>
 
-    <main id="dashboard" class="page pt-32 pb-20 px-8 bg-[#F4F1EA]">
+    <main id="dashboard" class="page pt-32 pb-20 px-6 md:px-12 bg-slate-50">
         <div class="max-w-[1600px] mx-auto">
-            <header class="flex justify-between items-end mb-12">
+            <header class="flex justify-between items-end mb-16">
                 <div>
-                    <h2 class="text-5xl font-serif font-bold italic tracking-tighter text-amazonGreen">Smart Studio <span class="text-amberRed">2.6</span></h2>
-                    <p class="text-gray-500 font-bold text-[10px] uppercase tracking-[0.4em] mt-2 italic">Gerçek Zamanlı Kültürel Veri Analitiği</p>
+                    <h2 class="text-5xl font-serif font-bold italic text-amazonGreen">Smart Studio</h2>
+                    <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.5em] mt-2 italic">Global Media Intelligence Hub</p>
                 </div>
                 <div class="flex gap-4">
-                    <button onclick="triggerAI('Analiz')" class="module-card bg-white px-6 py-3 rounded-2xl text-[10px] font-bold uppercase border border-stoneYellow/30">AI Deep Scan</button>
-                    <button onclick="triggerAI('Yayın')" class="bg-amazonGreen text-white px-8 py-3 rounded-2xl text-[10px] font-bold uppercase shadow-xl hover:bg-amberRed transition italic">Canlı Yayına Al</button>
+                    <button onclick="aiStatusUpdate('Veri Senkronize Ediliyor...')" class="bg-white border border-stoneYellow/30 px-6 py-3 rounded-2xl text-[10px] font-bold uppercase hover:bg-stoneYellow hover:text-white transition shadow-sm italic">AI Re-Scan</button>
+                    <button class="bg-amazonGreen text-white px-8 py-3 rounded-2xl text-[10px] font-bold uppercase shadow-xl hover:bg-amberRed transition italic">+ Yeni Analiz Yazısı</button>
                 </div>
             </header>
 
             <div class="grid grid-cols-12 gap-8">
-                <div class="col-span-12 lg:col-span-4 space-y-8">
-                    <div onclick="moduleAction('Duygu Analizi')" class="module-card bg-white p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden group">
-                        <div class="flex justify-between items-center mb-6">
-                            <i data-lucide="heart" class="text-amberRed"></i>
-                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Kitle Rezonansı</span>
-                        </div>
-                        <h4 class="text-2xl font-serif font-bold italic mb-4">Okuyucu Duygusu</h4>
-                        <div class="flex items-end gap-2 h-12 mb-4">
-                            <div class="flex-1 bg-stoneYellow/20 h-[40%] rounded-t-lg"></div>
-                            <div class="flex-1 bg-stoneYellow/40 h-[70%] rounded-t-lg"></div>
-                            <div class="flex-1 bg-amberRed h-[100%] rounded-t-lg"></div>
-                            <div class="flex-1 bg-stoneYellow/40 h-[60%] rounded-t-lg"></div>
-                        </div>
-                        <p class="text-xs text-gray-500 italic leading-relaxed">"Mardin içerikleri %88 oranında 'Huzur' ve 'Merak' tetikliyor."</p>
-                    </div>
-
-                    <div onclick="moduleAction('Yazım Denetimi')" class="module-card bg-amazonGreen text-white p-8 rounded-[2.5rem] shadow-xl relative overflow-hidden">
-                        <i data-lucide="pen-tool" class="text-stoneYellow mb-4" size="20"></i>
-                        <h4 class="text-xl font-serif italic mb-2">AI Co-Pilot Aktif</h4>
-                        <p class="text-xs text-white/60 mb-6 italic">"Brezilya Portekizcesi çevirileri Mardin yerel ağzıyla optimize edildi."</p>
-                        <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-                            <div class="bg-stoneYellow h-full w-[94%]"></div>
+                <div class="col-span-12 lg:col-span-8 bg-white p-12 rounded-[3.5rem] shadow-sm border border-stoneYellow/10">
+                    <div class="flex justify-between items-center mb-10">
+                        <h4 class="text-sm font-bold uppercase tracking-widest text-amazonGreen italic">Kıtalararası Etkileşim Trendi</h4>
+                        <div class="flex gap-6">
+                            <span class="flex items-center gap-2 text-[10px] font-bold text-stoneYellow uppercase"><span class="w-2 h-2 rounded-full bg-stoneYellow"></span> Mardin</span>
+                            <span class="flex items-center gap-2 text-[10px] font-bold text-oceanBlue uppercase"><span class="w-2 h-2 rounded-full bg-oceanBlue"></span> Brazil</span>
                         </div>
                     </div>
+                    <canvas id="dashboardChart" height="150"></canvas>
                 </div>
-
-                <div class="col-span-12 lg:col-span-8 space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div onclick="moduleAction('Trafik')" class="module-card bg-white p-8 rounded-[2.5rem] shadow-sm border-b-4 border-oceanBlue">
-                            <p class="text-[9px] font-bold text-gray-400 uppercase mb-2">Global Reach</p>
-                            <p class="text-4xl font-serif italic font-bold">4.82M</p>
-                        </div>
-                        <div onclick="moduleAction('Hız')" class="module-card bg-white p-8 rounded-[2.5rem] shadow-sm border-b-4 border-stoneYellow">
-                            <p class="text-[9px] font-bold text-gray-400 uppercase mb-2">Latency (Rio-Mdn)</p>
-                            <p class="text-4xl font-serif italic font-bold">14ms</p>
-                        </div>
-                        <div onclick="moduleAction('Bağlantı')" class="module-card bg-white p-8 rounded-[2.5rem] shadow-sm border-b-4 border-amberRed">
-                            <p class="text-[9px] font-bold text-gray-400 uppercase mb-2">Sync Quality</p>
-                            <p class="text-4xl font-serif italic font-bold">%99.9</p>
+                <div class="col-span-12 lg:col-span-4 space-y-8">
+                    <div class="bg-amazonGreen text-white p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
+                        <i data-lucide="brain-circuit" class="mb-6 text-stoneYellow" size="32"></i>
+                        <h4 class="text-xl font-serif italic mb-4">AI Yazım Asistanı</h4>
+                        <p class="text-xs text-white/60 mb-8 italic">"Son makalenizdeki 'mistik' tonu Mardin yerelliği için %12 daha optimize etmemi ister misiniz?"</p>
+                        <div class="flex flex-col gap-3">
+                            <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-stoneYellow h-full w-[85%]"></div>
+                            </div>
+                            <span class="text-[9px] font-bold uppercase text-stoneYellow">Tonlama Kalitesi: %85</span>
                         </div>
                     </div>
-
                     <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-stoneYellow/10">
-                        <div class="flex justify-between items-center mb-10">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-amazonGreen">Kıtalararası Etkileşim Trendi</h4>
-                            <div class="flex gap-4">
-                                <span class="flex items-center gap-2 text-[10px] font-bold text-stoneYellow uppercase tracking-tighter"><span class="w-2 h-2 rounded-full bg-stoneYellow"></span> Mardin</span>
-                                <span class="flex items-center gap-2 text-[10px] font-bold text-oceanBlue uppercase tracking-tighter"><span class="w-2 h-2 rounded-full bg-oceanBlue"></span> Brazil</span>
-                            </div>
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6 italic">Canlı Okuyucu Isı Haritası</h4>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center"><span class="text-xs font-bold italic">Rio de Janeiro</span><span class="text-amazonGreen font-bold">%42</span></div>
+                            <div class="flex justify-between items-center"><span class="text-xs font-bold italic">Mardin</span><span class="text-amazonGreen font-bold">%38</span></div>
+                            <div class="flex justify-between items-center"><span class="text-xs font-bold italic">İstanbul</span><span class="text-amazonGreen font-bold">%12</span></div>
                         </div>
-                        <canvas id="mainChart" height="150"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <main id="map" class="page pt-32 h-screen bg-slate-900 flex items-center justify-center text-white">
-        <div class="text-center">
-            <i data-lucide="map" size="60" class="mx-auto text-stoneYellow animate-bounce mb-6"></i>
-            <h2 class="text-3xl font-serif italic">3D Harita Katmanı Başlatılıyor</h2>
-            <button onclick="showPage('home')" class="mt-8 px-8 py-2 border border-white/20 rounded-full text-[10px] font-bold uppercase tracking-widest italic">Kapat</button>
+    <main id="map" class="page pt-32 h-screen bg-slate-900 flex items-center justify-center text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-30">
+            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1920" class="w-full h-full object-cover">
+        </div>
+        <div class="relative z-10 text-center space-y-8 max-w-2xl px-6">
+            <i data-lucide="globe" size="80" class="mx-auto text-stoneYellow animate-spin-slow"></i>
+            <h2 class="text-5xl font-serif italic tracking-tighter leading-tight">Mardin-Rio Kültür Hattı Senkronize Ediliyor</h2>
+            <p class="text-stoneYellow/60 text-sm font-bold uppercase tracking-[0.3em]">Gerçek zamanlı sanat rotası verisi (3D GPU Modu)</p>
+            <button onclick="showPage('home')" class="mt-8 px-10 py-3 border border-white/20 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition italic">Sistemi Kapat</button>
         </div>
     </main>
 
     <script>
-        // 1. SAYFA GEÇİŞ MANTIĞI
+        // 1. PAGE NAVIGATION
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo({top: 0, behavior: 'smooth'});
             
-            // AI Bildirimi Güncelleme
-            const msgs = {
-                'home': 'Portal Ana Sayfası Yüklendi',
-                'article': 'Sürükleyici Okuma Modu: Aktif',
-                'dashboard': 'Smart Studio v2.6: Tüm Sistemler Çevrimiçi',
-                'map': '3D Coğrafi Veri Senkronize Ediliyor'
-            };
-            document.getElementById('ai-msg').innerText = msgs[pageId];
+            // Update AI status on page change
+            const pageNames = { 'home': 'Ana Sayfa', 'article': 'Makale Detay', 'dashboard': 'Yönetim Paneli', 'map': 'Kültür Haritası' };
+            aiStatusUpdate(pageNames[pageId] + " Aktif");
         }
 
-        // 2. GELİŞMİŞ DASHBOARD FONKSİYONLARI (MODÜL TIKLAMA)
-        function moduleAction(moduleName) {
-            const aiMsg = document.getElementById('ai-msg');
-            aiMsg.innerText = `İşleniyor: ${moduleName}...`;
-            
-            // Dashboard'a özel ses efekti simülasyonu
-            const beep = new AudioContext();
-            const osc = beep.createOscillator();
-            const gain = beep.createGain();
-            osc.connect(gain);
-            gain.connect(beep.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(440, beep.currentTime);
-            gain.gain.setValueAtTime(0.1, beep.currentTime);
-            osc.start();
-            osc.stop(beep.currentTime + 0.1);
-
+        // 2. AI STATUS HANDLER
+        function aiStatusUpdate(msg) {
+            const aiMsg = document.getElementById('ai-message');
+            aiMsg.style.opacity = '0';
             setTimeout(() => {
-                aiMsg.innerText = `${moduleName} Verisi Güncellendi`;
-                alert(`[Smart Dashboard Bilgi]: ${moduleName} modülü şu an en güncel verileri (Rio-Mardin Sync) çekiyor.`);
-            }, 800);
+                aiMsg.innerText = msg;
+                aiMsg.style.opacity = '1';
+            }, 300);
         }
 
-        function triggerAI(type) {
-            const aiMsg = document.getElementById('ai-msg');
-            aiMsg.innerText = `${type} İşlemi Başlatıldı...`;
-            setTimeout(() => {
-                aiMsg.innerText = `${type} Başarılı.`;
-            }, 2000);
-        }
-
-        // 3. SES MOTORU (DİNAMİK AMBİYANS)
-        let isPlaying = false;
-        function toggleAudio() {
-            const btn = document.getElementById('audio-btn');
-            const wave = document.getElementById('wave-container');
-            const icon = document.getElementById('play-icon');
+        // 3. GLOBAL AUDIO CONTROLLER
+        let isAudioPlaying = false;
+        function toggleGlobalAudio() {
+            const icon = document.getElementById('audio-icon');
+            const waves = document.getElementById('audio-waves');
+            isAudioPlaying = !isAudioPlaying;
             
-            isPlaying = !isPlaying;
-            
-            if(isPlaying) {
-                wave.classList.add('playing');
-                btn.classList.replace('bg-amazonGreen', 'bg-amberRed');
-                lucide.createIcons(); // İkonu güncellemek için (basit yöntem)
-                document.getElementById('ai-msg').innerText = "Ambiyans Sesi Başlatıldı";
-                // Gerçek ses dosyası yerine görsel geri bildirim veriyoruz
-                // audio.play(); 
+            if(isAudioPlaying) {
+                icon.setAttribute('data-lucide', 'pause');
+                waves.classList.remove('hidden');
+                aiStatusUpdate("Ambiyans Sesi Başlatıldı");
             } else {
-                wave.classList.remove('playing');
-                btn.classList.replace('bg-amberRed', 'bg-amazonGreen');
-                document.getElementById('ai-msg').innerText = "Ambiyans Sesi Durduruldu";
+                icon.setAttribute('data-lucide', 'play');
+                waves.classList.add('hidden');
+                aiStatusUpdate("Ses Durduruldu");
             }
+            lucide.createIcons();
         }
 
-        // 4. İKONLAR VE GRAFİKLER
-        lucide.createIcons();
-
-        const ctx = document.getElementById('mainChart').getContext('2d');
+        // 4. CHART INITIALIZATION (CHART.JS)
+        const ctx = document.getElementById('dashboardChart').getContext('2d');
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -256,14 +261,14 @@
                 datasets: [
                     {
                         label: 'Mardin',
-                        data: [30, 45, 35, 90, 65, 85, 40],
+                        data: [35, 45, 30, 95, 70, 85, 40],
                         borderColor: '#E2C799',
                         backgroundColor: 'rgba(226, 199, 153, 0.1)',
                         fill: true, tension: 0.4, borderWeight: 4, pointRadius: 0
                     },
                     {
                         label: 'Brazil',
-                        data: [20, 30, 60, 40, 95, 70, 110],
+                        data: [20, 30, 75, 50, 98, 80, 110],
                         borderColor: '#0077B6',
                         backgroundColor: 'rgba(0, 119, 182, 0.1)',
                         fill: true, tension: 0.4, borderWeight: 4, pointRadius: 0
@@ -276,10 +281,18 @@
                 plugins: { legend: { display: false } },
                 scales: { 
                     y: { display: false },
-                    x: { grid: { display: false }, ticks: { font: { size: 10, weight: 'bold' }, color: '#94a3b8' } }
+                    x: { grid: { display: false }, ticks: { font: { family: 'Plus Jakarta Sans', size: 10, weight: 'bold' }, color: '#94a3b8' } }
                 }
             }
         });
+
+        // INITIALIZE ICONS
+        lucide.createIcons();
+
+        // SIMULATED SYSTEM BOOT
+        window.onload = () => {
+            aiStatusUpdate("Sistem Optimize Edildi");
+        };
     </script>
 </body>
 </html>
