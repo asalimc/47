@@ -3,135 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDIN & RIO | The Masterpiece 2026</title>
+    <title>MARDIN & RIO | The Ultimate Digital Portal 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root { --mardin: #d4a373; --rio: #0077b6; --dark: #121212; --bg: #f9f7f2; }
         
-        /* Tasarımı bozmayan özel imleç */
+        /* Arayüzü bozmayan özel imleç */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-        #cursor { position: fixed; width: 15px; height: 15px; border: 1px solid var(--dark); border-radius: 50%; pointer-events: none; z-index: 10000; transition: transform 0.15s ease-out; background: rgba(0,0,0,0.05); }
+        #custom-cursor { position: fixed; width: 12px; height: 12px; background: var(--dark); border-radius: 50%; pointer-events: none; z-index: 100000; transition: transform 0.15s ease-out, background 0.3s; }
 
-        body { background-color: var(--bg); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        body { background-color: var(--bg); font-family: 'Montserrat', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* HEADER - Tipografi Zenginleştirme */
-        header { background: white; padding: 120px 20px; text-align: center; border-bottom: 5px solid var(--mardin); position: relative; }
-        header h1 { font-family: 'Playfair Display'; font-size: 7rem; letter-spacing: -6px; transition: 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
-        header h1:hover { letter-spacing: -2px; }
+        /* Canlı Veri Şeridi */
+        .live-data-bar { background: var(--dark); color: white; padding: 10px; font-size: 9px; font-weight: 900; letter-spacing: 2px; text-align: center; display: flex; justify-content: space-around; position: relative; z-index: 1001; }
+
+        /* Header */
+        header { background: white; padding: 80px 20px; text-align: center; border-bottom: 5px solid var(--mardin); }
+        header h1 { font-family: 'Playfair Display'; font-size: 6rem; letter-spacing: -5px; transition: 0.8s ease; }
         header h1 span { color: var(--rio); }
+        header h1:hover { letter-spacing: -2px; }
 
-        /* NAV - Glassmorphism */
-        nav { background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 25px; }
-        nav ul { display: flex; justify-content: center; list-style: none; gap: 50px; }
-        nav a { font-weight: 900; font-size: 10px; text-transform: uppercase; color: var(--dark); text-decoration: none; letter-spacing: 3px; transition: 0.4s; }
-        nav a:hover { color: var(--rio); transform: scale(1.1); }
+        /* Navigasyon (Glassmorphism) */
+        nav { background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 20px; }
+        nav ul { display: flex; justify-content: center; list-style: none; gap: 40px; }
+        nav a { font-weight: 900; font-size: 10px; text-transform: uppercase; color: var(--dark); text-decoration: none; letter-spacing: 2px; }
 
-        .wrapper { max-width: 1300px; margin: 80px auto; padding: 0 40px; }
+        .wrapper { max-width: 1300px; margin: 50px auto; padding: 0 40px; }
 
-        /* HABER KARTLARI - Hover Derinliği */
-        .gastro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 50px; }
-        .flip-card { height: 550px; perspective: 2500px; }
-        .flip-inner { position: relative; width: 100%; height: 100%; transition: 1s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        /* Veri Kartları */
+        .gastro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; margin-bottom: 60px; }
+        .flip-card { height: 500px; perspective: 2000px; }
+        .flip-inner { position: relative; width: 100%; height: 100%; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
         .flip-card:hover .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 40px; overflow: hidden; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
+        
         .flip-front { background-size: cover; background-position: center; display: flex; align-items: flex-end; }
-        .front-overlay { background: linear-gradient(transparent, rgba(0,0,0,0.85)); width: 100%; padding: 50px; color: white; }
-        .flip-back { color: white; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px; text-align: center; }
+        .front-overlay { background: linear-gradient(transparent, rgba(0,0,0,0.9)); width: 100%; padding: 40px; color: white; }
+        
+        .flip-back { color: white; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; padding: 50px; text-align: left; }
+        .flip-back h2 { font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 15px; }
+        .flip-back p { font-family: 'Lora'; font-size: 1.1rem; line-height: 1.6; opacity: 0.9; margin-bottom: 8px; }
 
-        /* VIDEO - Tam Sinematik (Fixed & Working) */
-        .video-container { position: relative; width: 100%; height: 600px; border-radius: 40px; overflow: hidden; margin: 100px 0; background: #000; box-shadow: 0 50px 100px rgba(0,0,0,0.3); }
-        .video-container iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:0; transform: scale(1.1); filter: contrast(1.1) brightness(0.9); }
+        /* Sinematik Video Section */
+        .video-wrapper { position: relative; width: 100%; height: 550px; border-radius: 35px; overflow: hidden; margin: 80px 0; background: #000; box-shadow: 0 40px 80px rgba(0,0,0,0.2); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; transform: scale(1.15); filter: contrast(1.1); pointer-events: none; }
 
-        /* MODAL / DETAY */
-        .detail-overlay { position: fixed; inset: 0; z-index: 10001; display: none; flex-direction: column; overflow-y: auto; color: white; padding: 20px; transition: 0.5s; }
-        .detail-container { max-width: 900px; margin: 100px auto; }
-        .close-detail { position: fixed; top: 50px; right: 60px; font-size: 5rem; cursor: pointer; color: white; line-height: 1; }
+        /* Radyo Widget */
+        #radio-widget { position: fixed; bottom: 30px; right: 30px; z-index: 1000; background: white; padding: 12px 20px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px; }
+        .pulse { width: 10px; height: 10px; background: #ff4b2b; border-radius: 50%; animation: pulse-anim 2s infinite; }
+        @keyframes pulse-anim { 0% { box-shadow: 0 0 0 0 rgba(255,75,43,0.7); } 70% { box-shadow: 0 0 0 12px rgba(255,75,43,0); } 100% { box-shadow: 0 0 0 0 rgba(255,75,43,0); } }
 
-        /* Kaydırma Çubuğu Zenginleştirme */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--mardin), var(--rio)); border-radius: 10px; }
+        /* Detay Paneli */
+        .detail-overlay { position: fixed; inset: 0; z-index: 100001; display: none; background: rgba(0,0,0,0.95); overflow-y: auto; color: white; padding: 60px; transition: 0.5s; }
+        .detail-content { max-width: 900px; margin: 0 auto; }
+        .close-btn { position: fixed; top: 40px; right: 40px; font-size: 4rem; cursor: pointer; color: white; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--mardin); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
+    <div id="custom-cursor"></div>
+
+    <div class="live-data-bar">
+        <span>MARDİN: 18°C / 17:51</span>
+        <span>RIO: 29°C / 11:51</span>
+        <span>AKTİF ZİYARETÇİ: <span id="visitor-live">1,402</span></span>
+        <span>UÇUŞ ROTASI: AKTİF</span>
+    </div>
+
+    <div id="radio-widget">
+        <div class="pulse"></div>
+        <span style="font-size: 10px; font-weight: 900; letter-spacing: 1px; color: var(--dark);">KÜLTÜREL RADYO</span>
+    </div>
 
     <header>
-        <p style="font-size: 12px; font-weight: 900; letter-spacing: 5px; opacity: 0.4; margin-bottom: 30px;">THE SOUL OF TWO CITIES • 2026</p>
+        <p style="font-size: 11px; font-weight: 900; letter-spacing: 5px; opacity: 0.4; margin-bottom: 15px;">MARCH 2026 EDITION</p>
         <h1>MARDIN<span>RIO</span></h1>
     </header>
 
     <nav>
         <ul>
             <li><a href="#explore">CHRONICLES</a></li>
-            <li><a href="#news">COLLECTION</a></li>
+            <li><a href="#news">ARCHIVES</a></li>
             <li><a href="#editor">VISION</a></li>
         </ul>
     </nav>
 
     <div class="wrapper">
         <div class="gastro-grid">
-            <div class="flip-card" data-title="Golden Hour in Mesopotamia" data-color="var(--mardin)" data-img="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200" data-info="Mardin'in kadim taşları, günün son ışıklarıyla altına dönüşürken Rio'nun gece lambalarıyla birleşiyor.">
+            <div class="flip-card" data-title="Taşın Altın Mirası" data-color="rgba(212, 163, 115, 0.98)" data-img="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200" data-info="Mardin'in sarı kalker taşları, sadece bir yapı malzemesi değil, 3000 yıllık bir hafızadır. 2026 restorasyon projesi kapsamında 600 tescilli yapı dijital koruma altına alındı.">
                 <div class="flip-inner">
                     <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800');">
-                        <div class="front-overlay"><h4 style="font-family:'Playfair Display'; font-size:2.5rem;">The Golden Legacy</h4></div>
+                        <div class="front-overlay">
+                            <p style="font-size: 10px; font-weight: bold; letter-spacing: 2px; color: var(--mardin);">ANCIENT DATA</p>
+                            <h4 style="font-family:'Playfair Display'; font-size:2rem;">The Golden Stone Legacy</h4>
+                        </div>
                     </div>
                     <div class="flip-back" style="background: var(--mardin);">
-                        <h2 style="font-family:'Playfair Display'; font-size:3rem;">MARDİN</h2>
-                        <p style="font-size: 1.2rem; font-style: italic; opacity: 0.8; margin-top: 20px;">Stone whispering to the sky.</p>
+                        <h2>MARDİN VERİSİ</h2>
+                        <p>• Tescilli Yapı: 600+</p>
+                        <p>• Tarihi Derinlik: 3000 Yıl</p>
+                        <p>• Rakım: 1.083m</p>
+                        <p style="margin-top: 20px; font-weight: 900; border-bottom: 2px solid white; display: inline-block;">ANALİZİ AÇ</p>
                     </div>
                 </div>
             </div>
 
-            <div class="flip-card" data-title="Tropical Modernism" data-color="var(--rio)" data-img="https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=1200" data-info="Rio de Janeiro'nun tropikal dokusu, modern teknolojiyle harmanlanarak 2026'nın sürdürülebilir vizyonunu oluşturuyor.">
+            <div class="flip-card" data-title="Tropikal Teknoloji" data-color="rgba(0, 119, 182, 0.98)" data-img="https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=1200" data-info="Rio de Janeiro, Amazon'un kalbini yapay zeka ile izleyen 'Alma Verde' projesinin merkez üssü haline geldi. Şehirdeki yeşil alan oranı 2026'da %28'e yükseltildi.">
                 <div class="flip-inner">
                     <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800');">
-                        <div class="front-overlay"><h4 style="font-family:'Playfair Display'; font-size:2.5rem;">The Tropical Rhythm</h4></div>
+                        <div class="front-overlay">
+                            <p style="font-size: 10px; font-weight: bold; letter-spacing: 2px; color: var(--rio);">MODERN DATA</p>
+                            <h4 style="font-family:'Playfair Display'; font-size:2rem;">Tropical Tech Evolution</h4>
+                        </div>
                     </div>
                     <div class="flip-back" style="background: var(--rio);">
-                        <h2 style="font-family:'Playfair Display'; font-size:3rem;">RIO</h2>
-                        <p style="font-size: 1.2rem; font-style: italic; opacity: 0.8; margin-top: 20px;">Ocean breathing through the city.</p>
+                        <h2>RIO VERİSİ</h2>
+                        <p>• Yeşil Alan: %28</p>
+                        <p>• Akıllı Sensör: 12.000+</p>
+                        <p>• Karbon Azalımı: %15</p>
+                        <p style="margin-top: 20px; font-weight: 900; border-bottom: 2px solid white; display: inline-block;">ANALİZİ AÇ</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="explore" class="video-container">
-            <iframe src="https://www.youtube.com/embed/S_8qMvT2MvA?autoplay=1&mute=1&loop=1&playlist=S_8qMvT2MvA&controls=0&showinfo=0&rel=0" allow="autoplay; encrypted-media"></iframe>
+        <div id="explore" class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/S_8qMvT2MvA?autoplay=1&mute=1&loop=1&playlist=S_8qMvT2MvA&controls=0&rel=0&modestbranding=1" allow="autoplay; encrypted-media"></iframe>
         </div>
     </div>
 
     <div id="detailOverlay" class="detail-overlay">
-        <span class="close-detail" onclick="closeDetail()">&times;</span>
-        <div class="detail-container">
-            <img id="modalImg" style="width:100%; border-radius:40px; margin-bottom:50px; box-shadow: 0 50px 100px rgba(0,0,0,0.5);" src="">
-            <div id="modalText" style="font-family:'Lora';"></div>
+        <span class="close-btn" onclick="closeDetail()">&times;</span>
+        <div class="detail-content">
+            <img id="modalImg" style="width:100%; border-radius:30px; margin-bottom:50px; box-shadow: 0 40px 80px rgba(0,0,0,0.5);" src="">
+            <div id="modalBody"></div>
         </div>
     </div>
 
     <script>
-        // İMLEÇ TAKİBİ
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
+        // ÖZEL İMLEÇ KODU
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', e => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // KART ETKİLEŞİMİ VE DETAY AÇMA
+        // CANLI VERİ SİMÜLASYONU
+        setInterval(() => {
+            const visitor = Math.floor(Math.random() * (1500 - 1300) + 1300);
+            document.getElementById('visitor-live').innerText = visitor.toLocaleString();
+        }, 3000);
+
+        // KART ETKİLEŞİMLERİ
         document.querySelectorAll('.flip-card').forEach(card => {
-            card.addEventListener('mouseenter', () => cursor.style.transform = 'scale(5)');
-            card.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
-            
+            card.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(5)';
+                cursor.style.background = 'rgba(255,255,255,0.2)';
+            });
+            card.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.background = 'var(--dark)';
+            });
             card.addEventListener('click', () => {
                 const overlay = document.getElementById('detailOverlay');
-                overlay.style.backgroundColor = card.dataset.color;
+                overlay.style.background = card.dataset.color;
                 document.getElementById('modalImg').src = card.dataset.img;
-                document.getElementById('modalText').innerHTML = `
-                    <h2 style="font-family:'Playfair Display'; font-size:5rem; line-height:1.1; margin-bottom:30px;">${card.dataset.title}</h2>
-                    <p style="font-size:1.8rem; line-height:1.8; opacity:0.9;">${card.dataset.info}</p>
+                document.getElementById('modalBody').innerHTML = `
+                    <h2 style="font-family:'Playfair Display'; font-size:5rem; line-height:1; margin-bottom:30px;">${card.dataset.title}</h2>
+                    <p style="font-family:'Lora'; font-size:1.8rem; line-height:1.8; opacity:0.9;">${card.dataset.info}</p>
                 `;
-                overlay.style.display = 'flex';
+                overlay.style.display = 'block';
                 document.body.style.overflow = 'hidden';
             });
         });
