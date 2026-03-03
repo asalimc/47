@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDIN & RIO | Fotoğraflı Haber Akışı 2026</title>
+    <title>MARDIN & RIO | Global Cultural Portal 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -30,52 +30,51 @@
 
         .wrapper { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-        /* --- 2. HABER DÜELLOSU (FOTOĞRAFLI) --- */
+        /* --- 2. HABER AKIŞI (TASARIM KORUNDU) --- */
         .gastro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
         .flip-card { height: 400px; perspective: 1000px; cursor: pointer; }
         .flip-inner { position: relative; width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; }
         .flip-card:hover .flip-inner { transform: rotateY(180deg); }
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        
-        /* Ön yüz görsel giydirme */
         .flip-front { background-size: cover; background-position: center; display: flex; align-items: flex-end; }
-        .front-overlay { background: linear-gradient(transparent, rgba(0,0,0,0.8)); width: 100%; padding: 30px; color: white; }
-        .front-overlay h4 { font-family: 'Playfair Display'; font-size: 1.5rem; margin-bottom: 5px; }
-        
+        .front-overlay { background: linear-gradient(transparent, rgba(0,0,0,0.9)); width: 100%; padding: 30px; color: white; }
+        .front-overlay h4 { font-family: 'Playfair Display'; font-size: 1.4rem; margin-bottom: 5px; }
         .flip-back { background: var(--rio); color: white; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; }
 
-        /* --- 3. VİDEO --- */
+        /* --- 3. VİDEO & MAKALE --- */
         .video-section { position: relative; width: 100%; height: 400px; border-radius: 25px; overflow: hidden; margin-bottom: 60px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); cursor: pointer; }
         .video-section img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
         .video-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
         .play-btn { width: 70px; height: 70px; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid white; margin-bottom: 15px; }
 
-        /* --- 4. MAKALE --- */
         .main-article { background: white; padding: 50px; border-radius: 25px; margin-bottom: 40px; cursor: pointer; transition: 0.3s; }
-        .main-article:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .dropcap { float: left; font-size: 4.5rem; font-weight: 900; line-height: 0.8; margin-right: 12px; color: var(--mardin); }
         .article-body { font-family: 'Lora', serif; font-size: 1.2rem; line-height: 1.9; }
 
-        /* --- 5. İSTATİSTİK --- */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; margin-bottom: 60px; background: white; padding: 30px; border-radius: 25px; }
-        .stat-val { font-size: 2.2rem; font-weight: 900; color: var(--rio); display: block; }
-        .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #888; }
-
-        /* --- 6. MODAL --- */
+        /* --- 4. MODAL (GELİŞMİŞ İÇERİK) --- */
         .detail-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 10001; backdrop-filter: blur(15px); padding: 20px; }
         .detail-content { background: var(--bg); width: 100%; max-width: 900px; max-height: 90vh; border-radius: 25px; overflow-y: auto; position: relative; border-top: 10px solid var(--mardin); }
         .modal-img { width: 100%; height: 350px; object-fit: cover; }
         .modal-text { padding: 40px; }
         .close-detail { position: absolute; top: 20px; right: 30px; font-size: 2.5rem; cursor: pointer; color: white; font-weight: bold; z-index: 10002; }
-        .detail-body h2 { font-family: 'Playfair Display'; font-size: 2.8rem; margin-bottom: 20px; }
-        .detail-body p { font-family: 'Lora'; line-height: 1.8; font-size: 1.2rem; margin-bottom: 15px; }
+        .detail-body h2 { font-family: 'Playfair Display'; font-size: 2.8rem; margin-bottom: 10px; }
+        .lang-badge { display: inline-block; background: #eee; padding: 4px 10px; border-radius: 5px; font-size: 10px; font-weight: bold; margin-bottom: 20px; }
+        .cultural-note { background: #fff; padding: 20px; border-left: 5px solid var(--rio); margin-top: 30px; font-style: italic; }
 
-        @media (max-width: 768px) { header h1 { font-size: 3rem; } .stats-grid { grid-template-columns: 1fr; } }
+        .live-pulse { width: 10px; height: 10px; background: #ff4b2b; border-radius: 50%; display: inline-block; margin-right: 8px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,75,43,0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,75,43,0); } 100% { box-shadow: 0 0 0 0 rgba(255,75,43,0); } }
+
+        .agenda-section { background: white; padding: 40px; border-radius: 25px; margin-bottom: 50px; }
+        .event-item { display: flex; align-items: center; gap: 20px; padding: 15px 0; border-bottom: 1px solid #eee; cursor: pointer; }
+        .date-badge { background: var(--dark); color: white; padding: 10px; border-radius: 10px; min-width: 60px; text-align: center; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header id="top">
+        <div style="font-size: 10px; font-weight: bold; margin-bottom: 10px; letter-spacing: 2px;">
+            MARDİN 18°C 17:15 | RIO 29°C 11:15
+        </div>
         <h1>MARDIN<span>RIO</span></h1>
         <p style="letter-spacing: 5px; font-weight: bold; font-size: 12px; color: var(--mardin);">KÜLTÜREL SENTEZ • ESTETİK • YAŞAM</p>
     </header>
@@ -95,74 +94,85 @@
         <div class="gastro-grid">
             
             <div class="flip-card" data-type="news" 
-                 data-title="Mardin: Taşın Mirası Korunuyor" 
+                 data-title="Mardin: Taşın Sessiz Tanıklığı" 
                  data-img="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800&q=80"
-                 data-info="Mardin'in kadim çarşılarında başlatılan restorasyon seferberliği, şehrin binlerce yıllık silüetini koruma altına alıyor. UNESCO destekli projede, 400'den fazla dükkanın cephesi tarihi dokuya uygun olarak yenilendi.">
+                 data-pt="Mardin: O Testemunho Silencioso da Pedra"
+                 data-note="Kültür Notu: Mardin evlerinde kullanılan 'Kalker' taşı, kışın sıcak yazın serin tutma özelliğiyle Amazon iklimine bir çözüm önerisi sunuyor."
+                 data-info="UNESCO Dünya Mirası listesine aday olan Mardin'in tarihi dokusunda, restorasyon çalışmaları yeni bir evreye girdi. Taş ustaları, Rio de Janeiro Mimarlık Okulu'ndan gelen heyetle bilgi paylaşımı yapıyor.">
                 <div class="flip-inner">
                     <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800&q=80');">
                         <div class="front-overlay">
-                            <p style="font-size: 10px; font-weight: bold; color: var(--mardin);">MARDİN • GÜNCEL</p>
-                            <h4>Taşın Mirası Restore Edildi</h4>
+                            <p style="font-size: 10px; font-weight: bold; color: var(--mardin);">MARDİN • RESTORASYON</p>
+                            <h4>Taşın Mirası Geleceğe Aktarılıyor</h4>
                         </div>
                     </div>
                     <div class="flip-back">
-                        <h2>GELENEĞİN İZİ</h2>
-                        <p>Mezopotamya'nın altın rengi taşları uzman ellerde parlıyor.</p>
-                        <span style="margin-top:20px; font-weight: bold; font-size: 12px; border-bottom: 1px solid white;">DEVAMINI OKU</span>
+                        <h2>PEDRA HISTÓRICA</h2>
+                        <p>Mezopotamya'nın kalbi, Brezilya mimarisine ilham oluyor.</p>
+                        <span style="margin-top:20px; font-weight: bold; font-size: 11px; border-bottom: 1px solid white;">DETAYI GÖR / VER DETALHES</span>
                     </div>
                 </div>
             </div>
 
             <div class="flip-card" data-type="news" 
-                 data-title="Brezilya: Amazon'un Geleceği" 
+                 data-title="Rio: Amazon'un Dijital Koruyucuları" 
                  data-img="https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800&q=80"
-                 data-info="Brezilya, Amazon havzasında sürdürülebilir kalkınma için dev bir dijital altyapı projesini hayata geçirdi. Yerli topluluklar artık ürettikleri ekolojik ürünleri doğrudan dünya pazarına sunabiliyor.">
+                 data-pt="Rio: Os Guardiões Digitais da Amazônia"
+                 data-note="Deyim: 'Carioca', Rio de Janeiro'da doğanlara denir. Rio halkı, Mardin'in 'misafirperverlik' kültürüyle şaşırtıcı bir benzerlik gösterir."
+                 data-info="Rio merkezli teknoloji start-up'ları, Amazon ormanlarını yapay zeka ile koruyor. Bu yazılımın bir benzerinin, Mardin'in tarihi alanlarını dijital olarak haritalandırmak için kullanılması planlanıyor.">
                 <div class="flip-inner">
                     <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800&q=80');">
                         <div class="front-overlay">
-                            <p style="font-size: 10px; font-weight: bold; color: var(--rio);">BREZİLYA • MANŞET</p>
-                            <h4>Amazon'da Dijital Devrim</h4>
+                            <p style="font-size: 10px; font-weight: bold; color: var(--rio);">RIO • TEKNOLOJİ</p>
+                            <h4>Amazon'un Yapay Zeka Koruyucuları</h4>
                         </div>
                     </div>
                     <div class="flip-back">
-                        <h2 style="color: white;">YEŞİL VİZYON</h2>
-                        <p>Dünyanın akciğerleri teknolojiyle daha güçlü.</p>
-                        <span style="margin-top:20px; font-weight: bold; font-size: 12px; border-bottom: 1px solid white;">DEVAMINI OKU</span>
+                        <h2>ALMA VERDE</h2>
+                        <p>Doğayı teknolojiyle koruma vizyonu Rio'dan dünyaya yayılıyor.</p>
+                        <span style="margin-top:20px; font-weight: bold; font-size: 11px; border-bottom: 1px solid white;">DETAYI GÖR / VER DETALHES</span>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <section id="explore" class="video-section" data-type="video" data-title="Işığın Peşinde: Belgesel" data-info="Mardin'in turuncu gün batımı ile Rio'nun masmavi şafağını birleştiren bu sinematik çalışma..." style="scroll-margin-top: 100px;">
-            <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5" alt="Rio Coastline">
+        <section id="explore" class="video-section" data-type="video" data-title="Işığın Peşinde: Belgesel" data-info="Mardin'in gün batımı ve Rio'nun gün doğumu... İki şehir, tek ruh.">
+            <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5" alt="Rio">
             <div class="video-overlay">
                 <div class="play-btn">▶</div>
                 <h2 style="font-family: 'Playfair Display'; font-size: 2rem;">İki Güneş Arasında</h2>
-                <p>Mardin'den Rio de Janeiro'ya Bir Görsel Yolculuk</p>
+                <p>Mardin'den Rio'ya Bir Görsel Yolculuk</p>
             </div>
         </section>
 
-        <article class="main-article" data-type="article" data-title="Kültürel Bağlar" data-info="Gümüşün ve Sambanın buluştuğu bu eşsiz makale...">
+        <article class="main-article" data-type="article" data-title="Kültürel Diplomasi" data-info="Gümüşün ve Sambanın buluştuğu bu eşsiz makale, iki ülkenin dış işleri bakanlıkları tarafından 'Kültürel Köprü' ödülüne layık görüldü.">
             <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 25px;">Mezopotamya Gümüşü Amazon Ritminde</h2>
             <div class="article-body">
-                <p><span class="dropcap">B</span>u yıl düzenlenen küresel sanat zirvesinde Mardin ve Rio de Janeiro kardeş şehir ilanı yolunda büyük bir adım attı. Taşın sessizliği ile Samba'nın coşkusunu bir araya getiren bu eşsiz işbirliği her alanda hissediliyor.</p>
+                <p><span class="dropcap">B</span>rezilya'nın kalbinde, Rio podyumlarında bir Mardin esintisi. Telkâri sanatının inceliği, karnavalın enerjisiyle birleşti. Bu, sadece bir moda hareketi değil, binlerce kilometreyi aşan bir kardeşlik hikayesi.</p>
             </div>
         </article>
 
-        <div class="stats-grid">
-            <div><span class="stat-val">10.500 km</span><span class="stat-label">Hava Hattı Mesafesi</span></div>
-            <div style="border-left: 1px solid #eee; border-right: 1px solid #eee;"><span class="stat-val">24/7</span><span class="stat-label">Canlı Haber Akışı</span></div>
-            <div><span class="stat-val">2026</span><span class="stat-label">Stratejik Hedef Yılı</span></div>
-        </div>
+        <section id="agenda" class="agenda-section" style="scroll-margin-top: 100px;">
+            <h3 style="margin-bottom: 20px; font-family: 'Playfair Display';">KÜLTÜR AJANDASI 2026</h3>
+            <div class="event-item" data-type="event" data-title="Mardin Reyhani & Samba Gecesi" data-info="Bilet Fiyatı: 250 TL. Geliri UNESCO miras fonuna bağışlanacaktır. 🎫 Biletler: bilet.mardinrio.com">
+                <div class="date-badge">12 <span>MAY</span></div>
+                <div><strong>Reyhani & Samba Gecesi ☀️</strong><p style="font-size: 0.8rem; color: #777;">Mardin Kalesi - 20:00</p></div>
+            </div>
+            <div class="event-item" data-type="event" data-title="Rio Gastronomi Zirvesi" data-info="Mardin mutfağından 'İçli Köfte' ve Brezilya'dan 'Feijoada' buluşuyor. Şefler: Arda Türkmen & Alex Atala.">
+                <div class="date-badge">05 <span>HAZ</span></div>
+                <div><strong>Mezopotamya Mutfak Haftası 🌴</strong><p style="font-size: 0.8rem; color: #777;">Rio de Janeiro - 18:00</p></div>
+            </div>
+        </section>
     </div>
 
     <div id="detailOverlay" class="detail-overlay" onclick="closeDetail()">
         <span class="close-detail" onclick="closeDetail()">&times;</span>
         <div class="detail-content" onclick="event.stopPropagation()">
-            <img id="modalImage" class="modal-img" src="" alt="Haber Görseli">
+            <img id="modalImage" class="modal-img" src="" alt="">
             <div class="modal-text">
                 <div id="detailBody" class="detail-body"></div>
+                <div id="culturalNote" class="cultural-note"></div>
             </div>
         </div>
     </div>
@@ -173,9 +183,16 @@
     </footer>
 
     <script>
-        function openDetail(title, content, img) {
-            document.getElementById('modalImage').src = img || 'https://images.unsplash.com/photo-1548013146-72479768bbaa';
-            document.getElementById('detailBody').innerHTML = `<h2>${title}</h2><p>${content}</p>`;
+        function openDetail(title, content, img, pt, note) {
+            document.getElementById('modalImage').src = img || '';
+            document.getElementById('detailBody').innerHTML = `
+                <span class="lang-badge">TÜRKÇE / PORTUGUÊS</span>
+                <h2>${title}</h2>
+                <h3 style="color:#777; font-family:Lora; margin-bottom:20px; font-size:1.4rem;">${pt || ''}</h3>
+                <p>${content}</p>
+            `;
+            document.getElementById('culturalNote').innerHTML = note ? `<strong>KÜLTÜREL NOT:</strong> ${note}` : "";
+            document.getElementById('culturalNote').style.display = note ? "block" : "none";
             document.getElementById('detailOverlay').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
@@ -190,7 +207,9 @@
                 const title = item.getAttribute('data-title');
                 const info = item.getAttribute('data-info');
                 const img = item.getAttribute('data-img');
-                openDetail(title, info, img);
+                const pt = item.getAttribute('data-pt');
+                const note = item.getAttribute('data-note');
+                openDetail(title, info, img, pt, note);
             });
         });
     </script>
