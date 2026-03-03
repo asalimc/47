@@ -3,234 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin & Brazil | Ultra-Modern Kültür Portalı</title>
+    <title>Mardin-Brazil: Cultural Pulse 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        mardinStone: '#E2C799',
-                        amazonGreen: '#004B23',
-                        rioBlue: '#0077B6',
-                        sunsetOrange: '#FF7B00',
-                        deepBlack: '#1A1A1A',
-                        softBeige: '#FDFCF8',
-                        softGray: '#F3F4F6'
+                        stoneYellow: '#E2C799', // Mardin Taşı
+                        amberRed: '#B45309',    // Kızıl Kehribar
+                        amazonGreen: '#064E3B', // Brezilya Ormanı
+                        oceanBlue: '#0077B6',   // Rio Okyanusu
+                        ivorySoft: '#FDFCF8'
                     },
                     fontFamily: {
                         serif: ['Playfair Display', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #FDFCF8; overflow-x: hidden; }
-        .page { display: none; animation: fadeIn 0.5s ease; }
+        body { background-color: #FDFCF8; scroll-behavior: smooth; }
+        .anti-grid { display: flex; flex-wrap: wrap; gap: 2rem; }
+        .immersive-reading { background: linear-gradient(rgba(253,252,248,0.9), rgba(253,252,248,0.9)), url('https://www.transparenttextures.com/patterns/sandpaper.png'); }
+        .page { display: none; animation: pageTransition 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
-        .dashboard-card { background: white; border: 1px solid rgba(226, 199, 153, 0.2); transition: all 0.3s ease; }
-        .dashboard-card:hover { border-color: #E2C799; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); }
+        @keyframes pageTransition { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        .sound-wave { display: flex; align-items: center; gap: 2px; }
+        .bar { width: 3px; height: 10px; background: #B45309; animation: bounce 1s infinite alternate; }
+        @keyframes bounce { from { height: 5px; } to { height: 20px; } }
     </style>
 </head>
-<body>
+<body class="font-sans text-slate-900 overflow-x-hidden">
 
-    <nav class="glass-nav sticky top-0 z-50 border-b border-mardinStone/30 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div onclick="showPage('home')" class="text-2xl font-serif font-bold tracking-tighter text-amazonGreen uppercase cursor-pointer">
-                Mardin <span class="text-mardinStone text-xl italic">&</span> Brazil
+    <div id="ai-status" class="fixed bottom-6 right-6 z-[100] bg-amazonGreen text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/20">
+        <div class="sound-wave"><div class="bar"></div><div class="bar" style="animation-delay: 0.2s"></div><div class="bar" style="animation-delay: 0.4s"></div></div>
+        <span class="text-xs font-bold tracking-widest uppercase">AI Co-Pilot: Mardin Tonlaması Aktif</span>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 bg-ivorySoft/80 backdrop-blur-xl border-b border-stoneYellow/20 px-8 py-5">
+        <div class="max-w-[1600px] mx-auto flex justify-between items-center">
+            <div onclick="showPage('home')" class="cursor-pointer group">
+                <h1 class="text-2xl font-serif font-bold tracking-tighter text-amazonGreen uppercase leading-none">
+                    Mardin <span class="text-stoneYellow italic">&</span> Brazil
+                </h1>
+                <p class="text-[10px] tracking-[0.4em] text-amberRed font-bold">CULTURAL DIPLOMACY PORTAL</p>
             </div>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-widest text-deepBlack items-center">
-                <a href="javascript:void(0)" onclick="showPage('home')" class="hover:text-sunsetOrange transition">Ana Sayfa</a>
-                <a href="javascript:void(0)" onclick="showPage('dashboard')" class="text-amazonGreen flex items-center gap-1 bg-amazonGreen/5 px-3 py-1 rounded-full"><i data-lucide="layout-dashboard" size="16"></i> Dashboard</a>
+            <div class="hidden lg:flex items-center space-x-10 text-[11px] font-extrabold uppercase tracking-widest">
+                <a href="javascript:void(0)" onclick="showPage('home')" class="hover:text-amberRed transition">Arşiv</a>
+                <a href="javascript:void(0)" onclick="showPage('map')" class="hover:text-amberRed transition">3D Kültür Haritası</a>
+                <a href="javascript:void(0)" onclick="showPage('dashboard')" class="bg-stoneYellow/10 px-4 py-2 rounded-full border border-stoneYellow/30">Dashboard</a>
             </div>
-            <button class="bg-amazonGreen text-white px-5 py-2 rounded-full text-xs font-bold hover:bg-rioBlue transition">ABONE OL</button>
+            <div class="flex items-center gap-4">
+                <span class="text-[10px] font-bold text-gray-400">LATENCY: 12ms (RIO-MDN)</span>
+                <button class="bg-amazonGreen text-white px-6 py-2 rounded-full text-xs font-bold hover:shadow-lg transition">ABONE OL</button>
+            </div>
         </div>
     </nav>
 
-    <main id="home-page" class="page active">
-        <header class="max-w-7xl mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div onclick="showPage('news-detail')" class="lg:col-span-8 relative group overflow-hidden rounded-3xl h-[600px] cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-10 text-white">
-                        <span class="bg-sunsetOrange w-fit px-4 py-1 rounded-full text-xs font-bold mb-4 uppercase">Kapak Hikayesi</span>
-                        <h1 class="text-5xl font-serif leading-tight mb-4">Taşın ve Ritimlerin Senfonisi</h1>
-                        <p class="max-w-2xl text-lg text-gray-200">2026'nın en kapsamlı kültür analizi.</p>
+    <main id="home" class="page active pt-32 pb-20 px-8">
+        <div class="max-w-[1600px] mx-auto">
+            <section class="anti-grid items-start">
+                <div onclick="showPage('article')" class="flex-1 min-w-[60%] group cursor-pointer relative overflow-hidden rounded-[3rem] h-[700px]">
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1600" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-amazonGreen via-transparent to-transparent p-12 flex flex-col justify-end">
+                        <div class="flex gap-2 mb-4">
+                            <span class="bg-amberRed text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase">Başyazı</span>
+                            <span class="bg-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase italic">Sürükleyici Mod Mevcut</span>
+                        </div>
+                        <h2 class="text-6xl font-serif text-white leading-tight mb-6">Taşın ve Ritm’in Günlüğü: <br>Kadim Sessizlikten Karnavala</h2>
+                        <p class="text-white/80 max-w-xl text-lg italic border-l-2 border-stoneYellow pl-6">"Mezopotamya’nın altın sarısı taşları ile Rio sokaklarının ritmi arasındaki metafizik bağ..."</p>
                     </div>
                 </div>
-                <div class="lg:col-span-4 bg-mardinStone/10 p-8 rounded-3xl border border-mardinStone/20">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-amazonGreen mb-6">— Editörün Notu</h3>
-                    <p class="serif italic text-2xl text-deepBlack leading-relaxed italic cursor-pointer hover:text-sunsetOrange" onclick="showPage('author-detail')">
-                        "Mardin'in dar sokağında duyulan ud sesi, Sao Paulo'daki bir caz kulübünde yankı bulabiliyor."
-                    </p>
-                    <div class="mt-6 flex items-center space-x-4 cursor-pointer" onclick="showPage('author-detail')">
-                        <img src="https://i.pravatar.cc/150?u=yusuf" class="w-12 h-12 rounded-full border-2 border-mardinStone">
-                        <div>
-                            <p class="font-bold text-sm text-deepBlack tracking-tight">Yusuf El-Brezili</p>
-                            <p class="text-xs text-gray-500 uppercase">Kültür Analisti</p>
+
+                <div class="w-full lg:w-[350px] space-y-8">
+                    <div class="bg-white p-8 rounded-[2.5rem] border border-stoneYellow/20 shadow-sm hover:shadow-xl transition">
+                        <h3 class="text-amberRed font-bold text-xs uppercase tracking-widest mb-4">Gastronomi Köprüsü</h3>
+                        <div class="relative h-48 rounded-2xl overflow-hidden mb-6">
+                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-2xl font-serif font-bold mb-3 italic leading-tight">Sumaklı Kibe ve Acai Bowl Etkileşimi</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Mardin mutfağının baharat derinliği ile Amazon ormanlarının süper gıdaları aynı tabakta buluşuyor.</p>
+                    </div>
+
+                    <div class="bg-amazonGreen text-white p-8 rounded-[2.5rem] relative overflow-hidden">
+                        <h3 class="text-stoneYellow font-bold text-xs uppercase tracking-widest mb-4 italic">Kültürel Diplomasi</h3>
+                        <p class="text-xl font-serif mb-6 leading-snug">"Mardin Bienali Sanatçıları Rio de Janeiro'da Yeni Bir Sergi Açıyor."</p>
+                        <button class="text-xs font-bold border-b border-stoneYellow pb-1 tracking-widest uppercase">Detayları Gör</button>
+                        <i data-lucide="globe" class="absolute -right-10 -bottom-10 opacity-10" size="200"></i>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <main id="article" class="page immersive-reading pt-32 min-h-screen">
+        <div class="max-w-4xl mx-auto px-8 py-20">
+            <header class="text-center mb-16">
+                <button onclick="showPage('home')" class="mb-10 text-xs font-bold text-amberRed tracking-[0.3em] uppercase border border-amberRed/30 px-6 py-2 rounded-full hover:bg-amberRed hover:text-white transition italic">← Geri Dön</button>
+                <h1 class="text-7xl font-serif italic mb-8 leading-tight text-amazonGreen">Taşın Belleği: <br> Mezopotamya'dan Rio'ya</h1>
+                <div class="flex items-center justify-center space-x-4 mb-10">
+                    <img src="https://i.pravatar.cc/100?u=yusuf" class="w-12 h-12 rounded-full border-2 border-stoneYellow">
+                    <div class="text-left">
+                        <p class="font-bold text-sm tracking-tight text-slate-900">Yusuf El-Brezili</p>
+                        <p class="text-[10px] text-amberRed font-bold uppercase italic leading-none">Kıdemli Kültür Analisti</p>
+                    </div>
+                    <span class="h-8 w-px bg-gray-200 mx-4"></span>
+                    <div class="flex items-center gap-2 text-amazonGreen">
+                        <i data-lucide="music" size="14"></i>
+                        <span class="text-[10px] font-bold uppercase tracking-widest">Ambiyans: Ud & Bossa Nova</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="prose prose-2xl mx-auto font-serif text-slate-800 leading-[1.8] space-y-12 italic">
+                <p class="first-letter:text-9xl first-letter:font-serif first-letter:text-amberRed first-letter:mr-4 first-letter:float-left">Mardin’in dar küçelerinde yankılanan sessizlik, aslında Rio de Janeiro’nun Ipanema sahilindeki ritmin ters yüz edilmiş halidir.</p>
+                
+                <p>2026 yılında kültür, artık bir coğrafya meselesi değil, bir rezonans meselesidir. Mardin’in taş evlerinde kullanılan altın oran ile Oscar Niemeyer’in Brezilya modernizminde kullandığı kavisler arasındaki matematiksel bağ, AI algoritmalarımız tarafından %98 eşleşme ile doğrulandı.</p>
+                
+                <blockquote class="border-l-4 border-stoneYellow pl-8 py-4 text-3xl text-amazonGreen font-bold italic">
+                    "İnsanlık, taşın soğukluğunda bile samba ritmini duyabilir."
+                </blockquote>
+
+                <p>Gastronomi köprümüzün bu ayki konusu olan sumaklı kibe, aslında Brezilya'nın yerel 'kibe' geleneğinin kayıp kardeşi gibidir. Bu sadece bir yemek tarifi değil, genetik bir göç hikayesidir...</p>
+            </div>
+        </div>
+    </main>
+
+    <main id="map" class="page pt-32 h-screen bg-slate-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-40">
+            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1920" class="w-full h-full object-cover">
+        </div>
+        <div class="relative z-10 p-12 h-full flex flex-col">
+            <div class="flex justify-between items-start mb-10">
+                <div>
+                    <h2 class="text-5xl font-serif italic mb-2 tracking-tighter">3D Kültür Köprüsü</h2>
+                    <p class="text-stoneYellow text-xs font-bold uppercase tracking-[0.4em]">Gerçek Zamanlı Sanat Rotaları</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-xl p-6 rounded-3xl border border-white/20">
+                    <p class="text-[10px] font-bold uppercase mb-4 text-amberRed italic">Aktif Sanatçılar</p>
+                    <div class="flex -space-x-3">
+                        <img src="https://i.pravatar.cc/100?u=1" class="w-10 h-10 rounded-full border-2 border-slate-900">
+                        <img src="https://i.pravatar.cc/100?u=2" class="w-10 h-10 rounded-full border-2 border-slate-900">
+                        <img src="https://i.pravatar.cc/100?u=3" class="w-10 h-10 rounded-full border-2 border-slate-900">
+                        <div class="w-10 h-10 rounded-full bg-amberRed flex items-center justify-center text-[10px] font-bold border-2 border-slate-900">+12</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex-1 rounded-[4rem] border border-white/10 relative group cursor-crosshair overflow-hidden">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="relative w-full h-full">
+                        <div class="absolute top-1/2 left-1/4 group/node">
+                            <div class="w-4 h-4 bg-stoneYellow rounded-full animate-ping absolute"></div>
+                            <div class="w-4 h-4 bg-stoneYellow rounded-full relative z-10 border-4 border-white"></div>
+                            <div class="absolute top-8 left-0 bg-white text-slate-900 p-4 rounded-2xl w-48 shadow-2xl scale-0 group-hover/node:scale-100 transition origin-top-left">
+                                <p class="text-[10px] font-bold uppercase text-amberRed mb-1">DURAK 01</p>
+                                <p class="font-bold text-sm italic">Mardin Artuklu Bienali</p>
+                                <p class="text-xs text-gray-500 mt-2">Tema: Taşın Fısıltısı</p>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-1/4 right-1/4 group/node2">
+                            <div class="w-4 h-4 bg-oceanBlue rounded-full animate-ping absolute"></div>
+                            <div class="w-4 h-4 bg-oceanBlue rounded-full relative z-10 border-4 border-white"></div>
+                            <div class="absolute bottom-8 right-0 bg-white text-slate-900 p-4 rounded-2xl w-48 shadow-2xl scale-0 group-hover/node2:scale-100 transition origin-bottom-right">
+                                <p class="text-[10px] font-bold uppercase text-amazonGreen mb-1">DURAK 02</p>
+                                <p class="font-bold text-sm italic">Rio Modern Sanat Müzesi</p>
+                                <p class="text-xs text-gray-500 mt-2">Tema: Tropikal Geometri</p>
+                            </div>
+                        </div>
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                            <path d="M380,450 Q750,200 1150,550" stroke="white" stroke-width="2" fill="none" stroke-dasharray="10,10" class="opacity-30" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="dashboard" class="page pt-32 pb-20 px-8 bg-slate-50">
+        <div class="max-w-[1600px] mx-auto">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-4xl font-serif font-bold italic">Yazar Kontrol Stüdyosu</h2>
+                    <p class="text-gray-400 font-bold text-xs uppercase tracking-widest mt-2">Global Media Ecosystem v2.6</p>
+                </div>
+                <div class="flex gap-4">
+                    <button class="bg-white border border-stoneYellow px-6 py-3 rounded-2xl text-xs font-bold uppercase hover:bg-stoneYellow/10 transition italic">AI Co-Pilot'u Yapılandır</button>
+                    <button class="bg-amazonGreen text-white px-8 py-3 rounded-2xl text-xs font-bold uppercase shadow-xl">+ Yeni Makale Oluştur</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-8">
+                <div class="col-span-12 lg:col-span-4 space-y-8">
+                    <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-stoneYellow/20">
+                        <div class="flex items-center gap-3 mb-8">
+                            <i data-lucide="zap" class="text-amberRed"></i>
+                            <h3 class="font-bold text-sm uppercase tracking-widest">AI Tonlama Analizi</h3>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between text-[10px] font-bold uppercase mb-2"><span>Mardin Yerelliği (Mistik)</span><span>%82</span></div>
+                                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-stoneYellow h-full w-[82%]"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-[10px] font-bold uppercase mb-2"><span>Brezilya Coşkusu (Enerjik)</span><span>%65</span></div>
+                                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-oceanBlue h-full w-[65%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-10 p-4 bg-amberRed/5 rounded-2xl border border-amberRed/10">
+                            <p class="text-[10px] font-bold text-amberRed mb-2 uppercase italic italic">— AI Önerisi</p>
+                            <p class="text-sm italic text-slate-600 leading-relaxed">"Son paragrafta 'sessizlik' kelimesini 'kadim yankı' ile değiştirmeniz Mardin dokusunu %12 daha fazla hissettirecektir."</p>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-span-12 lg:col-span-8 space-y-8">
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-sm">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Global Okunma</p>
+                            <p class="text-4xl font-serif font-bold italic tracking-tighter">2.4M</p>
+                            <span class="text-xs text-green-500 font-bold mt-2 inline-block">+ %14 Bu Hafta</span>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-sm">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Ort. Okuma Süresi</p>
+                            <p class="text-4xl font-serif font-bold italic tracking-tighter">06:42</p>
+                            <span class="text-xs text-amberRed font-bold mt-2 inline-block">Yüksek Bağlılık</span>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-sm">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">AI Katkı Oranı</p>
+                            <p class="text-4xl font-serif font-bold italic tracking-tighter">%34</p>
+                            <span class="text-xs text-oceanBlue font-bold mt-2 inline-block">Optimize Edildi</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-stoneYellow/20">
+                        <h4 class="font-bold text-sm uppercase tracking-widest mb-10">Kıta Bazlı Trafik Analizi (Edge Performance)</h4>
+                        <canvas id="trafficChart" height="150"></canvas>
+                    </div>
+                </div>
             </div>
-        </header>
+        </div>
     </main>
 
-    <div id="news-detail" class="page max-w-4xl mx-auto px-6 py-16">
-        <button onclick="showPage('home')" class="mb-8 flex items-center text-sm font-bold text-gray-400 hover:text-amazonGreen transition">
-            <i data-lucide="arrow-left" size="18" class="mr-2"></i> GERİ DÖN
-        </button>
-        <article>
-            <span class="text-sunsetOrange font-bold text-sm uppercase tracking-widest">Kültür Mirası</span>
-            <h1 class="text-6xl font-serif mt-4 mb-8 leading-tight">Mezopotamya Geometrisi Brezilya Sokaklarında</h1>
-            <div class="flex items-center space-x-4 mb-10 pb-10 border-b">
-                <img src="https://i.pravatar.cc/150?u=yusuf" class="w-10 h-10 rounded-full">
-                <span class="text-sm font-bold">Yusuf El-Brezili</span>
-                <span class="text-gray-300">•</span>
-                <span class="text-sm text-gray-500">3 Mart 2026</span>
+    <footer class="bg-amazonGreen text-white py-20 px-8">
+        <div class="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-2">
+                <h2 class="text-4xl font-serif italic mb-6 tracking-tighter">Mardin & Brazil</h2>
+                <p class="text-white/60 max-w-sm leading-relaxed italic">İki kıta, tek bir ruh. 2026 yılının en prestijli kültür ve sanat ekosistemi. Her haber, bir diplomasi adımıdır.</p>
             </div>
-            <div class="prose prose-xl text-gray-700 leading-relaxed serif italic text-2xl mb-12">
-                "Mimari sadece taş değildir; o bir hikayedir. Mardin'in dar küçelerinden yükselen mistik doku, bugün Rio'nun modern silüetinde kendine yer buluyor."
-            </div>
-            <p class="text-lg text-gray-600 mb-6">
-                Dünya genelindeki sanat eleştirmenleri, 2026 Bienali'nde en çok bu füzyonu tartışıyor. Mardinli taş ustalarının elinden çıkan o eşsiz geometrik desenler, bugün Brezilya'nın sürdürülebilir mimari projelerine ilham veriyor...
-            </p>
-            <img src="https://images.unsplash.com/photo-1518998053574-53f0201f97ea?auto=format&fit=crop&w=1200" class="rounded-3xl w-full my-12 shadow-2xl">
-        </article>
-    </div>
-
-    <div id="author-detail" class="page max-w-5xl mx-auto px-6 py-16">
-        <div class="bg-white rounded-[3rem] overflow-hidden shadow-sm border border-mardinStone/20 flex flex-col md:flex-row">
-            <div class="md:w-1/3 bg-softGray p-12 text-center">
-                <img src="https://i.pravatar.cc/150?u=yusuf" class="w-48 h-48 rounded-full mx-auto mb-6 border-4 border-white shadow-lg">
-                <h2 class="text-3xl font-serif font-bold">Yusuf El-Brezili</h2>
-                <p class="text-sunsetOrange font-bold text-xs uppercase tracking-widest mt-2">Kıdemli Kültür Analisti</p>
-                <div class="flex justify-center space-x-4 mt-8">
-                    <i data-lucide="twitter" class="text-gray-400 hover:text-rioBlue cursor-pointer"></i>
-                    <i data-lucide="instagram" class="text-gray-400 hover:text-sunsetOrange cursor-pointer"></i>
-                </div>
-            </div>
-            <div class="md:w-2/3 p-12">
-                <h3 class="text-xl font-bold mb-4 uppercase tracking-tighter">Biyografi</h3>
-                <p class="text-gray-600 leading-relaxed mb-8 text-lg">
-                    1984 Mardin doğumlu olan Yusuf, eğitimini Rio de Janeiro Sanat Akademisi'nde tamamladı. Son 10 yıldır kıtalararası sanat köprüleri kuran makaleleriyle tanınıyor.
-                </p>
-                <h3 class="text-xl font-bold mb-4 uppercase tracking-tighter">Popüler Yazıları</h3>
-                <div class="space-y-4">
-                    <div class="p-4 rounded-xl bg-softBeige border border-mardinStone/20 hover:border-sunsetOrange transition cursor-pointer flex justify-between">
-                        <span>Sumaklı Feijoada: Bir Lezzet Yolculuğu</span>
-                        <i data-lucide="arrow-right" size="16"></i>
-                    </div>
-                    <div class="p-4 rounded-xl bg-softBeige border border-mardinStone/20 hover:border-sunsetOrange transition cursor-pointer flex justify-between">
-                        <span>Bossa Nova'nın Mardin Ezgileri</span>
-                        <i data-lucide="arrow-right" size="16"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="dashboard" class="page max-w-7xl mx-auto px-6 py-12">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
             <div>
-                <h1 class="text-4xl font-bold tracking-tighter">Editör Paneli <span class="text-mardinStone italic text-2xl">v4.0</span></h1>
-                <p class="text-gray-400">Hoş geldin Yusuf, bugün içeriklerin %12 daha fazla etkileşim aldı.</p>
+                <h5 class="text-stoneYellow font-bold text-xs uppercase tracking-widest mb-6 italic">Navigasyon</h5>
+                <ul class="space-y-4 text-sm font-semibold text-white/80">
+                    <li><a href="#" class="hover:text-amberRed transition">Arşiv</a></li>
+                    <li><a href="#" class="hover:text-amberRed transition">Bienaller</a></li>
+                    <li><a href="#" class="hover:text-amberRed transition">Yazarlar</a></li>
+                    <li><a href="#" class="hover:text-amberRed transition uppercase italic">AI Labs</a></li>
+                </ul>
             </div>
-            <div class="flex gap-4">
-                <button class="bg-white border px-6 py-2 rounded-xl text-sm font-bold shadow-sm">DOSYA YÜKLE</button>
-                <button class="bg-amazonGreen text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg">+ YENİ MAKALE</button>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            <div class="dashboard-card p-6 rounded-3xl">
-                <div class="text-rioBlue mb-4 bg-rioBlue/10 w-fit p-2 rounded-lg"><i data-lucide="users"></i></div>
-                <p class="text-xs font-bold text-gray-400 uppercase">Toplam Okuyucu</p>
-                <h3 class="text-3xl font-bold mt-1">1.420.000</h3>
-            </div>
-            <div class="dashboard-card p-6 rounded-3xl">
-                <div class="text-sunsetOrange mb-4 bg-sunsetOrange/10 w-fit p-2 rounded-lg"><i data-lucide="trending-up"></i></div>
-                <p class="text-xs font-bold text-gray-400 uppercase">Etkileşim Skoru</p>
-                <h3 class="text-3xl font-bold mt-1">%89.4</h3>
-            </div>
-            <div class="dashboard-card p-6 rounded-3xl">
-                <div class="text-amazonGreen mb-4 bg-amazonGreen/10 w-fit p-2 rounded-lg"><i data-lucide="message-circle"></i></div>
-                <p class="text-xs font-bold text-gray-400 uppercase">Yorumlar</p>
-                <h3 class="text-3xl font-bold mt-1">12.450</h3>
-            </div>
-            <div class="dashboard-card p-6 rounded-3xl">
-                <div class="text-mardinStone mb-4 bg-mardinStone/10 w-fit p-2 rounded-lg"><i data-lucide="share-2"></i></div>
-                <p class="text-xs font-bold text-gray-400 uppercase">Paylaşım</p>
-                <h3 class="text-3xl font-bold mt-1">45.200</h3>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 dashboard-card p-8 rounded-[2.5rem]">
-                <h4 class="font-bold mb-6 text-lg">Haftalık Trafik Analizi</h4>
-                <canvas id="authorChart" height="150"></canvas>
-            </div>
-            <div class="bg-deepBlack text-white p-8 rounded-[2.5rem] relative overflow-hidden">
-                <h4 class="font-bold mb-6 text-lg relative z-10">AI İçerik Asistanı</h4>
-                <div class="space-y-4 relative z-10">
-                    <div class="p-4 bg-white/10 rounded-2xl border border-white/10">
-                        <p class="text-xs text-sunsetOrange font-bold mb-1 uppercase">Trend Önerisi</p>
-                        <p class="text-sm">"Brezilya Karnavalı'nda Mardin Reyhani Oyunu" konusu bugün %40 daha popüler.</p>
-                    </div>
-                    <div class="p-4 bg-white/10 rounded-2xl border border-white/10">
-                        <p class="text-xs text-rioBlue font-bold mb-1 uppercase">SEO Uyarısı</p>
-                        <p class="text-sm">Yazılarınızda 'Sürdürülebilir Sanat' etiketini kullanın.</p>
-                    </div>
+            <div>
+                <h5 class="text-stoneYellow font-bold text-xs uppercase tracking-widest mb-6 italic">Merkezler</h5>
+                <p class="text-sm text-white/60 italic leading-relaxed">Kasımiye Medresesi, Mardin<br>Avenida Atlântica, Rio de Janeiro</p>
+                <div class="mt-8 flex gap-4 opacity-40">
+                    <i data-lucide="instagram" size="18"></i><i data-lucide="twitter" size="18"></i><i data-lucide="facebook" size="18"></i>
                 </div>
-                <i data-lucide="sparkles" class="absolute -right-8 -bottom-8 text-white/5" size="200"></i>
             </div>
-        </div>
-    </div>
-
-    <footer id="global-footer" class="bg-deepBlack text-white py-12 px-6 mt-20">
-        <div class="max-w-7xl mx-auto text-center border-t border-white/10 pt-10 text-[10px] text-gray-600 uppercase tracking-[0.3em]">
-            © 2026 MARDIN & BRAZIL DIGITAL ECOSYSTEM
         </div>
     </footer>
 
     <script>
-        // SINGLE PAGE APPLICATION MANTIĞI
+        // SINGLE PAGE APPLICATION (SPA) LOGIC
         function showPage(pageId) {
-            // Tüm sayfaları gizle
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            // İstenen sayfayı göster
-            document.getElementById(pageId + '-page' || pageId).classList.add('active');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
             
-            // Footer'ı dashboard'da gizleyebiliriz
-            const footer = document.getElementById('global-footer');
-            pageId === 'dashboard' ? footer.style.display = 'none' : footer.style.display = 'block';
-
-            // Sayfayı yukarı kaydır
+            // Eğer harita sayfası açılırsa AI durumu değişsin
+            const aiStatus = document.getElementById('ai-status');
+            if(pageId === 'map') {
+                aiStatus.innerHTML = `<span class="text-xs font-bold tracking-widest uppercase">3D Render Modu Aktif</span>`;
+                aiStatus.style.backgroundColor = '#0077B6';
+            } else if(pageId === 'dashboard') {
+                aiStatus.innerHTML = `<span class="text-xs font-bold tracking-widest uppercase italic">Editör Modu: Canlı</span>`;
+                aiStatus.style.backgroundColor = '#B45309';
+            } else {
+                aiStatus.innerHTML = `<div class="sound-wave"><div class="bar"></div><div class="bar" style="animation-delay: 0.2s"></div><div class="bar" style="animation-delay: 0.4s"></div></div><span class="text-xs font-bold tracking-widest uppercase tracking-tighter">AI Co-Pilot: Mardin Tonu Aktif</span>`;
+                aiStatus.style.backgroundColor = '#064E3B';
+            }
+            
             window.scrollTo(0, 0);
         }
 
-        // İkonları Yükle
+        // INITIALIZE ICONS
         lucide.createIcons();
 
-        // Dashboard Grafik Ayarları
-        const ctx = document.getElementById('authorChart').getContext('2d');
+        // DASHBOARD CHART (CHART.JS)
+        const ctx = document.getElementById('trafficChart').getContext('2d');
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+                labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran'],
                 datasets: [{
-                    label: 'Okunma',
-                    data: [120, 190, 300, 500, 200, 300, 450],
+                    label: 'Mardin Trafiği',
+                    data: [65, 59, 80, 81, 56, 95],
                     borderColor: '#E2C799',
                     backgroundColor: 'rgba(226, 199, 153, 0.1)',
-                    tension: 0.4,
+                    tension: 0.5,
+                    fill: true
+                }, {
+                    label: 'Rio Trafiği',
+                    data: [45, 80, 60, 95, 75, 120],
+                    borderColor: '#0077B6',
+                    backgroundColor: 'rgba(0, 119, 182, 0.1)',
+                    tension: 0.5,
                     fill: true
                 }]
             },
@@ -238,10 +333,17 @@
                 plugins: { legend: { display: false } },
                 scales: { 
                     y: { display: false },
-                    x: { grid: { display: false }, border: { display: false } }
+                    x: { grid: { display: false, borderDash: [2, 2] }, ticks: { font: { family: 'Plus Jakarta Sans', size: 10, weight: '800' } } }
                 }
             }
         });
+
+        // AI NOTIFICATION SIMULATION
+        setTimeout(() => {
+            const aiStatus = document.getElementById('ai-status');
+            aiStatus.style.transform = 'translateY(-10px)';
+            setTimeout(() => aiStatus.style.transform = 'translateY(0)', 200);
+        }, 3000);
     </script>
 </body>
 </html>
