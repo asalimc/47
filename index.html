@@ -18,22 +18,19 @@
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg); color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; padding-bottom: 80px; }
 
-        /* Okuma İlerleme Çubuğu - Tasarımı Bozmaz */
-        #progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: var(--rio); z-index: 2000; width: 0%; transition: 0.2s; }
-
         /* --- 1. HEADER & NAV --- */
         header { background: white; padding: 60px 20px; text-align: center; border-bottom: 5px solid var(--mardin); }
         header h1 { font-family: 'Playfair Display', serif; font-size: 5rem; letter-spacing: -4px; }
         header h1 span { color: var(--rio); }
         
-        nav { background: white; position: sticky; top: 4px; z-index: 1000; border-bottom: 1px solid #eee; padding: 15px; }
+        nav { background: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #eee; padding: 15px; }
         nav ul { display: flex; justify-content: center; list-style: none; gap: 30px; }
         nav a { font-weight: 700; font-size: 12px; text-transform: uppercase; color: var(--dark); text-decoration: none; transition: 0.3s; }
         nav a:hover { color: var(--mardin); }
 
         .wrapper { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-        /* --- 2. HABER AKIŞI --- */
+        /* --- 2. GASTRO GRID (HABERLER) --- */
         .gastro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
         .flip-card { height: 450px; perspective: 1000px; cursor: pointer; }
         .flip-inner { position: relative; width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; }
@@ -43,31 +40,27 @@
         .front-overlay { background: linear-gradient(transparent, rgba(0,0,0,0.9)); width: 100%; padding: 30px; color: white; }
         .flip-back { color: white; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; }
 
-        /* --- 3. TAM EKRAN DETAY PANELİ --- */
+        /* --- 3. TAM EKRAN DETAY --- */
         .detail-overlay { 
-            position: fixed; inset: 0; 
-            z-index: 10001; display: none; 
-            flex-direction: column; overflow-y: auto;
+            position: fixed; inset: 0; z-index: 10001; display: none; 
+            flex-direction: column; overflow-y: auto; color: white;
             animation: slideUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            color: white; padding: 0;
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .detail-container { max-width: 900px; margin: 60px auto; padding: 40px 20px; }
+        .close-detail { position: fixed; top: 30px; right: 40px; font-size: 3rem; cursor: pointer; color: white; z-index: 10002; }
 
-        .detail-container { max-width: 900px; margin: 60px auto; padding: 40px 20px; position: relative; }
-        .close-detail { position: fixed; top: 30px; right: 40px; font-size: 3rem; cursor: pointer; color: white; z-index: 10002; transition: 0.3s; }
-        
-        .modal-img-full { width: 100%; height: auto; border-radius: 25px; margin-bottom: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-        .detail-body h2 { font-family: 'Playfair Display'; font-size: 3.5rem; margin-bottom: 10px; line-height: 1.1; }
-        .detail-body p { font-family: 'Lora'; font-size: 1.4rem; line-height: 1.9; opacity: 0.9; }
+        /* --- 4. VIDEO (KESİN ÇÖZÜM) --- */
+        .video-container { 
+            position: relative; width: 100%; height: 450px; 
+            border-radius: 25px; overflow: hidden; margin-bottom: 60px;
+            background: #000; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .video-container iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:0; }
 
-        /* --- 4. VIDEO KONTEYNER (DÜZELTİLDİ) --- */
-        .video-wrapper { position: relative; width: 100%; height: 450px; border-radius: 25px; overflow: hidden; margin-bottom: 60px; background: #000; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-
-        /* --- 5. MAKALE VE İSTATİSTİK --- */
+        /* --- 5. İSTATİSTİK & MAKALE --- */
         .main-article { background: white; padding: 50px; border-radius: 25px; margin-bottom: 40px; }
         .dropcap { float: left; font-size: 4.5rem; font-weight: 900; line-height: 0.8; margin-right: 12px; color: var(--mardin); }
-
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; margin-bottom: 60px; background: white; padding: 30px; border-radius: 25px; }
         .stat-val { font-size: 2.2rem; font-weight: 900; color: var(--rio); display: block; }
 
@@ -77,13 +70,11 @@
         @media (max-width: 768px) { header h1 { font-size: 3rem; } .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
-<body onscroll="updateProgress()">
-
-    <div id="progress-bar"></div>
+<body>
 
     <header id="top">
-        <div style="font-size: 10px; font-weight: bold; margin-bottom: 10px; letter-spacing: 2px;">
-            MARDİN 18°C | RIO 29°C — <span id="live-visitor">1,248</span> KİŞİ ŞU AN BURADA
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px;">
+            MARDİN 18°C | RIO 29°C — <span id="visitor-count">1,402</span> AKTİF ZİYARETÇİ
         </div>
         <h1>MARDIN<span>RIO</span></h1>
         <p style="letter-spacing: 5px; font-weight: bold; font-size: 12px; color: var(--mardin);">KÜLTÜREL SENTEZ • ESTETİK • YAŞAM</p>
@@ -105,68 +96,68 @@
             <div class="flip-card" data-type="news" data-color="var(--mardin)"
                  data-title="Taşın Mirası Geleceğe Aktarılıyor" 
                  data-img="https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800&q=80"
-                 data-info="Mardin'in kadim çarşılarında başlatılan restorasyon seferberliği, şehrin binlerce yıllık silüetini koruma altına alıyor. Bu asil doku, Rio'lu mimarların sürdürülebilirlik araştırmalarına konu oldu.">
+                 data-info="Mardin'in sarı kalker taşları, sadece yapı değil bir hafızadır. UNESCO korumasındaki bu doku, Rio Mimarlık Bienali'nde 'Yılın Sürdürülebilir Mirası' seçildi.">
                 <div class="flip-inner">
                     <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=800&q=80');">
                         <div class="front-overlay">
                             <p style="font-size: 10px; font-weight: bold; color: var(--mardin);">MARDİN • MİRAS</p>
-                            <h4>Taşın Mirası Koruma Altında</h4>
+                            <h4>Taşın Mirası Restore Ediliyor</h4>
                         </div>
                     </div>
                     <div class="flip-back" style="background: var(--mardin);">
-                        <h2>GELENEĞİN İZİ</h2>
+                        <h2>GELENEKSEL DOKU</h2>
                         <p>Mezopotamya'nın altın rengi taşları uzman ellerde parlıyor.</p>
-                        <span style="margin-top:20px; font-weight: bold; border-bottom: 2px solid white;">DEVAMINI OKU</span>
+                        <span style="margin-top:20px; font-weight: bold; border-bottom: 2px solid white;">DETAYLAR</span>
                     </div>
                 </div>
             </div>
 
             <div class="flip-card" data-type="news" data-color="var(--rio)"
-                 data-title="Alma Verde: Rio'nun Dijital Akciğerleri" 
+                 data-title="Alma Verde: Yeşil Ruh" 
                  data-img="https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800&q=80"
-                 data-info="Rio merkezli Alma Verde projesi, Amazon ormanlarını yapay zeka ve blokzincir teknolojisiyle koruyarak dünyaya yeni bir ekolojik model sunuyor.">
+                 data-info="Rio'dan dünyaya yayılan Alma Verde projesi, Amazon ormanlarını yapay zeka ile izleyerek sürdürülebilir bir gelecek vaat ediyor.">
                 <div class="flip-inner">
                     <div class="flip-front" style="background-image: url('https://images.unsplash.com/photo-1516908205727-40afad9449a8?auto=format&fit=crop&w=800&q=80');">
                         <div class="front-overlay">
                             <p style="font-size: 10px; font-weight: bold; color: var(--rio);">RIO • VİZYON</p>
-                            <h4>ALMA VERDE: Yeşil Ruh Projesi</h4>
+                            <h4>ALMA VERDE: Yeşil Ruh</h4>
                         </div>
                     </div>
                     <div class="flip-back" style="background: var(--rio);">
-                        <h2>YEŞİL VİZYON</h2>
-                        <p>Doğayı teknolojiyle koruma vizyonu Rio'dan dünyaya yayılıyor.</p>
+                        <h2>YEŞİL GELECEK</h2>
+                        <p>Doğayı teknolojiyle koruma vizyonu Rio'da hayat buluyor.</p>
                         <span style="margin-top:20px; font-weight: bold; border-bottom: 2px solid white;">VER DETALHES</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <h3 id="explore" style="margin-bottom: 20px; font-family: 'Playfair Display'; scroll-margin-top: 100px;">İKİ GÜNEŞ ARASINDA</h3>
-        <div class="video-wrapper">
+        <h3 id="explore" style="margin-bottom: 20px; font-family: 'Playfair Display'; scroll-margin-top: 100px;">İKİ GÜNEŞ ARASINDA: VİZYON 2026</h3>
+        <div class="video-container">
             <iframe src="https://www.youtube.com/embed/S_8qMvT2MvA?autoplay=1&mute=1&loop=1&playlist=S_8qMvT2MvA" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
 
         <article class="main-article">
             <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 25px;">Gümüşün Sessizliği, Sambanın Ritmi</h2>
             <div class="article-body">
-                <p><span class="dropcap">B</span>rezilya ve Türkiye arasındaki bu kültürel köprü, 2026 yılında tarihinin en parlak dönemini yaşıyor. Mardin'in telkâri gümüşleri Rio Karnavalı'nın kostümlerini süslerken, her iki şehir de ortak bir gelecek vizyonunda buluşuyor.</p>
+                <p><span class="dropcap">B</span>u yıl düzenlenen küresel sanat zirvesinde Mardin ve Rio de Janeiro kardeş şehir ilanı yolunda büyük bir adım attı. Taşın sessizliği ile Samba'nın coşkusunu bir araya getiren bu eşsiz işbirliği her alanda hissediliyor.</p>
             </div>
         </article>
 
         <div class="stats-grid">
-            <div><span class="stat-val">10.500 km</span><span class="stat-label">Mesafe</span></div>
-            <div><span class="stat-val" id="live-counter">2,481</span><span class="stat-label">Toplam İçerik</span></div>
-            <div><span class="stat-val">2026</span><span class="stat-label">Hedef Yıl</span></div>
+            <div><span class="stat-val">10.500 km</span><span class="stat-label">Hava Hattı</span></div>
+            <div><span class="stat-val">24/7</span><span class="stat-label">Canlı Akış</span></div>
+            <div><span class="stat-val">2026</span><span class="stat-label">Stratejik Hedef</span></div>
         </div>
     </div>
 
     <div id="detailOverlay" class="detail-overlay">
         <span class="close-detail" onclick="closeDetail()">&times;</span>
         <div class="detail-container">
-            <img id="modalImage" class="modal-img-full" src="" alt="">
+            <img id="modalImage" style="width:100%; border-radius:25px; margin-bottom:40px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);" src="" alt="">
             <div id="detailBody" class="detail-body"></div>
-            <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; font-size: 0.8rem;">
-                <p>PAYLAŞ: <span style="text-decoration: underline; cursor: pointer; margin-right: 15px;">WhatsApp</span> <span style="text-decoration: underline; cursor: pointer;">Twitter (X)</span></p>
+            <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+                <p style="font-size: 0.8rem; letter-spacing: 2px;">PAYLAŞ: <span style="cursor:pointer; text-decoration: underline;">WHATSAPP</span> • <span style="cursor:pointer; text-decoration: underline;">X (TWITTER)</span></p>
             </div>
         </div>
     </div>
@@ -177,18 +168,10 @@
     </footer>
 
     <script>
-        // Okuma Çubuğu Fonksiyonu
-        function updateProgress() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        }
-
         // Ziyaretçi Sayacı Simülasyonu
         setInterval(() => {
-            const visitor = Math.floor(Math.random() * (1300 - 1200) + 1200);
-            document.getElementById('live-visitor').innerText = visitor.toLocaleString();
+            const count = Math.floor(Math.random() * (1500 - 1350) + 1350);
+            document.getElementById('visitor-count').innerText = count.toLocaleString();
         }, 3000);
 
         function openDetail(title, content, img, color) {
@@ -196,9 +179,9 @@
             overlay.style.backgroundColor = color || 'var(--rio)';
             document.getElementById('modalImage').src = img || '';
             document.getElementById('detailBody').innerHTML = `
-                <p style="font-weight:bold; font-size: 0.8rem; margin-bottom:10px; opacity:0.7;">3 DK OKUMA SÜRESİ</p>
-                <h2>${title}</h2>
-                <p>${content}</p>
+                <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; opacity: 0.7;">3 DK OKUMA SÜRESİ</p>
+                <h2 style="font-family:'Playfair Display'; font-size:3.5rem; margin-bottom:20px; line-height:1.1;">${title}</h2>
+                <p style="font-family:'Lora'; font-size:1.4rem; line-height:1.8; opacity:0.9;">${content}</p>
             `;
             overlay.style.display = 'flex';
             document.body.style.overflow = 'hidden';
