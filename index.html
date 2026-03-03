@@ -1,273 +1,160 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MERIDIAN GLOBAL | Full Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --m-orange: #f59e0b; --m-dark: #0f172a; --gold: linear-gradient(45deg, #d4af37, #f7e7ce, #b8860b); }
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; overflow-x: hidden; }
-        .meridian-font { font-family: 'Orbitron', sans-serif; }
+<style>
+    /* Detay Görünümü İçin */
+    #view-detail { background: white; }
+    .reading-content { line-height: 1.8; color: #334155; }
+    .stat-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); }
+    .control-btn { @apply p-2 hover:bg-slate-100 rounded-lg transition-all; }
+</style>
+
+<main id="view-detail" class="view-node max-w-4xl mx-auto px-4 py-10">
+    <button onclick="router('home')" class="mb-8 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-orange-500">
+        <i class="fa-solid fa-arrow-left"></i> Geri Dön
+    </button>
+    
+    <div id="detail-content">
+        </div>
+</main>
+
+<script>
+    // --- SESLİ OKUMA SİSTEMİ ---
+    let speech = new SpeechSynthesisUtterance();
+    let isReading = false;
+
+    function toggleSpeech(text) {
+        if (isReading) {
+            window.speechSynthesis.cancel();
+            isReading = false;
+            document.getElementById('speak-btn').innerHTML = '<i class="fa-solid fa-play mr-2"></i> Dinle';
+        } else {
+            speech.text = text;
+            speech.lang = 'tr-TR';
+            speech.rate = 1;
+            window.speechSynthesis.speak(speech);
+            isReading = true;
+            document.getElementById('speak-btn').innerHTML = '<i class="fa-solid fa-stop mr-2"></i> Durdur';
+            speech.onend = () => { isReading = false; document.getElementById('speak-btn').innerHTML = '<i class="fa-solid fa-play mr-2"></i> Dinle'; };
+        }
+    }
+
+    // --- METİN BOYUTU SİSTEMİ ---
+    let currentFontSize = 18;
+    function changeFontSize(delta) {
+        currentFontSize += delta;
+        document.getElementById('news-body').style.fontSize = currentFontSize + 'px';
+    }
+
+    // --- DETAY SAYFASI RENDER ---
+    function openNews(id) {
+        const h = db.haberler.find(x => x.id === id);
+        const y = db.yazarlar.find(x => x.id === h.yid);
+        const c = db.cats.find(x => x.id === h.cid);
         
-        /* Altın Çerçeveli Yazar Halkaları */
-        .header-author-circle {
-            width: 60px; height: 60px; padding: 3px; background: var(--gold);
-            border-radius: 50%; cursor: pointer; transition: 0.3s; flex-shrink: 0;
-        }
-        .header-author-circle:hover { transform: scale(1.1); rotate: 5deg; }
-        .header-author-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; }
-
-        .view-node { display: none; }
-        .active-view { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .glass-card { background: white; border-radius: 2rem; border: 1px solid rgba(0,0,0,0.05); transition: 0.3s; }
-        .glass-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-    </style>
-</head>
-<body>
-
-    <div class="bg-[#f59e0b] h-10 flex items-center justify-center shadow-lg">
-        <p class="meridian-font text-[10px] font-black tracking-[0.4em] text-black">BRASIILIA - MARDIN INTELLIGENCE BRIDGE</p>
-    </div>
-
-    <header class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-[100]">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div onclick="router('home')" class="cursor-pointer flex items-center gap-2">
-                <div class="bg-black text-white w-10 h-10 flex items-center justify-center rounded-xl meridian-font text-xl">M</div>
-                <h1 class="font-black text-2xl tracking-tighter text-slate-900">MSP<span class="text-orange-500">.</span>GLOBAL</h1>
+        router('detail');
+        
+        document.getElementById('detail-content').innerHTML = `
+            <div class="mb-10 text-center">
+                <span class="text-orange-500 font-black text-xs uppercase tracking-widest">${c ? c.name : ''}</span>
+                <h1 class="text-4xl md:text-6xl font-black mt-4 mb-6 leading-tight">${h.title}</h1>
+                <div class="flex items-center justify-center gap-6 border-y py-6">
+                    <div class="flex items-center gap-3">
+                        <img src="${y.img}" class="w-12 h-12 rounded-full object-cover ring-2 ring-orange-500">
+                        <div class="text-left">
+                            <p class="font-black text-sm uppercase">${y.isim}</p>
+                            <p class="text-[10px] text-slate-400 font-bold">${y.unvan}</p>
+                        </div>
+                    </div>
+                    <div class="h-10 w-[1px] bg-slate-200"></div>
+                    <div class="flex flex-col items-start">
+                        <p class="text-[10px] font-black text-slate-400 uppercase">Yayın Tarihi</p>
+                        <p class="text-xs font-bold">${h.date}</p>
+                    </div>
+                </div>
             </div>
 
-            <div id="h-authors" class="flex gap-4 overflow-x-auto no-scrollbar max-w-md md:max-w-xl py-2"></div>
-
-            <button onclick="router('admin')" class="bg-black text-white px-8 py-3 rounded-full text-[10px] font-black uppercase hover:bg-orange-500 transition shadow-lg">YÖNETİM PANELİ</button>
-        </div>
-        <nav class="bg-slate-50 border-t overflow-x-auto no-scrollbar">
-            <div id="h-cats" class="max-w-7xl mx-auto px-4 flex gap-8 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
+            <div class="flex justify-between items-center mb-8 sticky top-24 bg-white/80 backdrop-blur py-4 z-50 px-4 rounded-2xl border">
+                <div class="flex gap-2">
+                    <button id="speak-btn" onclick="toggleSpeech('${h.text.replace(/'/g, "\\'")}')" class="bg-black text-white px-6 py-2 rounded-xl text-[10px] font-black uppercase flex items-center transition hover:bg-orange-500">
+                        <i class="fa-solid fa-play mr-2"></i> Dinle
+                    </button>
                 </div>
-        </nav>
-    </header>
-
-    <main id="view-home" class="view-node active-view max-w-7xl mx-auto px-4 py-10">
-        <div id="cat-indicator" class="hidden mb-8 flex items-center gap-4">
-            <h2 id="current-cat-name" class="text-4xl font-black italic"></h2>
-            <button onclick="filterByCat('all')" class="text-xs font-bold text-orange-500 underline">Tümünü Göster</button>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <div id="news-flow" class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8"></div>
-            <aside class="lg:col-span-4 space-y-8">
-                <div class="bg-slate-900 text-white rounded-[3rem] p-8">
-                    <h4 class="meridian-font text-xs text-orange-500 mb-6">SPONSORLU</h4>
-                    <div id="side-ad"></div>
+                <div class="flex items-center gap-4">
+                    <span class="text-[10px] font-black text-slate-400">METİN BOYUTU</span>
+                    <button onclick="changeFontSize(-2)" class="control-btn font-bold">A-</button>
+                    <button onclick="changeFontSize(2)" class="control-btn font-bold">A+</button>
                 </div>
-            </aside>
-        </div>
-    </main>
-
-    <main id="view-admin" class="view-node min-h-screen bg-slate-950 text-white">
-        <div class="flex flex-col md:flex-row min-h-screen">
-            <nav class="w-full md:w-64 bg-black p-8 space-y-2 border-r border-white/5">
-                <p class="text-[9px] font-black text-slate-600 uppercase mb-10 tracking-widest">Master Control</p>
-                <button onclick="setTab('cat')" id="t-cat" class="w-full text-left p-4 rounded-2xl font-bold text-xs uppercase hover:bg-orange-500 transition">Kategoriler</button>
-                <button onclick="setTab('haber')" id="t-haber" class="w-full text-left p-4 rounded-2xl font-bold text-xs uppercase hover:bg-orange-500 transition">Haberler</button>
-                <button onclick="setTab('yazar')" id="t-yazar" class="w-full text-left p-4 rounded-2xl font-bold text-xs uppercase hover:bg-orange-500 transition">Yazarlar</button>
-                <button onclick="router('home')" class="mt-20 w-full bg-white/10 p-4 rounded-2xl text-[10px] font-black uppercase">Portala Dön</button>
-            </nav>
-            <section class="flex-1 p-6 md:p-12">
-                <div class="flex justify-between items-center mb-12">
-                    <h2 id="adm-title" class="text-3xl font-black italic uppercase">Modül</h2>
-                    <button onclick="openModal()" class="bg-orange-500 text-black px-8 py-4 rounded-2xl font-black text-xs hover:scale-105 transition">+ YENİ EKLE</button>
-                </div>
-                <div id="adm-list" class="grid grid-cols-1 gap-4"></div>
-            </section>
-        </div>
-    </main>
-
-    <div id="modal" class="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 hidden">
-        <div class="bg-white text-black w-full max-w-xl rounded-[3rem] p-10 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <h3 class="text-2xl font-black mb-8 border-b pb-4">Veri Giriş Paneli</h3>
-            <div id="m-fields" class="space-y-4"></div>
-            <div class="mt-10 flex gap-4">
-                <button onclick="closeModal()" class="flex-1 font-bold text-slate-400">İPTAL</button>
-                <button onclick="saveData()" class="flex-[2] bg-black text-white p-5 rounded-2xl font-black uppercase text-xs">SİSTEME KAYDET</button>
             </div>
-        </div>
-    </div>
 
-    <script>
-        // MASTER DATABASE
-        let db = JSON.parse(localStorage.getItem('meridian_ultra_v1')) || {
-            cats: [
-                {id: 'c1', name: 'Mardin Strateji'},
-                {id: 'c2', name: 'Brasília HQ'},
-                {id: 'c3', name: 'Global Ekonomi'}
-            ],
-            yazarlar: [
-                {id: 'y1', isim: 'Ahmet Çınarbaş', unvan: 'Siyaset Bilimci', img: 'https://i.pravatar.cc/150?u=a1'},
-                {id: 'y2', isim: 'M. Beşir Ayanoğlu', unvan: 'Hukukçu', img: 'https://i.pravatar.cc/150?u=a2'}
-            ],
-            haberler: [
-                {id: 'h1', cid: 'c1', yid: 'y1', title: 'Mardin-Brezilya Ticaret Köprüsü', text: 'İki bölge arasındaki ekonomik bağlar güçleniyor...', img: 'https://images.unsplash.com/photo-1590595906931-81f04f0ccebb?auto=format&fit=crop&w=800', date: '02.03.2026'},
-                {id: 'h2', cid: 'c2', yid: 'y2', title: 'Brasília’da Yeni Diplomasi Atılımı', text: 'Güney Amerika pazarında Mardin rüzgarı esiyor...', img: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=800', date: '02.03.2026'}
-            ]
-        };
+            <img src="${h.img}" class="w-full h-[500px] object-cover rounded-[3rem] mb-12 shadow-2xl">
+            
+            <div id="news-body" class="reading-content text-lg leading-relaxed space-y-6 mb-20">
+                ${h.text.replace(/\n/g, '<br>')}
+            </div>
+        `;
+    }
 
-        let activeTab = 'cat';
-        let editId = null;
-        let tempImg = "";
-
-        function router(v) {
-            document.querySelectorAll('.view-node').forEach(n => n.classList.remove('active-view'));
-            document.getElementById('view-'+v).classList.add('active-view');
-            if(v==='home') renderPortal();
-            if(v==='admin') renderAdmin();
-            window.scrollTo(0,0);
+    // --- GELİŞMİŞ ADMİN DASHBOARD (Admin görünümünü güncelle) ---
+    function renderAdmin() {
+        const list = document.getElementById('adm-list');
+        list.innerHTML = '';
+        
+        // İstatistik Paneli
+        if(list.innerHTML === '') {
+            const stats = `
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div class="stat-card p-8 rounded-[2rem]">
+                        <p class="text-slate-500 text-[10px] font-black uppercase">Toplam Haber</p>
+                        <h4 class="text-4xl font-black meridian-font text-orange-500 mt-2">${db.haberler.length}</h4>
+                    </div>
+                    <div class="stat-card p-8 rounded-[2rem]">
+                        <p class="text-slate-500 text-[10px] font-black uppercase">Aktif Yazar</p>
+                        <h4 class="text-4xl font-black meridian-font text-orange-500 mt-2">${db.yazarlar.length}</h4>
+                    </div>
+                    <div class="stat-card p-8 rounded-[2rem]">
+                        <p class="text-slate-500 text-[10px] font-black uppercase">Kategoriler</p>
+                        <h4 class="text-4xl font-black meridian-font text-orange-500 mt-2">${db.cats.length}</h4>
+                    </div>
+                </div>
+            `;
+            list.insertAdjacentHTML('beforebegin', ''); // Eğer istersen başlığın hemen altına ekleyebilirsin
         }
 
-        function setTab(t) {
-            activeTab = t;
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('bg-orange-500', 'text-black'));
-            document.getElementById('t-'+t).classList.add('bg-orange-500', 'text-black');
-            document.getElementById('adm-title').innerText = t === 'cat' ? 'Kategoriler' : (t === 'haber' ? 'Haber Yönetimi' : 'Yazarlar');
-            renderAdmin();
-        }
+        let data = activeTab === 'cat' ? db.cats : (activeTab === 'haber' ? db.haberler : db.yazarlar);
 
-        // IMAGE PROCESSOR
-        function processImg(e) {
-            const r = new FileReader();
-            r.onload = () => { tempImg = r.result; document.getElementById('p-img').src = tempImg; document.getElementById('p-img').classList.remove('hidden'); };
-            r.readAsDataURL(e.target.files[0]);
-        }
-
-        // ADMIN RENDER
-        function renderAdmin() {
-            const list = document.getElementById('adm-list');
-            list.innerHTML = '';
-            let data = activeTab === 'cat' ? db.cats : (activeTab === 'haber' ? db.haberler : db.yazarlar);
-
-            data.forEach(item => {
-                list.innerHTML += `
-                <div class="bg-white/5 border border-white/10 p-5 rounded-3xl flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        ${item.img ? `<img src="${item.img}" class="w-12 h-12 rounded-xl object-cover">` : '<div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-black font-bold">#</div>'}
-                        <div><p class="font-bold">${item.name || item.title || item.isim}</p></div>
+        data.forEach(item => {
+            list.innerHTML += `
+                <div class="bg-white/5 border border-white/10 p-6 rounded-[2rem] flex items-center justify-between group hover:bg-white/10 transition">
+                    <div class="flex items-center gap-6">
+                        ${item.img ? `<img src="${item.img}" class="w-16 h-16 rounded-2xl object-cover shadow-lg">` : '<div class="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center text-black font-bold text-2xl">#</div>'}
+                        <div>
+                            <p class="text-xs text-orange-500 font-black uppercase mb-1">${activeTab}</p>
+                            <p class="font-bold text-lg">${item.name || item.title || item.isim}</p>
+                        </div>
                     </div>
                     <div class="flex gap-4">
-                        <button onclick="deleteItem('${item.id}')" class="text-red-500 text-xs font-black uppercase">SİL</button>
+                        <button onclick="deleteItem('${item.id}')" class="w-12 h-12 rounded-full border border-red-500/20 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </div>
                 </div>`;
-            });
-        }
+        });
+    }
 
-        // MODAL LOGIC
-        function openModal() {
-            editId = null; tempImg = "";
-            const f = document.getElementById('m-fields');
-            if(activeTab === 'cat') {
-                f.innerHTML = `<input id="f-name" type="text" placeholder="Kategori Adı" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">`;
-            } else if(activeTab === 'yazar') {
-                f.innerHTML = `
-                <div class="h-32 bg-slate-100 rounded-2xl flex items-center justify-center relative border-2 border-dashed">
-                    <img id="p-img" class="absolute inset-0 w-full h-full object-cover hidden">
-                    <input type="file" onchange="processImg(event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                    <span class="text-[10px] font-black opacity-40">RESİM SEÇ</span>
-                </div>
-                <input id="f-isim" type="text" placeholder="İsim Soyisim" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">
-                <input id="f-unvan" type="text" placeholder="Ünvan" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">`;
-            } else {
-                let cOpts = db.cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-                let yOpts = db.yazarlar.map(y => `<option value="${y.id}">${y.isim}</option>`).join('');
-                f.innerHTML = `
-                <div class="h-32 bg-slate-100 rounded-2xl flex items-center justify-center relative border-2 border-dashed">
-                    <img id="p-img" class="absolute inset-0 w-full h-full object-cover hidden">
-                    <input type="file" onchange="processImg(event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                    <span class="text-[10px] font-black opacity-40">HABER RESMİ</span>
-                </div>
-                <select id="f-cid" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">${cOpts}</select>
-                <select id="f-yid" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">${yOpts}</select>
-                <input id="f-title" type="text" placeholder="Haber Başlığı" class="w-full p-5 bg-slate-100 rounded-2xl font-bold">
-                <textarea id="f-text" placeholder="İçerik..." class="w-full p-5 bg-slate-100 rounded-2xl h-32"></textarea>`;
-            }
-            document.getElementById('modal').classList.remove('hidden');
-        }
+    // Portal Haber Kartlarını Güncelle (Tıklama ekle)
+    function filterByCat(cid) {
+        const flow = document.getElementById('news-flow');
+        flow.innerHTML = '';
+        let filtered = cid === 'all' ? db.haberler : db.haberler.filter(h => h.cid === cid);
 
-        function saveData() {
-            let item = { id: 'ID' + Date.now() };
-            if(activeTab === 'cat') { item.name = document.getElementById('f-name').value; db.cats.push(item); }
-            else if(activeTab === 'yazar') { 
-                item.isim = document.getElementById('f-isim').value; 
-                item.unvan = document.getElementById('f-unvan').value; 
-                item.img = tempImg; db.yazarlar.push(item); 
-            }
-            else {
-                item.cid = document.getElementById('f-cid').value;
-                item.yid = document.getElementById('f-yid').value;
-                item.title = document.getElementById('f-title').value;
-                item.text = document.getElementById('f-text').value;
-                item.img = tempImg; item.date = new Date().toLocaleDateString();
-                db.haberler.push(item);
-            }
-            localStorage.setItem('meridian_ultra_v1', JSON.stringify(db));
-            closeModal(); renderAdmin(); renderPortal();
-        }
-
-        function deleteItem(id) {
-            if(confirm('Silinsin mi?')) {
-                if(activeTab === 'cat') db.cats = db.cats.filter(x => x.id !== id);
-                if(activeTab === 'yazar') db.yazarlar = db.yazarlar.filter(x => x.id !== id);
-                if(activeTab === 'haber') db.haberler = db.haberler.filter(x => x.id !== id);
-                localStorage.setItem('meridian_ultra_v1', JSON.stringify(db));
-                renderAdmin(); renderPortal();
-            }
-        }
-
-        // PORTAL RENDERING
-        function renderPortal() {
-            const hAuthors = document.getElementById('h-authors');
-            const hCats = document.getElementById('h-cats');
-            const newsFlow = document.getElementById('news-flow');
-
-            hAuthors.innerHTML = ''; hCats.innerHTML = '<button onclick="filterByCat(\'all\')" class="hover:text-black transition">Tümü</button>';
-            
-            db.yazarlar.forEach(y => {
-                hAuthors.innerHTML += `
-                <div class="flex flex-col items-center gap-1">
-                    <div class="header-author-circle"><img src="${y.img}"></div>
-                    <span class="text-[8px] font-black uppercase text-slate-400">${y.isim.split(' ')[0]}</span>
-                </div>`;
-            });
-
-            db.cats.forEach(c => {
-                hCats.innerHTML += `<button onclick="filterByCat('${c.id}')" class="hover:text-black transition">${c.name}</button>`;
-            });
-
-            filterByCat('all');
-        }
-
-        function filterByCat(cid) {
-            const flow = document.getElementById('news-flow');
-            flow.innerHTML = '';
-            let filtered = cid === 'all' ? db.haberler : db.haberler.filter(h => h.cid === cid);
-
-            if(cid !== 'all') {
-                document.getElementById('cat-indicator').classList.remove('hidden');
-                document.getElementById('current-cat-name').innerText = db.cats.find(c => c.id === cid).name;
-            } else {
-                document.getElementById('cat-indicator').classList.add('hidden');
-            }
-
-            filtered.forEach(h => {
-                const yazar = db.yazarlar.find(y => y.id === h.yid);
-                const cat = db.cats.find(c => c.id === h.cid);
-                flow.innerHTML += `
-                <div class="glass-card p-6 flex flex-col group cursor-pointer">
-                    <img src="${h.img}" class="w-full h-52 object-cover rounded-[1.5rem] mb-6 group-hover:scale-95 transition">
+        filtered.forEach(h => {
+            const yazar = db.yazarlar.find(y => y.id === h.yid);
+            const cat = db.cats.find(c => c.id === h.cid);
+            flow.innerHTML += `
+                <div onclick="openNews('${h.id}')" class="glass-card p-6 flex flex-col group cursor-pointer">
+                    <div class="overflow-hidden rounded-[1.5rem] mb-6">
+                        <img src="${h.img}" class="w-full h-52 object-cover group-hover:scale-110 transition duration-500">
+                    </div>
                     <span class="text-[9px] font-black uppercase text-orange-500 mb-2">${cat ? cat.name : ''}</span>
-                    <h3 class="text-xl font-black mb-4 leading-tight">${h.title}</h3>
+                    <h3 class="text-xl font-black mb-4 leading-tight group-hover:text-orange-500 transition">${h.title}</h3>
                     <div class="mt-auto flex items-center justify-between border-t pt-4">
                         <div class="flex items-center gap-2">
                             <img src="${yazar.img}" class="w-6 h-6 rounded-full object-cover">
@@ -276,11 +163,6 @@
                         <span class="text-[9px] text-slate-400 font-bold">${h.date}</span>
                     </div>
                 </div>`;
-            });
-        }
-
-        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
-        window.onload = () => { renderPortal(); setTab('cat'); };
-    </script>
-</body>
-</html>
+        });
+    }
+</script>
