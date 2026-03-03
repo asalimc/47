@@ -3,153 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin & Rio | Global Kültür Magazin</title>
+    <title>MARDİN & RIO | Ultra Kültür Magazin Portalı</title>
     <style>
         :root {
-            --mardin-gold: #c5a059;
-            --rio-ocean: #0077b6;
-            --brazil-gold: #ffb703;
-            --stone: #4a4e69;
+            --mardin-amber: #b08d57;
+            --rio-teal: #118ab2;
+            --dark: #0f0f0f;
+            --white: #ffffff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Playfair Display', serif; }
-        body { background-color: #faf9f6; color: #222; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f1ea; color: var(--dark); overflow-x: hidden; }
 
-        /* Weather Bar (Yeni) */
-        .weather-bar {
-            background: #111;
-            color: white;
-            padding: 8px 0;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #333;
-        }
-        .weather-item span { color: var(--mardin-gold); font-weight: bold; }
-
-        header { padding: 60px 20px; text-align: center; border-bottom: 1px solid #eee; }
-        header h1 { font-size: 4rem; letter-spacing: -2px; font-weight: 900; }
-        header h1 span { color: var(--mardin-gold); font-weight: 300; }
-
-        nav { background: white; padding: 15px; border-bottom: 2px solid #111; position: sticky; top: 0; z-index: 100; }
-        nav ul { display: flex; justify-content: center; list-style: none; gap: 30px; }
-        nav a { text-decoration: none; color: #111; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; }
-        nav a:hover { color: var(--rio-ocean); }
-
-        .container { max-width: 1200px; margin: 40px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 50px; padding: 0 20px; }
-
-        /* Haber Görünümü */
-        .featured-article { margin-bottom: 60px; }
-        .featured-article img { width: 100%; height: 500px; object-fit: cover; border-radius: 2px; }
-        .category-tag { color: var(--mardin-gold); font-weight: bold; margin-top: 20px; display: block; font-size: 0.9rem; }
-        .featured-article h2 { font-size: 2.8rem; margin: 10px 0; line-height: 1.1; }
-
-        /* Yazarlar Bölümü (Yeni) */
-        .authors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
-        .author-card { display: flex; align-items: center; gap: 15px; background: white; padding: 15px; border: 1px solid #eee; }
-        .author-img { width: 50px; height: 50px; border-radius: 50%; background: #ddd; object-fit: cover; }
-        .author-info h5 { font-size: 0.9rem; margin: 0; }
-        .author-info p { font-size: 0.7rem; color: #777; }
-
-        /* Sidebar Elemanları */
-        aside h4 { border-bottom: 2px solid #111; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.2rem; }
-        .sidebar-item { margin-bottom: 30px; }
+        /* 1. ÜST BİLGİ VE LOGO */
+        .top-nav { background: var(--dark); color: white; padding: 10px 0; text-align: center; font-size: 12px; letter-spacing: 2px; }
         
-        .culture-pulse { background: var(--stone); color: white; padding: 25px; border-radius: 4px; }
-        .pulse-stat { margin: 15px 0; }
-        .progress-bg { background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; margin-top: 5px; }
-        .progress-fill { background: var(--brazil-gold); height: 100%; border-radius: 4px; }
+        header { background: var(--white); padding: 40px 0; border-bottom: 5px solid var(--mardin-amber); text-align: center; }
+        header h1 { font-size: 4.5rem; font-weight: 900; letter-spacing: -3px; line-height: 0.8; }
+        header h1 span { color: var(--rio-teal); }
+        .motto { font-size: 14px; margin-top: 15px; color: var(--mardin-amber); font-weight: 600; text-transform: uppercase; }
 
-        footer { background: #111; color: white; padding: 60px; text-align: center; margin-top: 80px; }
+        /* 2. NAVİGASYON */
+        nav { background: var(--white); border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 1000; }
+        nav ul { display: flex; justify-content: center; list-style: none; padding: 15px; }
+        nav li { margin: 0 20px; }
+        nav a { text-decoration: none; color: var(--dark); font-weight: 700; font-size: 13px; transition: 0.3s; }
+        nav a:hover { color: var(--mardin-amber); }
 
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; }
-            header h1 { font-size: 2.5rem; }
-            .featured-article h2 { font-size: 1.8rem; }
-        }
+        /* 3. ANA DÜZEN */
+        .main-wrapper { max-width: 1400px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 3fr 1fr; gap: 40px; }
+
+        /* 4. VİDEO GALERİ BÖLÜMÜ (Yeni) */
+        .video-section { grid-column: span 2; background: var(--dark); padding: 40px; border-radius: 15px; color: white; margin-bottom: 40px; }
+        .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+        .video-card { background: #222; height: 200px; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; border: 1px solid #333; }
+        .play-btn { font-size: 40px; color: var(--mardin-amber); opacity: 0.8; }
+        .video-card:hover { border-color: var(--rio-teal); }
+
+        /* 5. HABER KARTLARI */
+        .main-news-large { position: relative; height: 600px; border-radius: 20px; overflow: hidden; margin-bottom: 40px; }
+        .main-news-large img { width: 100%; height: 100%; object-fit: cover; }
+        .news-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 50px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; }
+        .news-overlay h2 { font-size: 3rem; margin-bottom: 15px; }
+
+        /* 6. İLETİŞİM / YORUM FORMU (Yeni) */
+        .comment-section { background: white; padding: 30px; border-radius: 15px; margin-top: 40px; }
+        .comment-section h3 { margin-bottom: 20px; border-left: 5px solid var(--rio-teal); padding-left: 10px; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: var(--dark); color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: var(--mardin-amber); }
+
+        /* 7. SIDEBAR TRENDLER */
+        .sidebar-widget { background: white; padding: 25px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .sidebar-widget h4 { margin-bottom: 20px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
+        .trend-list li { list-style: none; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; display: flex; align-items: center; }
+        .trend-list li b { color: var(--rio-teal); margin-right: 10px; }
+
+        /* FOOTER */
+        footer { background: var(--dark); color: #777; padding: 80px 20px; text-align: center; }
+        .social-icons { margin-bottom: 20px; font-size: 20px; color: var(--white); }
+
+        @media (max-width: 1000px) { .main-wrapper { grid-template-columns: 1fr; } .video-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div class="weather-bar">
-        <div class="weather-item">MARDİN: <span>22°C</span> (Açık)</div>
-        <div class="weather-item">RIO DE JANEIRO: <span>31°C</span> (Nemli)</div>
-        <div class="weather-item">KUR: <span>1 BRL = 6.20 TRY</span></div>
-    </div>
+    <div class="top-nav">MEZOPOTAMYA'DAN AMAZON'A KÜLTÜR KÖPRÜSÜ - 2026</div>
 
     <header>
-        <h1>MARDİN <span>&</span> RIO</h1>
+        <h1>MARDIN<span>RIO</span></h1>
+        <p class="motto">Taşın Sessizliği, Karnavalın Çığlığı</p>
     </header>
 
     <nav>
         <ul>
-            <li><a href="#">Ana Sayfa</a></li>
-            <li><a href="#">Gastronomi Sentezi</a></li>
-            <li><a href="#">Moda & Stil</a></li>
-            <li><a href="#">Gıybet</a></li>
-            <li><a href="#">Gezi Rehberi</a></li>
+            <li><a href="#">MANŞET</a></li>
+            <li><a href="#">KÜLTÜR SAVAŞLARI</a></li>
+            <li><a href="#">MODA GURME</a></li>
+            <li><a href="#">RIO GECE HAYATI</a></li>
+            <li><a href="#">DEDİKODU</a></li>
         </ul>
     </nav>
 
-    <div class="container">
+    <div class="main-wrapper">
         <main>
-            <article class="featured-article">
-                <img src="https://images.unsplash.com/photo-1544984243-ec57ea16fe25" alt="Kültür Karışımı">
-                <span class="category-tag">KAPAK KONUSU</span>
-                <h2>İki Şehir, Tek Ruh: Samba ve Reyhani'nin Gizli Akrabalığı</h2>
-                <p>Mardin'in ritmik adımları ile Rio'nun enerjik Samba'sı arasındaki şaşırtıcı benzerlikleri uzmanlar inceledi. Bu yaz Rio plajlarında Mardin gümüşleri moda olacak.</p>
-            </article>
-
-            <h4>KÖŞE YAZARLARIMIZ</h4>
-            <div class="authors-grid">
-                <div class="author-card">
-                    <img src="https://i.pravatar.cc/150?u=1" class="author-img">
-                    <div class="author-info">
-                        <h5>Leyla Süryani</h5>
-                        <p>Kültür ve Antropoloji</p>
-                    </div>
-                </div>
-                <div class="author-card">
-                    <img src="https://i.pravatar.cc/150?u=2" class="author-img">
-                    <div class="author-info">
-                        <h5>Ricardo Santos</h5>
-                        <p>Moda ve Sokak Stili</p>
-                    </div>
+            <div class="main-news-large">
+                <img src="https://images.unsplash.com/photo-1548013146-72479768bbaa" alt="Rio">
+                <div class="news-overlay">
+                    <small>ÖZEL DOSYA</small>
+                    <h2>Mardinli Süryani Şarabı Rio Sofralarının Yeni Gözdesi</h2>
+                    <p>Dünya şarap otoriteleri şaşkın: Mardin'in binlerce yıllık bağlarından çıkan aromalar, Brezilya'nın tropikal mutfağıyla eşsiz bir uyum yakaladı.</p>
                 </div>
             </div>
+
+            <section class="video-section">
+                <h3>ÖZEL VİDEO PORTAL</h3>
+                <div class="video-grid">
+                    <div class="video-card"><div class="play-btn">▶</div><p style="position:absolute; bottom:10px; font-size:11px;">Mardin'de Samba Atölyesi</p></div>
+                    <div class="video-card"><div class="play-btn">▶</div><p style="position:absolute; bottom:10px; font-size:11px;">Rio Karnavalı Canlı</p></div>
+                    <div class="video-card"><div class="play-btn">▶</div><p style="position:absolute; bottom:10px; font-size:11px;">Belgesel: İki Şehir</p></div>
+                </div>
+            </section>
+
+            <section class="comment-section">
+                <h3>KÜLTÜRÜNÜ PAYLAŞ</h3>
+                <form>
+                    <input type="text" placeholder="Adınız Soyadınız">
+                    <input type="email" placeholder="E-posta Adresiniz">
+                    <textarea rows="5" placeholder="Mardin-Brezilya sentezi hakkında ne düşünüyorsunuz?"></textarea>
+                    <button type="submit">MESAJI GÖNDER</button>
+                </form>
+            </section>
         </main>
 
         <aside>
-            <div class="sidebar-item">
-                <h4>KÜLTÜREL NABIZ</h4>
-                <div class="culture-pulse">
-                    <p>Bu ay hangisi daha popüler?</p>
-                    <div class="pulse-stat">
-                        <small>Mardin Dibek Kahvesi %65</small>
-                        <div class="progress-bg"><div class="progress-fill" style="width: 65%;"></div></div>
-                    </div>
-                    <div class="pulse-stat">
-                        <small>Brezilya Caipirinha %35</small>
-                        <div class="progress-bg"><div class="progress-fill" style="width: 35%;"></div></div>
-                    </div>
-                </div>
+            <div class="sidebar-widget">
+                <h4>CANLI VERİ</h4>
+                <p style="font-size: 13px;"><b>Mardin:</b> 28°C <br> <b>Rio:</b> 34°C <br> <b>Mesafe:</b> 10.450 KM</p>
             </div>
 
-            <div class="sidebar-item">
-                <h4>DİKKAT ÇEKENLER</h4>
-                <ul style="list-style: none; font-size: 0.9rem;">
-                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">• Mardinli Şefin Rio'daki Yeni Restoranı</li>
-                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">• Adriana Lima'dan Mardin İtirafı!</li>
-                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">• Karnaval Kostümlerinde Telkâri Esintisi</li>
+            <div class="sidebar-widget">
+                <h4>TREND BAŞLIKLAR</h4>
+                <ul class="trend-list">
+                    <li><b>#1</b> Adriana Lima'nın Mardin tatili</li>
+                    <li><b>#2</b> En iyi 10 Dibek kahvecisi</li>
+                    <li><b>#3</b> Samba öğrenmek zor mu?</li>
+                    <li><b>#4</b> Eski Mardin evlerinde Rio stili</li>
                 </ul>
+            </div>
+
+            <div class="sidebar-widget" style="background: var(--rio-teal); color: white;">
+                <h4>HAFTANIN İKONU</h4>
+                <img src="https://i.pravatar.cc/300?u=rio" style="width:100%; border-radius:10px; margin-bottom:10px;">
+                <p style="font-size: 13px; text-align: center;"><b>Tiago Mardinli</b><br>Brezilyalı influencer artık Mardin'de yaşıyor!</p>
             </div>
         </aside>
     </div>
 
     <footer>
-        <p>&copy; 2026 Mardin-Rio Express. <br> "Eski Dünya'nın Taşları, Yeni Dünya'nın Renkleri."</p>
+        <div class="social-icons">𝕏 • Instagram • Facebook • YouTube</div>
+        <p>MARDINRIO © 2026 | Sınırları Aşan Tek Magazin Portalı</p>
+        <p style="font-size: 10px; margin-top: 20px; opacity: 0.5;">Bu site HTML5 ve CSS3 ile Mardin'in taşları ve Rio'nun kumları arasında inşa edilmiştir.</p>
     </footer>
 
 </body>
