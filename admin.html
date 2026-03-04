@@ -15,9 +15,10 @@
         .form-sec { display: none; }
         .form-sec.active { display: block; }
         label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; color: var(--accent); }
-        input, textarea, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-family: inherit; box-sizing: border-box; outline: none; }
-        textarea { min-height: 280px; line-height: 1.6; }
-        button { width: 100%; padding: 16px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        input, textarea, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-family: inherit; box-sizing: border-box; outline: none; margin-bottom: 10px; }
+        textarea { min-height: 300px; line-height: 1.6; }
+        button { width: 100%; padding: 16px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        button:hover { opacity: 0.8; }
         .status { margin-top: 20px; text-align: center; font-weight: bold; font-size: 0.9rem; }
     </style>
 </head>
@@ -27,55 +28,54 @@
     
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('post-sec', this)">Yazı Yayınla</button>
-        <button class="tab-btn" onclick="showTab('author-sec', this)">Yazar & Profil</button>
-        <button class="tab-btn" onclick="showTab('cat-sec', this)">Kategoriler</button>
+        <button class="tab-btn" onclick="showTab('author-sec', this)">Yazar Ayarları</button>
+        <button class="tab-btn" onclick="showTab('cat-sec', this)">Kategori Ekle</button>
     </div>
 
     <div id="post-sec" class="form-sec active">
         <label>Kategori</label>
         <select id="category-select">
-            <option value="Magazin">Magazin ● Celebridade</option>
-            <option value="Gastronomi">Gastronomi ● Sabor</option>
-            <option value="Zanaat">Zanaat ● Artesanato</option>
-            <option value="Cografi">Coğrafi Kader ● Destino</option>
-            <option value="Toplum">Toplum ● Sociedade</option>
+            <option value="magazin">Magazin ● Celebridade</option>
+            <option value="gastronomi">Gastronomi ● Sabor</option>
+            <option value="zanaat">Zanaat ● Artesanato</option>
+            <option value="cografi">Coğrafi Kader ● Destino</option>
+            <option value="toplum">Toplum ● Sociedade</option>
         </select>
         
-        <label>Görsel (Boş bırakılırsa internetten otomatik çekilir)</label>
-        <input type="text" id="img-url" placeholder="Görsel URL veya boş bırakın...">
+        <label>Görsel URL (Boş bırakırsanız otomatik seçilir)</label>
+        <input type="text" id="img-url" placeholder="https://... (veya boş bırakın)">
         
         <label>Türkçe Başlık</label>
-        <input type="text" id="tr-title" placeholder="Başlık girin">
+        <input type="text" id="tr-title" placeholder="Başlık">
         
-        <label>Türkçe İçerik (Makale Alanı)</label>
-        <textarea id="tr-body" placeholder="Hikayenizi anlatın..."></textarea>
+        <label>Makale İçeriği (Ana Yazı Alanı)</label>
+        <textarea id="tr-body" placeholder="Hikayenizi buraya yazın..."></textarea>
         
-        <button onclick="handleSave('article')">YAYINLA & OTOMATİK ÇEVİR</button>
+        <button onclick="handleSave('article')">MAKALE YAYINLA</button>
     </div>
 
     <div id="author-sec" class="form-sec">
-        <label>Yazar Adı</label>
+        <label>Ad Soyad</label>
         <input type="text" id="author-name" value="Ahmet Çınarbaş">
-        <label>Ünvan</label>
+        <label>Biyografi / Ünvan</label>
         <input type="text" id="author-bio" value="Kültürel Arşivci">
-        <label>Profil Fotoğrafı URL</label>
+        <label>Profil Foto URL</label>
         <input type="text" id="author-img" placeholder="https://...">
         <button onclick="handleSave('settings')" style="background:var(--accent)">PROFİLİ GÜNCELLE</button>
     </div>
 
     <div id="cat-sec" class="form-sec">
-        <label>Yeni Kategori Adı (TR)</label>
+        <label>Kategori Adı (TR)</label>
         <input type="text" id="new-cat-tr" placeholder="Örn: SİNEMA">
-        <label>Yeni Kategori Adı (PT)</label>
+        <label>Kategori Adı (PT)</label>
         <input type="text" id="new-cat-pt" placeholder="Örn: CINEMA">
-        <button onclick="handleSave('category')" style="background:#555">KATEGORİ EKLE</button>
+        <button onclick="handleSave('category')" style="background:#555">LİSTEYE EKLE</button>
     </div>
 
     <div id="status" class="status"></div>
 </div>
 
 <script>
-    // Token bilgisi
     const GH_TOKEN = "ghp_Ck9rQJbrJ6Pkkz10SRjFcmqnp433Dh2xuYDY";
     const REPO_URL = 'https://api.github.com/repos/asalimc/47/contents/articles.json';
 
@@ -89,11 +89,16 @@
     async function handleSave(mode) {
         const status = document.getElementById('status');
         status.style.color = "orange";
-        status.innerText = "İşleniyor...";
+        status.innerText = "GitHub'a bağlanılıyor...";
 
         try {
-            const getFile = await fetch(REPO_URL, { headers: { 'Authorization': `token ${GH_TOKEN}` } });
-            if (!getFile.ok) throw new Error("Dosya bulunamadı! Lütfen GitHub'da articles.json oluşturun.");
+            const getFile = await fetch(REPO_URL, { 
+                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Cache-Control': 'no-cache' } 
+            });
+
+            if (!getFile.ok) {
+                throw new Error("articles.json dosyası GitHub'da bulunamadı! Lütfen önce dosyayı oluşturun.");
+            }
             
             const fileData = await getFile.json();
             let content = JSON.parse(decodeURIComponent(escape(atob(fileData.content))));
@@ -102,25 +107,20 @@
                 const trT = document.getElementById('tr-title').value;
                 const trB = document.getElementById('tr-body').value;
                 const cat = document.getElementById('category-select').value;
-                let finalImg = document.getElementById('img-url').value;
+                let img = document.getElementById('img-url').value;
 
-                // Akıllı Görsel Seçici
-                if(!finalImg) {
-                    finalImg = `https://images.unsplash.com/photo-1500000000000?auto=format&fit=crop&w=800&q=80&${cat}`;
-                    // Unsplash üzerinden kategoriye uygun görsel çekimi simülasyonu
+                // OTOMATİK GÖRSEL: Eğer link yoksa Unsplash üzerinden konuyla ilgili görsel al
+                if(!img || img.length < 5) {
+                    img = `https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1000&auto=format&fit=crop&sig=${Date.now()}`;
                 }
-
-                status.innerText = "Çeviri yapılıyor...";
-                const tRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(trT)}&langpair=tr|pt`);
-                const tData = await tRes.json();
 
                 content.unshift({
                     id: Date.now(),
                     type: "post",
                     category: document.getElementById('category-select').options[document.getElementById('category-select').selectedIndex].text,
-                    image: finalImg,
+                    image: img,
                     tr: { title: trT, body: trB },
-                    pt: { title: tData.responseData.translatedText, body: "Traduzindo..." },
+                    pt: { title: "Traduzindo...", body: "Conteúdo em tradução..." },
                     date: new Date().toLocaleDateString('tr-TR')
                 });
             } else if(mode === 'settings') {
@@ -136,19 +136,22 @@
             const res = await fetch(REPO_URL, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "Update Journal", content: updated, sha: fileData.sha })
+                body: JSON.stringify({ message: "Update", content: updated, sha: fileData.sha })
             });
 
             if(res.ok) {
                 status.style.color = "green";
-                status.innerText = "BAŞARIYLA KAYDEDİLDİ!";
-                setTimeout(() => { status.innerText = ""; }, 3000);
+                status.innerText = "İŞLEM BAŞARILI!";
+                if(mode === 'article') {
+                    document.getElementById('tr-title').value = "";
+                    document.getElementById('tr-body').value = "";
+                }
             } else {
-                throw new Error("GitHub güncellenemedi. Token yetkisini kontrol edin.");
+                throw new Error("Yazma izni reddedildi. Token yetkisi bitmiş olabilir.");
             }
         } catch (e) { 
             status.style.color = "red";
-            status.innerText = "Hata: " + e.message; 
+            status.innerText = e.message; 
         }
     }
 </script>
