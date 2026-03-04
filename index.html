@@ -49,7 +49,7 @@
         }
         .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(176,141,87,0.15); border-color: var(--accent); }
 
-        .card-author { align-items: center; text-align: center; justify-content: center; min-height: 450px; }
+        .card-author { align-items: center; text-align: center; justify-content: center; min-height: 450px; border: 2px solid var(--accent); }
 
         .tr-line { font-family: 'Bodoni Moda', serif; font-size: 3.2rem; line-height: 1.1; margin-bottom: 15px; display: block; font-weight: 900; }
         .pt-line { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; line-height: 1.2; opacity: 0.8; font-style: italic; display: block; }
@@ -57,14 +57,14 @@
 
         .author-img { width: 170px; height: 170px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); }
 
-        /* READER MODAL - GÜNCELLENDİ */
+        /* READER MODAL */
         .reader {
             position: fixed; inset: 0; background: var(--bg); z-index: 2000;
             display: none; overflow-y: auto; padding: 80px 8% 120px;
         }
         .reader-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
         .reader-tr, .reader-pt { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.3; color: var(--ink); font-weight: 400; }
-        .reader-pt { font-style: italic; color: #444; } /* Portekizce kısmı Türkçeye benzetildi */
+        .reader-pt { font-style: italic; color: #444; } 
         
         .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; transition: 0.3s; }
         .close-btn:hover { background: var(--accent); }
@@ -109,17 +109,6 @@
     <script>
         const myContent = [
             {
-                type: "main",
-                region: "Brazil",
-                tag: "MAGAZİN ● CELEBRIDADE",
-                tr: "Rio Karnavalı'nda Mardin Rüzgarı",
-                pt: "Vento de Mardin no Carnaval do Rio",
-                desc: "ÜNLÜ TASARIMCININ YENİ KOLEKSİYONU →",
-                img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000",
-                contentTR: "Brezilyalı ünlü moda tasarımcısı, son koleksiyonunda Mardin'in gümüş telkari işçiliğinden ilham aldığını açıkladı. Rio sokaklarında Mezopotamya esintileri yankılanıyor.",
-                contentPT: "O famoso designer de moda brasileiro revelou que sua última coleção foi inspirada no trabalho de filigrana de prata de Mardin. Ecos da Mesopotâmia ressoam nas ruas do Rio."
-            },
-            {
                 type: "author",
                 region: "Mardin",
                 name: "Ahmet Çınarbaş",
@@ -134,24 +123,46 @@
             {
                 type: "main",
                 region: "Brazil",
-                tag: "GÜNCEL ● ATUAL",
-                tr: "Amazon Ormanları ve Mezopotamya",
-                pt: "Florestas Amazônicas e Mesopotâmia",
-                desc: "DOĞA VE TARİHİN KEŞFİ →",
-                img: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=1000",
-                contentTR: "Dünyanın akciğerleri Amazon ile tarihin başladığı Mezopotamya arasındaki ekolojik ve kültürel bağlar üzerine yeni bir araştırma dizisi.",
-                contentPT: "Uma nova série de pesquisas sobre as ligações ecológicas e culturais entre a Amazônia, os pulmões do mundo, e a Mesopotâmia, onde a história começou."
+                tag: "MAGAZİN ● CELEBRIDADE",
+                tr: "Rio Karnavalı'nda Mardin Rüzgarı",
+                pt: "Vento de Mardin no Carnaval do Rio",
+                desc: "ÜNLÜ TASARIMCININ YENİ KOLEKSİYONU →",
+                img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000",
+                contentTR: "Brezilyalı ünlü moda tasarımcısı, son koleksiyonunda Mardin'in gümüş telkari işçiliğinden ilham aldığını açıkladı.",
+                contentPT: "O famoso designer de moda brasileiro revelou que sua última coleção foi inspirada no trabalho de filigrana de prata de Mardin."
+            },
+            {
+                type: "main",
+                region: "Brazil",
+                tag: "GASTRONOMİ ● GASTRONOMIA",
+                tr: "Kültürlerin Lezzet Buluşması",
+                pt: "Encontro de Sabores das Culturas",
+                desc: "SAO PAULO'DA MARDİN MUTFAĞI →",
+                img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000",
+                contentTR: "Sao Paulo'nun kalbinde Mardin mutfağının eşsiz baharatları Brezilya yerel lezzetleriyle harmanlanıyor.",
+                contentPT: "No coração de São Paulo, as especiarias únicas da culinária de Mardin se misturam com os sabores locais brasileiros."
             },
             {
                 type: "main",
                 region: "Mardin",
-                tag: "YAŞAM ● VIDA",
-                tr: "Abbara Altında Bir Akşam",
-                pt: "Uma Noite sob a Abbara",
-                desc: "MARDİN'İN GİZEMLİ GEÇİTLERİ →",
-                img: "https://images.unsplash.com/photo-1540266102324-44229671d533?q=80&w=1000",
-                contentTR: "Mardin'in dar sokaklarında rüzgarı kesen abbaralar, sadece birer mimari öğe değil; geçmişin fısıltılarını taşıyan birer zaman tünelidir.",
-                contentPT: "As abbaras que cortam o vento nas ruas estreitas de Mardin não são apenas elementos arquitetônicos; são túneis do tempo que carregam os sussurros do passado."
+                tag: "KÜLTÜR ● CULTURA",
+                tr: "İki Kıta Tek Ruh",
+                pt: "Dois Continentes Um Só Espírito",
+                desc: "REYHANİ VE SAMBA RİTMİ →",
+                img: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1000",
+                contentTR: "Mardin'in Reyhani oyunu ile Rio'nun Samba'sı arasındaki ritmik kardeşliği keşfedin.",
+                contentPT: "Descubra a irmandade rítmica entre a dança Reyhani de Mardin e o Samba do Rio."
+            },
+            {
+                type: "main",
+                region: "all",
+                tag: "TOPLUM ● SOCIEDADE",
+                tr: "Halk Benzerlikleri",
+                pt: "Semelhanças Populares",
+                desc: "İNSAN HİKAYELERİ →",
+                img: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1000",
+                contentTR: "Sıcakkanlılık, misafirperverlik ve derin aile bağları... Mardin ve Brezilya halkı arasındaki şaşırtıcı benzerlikler.",
+                contentPT: "Calor humano, hospitalidade e laços familiares profundos... As semelhanças surpreendentes entre o povo de Mardin e o brasileiro."
             }
         ];
 
@@ -191,7 +202,7 @@
         function filterData(region) {
             document.querySelectorAll('.nav-filters button').forEach(b => b.classList.remove('active'));
             document.getElementById('btn-' + region).classList.add('active');
-            const filtered = region === 'all' ? myContent : myContent.filter(d => d.region === region);
+            const filtered = region === 'all' ? myContent : myContent.filter(d => d.region === region || d.region === 'all');
             renderCards(filtered);
         }
 
