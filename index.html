@@ -13,12 +13,12 @@
             --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* CUSTOM SCROLLBAR */
+        /* SCROLLBAR */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.6; }
 
         header {
@@ -45,60 +45,52 @@
         }
         .card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.12); }
 
-        .card-bg {
-            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
-            background-size: cover; background-position: center;
-            z-index: 0; transition: transform 0.2s ease-out;
-        }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.85)); z-index: 1; }
+        .card-bg { position: absolute; inset: -5%; width: 110%; height: 110%; background-size: cover; background-position: center; z-index: 0; transition: transform 0.6s var(--ease); }
+        .card:hover .card-bg { transform: scale(1.05); }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.85)); z-index: 1; }
         .card-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between; flex: 1; }
 
-        .card-author { align-items: center; text-align: center; justify-content: center; background: var(--white); }
-        .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); position: relative; z-index: 2; }
+        .card-author { align-items: center; text-align: center; justify-content: center; background: var(--white); min-height: 400px; }
+        .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); }
 
         .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.6rem; line-height: 1.1; margin-bottom: 8px; display: block; font-weight: 700; letter-spacing: -1px; }
-        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; display: block; font-weight: 400; letter-spacing: -1px; opacity: 0.7; }
+        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; display: block; font-weight: 400; opacity: 0.7; }
         .tag-dual { font-size: 0.75rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
         .entry-no { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; opacity: 0.5; margin-top: 25px; text-transform: uppercase; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; width: fit-content; }
 
+        /* READER MODAL */
         #reader-modal { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding: 100px 6% 60px; }
         .reader-header { text-align: center; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 50px; position: relative; }
+        .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 50px; }
+        .reader-text { font-size: 1.25rem; line-height: 1.9; color: #2D2D2D; text-align: justify; }
+        .reader-text b { color: var(--ink); display: block; margin-top: 40px; font-weight: 800; font-size: 1.4rem; font-family: 'Bodoni Moda', serif; border-bottom: 1px solid var(--accent); width: fit-content; margin-bottom: 15px; }
         
-        .reader-text { font-size: 1.25rem; line-height: 1.9; color: #2D2D2D; font-weight: 400; text-align: justify; transition: opacity 0.4s ease, filter 0.4s ease; }
-        .reader-grid:has(.text-tr:hover) .text-pt { opacity: 0.3; filter: blur(1px); }
-        .reader-grid:has(.text-pt:hover) .text-tr { opacity: 0.3; filter: blur(1px); }
+        /* EKSTRA İÇERİK (Yazar Arşivi & İlgili) */
+        .mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .mini-card { background: white; padding: 20px; border-radius: 15px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; }
+        .mini-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .mini-card b { display: block; font-size: 0.9rem; margin-bottom: 5px; }
+        .mini-card span { font-size: 0.7rem; color: var(--accent); font-weight: 700; }
 
-        .reader-text::first-letter { float: left; font-family: 'Bodoni Moda', serif; font-size: 4.5rem; line-height: 1; font-weight: 900; padding-right: 12px; color: var(--accent); }
-        .reader-text b { color: var(--ink); display: block; margin-top: 35px; font-weight: 800; font-size: 1.4rem; font-family: 'Bodoni Moda', serif; border-bottom: 1px solid rgba(176,141,87,0.2); width: fit-content; padding-bottom: 5px; margin-bottom: 15px; }
-        
-        .meta-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; color: var(--accent); opacity: 0.7; display: block; margin-bottom: 10px; text-transform: uppercase; }
-
-        .divider { width: 100%; height: 1px; background: rgba(176,141,87,0.2); margin: 20px 0; }
-
-        .cultural-stamp { position: fixed; bottom: 40px; right: 40px; width: 120px; height: 120px; background: url('https://cdn-icons-png.flaticon.com/512/3938/3938163.png'); background-size: contain; opacity: 0.15; z-index: 10002; pointer-events: none; animation: rotateStamp 20s linear infinite; mix-blend-mode: multiply; display: none; }
-        @keyframes rotateStamp { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .close-btn { position: fixed; top: 30px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 10000; transition: 0.3s; }
+        .divider { width: 100%; height: 1px; background: rgba(0,0,0,0.05); margin: 60px 0; }
+        .close-btn { position: fixed; top: 30px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 10000; }
 
         footer { padding: 80px 6%; text-align: center; border-top: 1px solid rgba(0,0,0,0.05); background: var(--white); }
-        .footer-bottom { font-size: 0.75rem; font-weight: 800; opacity: 0.5; letter-spacing: 3px; }
-
-        @media (min-width: 768px) { .reader-grid { grid-template-columns: 1fr 1px 1fr; gap: 60px; } .divider { width: 1px; height: auto; margin: 0; } }
+        
+        @media (min-width: 768px) { .reader-grid { grid-template-columns: 1fr 1px 1fr; gap: 60px; } .divider-v { width: 1px; height: auto; background: rgba(176,141,87,0.2); } }
     </style>
 </head>
 <body>
 
     <div id="progress-container"><div id="progress-bar"></div></div>
-    <div id="digital-stamp" class="cultural-stamp"></div>
 
     <header>
         <a href="#" class="logo-box"><div class="logo-m">MB</div><div class="logo-text">MARDIN<br>BRAZIL</div></a>
     </header>
 
     <main class="container">
-        <div class="bento">
-            <div class="card card-author" onclick="openReader('author')">
+        <div class="bento" id="bento-grid">
+            <div class="card card-author" onclick="showAuthorDetails()">
                 <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-img">
                 <div class="card-content">
                     <div>
@@ -109,128 +101,122 @@
                     <div class="entry-no">JOURNAL ENTRY #000</div>
                 </div>
             </div>
-
-            <div class="card" onclick="openReader('carnaval')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200')"></div>
-                <div class="card-overlay"></div>
-                <div class="card-content" style="color: white;">
-                    <div><span class="tag-dual" style="color: white;">MAGAZİN ● CELEBRIDADE</span><span class="tr-line">Rio Karnavalı'nda Mardin Rüzgarı</span><span class="pt-line">Vento de Mardin no Rio</span></div>
-                    <div class="entry-no">JOURNAL ENTRY #001</div>
-                </div>
+            
             </div>
-
-            <div class="card" onclick="openReader('craft')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200')"></div>
-                <div class="card-overlay"></div>
-                <div class="card-content" style="color: white;">
-                    <div><span class="tag-dual" style="color: white;">ZANAAT ● ARTESANATO</span><span class="tr-line">Gümüşün Sabrı & Doğanın Takısı</span><span class="pt-line">Filigrana e Adornos</span></div>
-                    <div class="entry-no">JOURNAL ENTRY #002</div>
-                </div>
-            </div>
-
-            <div class="card" onclick="openReader('gastronomy')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200')"></div>
-                <div class="card-overlay"></div>
-                <div class="card-content" style="color: white;">
-                    <div><span class="tag-dual" style="color: white;">GASTRONOMİ ● SABOR</span><span class="tr-line">İçli Köfte & Quibe Karşılaştırması</span><span class="pt-line">Encontro de Paladares</span></div>
-                    <div class="entry-no">JOURNAL ENTRY #003</div>
-                </div>
-            </div>
-
-            <div class="card" onclick="openReader('sinop')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200')"></div>
-                <div class="card-overlay"></div>
-                <div class="card-content" style="color: white;">
-                    <div><span class="tag-dual" style="color: white;">COĞRAFİ KADER ● DESTINO</span><span class="tr-line">2 Kıta, 2 Şehir, Tek İsim: Sinop</span><span class="pt-line">Da Turquia para o Brasil</span></div>
-                    <div class="entry-no">JOURNAL ENTRY #004</div>
-                </div>
-            </div>
-
-            <div class="card" onclick="openReader('society')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200')"></div>
-                <div class="card-overlay"></div>
-                <div class="card-content" style="color: white;">
-                    <div><span class="tag-dual" style="color: white;">TOPLUM ● SOCIEDADE</span><span class="tr-line">Halk Benzerlikleri: Ortak Ruh</span><span class="pt-line">Almas Gêmeas Culturais</span></div>
-                    <div class="entry-no">JOURNAL ENTRY #005</div>
-                </div>
-            </div>
-        </div>
     </main>
 
     <div id="reader-modal" onscroll="updateProgress()">
         <button class="close-btn" onclick="closeReader()">KAPAT ● FECHAR</button>
-        <div id="reader-content"></div>
+        <div id="reader-content-area">
+            </div>
     </div>
 
     <footer><div class="footer-bottom">AHMET ÇINARBAŞ JOURNAL © 2026 ● MARDIN TO BRAZIL</div></footer>
 
     <script>
-        const contentData = {
-            author: { 
-                tag: "KÜRASYON FELSEFESİ ● MANIFESTO", meta: "6 DK OKUMA ● KONUM: MARDIN-RIO",
-                tr: "Sabrın ve Akışın Arşivcisi", pt: "O Arquivista da Paciência e do Fluxo", 
-                textTr: `Kadim Mardin’in taş sessizliği ile Amazon’un gürültülü yeşili arasında kurduğum bu köprü, sadece bir coğrafi mesafe değil, derin bir ruh yolculuğudur. Ben Ahmet Çınarbaş; telkari ustasının ince gümüş teldeki o devasa sabrını, Sambodrom’un terli ve coşkulu neşesiyle harmanlayan bir kültürel arşivciyim. Mezopotamya’da zaman taşın üzerine kazınırken, Brezilya’da ritmin içine gizlenir.<br><br><b>Köprülerin Mimarı:</b> Yazılarımda, Karadeniz’in hırçın limanı Sinop’un, Mato Grosso’nun balta girmemiş ormanlarındaki adaşıyla nasıl benzer kaderleri fısıldaştığını inceliyorum. Mardin’in dar küçelerinde tüten mırra kokusuyla, Rio’nun nemli kaldırımlarında yudumlanan cafezinho’nun aynı "ev" hissini verdiğini biliyorum. Bu "Journal", bir gurbet hikayesi değil, küresel bir aidiyet manifestosudur. Mardin’in taş oymacılığındaki geometriyle, favelalardaki grafiti sanatının aynı isyan ve güzellik arayışından beslendiğine inanıyorum. Her yeni girdi (ENTRY), bu iki uzak ama gönül komşusu coğrafyanın birbirine sunduğu sessiz bir hediyedir.`, 
-                textPt: `A ponte que construí entre o silêncio de pedra da antiga Mardin e o verde vibrante da Amazônia não é apenas uma distância, mas uma profunda jornada da alma. Sou Ahmet Çınarbaş; um arquivista cultural que mescla a paciência monumental do mestre da filigrana com a alegria suada e eufórica do Sambódromo. Enquanto na Mesopotâmia o tempo é esculpido na pedra, no Brasil ele se esconde no ritmo.<br><br><b>O Arquiteto de Pontes:</b> Em meus escritos, examino como o porto rebelde de Sinop, no Mar Negro, sussurra destinos semelhantes ao seu homônimo nas florestas de Mato Grosso. Sei que o aroma do mofra nas ruelas de Mardin e o cafezinho tomado nas calçadas úmidas do Rio evocam o mesmo sentimento de "lar". Este "Journal" não é um relato de exílio, mas um manifesto de pertencimento global. Acredito que a geometria na escultura em pedra de Mardin e a arte do grafite nas favelas bebem da mesma fonte de rebeldia e busca pela beleza. Cada nova entrada (ENTRY) é um presente silencioso que essas duas geografias vizinhas de alma oferecem uma à outra.` 
-            },
-            carnaval: { 
-                tag: "MAGAZİN / RİO", meta: "4 DK OKUMA ● KONUM: SAMBODROMO",
-                tr: "Rio Karnavalı'nda Mardin Rüzgarı", pt: "Vento de Mardin no Rio", 
-                textTr: `Görkemli Buluşma: Rio de Janeiro'nun ünlü Sapucaí podyumlarında bu yıl beklenmedik bir estetik rüzgarı esti. Mardin'in binlerce yıllık telkari sanatının geometrik formları, Brezilyalı moda küratörlerinin radarına girdi.<br><br><b>Zanaatın Podyumu:</b> Dev kostüm başlıklarında ve kanat tasarımlarında, Mezopotamya gümüş işçiliğinin asaletini görmek tüm dünyayı şaşırttı. Rio'nun kaotik renk paleti, Mardin'in monokromatik taş estetiğiyle birleştiğinde ortaya hibrit bir sanat çıktı.<br><br><b>Ritimlerin Kardeşliği:</b> Mardin'in ağırbaşlı Reyhani dansı ile Brezilya'nın durdurulamaz Sambası, ilk bakışta zıt görünse de her ikisi de topluluk bilincinden besleniyor. Reyhani'deki o vakur duruş, Sambadaki bedensel özgürlükle birleştiğinde; insanın ritme olan ebedi ihtiyacı ortaya çıkıyor. Rio sokaklarındaki coşku, Mardin düğünlerindeki zılgıt sesleriyle aynı frekansta yankılanıyor. Bu, sınırları aşan bir kutlama biçimi.`, 
-                textPt: `Encontro Majestoso: Nas famosas passarelas da Sapucaí, em Rio de Janeiro, soprou este ano um vento estético inesperado. As formas geométricas da milenar arte da filigrana de Mardin entraram no radar dos curadores de moda brasileiros.<br><br><b>Passarela do Artesanato:</b> Ver a nobreza do trabalho em prata da Mesopotâmia em enormes adereços de cabeça e designs de asas surpreendeu o mundo inteiro. A paleta de cores caótica do Rio fundiu-se com a estética de pedra monocromática de Mardin.<br><br><b>Fraternidade de Ritmos:</b> A solene dança Reyhani de Mardin e o imparável Samba do Brasil podem parecer opostos à primeira vista, mas ambos se alimentam da consciência comunitária. Quando a postura digna da Reyhani se une à liberdade corporal do Samba, revela-se a necessidade eterna do ser humano pelo ritmo. A euforia nas ruas do Rio ecoa na mesma frequência que os sons de celebração nos casamentos de Mardin.` 
-            },
-            craft: { 
-                tag: "ZANAAT ANALİZİ", meta: "5 DK OKUMA ● KONUM: ESKI MARDIN",
-                tr: "Gümüşün Sabrı ve Doğanın Takısı", pt: "A Paciência da Prata", 
-                textTr: `Mardin Telkarisi: Gümüş tellerin mikron düzeyinde inceltilip, sadece bir cımbız ve ateşle sabırla bükülmesiyle oluşan bu sanat, Mardin'in karakteridir. Her bir motif, bir ustanın ömründen süzülen sessiz bir hikayedir.<br><br><b>Sabrın Metali:</b> Mezopotamya'da gümüş, sadece bir maden değil, zamanın yoğunlaşmış halidir. Bir telkari broşun tamamlanması için gereken binlerce dokunuş, Mardinli ustanın hayata bakışını yansıtır: Yavaş ama kalıcı.<br><br><b>Doğanın Ham Hali:</b> Öte yandan Amazon'un kalbinde, yerli halklar metali değil doğayı bizzat işlerler. Renkli kuş tüyleri, kurutulmuş tohumlar ve bitki lifleri; sadece birer süs değil, kişinin ormanla imzaladığı ruhsal kontratın nişanesidir. Mardinli ustanın gümüşteki detaycılığı ile Amazonlu yerlinin doğayı taklit etme yeteneği, insanın 'güzel' olanı yaratma hırsının iki farklı yansımasıdır. Biri ateşi kullanır, diğeri toprağı; ama sonuç aynıdır: Unutulmaya direnen bir miras.`, 
-                textPt: `Filigrana de Mardin: A arte formada pela redução de fios de prata ao nível mícron e pela curvatura paciente apenas com pinças e fogo é o próprio caráter de Mardin. Cada motivo é uma história silenciosa filtrada pela vida de um mestre.<br><br><b>O Metal da Paciência:</b> Na Mesopotâmia, a prata não é apenas um mineral, é o estado condensado do tempo. Os milhares de toques necessários para completar um broche de filigrana refletem a visão de vida do mestre de Mardin: lenta mas duradoura.<br><br><b>O Estado Bruto da Natureza:</b> Por outro lado, no coração da Amazônia, os povos indígenas trabalham a própria natureza, não o metal. Penas coloridas, sementes secas e fibras vegetais não são meros adornos; são insígnias do contrato espiritual que o indivíduo assina com a floresta. O detalhismo do mestre de Mardin na prata e a habilidade do indígena amazônico em imitar a natureza são dois reflexos diferentes da ambição humana de criar o "belo".` 
-            },
-            gastronomy: { 
-                tag: "MUTFAK KÜLTÜRÜ", meta: "4 DK OKUMA ● KONUM: SAO PAULO",
-                tr: "İçli Köfte & Quibe Karşılaştırması", pt: "Encontro de Paladares", 
-                textTr: `Mutfak Mirası: Mardin'in baharatlı, reyhan dokunuşlu 'Irok'u ile Brezilya'nın her köşe başında bulabileceğiniz 'Quibe'si arasındaki benzerlik bir tesadüf değildir. Lübnan ve Suriye üzerinden Güney Amerika'ya göç eden bu lezzet, Brezilya toprağında yeni bir kimlik kazandı.<br><br><b>Baharatın Rotası:</b> Ortadoğu'dan yola çıkan bulgur ve et kombinasyonu, okyanusu aşarken içine biraz "tropikal neşe" ekledi.<br><br><b>Kültürel Dönüşüm:</b> Mardin'de haşlama tekniği saflığı temsil ederken, Brezilya'da içine eklenen 'Catupiry' peyniri modern dünyanın bir yorumudur. Ancak ilk ısırığı aldığınızda o kimyonun ve bulgurun verdiği his, sizi binlerce kilometre ötedeki bir Mezopotamya sofrasına götürür. İki kültür de sofrayı bir paylaşım alanı, bir barış masası olarak görür. Mardin'de misafire mırra ikram etmek neyse, Brezilya'da dostla paylaşılan bir Quibe de odur; bir kalbe girme anahtarı.`, 
-                textPt: `Herança Culinária: A semelhança entre o 'Irok' de Mardin, temperado e com um toque de manjericão, e o 'Quibe' brasileiro encontrado em cada esquina não é coincidência. Essa iguaria ganhou uma nova identidade em solo brasileiro.<br><br><b>A Rota das Especiarias:</b> A combinação de trigo e carne que partiu do Oriente Médio atravessou o oceano e adicionou um pouco de "alegria tropical" ao longo do caminho.<br><br><b>Transformação Cultural:</b> Enquanto em Mardin a técnica do cozimento representa a pureza, no Brasil a adição do queijo 'Catupiry' é uma interpretação do mundo moderno. No entanto, ao dar a primeira mordida, a sensação do cominho e do trigo te leva a uma mesa mesopotâmica a milhares de quilômetros de distância. Ambas as culturas veem a mesa como um espaço de partilha e paz.` 
-            },
-            sinop: { 
-                tag: "COĞRAFİ KADER", meta: "5 DK OKUMA ● KONUM: SINOP (MT)",
-                tr: "2 Kıta, 2 Şehir, Tek İsim: Sinop", pt: "Duas Sinops", 
-                textTr: `İsim Benzerliğinin Ötesi: Türkiye'nin en kuzey ucu olan Karadeniz’in incisi Sinop ile Brezilya'nın Mato Grosso eyaletindeki genç şehir Sinop arasındaki bağ, haritadaki bir hatadan çok daha fazlasıdır. Her iki şehir de kendi coğrafyalarının 'limanı' olma misyonunu üstlenmiştir.<br><br><b>Tarih ve Gelecek:</b> Karadeniz Sinop'u geçmişin bilgeliğini taşırken, Brezilya Sinop'u geleceğin tarım ve ticaret başkenti olmaya adaydır.<br><br><b>Su ve Yeşil:</b> Karadeniz Sinop’u, hırçın dalgalara karşı asırlardır dimdik duran bir kale şehriyken; Brezilya Sinop’u, Amazon ormanlarının sonsuz yeşilliğine açılan bir kapıdır. Birinde tarih taşlarda, diğerinde ise devasa ağaç köklerindedir. İsim babası olan kolonizasyon şirketinin bu ismi bir saygı duruşu olarak seçmesi, iki kıta arasında görünmez bir enerji hattı oluşturmuştur. Her iki Sinop da doğanın insan yerleşimiyle kurduğu o zorlu ama huzurlu dengeyi temsil eden yaşayan laboratuvarlar gibidir.`, 
-                textPt: `Além da Semelhança de Nome: O vínculo entre Sinop, a pérola do Mar Negro e o ponto mais ao norte da Turquia, e a jovem cidade de Sinop, no estado de Mato Grosso, no Brasil, é muito mais do que um erro no mapa.<br><br><b>História e Futuro:</b> Enquanto a Sinop turca carrega a sabedoria do passado, a Sinop brasileira aspira ser a capital do agronegócio e do comércio do futuro.<br><br><b>Água e Verde:</b> Enquanto a Sinop turca é uma cidade-fortaleza que se mantém erguida há séculos contra as ondas revoltas; a Sinop brasileira é um portal para o verde infinito da floresta amazônica. Em uma, a história está nas pedras; na outra, nas raízes de árvores colossais.` 
-            },
-            society: { 
-                tag: "TOPLUM ● SOCIEDADE", meta: "6 DK OKUMA ● KONUM: RIO DE JANEIRO",
-                tr: "Halk Benzerlikleri: Ortak Ruh", pt: "Almas Gêmeas Culturais", 
-                textTr: `Sıcak Kanlılık: Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü 'Cordialidade' (misafirperverlik) ruhu aynı insani kökten beslenir. İki kültürde de yabancı, kapıdan girdiği andan itibaren bir tehdit değil, Tanrı tarafından gönderilmiş bir dosttur.<br><br><b>Ortak Tutkular:</b> Bitmek bilmeyen kalabalık aile sofraları, yüksek sesli ve kahkahası bol sohbetler, müziğin acıda da sevinçte de en yakın yoldaş olması... Bunlar Mardin ve Brezilya'yı binlerce kilometreye rağmen gönül komşusu yapar.<br><br><b>Yalnızlığın Reddi:</b> Her iki halk da hayatın zorluklarına karşı aynı silahı kullanır: Kutlama. Mardin’de bir taziye evindeki sessiz dayanışma ile Brezilya’daki bir topluluk dayanışması, insanın yalnız kalamayacağının en büyük kanıtıdır. Biz, mesafelerin ayıramadığı bir 'insanlık ailesinin' farklı lehçeleriyiz.`, 
-                textPt: `Cordialidade: A tradição do 'Convidado de Deus' em Mardin e o espírito de 'Cordialidade' mundialmente famoso do Brasil bebem da mesma raiz humana. Em ambas as culturas, o estrangeiro não é uma ameaça, mas um amigo.<br><br><b>Paixões Comuns:</b> Mesas familiares intermináveis, conversas barulhentas e a música como a companheira mais próxima tanto na dor quanto na alegria... Isso torna Mardin e Brasil vizinhos de alma.<br><br><b>Rejeição à Solidão:</b> Ambos os povos usam a mesma arma contra as dificuldades da vida: a celebração. A solidariedade silenciosa em Mardin e a comunitária no Brasil são provas de que o ser humano não pode ficar sozinho.` 
-            }
-        };
+        let allArticles = [];
 
-        function openReader(key) {
-            const item = contentData[key]; if(!item) return;
-            const modal = document.getElementById('reader-modal');
-            const content = document.getElementById('reader-content');
-            const stamp = document.getElementById('digital-stamp');
-            content.innerHTML = `
-                <div class="reader-header">
-                    <span class="meta-tag">${item.meta}</span>
-                    <span class="tag-dual">${item.tag}</span>
-                    <h1 class="tr-line">${item.tr}</h1>
-                    <h2 class="pt-line">${item.pt}</h2>
-                </div>
-                <div class="reader-grid">
-                    <div class="reader-text text-tr">${item.textTr}</div>
-                    <div class="divider"></div>
-                    <div class="reader-text text-pt">${item.textPt}</div>
-                </div>`;
-            modal.style.display = 'block'; stamp.style.display = 'block';
-            document.getElementById('progress-container').style.display = 'block';
-            document.body.style.overflow = 'hidden'; modal.scrollTop = 0;
+        // GITHUB'DAN VERİLERİ ÇEK
+        async function loadArticles() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/asalimc/47/main/articles.json?t=' + Date.now());
+                allArticles = await response.json();
+                renderCards();
+            } catch (e) {
+                console.error("Veri yüklenemedi:", e);
+            }
         }
 
-        function closeReader() { 
-            document.getElementById('reader-modal').style.display = 'none'; 
-            document.getElementById('digital-stamp').style.display = 'none';
-            document.getElementById('progress-container').style.display = 'none'; 
-            document.body.style.overflow = 'auto'; 
+        // KARTLARI EKRANA BAS
+        function renderCards() {
+            const bentoGrid = document.getElementById('bento-grid');
+            // Sadece yazar kartını bırak, diğerlerini temizle
+            const authorCard = bentoGrid.firstElementChild;
+            bentoGrid.innerHTML = '';
+            bentoGrid.appendChild(authorCard);
+
+            allArticles.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openDetailedReader(item.id);
+                card.innerHTML = `
+                    <div class="card-bg" style="background-image: url('${item.image}')"></div>
+                    <div class="card-overlay"></div>
+                    <div class="card-content" style="color: white;">
+                        <div>
+                            <span class="tag-dual" style="color: white;">${item.category}</span>
+                            <span class="tr-line">${item.tr.title}</span>
+                            <span class="pt-line">${item.pt.title}</span>
+                        </div>
+                        <div class="entry-no">JOURNAL ENTRY #00${index + 1}</div>
+                    </div>
+                `;
+                bentoGrid.appendChild(card);
+            });
+        }
+
+        // OKUMA MODU (DETAYLI)
+        function openDetailedReader(id) {
+            const item = allArticles.find(a => a.id === id);
+            const modal = document.getElementById('reader-modal');
+            const contentArea = document.getElementById('reader-content-area');
+            
+            // İlgili Yazılar (Aynı kategori)
+            const related = allArticles.filter(a => a.category === item.category && a.id !== id);
+            
+            contentArea.innerHTML = `
+                <div class="reader-header" style="margin-top:100px;">
+                    <span class="tag-dual">${item.category}</span>
+                    <h1 class="tr-line">${item.tr.title}</h1>
+                    <h2 class="pt-line">${item.pt.title}</h2>
+                </div>
+                <div class="reader-grid">
+                    <div class="reader-text">${item.tr.body.replace(/\n/g, '<br>')}</div>
+                    <div class="divider-v"></div>
+                    <div class="reader-text">${item.pt.body.replace(/\n/g, '<br>')}</div>
+                </div>
+                
+                <div class="container">
+                    <div class="divider"></div>
+                    <h4 class="tag-dual">Kategorideki Diğer Yazılar</h4>
+                    <div class="mini-grid">
+                        ${related.map(r => `
+                            <div class="mini-card" onclick="openDetailedReader(${r.id})">
+                                <b>${r.tr.title}</b>
+                                <span>${r.category}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="divider"></div>
+                    <h4 class="tag-dual">Ahmet Çınarbaş Arşivi</h4>
+                    <div class="mini-grid">
+                        ${allArticles.map(a => `
+                            <div class="mini-card" onclick="openDetailedReader(${a.id})">
+                                <b>${a.tr.title}</b>
+                                <span>${a.date}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'block';
+            document.getElementById('progress-container').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            modal.scrollTop = 0;
+        }
+
+        // YAZAR DETAYI (ENTRY #000)
+        function showAuthorDetails() {
+            // Yazar için özel bir modal içeriği buraya gelebilir
+            alert("Ahmet Çınarbaş: Kültürel Arşivci ve Köşe Yazarı.");
+        }
+
+        function closeReader() {
+            document.getElementById('reader-modal').style.display = 'none';
+            document.getElementById('progress-container').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         function updateProgress() {
@@ -238,6 +224,9 @@
             const scrolled = (modal.scrollTop / (modal.scrollHeight - modal.clientHeight)) * 100;
             document.getElementById("progress-bar").style.width = scrolled + "%";
         }
+
+        // Sayfa açıldığında verileri çek
+        loadArticles();
     </script>
 </body>
 </html>
