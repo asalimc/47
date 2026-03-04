@@ -39,43 +39,42 @@
         .nav-filters button.active { background: var(--ink); color: var(--bg); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
-        
-        /* TÜM KARTLARIN MANŞET GİBİ OLMASI İÇİN GRID AYARI */
         .bento { display: flex; flex-direction: column; gap: 40px; }
 
         .card {
             background: var(--white); border-radius: 45px; padding: 50px;
             transition: var(--ease) 0.6s; cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
             display: flex; flex-direction: column; justify-content: space-between; 
-            min-height: 500px; width: 100%; position: relative; overflow: hidden;
+            min-height: 550px; width: 100%; position: relative; overflow: hidden;
         }
         .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(176,141,87,0.15); border-color: var(--accent); }
 
-        /* YAZAR KARTI ÖZEL AYARI (YİNE TAM GENİŞLİK) */
-        .card-author { align-items: center; text-align: center; justify-content: center; }
+        .card-author { align-items: center; text-align: center; justify-content: center; min-height: 450px; }
 
-        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 3rem; line-height: 1.1; margin-bottom: 15px; display: block; }
-        .pt-line { font-size: 1.1rem; font-weight: 600; opacity: 0.8; font-style: italic; display: block; }
-        .tag-dual { font-size: 0.7rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 25px; display: block; }
+        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 3.2rem; line-height: 1.1; margin-bottom: 15px; display: block; font-weight: 900; }
+        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; line-height: 1.2; opacity: 0.8; font-style: italic; display: block; }
+        .tag-dual { font-size: 0.75rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 25px; display: block; }
 
-        .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); }
+        .author-img { width: 170px; height: 170px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); }
 
-        /* READER MODAL */
+        /* READER MODAL - GÜNCELLENDİ */
         .reader {
             position: fixed; inset: 0; background: var(--bg); z-index: 2000;
             display: none; overflow-y: auto; padding: 80px 8% 120px;
         }
-        .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
-        .reader-tr { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.3; color: var(--ink); margin-bottom: 30px; }
-        .reader-pt { font-size: 1.2rem; line-height: 1.8; color: #555; font-style: italic; border-left: 3px solid var(--accent); padding-left: 30px; }
-        .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; }
+        .reader-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+        .reader-tr, .reader-pt { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.3; color: var(--ink); font-weight: 400; }
+        .reader-pt { font-style: italic; color: #444; } /* Portekizce kısmı Türkçeye benzetildi */
+        
+        .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; transition: 0.3s; }
+        .close-btn:hover { background: var(--accent); }
 
         footer { padding: 80px 6%; background: white; text-align: center; border-top: 1px solid #eee; margin-top: 50px; }
 
-        @media (max-width: 768px) {
-            .tr-line { font-size: 2.2rem; }
-            .reader-grid { grid-template-columns: 1fr; }
-            .card { padding: 35px; min-height: 400px; }
+        @media (max-width: 900px) {
+            .reader-grid { grid-template-columns: 1fr; gap: 40px; }
+            .tr-line { font-size: 2.4rem; }
+            .pt-line { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -135,24 +134,24 @@
             {
                 type: "main",
                 region: "Brazil",
-                tag: "GASTRONOMİ ● GASTRONOMIA",
-                tr: "Sao Paulo'da Mardin Mutfağı",
-                pt: "Cozinha de Mardin em São Paulo",
-                desc: "KÜLTÜRLERİN LEZZET BULUŞMASI →",
-                img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000",
-                contentTR: "Sao Paulo'nun merkezinde açılan yeni restoran, Mardin içli köftesi ile Brezilya'nın ünlü lezzetlerini aynı masada buluşturuyor.",
-                contentPT: "Um novo restaurante aberto no centro de São Paulo reúne o kibe de Mardin e os sabores famosos do Brasil na mesma mesa."
+                tag: "GÜNCEL ● ATUAL",
+                tr: "Amazon Ormanları ve Mezopotamya",
+                pt: "Florestas Amazônicas e Mesopotâmia",
+                desc: "DOĞA VE TARİHİN KEŞFİ →",
+                img: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=1000",
+                contentTR: "Dünyanın akciğerleri Amazon ile tarihin başladığı Mezopotamya arasındaki ekolojik ve kültürel bağlar üzerine yeni bir araştırma dizisi.",
+                contentPT: "Uma nova série de pesquisas sobre as ligações ecológicas e culturais entre a Amazônia, os pulmões do mundo, e a Mesopotâmia, onde a história começou."
             },
             {
                 type: "main",
                 region: "Mardin",
-                tag: "KÜLTÜR ● CULTURA",
-                tr: "Reyhani ve Samba Ritmi",
-                pt: "Ritmo de Reyhani e Samba",
-                desc: "İKİ KITA, TEK RUH →",
-                img: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1000",
-                contentTR: "Mardin avlularında süzülen Reyhani ile Rio sokaklarında patlayan Samba arasındaki ritmik kardeşliği keşfedin.",
-                contentPT: "Descubra a irmandade rítmica entre o Reyhani que desliza pelos pátios de Mardin e o Samba que explode nas ruas do Rio."
+                tag: "YAŞAM ● VIDA",
+                tr: "Abbara Altında Bir Akşam",
+                pt: "Uma Noite sob a Abbara",
+                desc: "MARDİN'İN GİZEMLİ GEÇİTLERİ →",
+                img: "https://images.unsplash.com/photo-1540266102324-44229671d533?q=80&w=1000",
+                contentTR: "Mardin'in dar sokaklarında rüzgarı kesen abbaralar, sadece birer mimari öğe değil; geçmişin fısıltılarını taşıyan birer zaman tünelidir.",
+                contentPT: "As abbaras que cortam o vento nas ruas estreitas de Mardin não são apenas elementos arquitetônicos; são túneis do tempo que carregam os sussurros do passado."
             }
         ];
 
@@ -178,10 +177,10 @@
                     card.classList.add('card-author');
                     card.innerHTML = `
                         <img src="${item.img}" class="author-img">
-                        <span class="tr-line">${item.name}</span>
-                        <span class="pt-line">${item.title}</span>
-                        <p style="font-size:0.9rem; margin:25px 0; opacity:0.7; max-width:600px; line-height:1.6;">${item.bio}</p>
-                        <div style="font-size:0.75rem; font-weight:900; background:var(--ink); color:white; padding:15px 40px; border-radius:100px;">PORTFOLYO ● KÖŞE YAZISI</div>
+                        <span class="tr-line" style="margin-bottom:5px;">${item.name}</span>
+                        <span class="pt-line" style="font-size:1.1rem; opacity:0.6; margin-bottom:20px;">${item.title}</span>
+                        <p style="font-size:0.95rem; opacity:0.7; max-width:600px; line-height:1.6; margin-bottom:30px;">${item.bio}</p>
+                        <div style="font-size:0.75rem; font-weight:900; background:var(--ink); color:white; padding:15px 40px; border-radius:100px;">KÖŞE YAZISINI OKU ● LER COLUNA</div>
                     `;
                 }
                 card.onclick = () => openR(item);
@@ -202,19 +201,35 @@
             
             if(item.type === 'author') {
                 content.innerHTML = `
-                <div style="text-align:center; margin-bottom:60px;">
-                    <img src="${item.img}" style="width:150px; border-radius:50%; border:6px solid white; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-                    <h1 style="font-family:'Bodoni Moda'; font-size:3rem; margin-top:20px;">${item.name}</h1>
+                <div style="text-align:center; margin-bottom:80px;">
+                    <img src="${item.img}" style="width:140px; border-radius:50%; border:6px solid white; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                    <h1 style="font-family:'Bodoni Moda'; font-size:3.5rem; margin-top:20px;">${item.name}</h1>
                 </div>
                 <div class="reader-grid">
-                    <div><span class="tag-dual">KÖŞE YAZISI</span><h2 style="font-family:'Bodoni Moda'; font-size:2.5rem; margin-bottom:20px;">${item.columnTitleTR}</h2><div class="reader-tr">${item.columnTextTR}</div></div>
-                    <div><span class="tag-dual">CRÔNICA</span><h2 style="font-family:'Bodoni Moda'; font-size:2.5rem; margin-bottom:20px; font-style:italic;">${item.columnTitlePT}</h2><div class="reader-pt">${item.columnTextPT}</div></div>
+                    <div>
+                        <span class="tag-dual">KÖŞE YAZISI</span>
+                        <h2 style="font-family:'Bodoni Moda'; font-size:2.8rem; margin-bottom:25px; font-weight:900;">${item.columnTitleTR}</h2>
+                        <div class="reader-tr">${item.columnTextTR}</div>
+                    </div>
+                    <div>
+                        <span class="tag-dual">CRÔNICA</span>
+                        <h2 style="font-family:'Bodoni Moda'; font-size:2.8rem; margin-bottom:25px; font-weight:900; font-style:italic;">${item.columnTitlePT}</h2>
+                        <div class="reader-pt">${item.columnTextPT}</div>
+                    </div>
                 </div>`;
             } else {
                 content.innerHTML = `
                 <div class="reader-grid">
-                    <div><span class="tag-dual">${item.tag}</span><div class="reader-tr">${item.contentTR || item.tr}</div></div>
-                    <div><span class="tag-dual">VERSÃO EM PORTUGUÊS</span><div class="reader-pt">${item.contentPT || item.pt}</div></div>
+                    <div>
+                        <span class="tag-dual">${item.tag}</span>
+                        <h2 style="font-family:'Bodoni Moda'; font-size:2.8rem; margin-bottom:25px; font-weight:900;">${item.tr}</h2>
+                        <div class="reader-tr">${item.contentTR || item.tr}</div>
+                    </div>
+                    <div>
+                        <span class="tag-dual">VERSÃO EM PORTUGUÊS</span>
+                        <h2 style="font-family:'Bodoni Moda'; font-size:2.8rem; margin-bottom:25px; font-weight:900; font-style:italic;">${item.pt}</h2>
+                        <div class="reader-pt">${item.contentPT || item.pt}</div>
+                    </div>
                 </div>`;
             }
             modal.style.display = 'block';
