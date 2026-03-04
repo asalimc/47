@@ -6,50 +6,56 @@
     <title>MARDIN & BRAZIL | ASC 2026 GLOBAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,600&family=Montserrat:wght@300;600;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
     <style>
-        :root { --mardin: #D4A373; --brazil: #064E3B; --dark: #0a0a0a; --bg: #f8f8fa; }
+        :root { --mardin: #D4A373; --brazil: #064E3B; --dark: #0a0a0a; --bg: #f8f8fa; --radius: 45px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+
+        /* PERFORMANS OPTİMİZASYONU */
+        img, video { content-visibility: auto; }
 
         /* HEADER */
-        header { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        header { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .logo { font-family: 'Playfair Display'; font-size: 2rem; text-decoration: none; color: inherit; font-weight: 900; }
-        .logo span { color: var(--brazil); }
+        .logo span { color: var(--mardin); }
         .profile-trigger { display: flex; align-items: center; gap: 12px; background: white; padding: 6px 18px; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
         /* GRID SYSTEM */
-        .main-container { padding: 25px 5%; display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; max-width: 1600px; margin: 0 auto; }
+        .container { padding: 25px 5%; display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; max-width: 1600px; margin: 0 auto; }
 
         /* HERO CARD */
-        .hero { grid-column: span 8; height: 600px; border-radius: 45px; overflow: hidden; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.08); }
-        .hero img { width: 100%; height: 100%; object-fit: cover; }
+        .hero { grid-column: span 8; height: 600px; border-radius: var(--radius); overflow: hidden; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.08); background: #eee; }
+        .hero img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.5s; }
         .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: white; }
         
         /* SIDE PANEL */
-        .side-stack { grid-column: span 4; display: grid; grid-template-rows: repeat(2, 1fr); gap: 25px; }
-        .card { background: white; border-radius: 35px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center; }
+        .side-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; }
+        .card { background: white; border-radius: 35px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center; min-height: 240px; }
         .card-tag { font-size: 8px; font-weight: 900; color: var(--mardin); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
         .dual-lang { font-size: 13px; line-height: 1.6; color: #444; }
-        .dual-lang em { display: block; margin-top: 5px; color: #999; font-style: normal; font-size: 11px; }
+        .dual-lang em { display: block; margin-top: 8px; color: #999; font-style: normal; font-size: 11px; border-top: 1px solid #f0f0f0; padding-top: 8px; }
 
-        /* VIDEO GRID */
+        /* VIDEO GRID (AKILLI YÜKLEME) */
         .video-grid { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 10px; }
-        .v-box { height: 320px; border-radius: 40px; overflow: hidden; position: relative; background: #000; }
-        .v-box video { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        .v-box { height: 350px; border-radius: var(--radius); overflow: hidden; position: relative; background: #000; }
+        .v-box video { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s; }
+        .v-box video.loaded { opacity: 0.8; }
 
         /* FOOTER */
-        footer { grid-column: span 12; background: white; border-radius: 40px; padding: 60px; margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        footer { grid-column: span 12; background: white; border-radius: var(--radius); padding: 60px; margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; border: 1px solid rgba(0,0,0,0.03); }
         .f-col h4 { font-size: 10px; font-weight: 900; color: var(--mardin); margin-bottom: 20px; letter-spacing: 2px; }
 
         /* MODALS */
-        .modal { position: fixed; inset: 0; background: white; z-index: 2000; display: none; overflow-y: auto; padding: 60px 5%; animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .modal-inner { max-width: 850px; margin: 0 auto; }
-        .close-btn { position: fixed; top: 40px; right: 5%; background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: 900; z-index: 2001; }
+        .modal { position: fixed; inset: 0; background: white; z-index: 2000; display: none; overflow-y: auto; padding: 60px 5%; transition: 0.5s; }
+        .modal-inner { max-width: 850px; margin: 0 auto; padding-bottom: 100px; }
+        .close-btn { position: fixed; top: 30px; right: 5%; background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: 900; z-index: 2100; }
 
-        .btn-action { background: white; color: var(--dark); border: none; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 10px; cursor: pointer; margin-top: 20px; transition: 0.3s; width: fit-content; border: 1px solid rgba(0,0,0,0.05); }
-        .btn-action:hover { background: var(--mardin); color: white; transform: scale(1.05); }
+        /* BUTTONS */
+        .btn-action { background: white; color: var(--dark); border: none; padding: 14px 30px; border-radius: 50px; font-weight: 900; font-size: 10px; cursor: pointer; margin-top: 20px; transition: 0.3s; width: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-action:hover { background: var(--mardin); color: white; transform: translateY(-3px); }
 
-        @media (max-width: 1024px) { .hero, .side-stack, .video-grid { grid-column: span 12; } footer { grid-template-columns: 1fr 1fr; } }
+        /* RESPONSIVE */
+        @media (max-width: 1024px) { .hero, .side-stack, .video-grid { grid-column: span 12; } .hero { height: 450px; } footer { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 600px) { footer { grid-template-columns: 1fr; } .hero-overlay { padding: 30px; } }
     </style>
 </head>
 <body>
@@ -58,15 +64,15 @@
         <a href="#" class="logo">MARDIN<span>BRAZIL</span></a>
         <div class="profile-trigger" onclick="openModal('authorModal')">
             <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:35px; height:35px; border-radius:50%; object-fit:cover;">
-            <span style="font-size: 10px; font-weight: 900;">A. ÇINARBAŞ // BIO</span>
+            <span style="font-size: 10px; font-weight: 900;">A. ÇINARBAŞ // KÖŞE YAZISI</span>
         </div>
     </header>
 
-    <main class="main-container">
+    <main class="container">
         <div class="hero">
-            <img src="https://images.pexels.com/photos/3313332/pexels-photo-3313332.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+            <img src="https://images.pexels.com/photos/3313332/pexels-photo-3313332.jpeg?auto=compress&cs=tinysrgb&w=1260" alt="Mardin Brazil" loading="lazy">
             <div class="hero-overlay">
-                <span style="background:var(--brazil); color:white; padding:5px 15px; border-radius:20px; font-size:8px; font-weight:900; letter-spacing:2px; margin-bottom:15px;">RÖPORTAJ // ENTREVISTA</span>
+                <span style="background:var(--brazil); color:white; padding:5px 15px; border-radius:20px; font-size:8px; font-weight:900; letter-spacing:2px; margin-bottom:15px;">EXCLUSIVE // ÖZEL</span>
                 <h1 style="font-family:'Playfair Display'; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1;">Taşın Hafızası & Ormanın Kalbi <br> <span style="font-size: 1.5rem; opacity: 0.8;">Memória da Pedra e Coração da Floresta</span></h1>
                 <button class="btn-action" onclick="openModal('interviewModal')">DETAYLARI GÖR // VER DETALHES</button>
             </div>
@@ -79,19 +85,19 @@
             </div>
             <div class="card" style="background:var(--brazil); color:white;">
                 <span class="card-tag" style="color:rgba(255,255,255,0.6);">GLOBAL EVENT // ETKİNLİK</span>
-                <p class="dual-lang" style="color:white;">COP 2026: Amazon ve Mezopotamya Ekosistem Koruma Paktı. <em>COP 2026: Pacto de Proteção dos Ecossistemas da Amazônia e Mesopotâmia.</em></p>
+                <p class="dual-lang" style="color:white;">COP 2026: Amazon ve Mezopotamya Ekosistem Paktı. <em>COP 2026: Pacto de Proteção dos Ecossistemas da Amazônia e Mesopotâmia.</em></p>
             </div>
         </div>
 
         <div class="video-grid">
             <div class="v-box">
-                <video muted loop autoplay playsinline poster="https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg">
-                    <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=2315b631adb161b10ff5bc4848bc065607b35597&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
+                <video class="lazy-video" muted loop playsinline poster="https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg">
+                    <source data-src="https://player.vimeo.com/external/371433846.sd.mp4?s=2315b631adb161b10ff5bc4848bc065607b35597&profile_id=139" type="video/mp4">
                 </video>
             </div>
             <div class="v-box">
-                <video muted loop autoplay playsinline poster="https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg">
-                    <source src="https://player.vimeo.com/external/371434191.sd.mp4?s=0952084c8d506d0937a070e6c53d102e3b97b055&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
+                <video class="lazy-video" muted loop playsinline poster="https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg">
+                    <source data-src="https://player.vimeo.com/external/371434191.sd.mp4?s=0952084c8d506d0937a070e6c53d102e3b97b055&profile_id=139" type="video/mp4">
                 </video>
             </div>
         </div>
@@ -100,7 +106,7 @@
             <div class="f-col"><h4>PLATFORM</h4><p class="dual-lang">Dijital Miras Yönetimi. <em>Gestão do Patrimônio Digital.</em></p></div>
             <div class="f-col"><h4>CONTACT</h4><p>mardin-rio@asc2026.com</p></div>
             <div class="f-col"><h4>FOLLOW</h4><p>@asc_mardinbrazil</p></div>
-            <div class="f-col"><h4>LEGAL</h4><p>© 2026 Ahmet Çınarbaş.</p></div>
+            <div class="f-col"><h4>LEGAL</h4><p>© 2026 Ahmet Çınarbaş. <br>All Rights Reserved.</p></div>
         </footer>
     </main>
 
@@ -124,22 +130,46 @@
             <button class="btn-action" style="background:var(--brazil); color:white; margin-bottom:40px;" onclick="speakArticle()">🔊 SESLİ DİNLE / OUVIR</button>
             <h1 style="font-family:'Playfair Display'; font-size: 3rem; line-height: 1.1; margin-bottom: 40px;">Taşın Hafızası ve Ormanın Kalbi</h1>
             <div style="font-family:'Lora'; font-size: 1.4rem; line-height: 1.9; color: #111; text-align: justify;">
-                <p>Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. 2026 yılında bu iki uç noktayı dijital bir köprüyle bağladık...</p>
+                <p>Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. 2026 yılında bu iki uç noktayı dijital bir köprüyle bağladık. Taşın içindeki matematiksel desenleri, ormanın biyolojik ritmiyle senkronize ettik. Bu sadece bir sergi değil, iki coğrafyanın ruhsal birleşimidir.</p>
                 <br>
-                <p style="color: #777; border-left: 4px solid var(--mardin); padding-left: 20px; font-style: italic;">Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro.</p>
+                <p style="color: #777; border-left: 4px solid var(--mardin); padding-left: 20px; font-style: italic;">Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro. Em 2026, conectamos esses dois extremos com uma ponte digital.</p>
             </div>
         </div>
     </div>
 
     <script>
+        // PERFORMANS: LAZY LOADING VIDEOS
+        document.addEventListener("DOMContentLoaded", function() {
+            var lazyVideos = [].slice.call(document.querySelectorAll("video.lazy-video"));
+            if ("IntersectionObserver" in window) {
+                var videoObserver = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(video) {
+                        if (video.isIntersecting) {
+                            for (var source in video.target.children) {
+                                var videoSource = video.target.children[source];
+                                if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+                                    videoSource.src = videoSource.dataset.src;
+                                }
+                            }
+                            video.target.load();
+                            video.target.classList.add("loaded");
+                            video.target.play();
+                            videoObserver.unobserve(video.target);
+                        }
+                    });
+                });
+                lazyVideos.forEach(function(lazyVideo) { videoObserver.observe(lazyVideo); });
+            }
+        });
+
         function openModal(id) { document.getElementById(id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; window.speechSynthesis.cancel(); }
 
         function speakArticle() {
             window.speechSynthesis.cancel();
             const lang = navigator.language.startsWith('pt') ? 'pt-BR' : 'tr-TR';
-            const textTr = "Yapay zeka, bu iki coğrafyanın arasındaki mesafeyi kadim bir ruh frekansına indirgedi. Mardin'in taşları Amazon'un kalbiyle buluşuyor.";
-            const textPt = "A inteligência artificial reduziu a distância entre essas duas geografias a uma frequência de alma ancestral. As pedras de Mardin encontram o coração da Amazônia.";
+            const textTr = "Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor.";
+            const textPt = "As pedras de Mardin contam histórias milenares, enquanto as folhas da Amazônia guardam o futuro.";
             const utterance = new SpeechSynthesisUtterance(lang === 'pt-BR' ? textPt : textTr);
             utterance.lang = lang;
             window.speechSynthesis.speak(utterance);
