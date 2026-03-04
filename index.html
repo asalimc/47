@@ -13,7 +13,6 @@
             --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* Temel Sıfırlama ve Responsive Hazırlık */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
 
@@ -26,7 +25,6 @@
         .logo-m { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-weight: 900; background: var(--ink); color: var(--bg); padding: 0 10px; border-radius: 8px; margin-right: 10px; }
         .logo-text { font-family: 'Bodoni Moda', serif; font-size: 0.9rem; font-weight: 900; line-height: 1; }
 
-        /* Bento Grid Sistemi */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px 6% 80px; }
         .bento { display: flex; flex-direction: column; gap: 30px; }
 
@@ -41,33 +39,27 @@
         .card-author { align-items: center; text-align: center; justify-content: center; }
         .author-img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 5px solid var(--bg); }
 
-        /* Metin Stilleri */
         .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.5rem; line-height: 1.1; margin-bottom: 10px; display: block; font-weight: 900; letter-spacing: -1px; }
         .pt-line { font-family: 'Bodoni Moda', serif; font-size: 2.5rem; line-height: 1.1; display: block; font-weight: 900; letter-spacing: -1px; opacity: 0.6; }
         .tag-dual { font-size: 0.7rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 25px; display: block; }
         .meta-info { font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Reader (Açılır Detay Penceresi) */
         #reader-modal { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding: 80px 6% 40px; }
         .reader-header { text-align: center; margin-bottom: 60px; }
         .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
         .reader-text { font-size: 1.2rem; line-height: 1.8; color: #333; }
         .reader-text b { color: var(--accent); display: block; margin-top: 20px; font-weight: 800; }
-        .reader-img { width: 100%; border-radius: 25px; margin: 30px 0; object-fit: cover; aspect-ratio: 16/9; background: #eee; }
         .divider { width: 100%; height: 1px; background: rgba(176,141,87,0.3); margin: 20px 0; }
 
-        .close-btn { position: fixed; top: 30px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 10000; transition: 0.4s; }
-        .close-btn:hover { background: var(--accent); }
+        .close-btn { position: fixed; top: 30px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 10000; }
 
         footer { padding: 60px 6%; text-align: center; border-top: 1px solid #eee; background: var(--white); }
         .footer-bottom { font-size: 0.7rem; font-weight: 800; opacity: 0.4; letter-spacing: 2px; }
 
-        /* Responsive */
         @media (min-width: 768px) {
             .reader-grid { grid-template-columns: 1fr 1px 1fr; gap: 60px; }
             .divider { width: 1px; height: auto; margin: 0; }
             .tr-line, .pt-line { font-size: 3.5rem; }
-            .bento { gap: 40px; }
         }
     </style>
 </head>
@@ -102,7 +94,7 @@
                     <span class="tr-line">Gümüşün Sabrı & Doğanın Takısı</span>
                     <span class="pt-line">Filigrana e Adornos</span>
                 </div>
-                <div class="meta-info" style="color: white; opacity: 0.8;">GÖRSEL ANALİZ</div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">KÜLTÜREL ANALİZ</div>
             </div>
 
             <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800') center/cover; color: white;" onclick="openReader('gastronomy')">
@@ -148,7 +140,13 @@
         const contentData = {
             author: { tag: "EDİTÖR NOTU", tr: "Kültürler Arası Köprü", pt: "Ponte Entre Culturas", textTr: "Ahmet Çınarbaş olarak, Mardin ve Brezilya arasındaki o görünmez bağları arşive dönüştürüyorum. Bu journal taşın ve ritmin ortak hikayesidir.", textPt: "Como Ahmet Çınarbaş, arquivo os laços invisíveis entre Mardin e o Brasil. Este journal é a história comum da pedra e do ritmo." },
             carnaval: { tag: "MAGAZİN / RİO", tr: "Rio Karnavalı'nda Mardin Esintileri", pt: "Influências de Mardin no Rio", textTr: "Rio Karnavalı'nda Mardin telkarisinden ilham alan kostümler podyumdaydı. Mezopotamya'nın geometrik desenleri Samba okullarının görkemli başlıklarına işlendi.", textPt: "No Carnaval do Rio, figurinos inspirados na filigrana de Mardin desfilaram. Designers brasileiros integraram padrões geométicos nos adereços das escolas." },
-            craft: { tag: "ZANAAT", tr: "Gümüş ve Doğa", pt: "Prata e Natureza", textTr: "<img src='https://images.unsplash.com/photo-1610332850381-893081014844?q=80&w=800' class='reader-img'> <b>Mardin Telkarisi:</b> Gümüş tellerin dantel gibi örüldüğü sabır sanatıdır. <br><br> <img src='https://images.unsplash.com/photo-1511208687438-2c5a5abb810c?q=80&w=800' class='reader-img'> <b>Yerli Takıları:</b> Doğanın sunduğu tohum ve tüylerle kurulan bağdır.", textPt: "<img src='https://images.unsplash.com/photo-1610332850381-893081014844?q=80&w=800' class='reader-img'> <b>Filigrana:</b> A arte da paciência em fios de prata. <br><br> <img src='https://images.unsplash.com/photo-1511208687438-2c5a5abb810c?q=80&w=800' class='reader-img'> <b>Adornos Indígenas:</b> Conexão espiritual com sementes e penas." },
+            craft: { 
+                tag: "ZANAAT ANALİZİ", 
+                tr: "Gümüşün Sabrı ve Doğanın Takısı", 
+                pt: "A Paciência da Prata e o Adorno da Natureza", 
+                textTr: "<b>Mardin Telkarisi:</b> Mezopotamya'nın binlerce yıllık metal işleme dehası olan Telkari, ince gümüş tellerin bir dantel zarafetiyle örülmesidir. Bu sanat sadece bir takı değil, Mardinli ustanın gümüşle girdiği uzun bir sabır yolculuğudur. <br><br> <b>Brezilya Yerli Takıları:</b> Amazon'un derinliklerinden gelen 'Arte Indígena', gümüş yerine doğanın bizzat kendisini kullanır. Açaí tohumları, tropikal kuş tüyleri ve işlenmemiş mineraller, kişinin ormanla ve atalarıyla olan spiritüel bağını temsil eder. Mardin'de maden dile gelirken, Brezilya'da ormanın ruhu takıya dönüşür.", 
+                textPt: "<b>Filigrana de Mardin:</b> Um gênio da metalurgia mesopotâmica com milhares de anos, a Filigrana é a tecelagem de finos fios de prata com a elegância de uma renda. Esta arte não é apenas uma joia, mas uma longa jornada de paciência do mestre de Mardin com a prata. <br><br> <b>Adornos Indígenas do Brasil:</b> Vinda das profundezas da Amazônia, a 'Arte Indígena' utiliza a própria natureza em vez de prata. Sementes de Açaí, penas de pássaros tropicais e minerais brutos representam a conexão espiritual da pessoa com a floresta e seus ancestrais. Enquanto em Mardin o metal fala, no Brasil a alma da floresta se transforma em adorno." 
+            },
             gastronomy: { tag: "GASTRONOMİ", tr: "İçli Köfte & Quibe", pt: "Kibbeh vs Quibe", textTr: "Mardin'in Reyhanlı İçli Köftesi ile Brezilya'nın nane aromalı Quibe'si arasındaki kültürel benzerlik şaşırtıcıdır.", textPt: "A semelhança entre o Kibbeh de Mardin e o Quibe de hortelã do Brasil é uma herança cultural marcante." },
             sinop: { tag: "COĞRAFYA", tr: "İki Sinop'un Hikayesi", pt: "Duas Sinops", textTr: "Türkiye'nin Karadeniz kıyısındaki Sinop ile Amazon girişindeki Sinop arasındaki şaşırtıcı isim ve doğa birliği.", textPt: "A incrível união de nome e natureza entre a Sinop da Turquia e a Sinop da Amazônia brasileira." },
             society: { tag: "TOPLUM", tr: "Halk Benzerlikleri", pt: "Semelhanças Populares", textTr: "Geniş aile yapısı, misafirperverlik ve her iki toplumun ruhundaki futbol tutkusu ortak bir karakterdir.", textPt: "Família estendida, hospitalidade e paixão pelo futebol são caracteres comuns a ambos os povos." }
@@ -183,7 +181,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Dışarı tıklayınca kapama
         window.onclick = function(event) {
             const modal = document.getElementById('reader-modal');
             if (event.target == modal) closeReader();
