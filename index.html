@@ -32,7 +32,7 @@
         }
         .logo-text { font-family: 'Bodoni Moda', serif; font-size: 1.1rem; font-weight: 900; line-height: 1; }
 
-        /* FILTERS */
+        /* NAV FILTERS */
         .nav-filters button {
             background: none; border: 1px solid rgba(0,0,0,0.1); color: var(--ink);
             padding: 8px 18px; border-radius: 50px; font-size: 0.7rem; font-weight: 800;
@@ -57,6 +57,7 @@
         .card-side { grid-column: span 4; min-height: 380px; }
         .card-video { grid-column: span 8; padding: 0; height: 380px; overflow: hidden; border-radius: 40px; }
 
+        /* TYPOGRAPHY */
         .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; margin-bottom: 12px; display: block; }
         .pt-line { font-size: 0.9rem; font-weight: 600; opacity: 0.8; font-style: italic; display: block; }
         .tag-dual { font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
@@ -96,8 +97,7 @@
     </header>
 
     <main class="container">
-        <div class="bento" id="bento-grid">
-            </div>
+        <div class="bento" id="bento-grid"></div>
     </main>
 
     <div id="reader-modal" class="reader" onclick="if(event.target.id === 'reader-modal') closeR()">
@@ -111,18 +111,17 @@
     </footer>
 
     <script>
-        // İÇERİKLER BURADA (Artık json dosyasına gerek yok, buradan ekleme yapabilirsin)
         const myContent = [
             {
                 type: "main",
                 region: "Brazil",
-                tag: "Özel Röportaj ● Entrevista Exclusiva",
-                tr: "Ritmin Kökeni: Samba ve Direniş.",
-                pt: "A Origem do Ritmo: Samba e Resistência.",
-                desc: "TAM METNİ OKU ● LER TEXTO COMPLETO →",
-                img: "https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=large",
-                contentTR: "Brezilya sokaklarında Samba bir eğlence değil, toplumsal bir haykırıştır. Mardin'in dar küçelerindeki dengbejler gibi, onlar da acıyı ritme dönüştürür.",
-                contentPT: "Nas ruas do Brasil, o samba não é diversão, é um grito social. Assim como os dengbejs nas vielas estreitas de Mardin, eles transformam a dor em ritmo."
+                tag: "MAGAZİN ● CELEBRIDADE",
+                tr: "Rio Karnavalı'nda Mardin Rüzgarı",
+                pt: "Vento de Mardin no Carnaval do Rio",
+                desc: "ÜNLÜ TASARIMCININ YENİ KOLEKSİYONU →",
+                img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000",
+                contentTR: "Brezilyalı ünlü moda tasarımcısı, son koleksiyonunda Mardin'in gümüş telkari işçiliğinden ilham aldığını açıkladı. Rio sokaklarında Mezopotamya esintileri yankılanıyor.",
+                contentPT: "O famoso designer de moda brasileiro revelou que sua última coleção foi inspirada no trabalho de filigrana de prata de Mardin. Ecos da Mesopotâmia ressoam nas ruas do Rio."
             },
             {
                 type: "author",
@@ -135,32 +134,50 @@
             {
                 type: "side",
                 region: "Mardin",
-                tag: "Köşe Yazısı ● Crônica",
-                tr: "Taşın Fısıltısı",
-                pt: "Sussurro da Pedra",
-                desc: "Mardin'in sarı kalker taşlarının anlattığı bin yıllık hikaye.",
-                contentTR: "Taşın hafızası vardır. Mardin'in sarı kalker taşlarına dokunduğunuzda, binlerce yıllık bir hikaye anlatır. Rio'nun granit tepeleri de aynı şekilde şehrin karakterini belirler.",
-                contentPT: "A pedra tem memória. Quando você toca nas pedras de calcário amarelo de Mardin, elas contam uma história de milhares de anos. As colinas de granito do Rio determinam o caráter da cidade."
+                tag: "KÜLTÜR ● CULTURA",
+                tr: "Reyhani ve Samba'nın Kardeşliği",
+                pt: "A Irmandade de Reyhani e Samba",
+                desc: "İki farklı kıta, iki benzer ritim.",
+                contentTR: "Mardin'in avlularında süzülen Reyhani adımları ile Rio'nun favelalarında doğan Samba adımları arasındaki gizli benzerlikleri uzmanlar tartışıyor.",
+                contentPT: "Especialistas discutem as semelhanças ocultas entre os passos do Reyhani que deslizam nos pátios de Mardin e o Samba nascido nas favelas do Rio."
+            },
+            {
+                type: "side",
+                region: "Brazil",
+                tag: "HABER ● NOTÍCIAS",
+                tr: "Yeni Gastronomi Rotası",
+                pt: "Nova Rota Gastronômica",
+                desc: "Sao Paulo'da Mezopotamya mutfağı.",
+                contentTR: "Sao Paulo'nun merkezinde açılan yeni restoran, Mardin içli köftesi ile Brezilya'nın ünlü 'Coxinha'sını aynı menüde buluşturuyor.",
+                contentPT: "Um novo restaurante aberto no centro de São Paulo reúne o 'kibe' de Mardin e a famosa 'Coxinha' brasileira no mesmo cardápio."
             },
             {
                 type: "video",
-                region: "Brazil",
+                region: "Mardin",
                 url: "https://www.youtube.com/embed/jg2q0hXy85c"
+            },
+            {
+                type: "side",
+                region: "Mardin",
+                tag: "KÖŞE YAZISI ● CRÔNICA",
+                tr: "Taşın Fısıltısı",
+                pt: "Sussurro da Pedra",
+                desc: "Mardin'in sarı kalker taşlarının anlattığı bin yıllık hikaye.",
+                contentTR: "Taşın hafızası vardır. Mardin'un taşları binlerce yıllık bir hikaye anlatır.",
+                contentPT: "A pedra tem memória. As pedras de Mardin contam uma história de milhares de anos."
             }
         ];
 
         function renderCards(data) {
             const grid = document.getElementById('bento-grid');
             grid.innerHTML = '';
-
             data.forEach(item => {
                 const card = document.createElement('section');
                 card.className = 'card';
-
                 if(item.type === 'main') {
                     card.classList.add('card-main');
                     card.style.background = `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('${item.img}') center/cover`;
-                    card.innerHTML = `<div><span class="tag-dual" style="color:white;">${item.tag}</span><span class="tr-line" style="font-size:3.2rem;">${item.tr}</span><span class="pt-line" style="color:white;">${item.pt}</span></div><div style="font-weight:800; font-size:0.7rem; color:white;">${item.desc}</div>`;
+                    card.innerHTML = `<div><span class="tag-dual" style="color:white; border-color:white;">${item.tag}</span><span class="tr-line" style="font-size:3.2rem;">${item.tr}</span><span class="pt-line" style="color:white;">${item.pt}</span></div><div style="font-weight:800; font-size:0.7rem; color:white;">${item.desc}</div>`;
                 } else if(item.type === 'author') {
                     card.classList.add('card-author');
                     card.innerHTML = `<img src="${item.img}" class="author-img"><span class="tr-line" style="font-size:1.8rem;">${item.name}</span><span class="pt-line">${item.title}</span><p style="font-size:0.8rem; margin:20px 0; opacity:0.7;">${item.bio}</p><div style="font-size:0.7rem; font-weight:900; background:var(--ink); color:white; padding:12px 25px; border-radius:100px;">PORTFOLYO</div>`;
@@ -171,7 +188,6 @@
                     card.classList.add('card-video');
                     card.innerHTML = `<iframe src="${item.url}" style="width:100%; height:100%; border:none;"></iframe>`;
                 }
-
                 if(item.type !== 'video') card.onclick = () => openR(item);
                 grid.appendChild(card);
             });
