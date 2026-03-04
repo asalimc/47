@@ -15,11 +15,11 @@
         .form-sec { display: none; }
         .form-sec.active { display: block; }
         label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; }
-        input, textarea, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-family: inherit; box-sizing: border-box; outline: none; margin-bottom: 10px; }
-        textarea { min-height: 280px; line-height: 1.6; }
-        button { width: 100%; padding: 18px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        input, textarea, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-family: inherit; box-sizing: border-box; outline: none; margin-bottom: 10px; background: #fff; }
+        textarea { min-height: 250px; line-height: 1.6; }
+        button { width: 100%; padding: 18px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
         button:hover { background: #333; transform: translateY(-2px); }
-        #status { margin-top: 20px; text-align: center; font-weight: bold; padding: 15px; border-radius: 12px; display: none; font-size: 0.9rem; }
+        #status { margin-top: 20px; text-align: center; font-weight: bold; padding: 15px; border-radius: 12px; display: none; }
     </style>
 </head>
 <body>
@@ -43,14 +43,14 @@
             <option>Toplum ● Sociedade</option>
         </select>
         
-        <label>Kapak Görseli (URL) - Boş bırakırsanız otomatik görsel gelir</label>
-        <input type="text" id="img-url" placeholder="https://resim-adresi.com/foto.jpg">
+        <label>Kapak Görseli (URL)</label>
+        <input type="text" id="img-url" placeholder="İnternetten bir resim linki yapıştırın...">
         
         <label>Türkçe Başlık</label>
-        <input type="text" id="tr-title" placeholder="Yazı başlığını girin...">
+        <input type="text" id="tr-title" placeholder="Başlık girin...">
         
-        <label>Türkçe İçerik (Makale Alanı)</label>
-        <textarea id="tr-body" placeholder="Hikayenizi buraya anlatın..."></textarea>
+        <label>Türkçe İçerik</label>
+        <textarea id="tr-body" placeholder="Hikayenizi anlatın..."></textarea>
         
         <button onclick="handleSave('article')">YAYINLA & OTOMATİK ÇEVİR</button>
     </div>
@@ -60,24 +60,24 @@
         <input type="text" id="author-name" value="Ahmet Çınarbaş">
         <label>Ünvan</label>
         <input type="text" id="author-bio" value="Kültürel Arşivci">
-        <label>Yazar Profil Fotoğrafı URL</label>
+        <label>Yazar Fotoğraf URL</label>
         <input type="text" id="author-img" placeholder="https://...">
-        <button onclick="handleSave('settings')" style="background:var(--accent)">PROFİLİ GÜNCELLE</button>
+        <button onclick="handleSave('settings')" style="background:var(--accent)">AYARLARI GÜNCELLE</button>
     </div>
 
     <div id="cat-sec" class="form-sec">
-        <label>Yeni Kategori Ekle (TR)</label>
+        <label>Yeni Kategori (TR)</label>
         <input type="text" id="new-cat-tr" placeholder="Örn: SİNEMA">
-        <label>Yeni Kategori Ekle (PT)</label>
+        <label>Yeni Kategori (PT)</label>
         <input type="text" id="new-cat-pt" placeholder="Örn: CINEMA">
-        <button onclick="handleSave('category')" style="background:#555">KATEGORİ EKLE</button>
+        <button onclick="handleSave('category')" style="background:#555">EKLE</button>
     </div>
 
     <div id="status"></div>
 </div>
 
 <script>
-    // Güncel Token
+    // Sizin Token'ınız
     const GH_TOKEN = "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";
     const REPO_URL = 'https://api.github.com/repos/asalimc/47/contents/articles.json';
 
@@ -97,26 +97,19 @@
     }
 
     async function handleSave(mode) {
-        notify("GitHub veritabanına bağlanılıyor...", "info");
-
+        notify("İşlem yapılıyor...", "info");
         try {
             const getFile = await fetch(REPO_URL, {
                 headers: { 'Authorization': `token ${GH_TOKEN}`, 'Cache-Control': 'no-cache' }
             });
-
-            if (!getFile.ok) throw new Error("Dosya okunamadı! articles.json dosyasının doğru konumda olduğundan emin olun.");
-            
             const fileData = await getFile.json();
             const content = JSON.parse(decodeURIComponent(escape(atob(fileData.content))));
 
             if(mode === 'article') {
-                const trT = document.getElementById('tr-title').value;
-                const trB = document.getElementById('tr-body').value;
                 let img = document.getElementById('img-url').value;
-
-                // Koruma: Çok uzun base64 verilerini veya boş girişleri engelle, otomatik görsel ata
+                // Base64 koruması: data: ile başlayan uzun kodları otomatik görselle değiştir
                 if(!img || img.startsWith('data:')) {
-                    img = "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1000&auto=format&fit=crop";
+                    img = "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&w=800";
                 }
 
                 content.unshift({
@@ -124,8 +117,8 @@
                     type: "post",
                     category: document.getElementById('category-select').value,
                     image: img,
-                    tr: { title: trT, body: trB },
-                    pt: { title: "Tradução pendente...", body: "Em breve..." },
+                    tr: { title: document.getElementById('tr-title').value, body: document.getElementById('tr-body').value },
+                    pt: { title: "Traduzindo...", body: "Aguardando..." },
                     date: new Date().toLocaleDateString('tr-TR')
                 });
             } else if(mode === 'settings') {
@@ -141,18 +134,11 @@
             const res = await fetch(REPO_URL, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "Update Journal Data", content: updated, sha: fileData.sha })
+                body: JSON.stringify({ message: "Journal Update", content: updated, sha: fileData.sha })
             });
 
-            if(res.ok) {
-                notify("BAŞARIYLA YAYINLANDI!", "success");
-                if(mode === 'article') {
-                    document.getElementById('tr-title').value = "";
-                    document.getElementById('tr-body').value = "";
-                }
-            } else {
-                throw new Error("GitHub yazma hatası! Token yetkilerini kontrol edin.");
-            }
+            if(res.ok) notify("BAŞARIYLA KAYDEDİLDİ!", "success");
+            else throw new Error("Yazma hatası.");
         } catch (e) {
             notify("HATA: " + e.message, "err");
         }
