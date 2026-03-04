@@ -28,22 +28,23 @@
         #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 10001; display: none; }
         #progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px 6% 80px; }
-        .bento { display: flex; flex-direction: column; gap: 30px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6% 120px; }
+        .bento { display: flex; flex-direction: column; gap: 60px; } /* Gap artırıldı derinlik için */
 
         .card {
             background: var(--white); border-radius: 35px; padding: 45px;
-            transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease); 
+            transition: transform 0.8s var(--ease), box-shadow 0.6s var(--ease); 
             cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
             display: flex; flex-direction: column; justify-content: space-between; 
             min-height: 520px; width: 100%; position: relative; overflow: hidden;
+            will-change: transform; /* Performans için */
         }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.12); }
+        .card:hover { transform: scale(1.02) !important; box-shadow: 0 40px 80px rgba(0,0,0,0.12); z-index: 10; }
 
         .card-bg {
-            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+            position: absolute; top: -15%; left: -10%; width: 120%; height: 130%;
             background-size: cover; background-position: center;
-            z-index: 0; transition: transform 0.2s ease-out;
+            z-index: 0; transition: transform 0.3s ease-out;
         }
         .card-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.85)); z-index: 1; }
         .card-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between; flex: 1; }
@@ -86,7 +87,7 @@
     <main class="container">
         <div class="bento">
             
-            <div class="card card-author" onclick="openReader('author')">
+            <div class="card card-author parallax-card" data-speed="0.05" onclick="openReader('author')">
                 <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-img">
                 <div class="card-content">
                     <div>
@@ -98,7 +99,7 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openReader('carnaval')">
+            <div class="card parallax-card" data-speed="-0.1" onclick="openReader('carnaval')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content" style="color: white;">
@@ -107,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openReader('craft')">
+            <div class="card parallax-card" data-speed="0.12" onclick="openReader('craft')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content" style="color: white;">
@@ -116,7 +117,7 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openReader('gastronomy')">
+            <div class="card parallax-card" data-speed="-0.08" onclick="openReader('gastronomy')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content" style="color: white;">
@@ -125,7 +126,7 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openReader('sinop')">
+            <div class="card parallax-card" data-speed="0.15" onclick="openReader('sinop')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content" style="color: white;">
@@ -134,7 +135,7 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openReader('society')">
+            <div class="card parallax-card" data-speed="-0.12" onclick="openReader('society')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content" style="color: white;">
@@ -162,9 +163,19 @@
             carnaval: { tag: "MAGAZİN / RİO", tr: "Rio Karnavalı'nda Mardin Rüzgarı", pt: "Influências de Mardin no Rio", textTr: "<b>Görkemli Buluşma:</b> Rio de Janeiro'nun ünlü Sapucaí podyumlarında bu yıl Mardin'in telkari sanatının geometrik estetiği yankılandı. Brezilyalı moda küratörleri, Mezopotamya'nın binlerce yıllık gümüş işleme motiflerini, devasa kostüm başlıklarına ve kanat tasarımlarına entegre ederek kültürel bir füzyon yarattılar.<br><br><b>Ritimlerin Kardeşliği:</b> Mardin'in ağırbaşlı Reyhani dansı ile Brezilya'nın yerinde duramayan Sambası, aslında aynı topluluk bilincinden ve yaşamı kutlama arzusundan besleniyor.", textPt: "<b>Encontro Majestoso:</b> Nas famosas passarelas da Sapucaí, ecoou este ano a estética geométrica da filigrana de Mardin. Curadores de moda brasileiros integraram padrões milenares da Mesopotâmia em grandiosos adereços, criando uma fusão cultural única.<br><br><b>Irmandade de Ritmos:</b> A solene dança Reyhani e o enérgico Samba compartilham a mesma essência de celebração comunitária." },
             craft: { tag: "ZANAAT ANALİZİ", tr: "Gümüşün Sabrı ve Doğanın Takısı", pt: "A Paciência da Prata e o Adorno da Natureza", textTr: "<b>Mardin Telkarisi:</b> Gümüş tellerin mikron düzeyinde inceltilip sabırla bükülmesiyle oluşan bu sanat, Mardin'in karakterini yansıtır. Her bir motif, bir ustanın ömründen süzülen sessiz bir hikayedir.<br><br><b>Brezilya Yerli Takıları:</b> Amazon'un kalbinde, yerli halklar metali değil doğayı işler. Tohumlar, renkli kuş tüyleri ve bitki lifleri, sadece birer süs değil; kişinin doğayla olan ruhsal kontratını simgeleyen yaşayan kimliklerdir.", textPt: "<b>Filigrana de Mardin:</b> A arte de tecer fios de prata em nível mícron reflete o caráter de Mardin. Cada motivo é uma história silenciosa moldada pela paciência.<br><br><b>Adornos Indígenas:</b> No coração da Amazônia, os povos indígenas trabalham a natureza, não o metal. Sementes e penas não são apenas adornos, mas identidades que simbolizam o contrato espiritual com a floresta." },
             gastronomy: { tag: "MUTFAK KÜLTÜRÜ", tr: "İçli Köfte & Quibe Karşılaştırması", pt: "Kibbeh vs Quibe", textTr: "<b>Mutfak Mirası:</b> Mardin'un baharatlı, reyhan dokunuşlu İçli Köftesi (Irok) ile Brezilya'nın her köşe başında bulabileceğiniz Quibe'si (Kibe) arasındaki benzerlik büyüleyicidir. Ortadoğu'dan Brezilya'ya göç eden bu lezzet, yeni dünyada kendine has bir kimlik bulmuştur.<br><br><b>Farklı Yorumlar:</b> Mardin'de haşlama ve kızartma teknikleri geleneksel yapıyı korurken; Brezilya'da içine 'Catupiry' peyniri eklenen modern versiyonlar popülerlik kazanmıştır.", textPt: "<b>Herança Culinária:</b> A semelhança entre o Kibbeh temperado de Mardin e o onipresente Quibe brasileiro é fascinante. Esta iguaria, que migrou do Oriente Médio, encontrou uma identidade própria no Brasil.<br><br><b>Interpretações:</b> Enquanto em Mardin as técnicas tradicionais predominam, no Brasil versões modernas com queijo Catupiry tornaram-se extremamente populares." },
-            sinop: { tag: "COĞRAFİ KADER", tr: "İki Sinop'un Hikayesi", pt: "Duas Sinops", textTr: "<b>İsim Benzerliğinin Ötesi:</b> Türkiye'nin en kuzeyindeki Sinop ile Brezilya'nın Mato Grosso eyaletindeki Sinop arasındaki bağ sadece isimden ibaret değildir. Her iki şehir de kendi coğrafyalarının 'limanı' olma misyonunu taşır.<br><br><b>Su ve Yeşil:</b> Biri Karadeniz'in hırçın sularına set çekerken, diğeri Amazon ormanlarının derinliklerine açılan yeşil bir kapıdır. Her iki şehir de doğanın insan yerleşimiyle kurduğu zorlu ama huzurlu dengeyi temsil eder.", textPt: "<b>Além do Nome:</b> O vínculo entre a Sinop turca e a Sinop no Mato Grosso vai além do nome. Ambas as cidades funcionam como 'portos' em suas geografias.<br><br><b>Água e Verde:</b> Enquanto uma enfrenta as águas do Mar Negro, a outra é o portal para as profundezas da Amazônia, representando o equilíbrio entre homem e natureza." },
-            society: { tag: "SOSYOLOJİK ANALİZ", tr: "Halk Benzerlikleri: Ortak Ruh", pt: "Almas Gêmeas Culturais", textTr: "<b>Sıcak Kanlılık:</b> Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü misafirperverliği (Cordialidade) aynı kökten beslenir. İki kültürde de yabancı, içeriye davet edilen bir dosttur.<br><br><b>Ortak Tutkular:</b> Bitmek bilmeyen geniş aile sofraları, yüksek sesli ve kahkahalı sohbetler, müziğin gündelik hayatın ayrılmaz bir parçası olması... Bu ortak paydalar, Mardin ve Brezilya'yı binlerce kilometreye rağmen gönül komşusu yapar.", textPt: "<b>Cordialidade:</b> A tradição do 'Convidado de Deus' em Mardin e a hospitalidade brasileira bebem da mesma fonte. Em ambas as culturas, o estranho é um amigo a ser convidado para entrar.<br><br><b>Paixões Comuns:</b> Longas mesas familiares, conversas animadas e a música como parte da vida tornam Mardin e Brasil vizinhos de alma, apesar da distância." }
+            sinop: { tag: "COĞRAFİ KADER", tr: "İki Sinop'u Hikayesi", pt: "Duas Sinops", textTr: "<b>İsim Benzerliğinin Ötesi:</b> Türkiye'nin en kuzeyindeki Sinop ile Brezilya'nın Mato Grosso eyaletindeki Sinop arasındaki bağ sadece isimden ibaret değildir. Her iki şehir de kendi coğrafyalarının 'limanı' olma misyonunu taşır.<br><br><b>Su ve Yeşil:</b> Biri Karadeniz'in hırçın sularına set çekerken, diğeri Amazon ormanlarının derinliklerine açılan yeşil bir kapıdır. Her iki şehir de doğanın insan yerleşimiyle kurduğu zorlu ama huzurlu dengeyi temsil eder.", textPt: "<b>Além do Nome:</b> O vínculo entre a Sinop turca e a Sinop no Mato Grosso vai além do nome. Ambas as cidades funcionam como 'portos' em suas geografias.<br><br><b>Água e Verde:</b> Enquanto uma enfrenta as águas do Mar Negro, a outra é o portal para as profundezas da Amazônia, representando o equilíbrio entre homem e natureza." },
+            society: { tag: "SOSYOLOJİK ANALİZ", tr: "Halk Benzerlikleri: Ortak Ruh", pt: "Almas Gêmeas Culturais", textTr: "<b>Sıcak Kanlılık:</b> Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü misafirperverliği (Cordialidade) aynı kökten beslenir. İki kültürde de yabancı, içeriye davet edilen bir dosttur.<br><br><b>Ortak Tutkular:</b> Bitmek bilmeyen geniş aile sofraları, yüksek sesli ve kahkahalı sohbetler, müziğin gündelik hayatın ayrılmaz bir parçası olması... Bu ortak paydalar, Mardin ve Brezilya'yı binlerce kilometreye rağmen gönül komşusu yapar.", textPt: "<b>Cordialidade:</b> A tradição do 'Convidado de Deus' em Mardin e a hospitalidade brasileira bebem da mesma fonte. Em ambas as culturas, o estranho é um amigo a ser convidado para entrar.<br><br> Paixões Comuns: Longas mesas familiares, conversas animadas e a música como parte da vida tornam Mardin e Brasil vizinhos de alma, apesar da distância." }
         };
+
+        // PARALLAX EFFECT SCRIPT
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.parallax-card');
+            cards.forEach(card => {
+                const speed = card.getAttribute('data-speed');
+                const yPos = -(window.pageYOffset * speed);
+                card.style.transform = `translateY(${yPos}px)`;
+            });
+        });
 
         function openReader(key) {
             const item = contentData[key]; if(!item) return;
@@ -192,6 +203,8 @@
 
         function copyLink() { navigator.clipboard.writeText(window.location.href); alert("Bağlantı kopyalandı!"); }
         function closeReader() { document.getElementById('reader-modal').style.display = 'none'; document.getElementById('progress-container').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        
+        // MOUSE PARALLAX (INTERNAL BG)
         if (window.innerWidth > 1024) {
             document.addEventListener('mousemove', (e) => {
                 const cards = document.querySelectorAll('.card');
@@ -199,7 +212,7 @@
                     const bg = card.querySelector('.card-bg'); if(!bg) return;
                     const rect = card.getBoundingClientRect();
                     const x = (e.clientX - rect.left) / rect.width; const y = (e.clientY - rect.top) / rect.height;
-                    bg.style.transform = `translate(${(x - 0.5) * 35}px, ${(y - 0.5) * 35}px) scale(1.15)`;
+                    bg.style.transform = `translate(${(x - 0.5) * 45}px, ${(y - 0.5) * 45}px) scale(1.2)`;
                 });
             });
         }
