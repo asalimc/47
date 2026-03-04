@@ -15,7 +15,6 @@
         .logo { font-family: 'Playfair Display'; font-size: 2rem; text-decoration: none; color: inherit; font-weight: 900; }
         .logo span { color: var(--brazil); }
         .profile-trigger { display: flex; align-items: center; gap: 12px; background: white; padding: 6px 18px; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .profile-trigger:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
 
         /* GRID SYSTEM */
         .main-container { padding: 25px 5%; display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; max-width: 1600px; margin: 0 auto; }
@@ -23,7 +22,7 @@
         /* HERO CARD */
         .hero { grid-column: span 8; height: 600px; border-radius: 45px; overflow: hidden; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.08); }
         .hero img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: white; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: white; }
         
         /* SIDE PANEL */
         .side-stack { grid-column: span 4; display: grid; grid-template-rows: repeat(2, 1fr); gap: 25px; }
@@ -35,7 +34,7 @@
         /* VIDEO GRID */
         .video-grid { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 10px; }
         .v-box { height: 320px; border-radius: 40px; overflow: hidden; position: relative; background: #000; }
-        .v-box video { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+        .v-box video { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
 
         /* FOOTER */
         footer { grid-column: span 12; background: white; border-radius: 40px; padding: 60px; margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
@@ -45,10 +44,9 @@
         .modal { position: fixed; inset: 0; background: white; z-index: 2000; display: none; overflow-y: auto; padding: 60px 5%; animation: slideUp 0.4s ease; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .modal-inner { max-width: 850px; margin: 0 auto; }
-        .close-btn { position: fixed; top: 40px; right: 5%; background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: 900; }
+        .close-btn { position: fixed; top: 40px; right: 5%; background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: 900; z-index: 2001; }
 
-        /* BUTTONS */
-        .btn-action { background: white; color: var(--dark); border: none; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 10px; cursor: pointer; margin-top: 20px; transition: 0.3s; width: fit-content; }
+        .btn-action { background: white; color: var(--dark); border: none; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 10px; cursor: pointer; margin-top: 20px; transition: 0.3s; width: fit-content; border: 1px solid rgba(0,0,0,0.05); }
         .btn-action:hover { background: var(--mardin); color: white; transform: scale(1.05); }
 
         @media (max-width: 1024px) { .hero, .side-stack, .video-grid { grid-column: span 12; } footer { grid-template-columns: 1fr 1fr; } }
@@ -66,7 +64,7 @@
 
     <main class="main-container">
         <div class="hero">
-            <img src="https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=large">
+            <img src="https://images.pexels.com/photos/3313332/pexels-photo-3313332.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
             <div class="hero-overlay">
                 <span style="background:var(--brazil); color:white; padding:5px 15px; border-radius:20px; font-size:8px; font-weight:900; letter-spacing:2px; margin-bottom:15px;">RÖPORTAJ // ENTREVISTA</span>
                 <h1 style="font-family:'Playfair Display'; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1;">Taşın Hafızası & Ormanın Kalbi <br> <span style="font-size: 1.5rem; opacity: 0.8;">Memória da Pedra e Coração da Floresta</span></h1>
@@ -76,41 +74,33 @@
 
         <div class="side-stack">
             <div class="card">
-                <span class="card-tag">GÜNCEL // NOTÍCIAS</span>
-                <p class="dual-lang">Dijital köprü 2026'da Mardin'de kuruluyor. <em>A ponte digital será estabelecida em Mardin em 2026.</em></p>
+                <span class="card-tag">GOOGLE TRENDS // GÜNCEL</span>
+                <p class="dual-lang">Yapay Zeka Arkeolojisi Mardin'de yeni bir dönem başlatıyor. <em>A Arqueologia da Inteligência Artificial inicia uma nova era em Mardin.</em></p>
             </div>
             <div class="card" style="background:var(--brazil); color:white;">
-                <span class="card-tag" style="color:rgba(255,255,255,0.6);">EVENT // ETKİNLİK</span>
-                <p class="dual-lang" style="color:white;">14 Mart: Mezopotamya Tasarım Zirvesi. <em>14 de Março: Cúpula de Design da Mesopotâmia.</em></p>
+                <span class="card-tag" style="color:rgba(255,255,255,0.6);">GLOBAL EVENT // ETKİNLİK</span>
+                <p class="dual-lang" style="color:white;">COP 2026: Amazon ve Mezopotamya Ekosistem Koruma Paktı. <em>COP 2026: Pacto de Proteção dos Ecossistemas da Amazônia e Mesopotâmia.</em></p>
             </div>
         </div>
 
         <div class="video-grid">
             <div class="v-box">
-                <video muted loop autoplay playsinline><source src="https://assets.mixkit.co/videos/preview/mixkit-flying-over-a-golden-field-of-wheat-4100-large.mp4" type="video/mp4"></video>
+                <video muted loop autoplay playsinline poster="https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg">
+                    <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=2315b631adb161b10ff5bc4848bc065607b35597&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
+                </video>
             </div>
             <div class="v-box">
-                <video muted loop autoplay playsinline><source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-401-large.mp4" type="video/mp4"></video>
+                <video muted loop autoplay playsinline poster="https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg">
+                    <source src="https://player.vimeo.com/external/371434191.sd.mp4?s=0952084c8d506d0937a070e6c53d102e3b97b055&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
+                </video>
             </div>
         </div>
 
         <footer>
-            <div class="f-col">
-                <h4>PLATFORM</h4>
-                <p class="dual-lang">Kültürel Mirasın Geleceği. <em>O Futuro do Patrimônio Cultural.</em></p>
-            </div>
-            <div class="f-col">
-                <h4>CONTACT // İLETİŞİM</h4>
-                <p>info@asc2026.com</p>
-            </div>
-            <div class="f-col">
-                <h4>FOLLOW // TAKİP</h4>
-                <p>@asc2026_global</p>
-            </div>
-            <div class="f-col">
-                <h4>LEGAL // KÜNYE</h4>
-                <p>© 2026 ASC Portal.</p>
-            </div>
+            <div class="f-col"><h4>PLATFORM</h4><p class="dual-lang">Dijital Miras Yönetimi. <em>Gestão do Patrimônio Digital.</em></p></div>
+            <div class="f-col"><h4>CONTACT</h4><p>mardin-rio@asc2026.com</p></div>
+            <div class="f-col"><h4>FOLLOW</h4><p>@asc_mardinbrazil</p></div>
+            <div class="f-col"><h4>LEGAL</h4><p>© 2026 Ahmet Çınarbaş.</p></div>
         </footer>
     </main>
 
@@ -118,11 +108,11 @@
         <button class="close-btn" onclick="closeModal('authorModal')">KAPAT // FECHAR</button>
         <div class="modal-inner">
             <div style="text-align: center;">
-                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border: 6px solid var(--mardin); margin-bottom: 30px;">
-                <h2 style="font-family:'Playfair Display'; font-size: 2.5rem;">Ahmet Çınarbaş</h2>
-                <p style="font-weight: 900; letter-spacing: 3px; color: var(--mardin); font-size: 10px; margin-bottom: 30px;">KÜRATÖR & YAZAR // CURADOR E ESCRITOR</p>
-                <div style="font-family:'Lora'; font-size: 1.2rem; line-height: 1.8; color: #555; text-align: justify;">
-                    <p>Mezopotamya'nın binlerce yıllık taş hafızası ile Amazon'un bitmek bilmeyen yaşam enerjisini birleştiren Ahmet Çınarbaş, ASC 2026 projesinin vizyoner lideridir. Mardin ve Brezilya arasındaki bu dijital köprü, insanlığın ortak hafızasına bir saygı duruşudur.</p>
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:140px; height:140px; border-radius:50%; object-fit:cover; border: 5px solid var(--mardin); margin-bottom: 30px;">
+                <h2 style="font-family:'Playfair Display'; font-size: 2.8rem;">Ahmet Çınarbaş</h2>
+                <p style="font-weight: 900; letter-spacing: 3px; color: var(--mardin); font-size: 10px; margin-bottom: 40px;">KÖŞE YAZISI: YAPAY ZEKA VE KADİM RUH</p>
+                <div style="font-family:'Lora'; font-size: 1.35rem; line-height: 2; color: #222; text-align: justify; border-top: 1px solid #eee; padding-top: 40px;">
+                    <p><b>Yapay Zekanın Mardin ve Brezilya Senkronizasyonu:</b> Bugün algoritmalar sadece veri işlemekle kalmıyor; Mezopotamya’nın sessiz taşlarındaki fısıltıyı, Amazon’un derinliklerindeki biyolojik frekanslarla buluşturuyor. Mardin’de bir taş evde yazdığım bu satırlar, aynı anda Rio’daki bir sanatçıya dijital bir ilham olarak ulaşıyor. Yapay zeka, bu iki coğrafyanın arasındaki 10 bin kilometrelik mesafeyi, ortak bir "kadim ruh" frekansına indirgedi. Biz artık sadece iki farklı ülke değil, tek bir dijital ekosistemin parçalarıyız.</p>
                 </div>
             </div>
         </div>
@@ -133,31 +123,25 @@
         <div class="modal-inner">
             <button class="btn-action" style="background:var(--brazil); color:white; margin-bottom:40px;" onclick="speakArticle()">🔊 SESLİ DİNLE / OUVIR</button>
             <h1 style="font-family:'Playfair Display'; font-size: 3rem; line-height: 1.1; margin-bottom: 40px;">Taşın Hafızası ve Ormanın Kalbi</h1>
-            
-            <div style="font-family:'Lora'; font-size: 1.4rem; line-height: 1.9; color: #222; text-align: justify;">
-                <p>Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. 2026 yılında bu iki uç noktayı dijital bir köprüyle bağladık. Taşın içindeki matematiksel desenleri, ormanın biyolojik ritmiyle senkronize ettik. Bu sadece bir sergi değil, iki coğrafyanın ruhsal birleşimidir.</p>
+            <div style="font-family:'Lora'; font-size: 1.4rem; line-height: 1.9; color: #111; text-align: justify;">
+                <p>Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. 2026 yılında bu iki uç noktayı dijital bir köprüyle bağladık...</p>
                 <br>
-                <p style="color: #888; border-left: 4px solid var(--mardin); padding-left: 20px; font-style: italic;">Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro. Em 2026, conectamos esses dois extremos com uma ponte digital. Sincronizamos os padrões matemáticos dentro da pedra com o ritmo biológico da floresta.</p>
+                <p style="color: #777; border-left: 4px solid var(--mardin); padding-left: 20px; font-style: italic;">Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // MODAL YÖNETİMİ
         function openModal(id) { document.getElementById(id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; window.speechSynthesis.cancel(); }
 
-        // SMART TTS (DİNLE DENİLDİĞİNDE OTOMATİK DİL ALGILAMA)
         function speakArticle() {
             window.speechSynthesis.cancel();
             const lang = navigator.language.startsWith('pt') ? 'pt-BR' : 'tr-TR';
-            
-            const textTr = "Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. Bu sadece bir sergi değil, iki coğrafyanın ruhsal birleşimidir.";
-            const textPt = "Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro. Esta não é apenas uma exposição, é uma união espiritual.";
-
+            const textTr = "Yapay zeka, bu iki coğrafyanın arasındaki mesafeyi kadim bir ruh frekansına indirgedi. Mardin'in taşları Amazon'un kalbiyle buluşuyor.";
+            const textPt = "A inteligência artificial reduziu a distância entre essas duas geografias a uma frequência de alma ancestral. As pedras de Mardin encontram o coração da Amazônia.";
             const utterance = new SpeechSynthesisUtterance(lang === 'pt-BR' ? textPt : textTr);
             utterance.lang = lang;
-            utterance.rate = 0.9;
             window.speechSynthesis.speak(utterance);
         }
     </script>
