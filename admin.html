@@ -9,18 +9,14 @@
         body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; display: flex; justify-content: center; padding: 40px; color: var(--ink); }
         .admin-container { width: 100%; max-width: 700px; background: var(--white); padding: 40px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         h2 { font-family: 'Bodoni Moda', serif; text-align: center; margin-bottom: 30px; }
-        
         .tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #eee; }
         .tab-btn { padding: 12px 20px; border: none; background: none; cursor: pointer; font-weight: 600; color: #999; transition: 0.3s; }
         .tab-btn.active { color: var(--ink); border-bottom: 2px solid var(--ink); }
-        
         .form-section { display: none; }
         .form-section.active { display: block; }
-
         label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; color: var(--accent); }
         input, textarea, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; outline: none; font-family: inherit; box-sizing: border-box; }
-        textarea { min-height: 250px; line-height: 1.6; } /* Yazarın beklediği geniş alan */
-        
+        textarea { min-height: 250px; line-height: 1.6; }
         button { width: 100%; padding: 16px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 20px; }
         button:hover { opacity: 0.9; transform: translateY(-2px); }
         .status { margin-top: 20px; text-align: center; font-weight: bold; }
@@ -34,21 +30,26 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('article-sec', this)">Yazı Yayınla</button>
         <button class="tab-btn" onclick="showTab('author-sec', this)">Yazar & Profil</button>
-        <button class="tab-btn" onclick="showTab('cat-sec', this)">Kategoriler</button>
+        <button class="tab-btn" onclick="showTab('cat-sec', this)">Kategori Ekle</button>
     </div>
 
     <div id="article-sec" class="form-section active">
         <label>Kategori Seç</label>
         <select id="category-select">
-            </select>
+            <option value="Magazin ● Celebridade">Magazin ● Celebridade</option>
+            <option value="Gastronomi ● Sabor">Gastronomi ● Sabor</option>
+            <option value="Zanaat ● Artesanato">Zanaat ● Artesanato</option>
+            <option value="Coğrafi Kader ● Destino">Coğrafi Kader ● Destino</option>
+            <option value="Toplum ● Sociedade">Toplum ● Sociedade</option>
+        </select>
         
         <label>Kapak Görseli (URL)</label>
-        <input type="text" id="img-url" placeholder="Örn: https://images.unsplash.com/photo-123...">
+        <input type="text" id="img-url" placeholder="Görsel linki...">
         
         <label>Türkçe Başlık</label>
-        <input type="text" id="tr-title" placeholder="Yazı başlığını girin">
+        <input type="text" id="tr-title" placeholder="Yazı başlığı...">
         
-        <label>Makale İçeriği (Yazarın Yazacağı Ana Alan)</label>
+        <label>Türkçe İçerik (Makale Alanı)</label>
         <textarea id="tr-body" placeholder="Hikayenizi buraya yazın..."></textarea>
         
         <button onclick="handleSave('article')">YAYINLA & OTOMATİK ÇEVİR</button>
@@ -69,45 +70,15 @@
         <input type="text" id="new-cat-tr" placeholder="Örn: SİNEMA">
         <label>Yeni Kategori (Portekizce)</label>
         <input type="text" id="new-cat-pt" placeholder="Örn: CINEMA">
-        <button onclick="handleSave('category')" style="background:#555">KATEGORİ EKLE</button>
+        <button onclick="handleSave('category')" style="background:#555">LİSTEYE EKLE</button>
     </div>
 
     <div id="status" class="status"></div>
 </div>
 
 <script>
-    // Token gömüldü
     const GH_TOKEN = "ghp_Ck9rQJbrJ6Pkkz10SRjFcmqnp433Dh2xuYDY";
     const REPO_URL = 'https://api.github.com/repos/asalimc/47/contents/articles.json';
-
-    let globalData = [];
-
-    // Verileri çek ve kategorileri hazırla
-    async function init() {
-        try {
-            const res = await fetch(REPO_URL, { headers: { 'Authorization': `token ${GH_TOKEN}` } });
-            const data = await res.json();
-            globalData = JSON.parse(decodeURIComponent(escape(atob(data.content))));
-            
-            const select = document.getElementById('category-select');
-            const meta = globalData.find(i => i.type === "metadata");
-            
-            // Eğer JSON'da kategori yoksa görselindeki varsayılanları kullan
-            const cats = meta?.categories || [
-                {tr: "MAGAZİN", pt: "CELEBRIDADE"},
-                {tr: "GASTRONOMİ", pt: "SABOR"},
-                {tr: "ZANAAT", pt: "ARTESANATO"},
-                {tr: "COĞRAFİ KADER", pt: "DESTINO"}
-            ];
-            
-            select.innerHTML = cats.map(c => `<option value="${c.tr} ● ${c.pt}">${c.tr} ● ${c.pt}</option>`).join('');
-            if(meta?.author) {
-                document.getElementById('author-name').value = meta.author.name || "";
-                document.getElementById('author-bio').value = meta.author.bio || "";
-                document.getElementById('author-img').value = meta.author.img || "";
-            }
-        } catch (e) { console.log("İlk yükleme hatası, JSON boş olabilir."); }
-    }
 
     function showTab(id, btn) {
         document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
@@ -129,58 +100,49 @@
             if(mode === 'article') {
                 const trT = document.getElementById('tr-title').value;
                 const trB = document.getElementById('tr-body').value;
-                
-                // Başlık ve İçerik için otomatik çeviri
                 const tRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(trT)}&langpair=tr|pt`);
                 const tData = await tRes.json();
-                const bRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(trB.substring(0, 500))}&langpair=tr|pt`);
-                const bData = await bRes.json();
-
+                
                 content.unshift({
                     id: Date.now(),
                     type: "post",
                     category: document.getElementById('category-select').value,
                     image: document.getElementById('img-url').value,
                     tr: { title: trT, body: trB },
-                    pt: { title: tData.responseData.translatedText, body: bData.responseData.translatedText },
+                    pt: { title: tData.responseData.translatedText, body: "Traduzindo..." },
                     date: new Date().toLocaleDateString('tr-TR'),
                     author: document.getElementById('author-name').value || "Ahmet Çınarbaş"
                 });
-            } else if(mode === 'settings' || mode === 'category') {
+            } else if(mode === 'settings') {
                 let mIdx = content.findIndex(i => i.type === "metadata");
-                if(mIdx === -1) { content.push({ type: "metadata", categories: [], author: {} }); mIdx = content.length -1; }
-                
-                if(mode === 'settings') {
-                    content[mIdx].author = {
-                        name: document.getElementById('author-name').value,
-                        bio: document.getElementById('author-bio').value,
-                        img: document.getElementById('author-img').value
-                    };
-                } else {
-                    if(!content[mIdx].categories) content[mIdx].categories = [];
-                    content[mIdx].categories.push({
-                        tr: document.getElementById('new-cat-tr').value.toUpperCase(),
-                        pt: document.getElementById('new-cat-pt').value.toUpperCase()
-                    });
-                }
+                if(mIdx === -1) { content.push({ type: "metadata", author: {} }); mIdx = content.length -1; }
+                content[mIdx].author = {
+                    name: document.getElementById('author-name').value,
+                    bio: document.getElementById('author-bio').value,
+                    img: document.getElementById('author-img').value
+                };
+            } else if(mode === 'category') {
+                const newCat = `${document.getElementById('new-cat-tr').value} ● ${document.getElementById('new-cat-pt').value}`;
+                const sel = document.getElementById('category-select');
+                const opt = document.createElement('option');
+                opt.value = newCat; opt.text = newCat;
+                sel.add(opt);
             }
 
             const updated = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
             const res = await fetch(REPO_URL, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "Update Journal", content: updated, sha: fileData.sha })
+                body: JSON.stringify({ message: "Journal Update", content: updated, sha: fileData.sha })
             });
 
             if(res.ok) {
                 status.style.color = "green";
-                status.innerText = "BAŞARIYLA KAYDEDİLDİ!";
-                setTimeout(() => location.reload(), 2000);
+                status.innerText = "BAŞARILI!";
+                setTimeout(() => { status.innerText = ""; }, 3000);
             }
-        } catch (e) { status.innerText = "Hata oluştu!"; }
+        } catch (e) { status.innerText = "Hata!"; }
     }
-
-    init();
 </script>
 </body>
 </html>
