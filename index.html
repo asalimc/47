@@ -1,149 +1,30 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | MardinBrazil Journal</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,900;1,6..96,900&family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF;
-            --ease: cubic-bezier(0.19, 1, 0.22, 1);
-        }
+<style>
+    /* KAĞIT DOKUSU VE MÜREKKEP HİSSİ */
+    body {
+        background-color: #F4F1EA; /* Daha kemik rengi, daha sıcak */
+        background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+        cursor: url('https://img.icons8.com/ios-filled/20/000000/fountain-pen-tip.png'), auto; /* İmleç bir dolma kalem ucu */
+    }
 
-        /* Gece Modu Renkleri */
-        body.night-mode { --bg: #121212; --ink: #F8F6F2; --white: #1A1A1A; }
+    /* MÜREKKEP YAYILMA EFEKTİ (FADE-IN) */
+    @keyframes inkSpread {
+        from { filter: blur(10px); opacity: 0; letter-spacing: 10px; }
+        to { filter: blur(0); opacity: 1; letter-spacing: normal; }
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.8s var(--ease); overflow-x: hidden; }
+    .tr-line, .display-1 {
+        animation: inkSpread 1.5s var(--ease);
+    }
 
-        header {
-            padding: 30px 6%; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000; background: var(--bg); backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
+    /* BASKI HATASI (PREMIUM DOKUNUŞ) */
+    .card-hero::before {
+        content: ""; position: absolute; inset: 0;
+        background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px);
+        pointer-events: none;
+    }
 
-        .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); }
-        .logo-m { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; font-weight: 900; background: var(--ink); color: var(--bg); padding: 0 12px; border-radius: 10px; margin-right: 12px; }
-        
-        .nav-filters button {
-            background: none; border: 1px solid rgba(0,0,0,0.1); color: var(--ink);
-            padding: 8px 18px; border-radius: 50px; font-size: 0.7rem; font-weight: 800;
-            cursor: pointer; margin-left: 10px; transition: 0.3s;
-        }
-        .nav-filters button:hover, .nav-filters button.active { background: var(--ink); color: var(--bg); }
-
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6%; }
-        .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; }
-
-        .card {
-            background: var(--white); border-radius: 40px; padding: 40px;
-            transition: all 0.6s var(--ease); cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
-            display: flex; flex-direction: column; justify-content: space-between;
-            animation: fadeIn 0.8s var(--ease);
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .card-hero { grid-column: span 8; min-height: 500px; background: var(--accent); color: white; border: none; }
-        .card-standard { grid-column: span 4; min-height: 400px; }
-        .card-video { grid-column: span 8; padding: 0; overflow: hidden; height: 400px; }
-
-        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; margin-bottom: 10px; display: block; }
-        .pt-line { font-size: 0.9rem; font-weight: 600; opacity: 0.7; font-style: italic; display: block; }
-
-        /* Reader Modal */
-        .reader { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: none; overflow-y: auto; padding: 100px 8%; }
-        .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
-        .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-weight: 800; }
-
-        @media (max-width: 1024px) { .card-hero, .card-standard, .card-video { grid-column: span 12; } .reader-grid { grid-template-columns: 1fr; } }
-    </style>
-</head>
-<body>
-
-    <header>
-        <a href="#" class="logo-box">
-            <div class="logo-m" id="logo-m">MB</div>
-            <div class="logo-text">MARDIN<br>BRAZIL</div>
-        </a>
-        <div class="nav-filters">
-            <button class="active" onclick="filterData('all', this)">ALL</button>
-            <button onclick="filterData('Mardin', this)">MARDIN</button>
-            <button onclick="filterData('Brazil', this)">BRAZIL</button>
-        </div>
-    </header>
-
-    <main class="container">
-        <div class="bento" id="main-grid">
-            </div>
-    </main>
-
-    <div id="reader" class="reader">
-        <button class="close-btn" onclick="closeR()">KAPAT ● FECHAR</button>
-        <div id="reader-content" class="reader-grid"></div>
-    </div>
-
-    <script>
-        // 1. DİNAMİK VERİ SETİ (Buraya dilediğin kadar içerik ekle)
-        const archiveData = [
-            { id: 1, region: "Brazil", category: "Röportaj", type: "hero", tr: "Samba ve Sosyoloji", pt: "Samba e Sociologia", contentTR: "Brezilya sokaklarındaki ritim...", contentPT: "O ritmo nas ruas do Brasil..." },
-            { id: 2, region: "Mardin", category: "Köşe Yazısı", type: "standard", tr: "Taşın Sessizliği", pt: "O Silêncio da Pedra", contentTR: "Mardin kalesi binlerce yıldır...", contentPT: "O castelo de Mardin por milhares de anos..." },
-            { id: 3, region: "Brazil", category: "Video", type: "video", url: "https://www.youtube.com/embed/jg2q0hXy85c" }
-        ];
-
-        // 2. KARTLARI OLUŞTURMA FONKSİYONU
-        function renderCards(data) {
-            const grid = document.getElementById('main-grid');
-            grid.innerHTML = '';
-            data.forEach(item => {
-                let cardHTML = '';
-                if (item.type === 'video') {
-                    cardHTML = `<div class="card card-video"><iframe src="${item.url}" style="width:100%; height:100%; border:none;"></iframe></div>`;
-                } else {
-                    cardHTML = `
-                        <div class="card ${item.type === 'hero' ? 'card-hero' : 'card-standard'}" onclick="openR(${item.id})">
-                            <span style="font-size:0.6rem; font-weight:800; letter-spacing:2px; text-transform:uppercase;">${item.category}</span>
-                            <div>
-                                <span class="tr-line">${item.tr}</span>
-                                <span class="pt-line">${item.pt}</span>
-                            </div>
-                            <span style="font-size:0.6rem; font-weight:800; opacity:0.5;">${item.region.toUpperCase()}</span>
-                        </div>`;
-                }
-                grid.innerHTML += cardHTML;
-            });
-        }
-
-        // 3. FİLTRELEME
-        function filterData(region, btn) {
-            document.querySelectorAll('.nav-filters button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const filtered = region === 'all' ? archiveData : archiveData.filter(d => d.region === region);
-            renderCards(filtered);
-        }
-
-        // 4. MODAL AÇMA/KAPAMA
-        function openR(id) {
-            const item = archiveData.find(d => d.id === id);
-            const content = document.getElementById('reader-content');
-            content.innerHTML = `
-                <div style="font-family:'Bodoni Moda'; font-size:2.5rem; line-height:1.1;">${item.contentTR}</div>
-                <div style="font-size:1.2rem; line-height:1.8; color:#666; font-style:italic; border-left:2px solid var(--accent); padding-left:30px;">${item.contentPT}</div>`;
-            document.getElementById('reader').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeR() {
-            document.getElementById('reader').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // 5. OTOMATİK GECE MODU & BAŞLANGIÇ
-        const hour = new Date().getHours();
-        if (hour < 7 || hour > 19) document.body.classList.add('night-mode');
-        renderCards(archiveData);
-    </script>
-</body>
-</html>
+    /* ÇİFT DİL AYRIMI İÇİN "KIRIM" HATTI */
+    .reader-grid {
+        background-image: linear-gradient(to right, transparent 49.8%, var(--accent) 49.9%, var(--accent) 50.1%, transparent 50.2%);
+    }
+</style>
