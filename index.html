@@ -3,228 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brezilya Kültürü & Ahmet Çınarbaş | Dijital Arşiv</title>
+    <title>GAZETECİ AHMET ÇINARBAŞ | Brezilya Arşivi</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;600;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
     
     <style>
         :root { 
             --mardin: #D4A373; 
             --brazil: #064E3B; 
-            --dark-card: #0c0c0c; 
-            --bg: #f4f4f7; 
+            --dark: #0c0c0c; 
             --radius: 45px;
-            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { background: var(--bg); color: #0a0a0a; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f4f4f7; font-family: 'Montserrat', sans-serif; }
 
-        /* HEADER */
-        header { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .logo { font-family: 'Playfair Display'; font-size: 1.6rem; font-weight: 900; letter-spacing: 2px; background: linear-gradient(to right, var(--mardin) 45%, var(--brazil) 55%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        /* HEADER TASARIMI */
+        header { 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: rgba(255,255,255,0.9); 
+            backdrop-filter: blur(20px); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* 1. LOGO ESTETİĞİ */
+        .logo { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.5rem; 
+            text-decoration: none; 
+            color: #000; 
+            letter-spacing: -1px;
+            transition: var(--transition);
+        }
+        .logo .mardin-part { font-weight: 900; color: #000; }
+        .logo .brazil-part { font-weight: 300; font-style: italic; color: var(--mardin); margin-left: 2px; }
+        .logo:hover { letter-spacing: 0px; }
+
+        /* 2. VERIFIED & PROFILE AREA */
+        .profile-section { display: flex; align-items: center; gap: 15px; position: relative; }
         
-        .profile-trigger { display: flex; align-items: center; gap: 12px; background: white; padding: 5px 15px; border-radius: 50px; cursor: pointer; border: 1px solid #eee; }
-        .verified-badge { font-size: 8px; color: var(--brazil); font-weight: 900; display: block; letter-spacing: 0.5px; }
+        .name-box { text-align: right; }
+        .author-name { 
+            font-size: 11px; 
+            font-weight: 900; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            justify-content: flex-end;
+        }
 
-        /* GRID */
+        /* VERIFIED TOOLTIP */
+        .verified-badge { 
+            color: #1DA1F2; 
+            font-size: 14px; 
+            cursor: help; 
+            position: relative;
+        }
+        .verified-badge:hover::after {
+            content: "Resmi Gazeteci Arşivi";
+            position: absolute;
+            top: 25px;
+            right: 0;
+            background: var(--dark);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            white-space: nowrap;
+            font-weight: 400;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        .job-title { font-size: 9px; color: #888; font-weight: 600; display: block; }
+
+        /* 3. PROFIL AYDINLATMASI (GLOW) */
+        .profile-img-wrapper {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .profile-img-wrapper img { 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid white;
+            position: relative;
+            z-index: 2;
+        }
+        .profile-img-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: var(--mardin);
+            opacity: 0;
+            transition: var(--transition);
+            filter: blur(8px);
+            z-index: 1;
+        }
+        .profile-img-wrapper:hover::before { opacity: 0.6; transform: scale(1.2); }
+        .profile-img-wrapper:hover { transform: scale(1.05); }
+
+        /* GRID & CARDS (Önceki yapı korunuyor) */
         .container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; padding: 25px 5%; max-width: 1600px; margin: 0 auto; }
+        .hero { grid-column: span 8; height: 500px; border-radius: var(--radius); overflow: hidden; position: relative; background: #000; cursor: pointer; }
+        .hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 1s; }
+        .hero:hover img { transform: scale(1.05); opacity: 0.9; }
+        .side-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; }
+        .card { flex: 1; background: var(--dark); border-radius: 35px; padding: 30px; color: white; transition: var(--transition); border: 1px solid rgba(255,255,255,0.05); }
+        .card:hover { border-color: var(--mardin); transform: translateY(-5px); }
 
-        /* HERO */
-        .hero { grid-column: span 8; height: 600px; border-radius: var(--radius); overflow: hidden; position: relative; cursor: pointer; box-shadow: 0 30px 60px rgba(0,0,0,0.08); }
-        .hero img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 40%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: white; }
-
-        /* SIDE CARDS */
-        .side-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; height: 600px; }
-        .card { flex: 1; border-radius: 35px; padding: 35px; background: var(--dark-card); color: white; border: 1px solid rgba(255,255,255,0.03); transition: var(--transition); overflow: hidden; }
-        .card-tag { font-size: 8px; font-weight: 900; letter-spacing: 3px; color: var(--mardin); margin-bottom: 15px; display: block; }
-
-        /* VIDEOS */
-        .video-grid { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px; }
-        .v-box { border-radius: var(--radius); overflow: hidden; position: relative; padding-bottom: 56.25%; background: #000; }
-        .v-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-
-        /* MODAL & RÖPORTAJ TASARIMI */
-        .modal { position: fixed; inset: 0; background: white; z-index: 2000; display: none; overflow-y: auto; }
-        .modal-inner { max-width: 900px; margin: 100px auto; padding: 0 5%; padding-bottom: 100px; }
-        .close-btn { position: fixed; top: 30px; right: 5%; background: var(--dark-card); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: 900; z-index: 2100; }
-
-        /* RÖPORTAJ TİPOGRAFİSİ */
-        .section-title { font-family: 'Playfair Display'; font-size: 2.5rem; margin: 40px 0 20px; color: var(--brazil); border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .q-block { font-weight: 800; color: #000; font-size: 1.2rem; margin-top: 30px; display: block; border-left: 4px solid var(--mardin); padding-left: 15px; }
-        .tr-text { font-family: 'Lora', serif; font-size: 1.3rem; line-height: 1.8; color: #222; margin-top: 15px; display: block; font-weight: 600; }
-        .pt-text { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; color: #666; font-style: italic; margin-top: 8px; display: block; opacity: 0.8; transition: 0.3s; }
-        .lang-group:hover .pt-text { opacity: 1; color: #000; }
-        
-        blockquote { margin: 50px 0; padding: 40px; background: #fdf8f3; border-radius: 30px; font-family: 'Playfair Display'; font-style: italic; font-size: 1.8rem; text-align: center; color: #444; }
-
-        /* FOOTER */
-        footer { grid-column: span 12; background: var(--dark-card); border-radius: var(--radius); padding: 70px 8%; color: white; display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; margin: 50px 0; }
-        .f-col h4 { color: var(--mardin); letter-spacing: 3px; font-size: 10px; margin-bottom: 20px; text-transform: uppercase; }
-
-        @media (max-width: 1024px) { .hero, .side-stack { grid-column: span 12; } .footer-card { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo">MARDINBRAZIL</a>
-        <div class="profile-trigger" onclick="openModal('authorPage')">
-            <div style="text-align: right;">
-                <span style="font-size: 10px; font-weight: 900; display: block;">AHMET ÇINARBAŞ</span>
-                <span class="verified-badge">✓ VERIFIED JOURNALIST</span>
+        <a href="#" class="logo">
+            <span class="mardin-part">MARDIN</span><span class="brazil-part">BRAZIL</span>
+        </a>
+
+        <div class="profile-section">
+            <div class="name-box">
+                <div class="author-name">
+                    AHMET ÇINARBAŞ 
+                    <span class="verified-badge">●</span>
+                </div>
+                <span class="job-title">GAZETECİ</span>
             </div>
-            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;">
+            <div class="profile-img-wrapper" onclick="alert('Arşiv Sayfasına Gidiliyor...')">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" alt="Ahmet Çınarbaş">
+            </div>
         </div>
     </header>
 
     <main class="container">
-        <section class="hero" onclick="openModal('interviewPage')">
-            <img src="https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=small" alt="Brezilya Kültürü">
-            <div class="hero-overlay">
-                <span style="font-size: 10px; font-weight: 900; color: var(--mardin); letter-spacing: 3px; margin-bottom: 15px;">RÖPORTAJ // ENTREVISTA</span>
-                <h2 style="font-family:'Playfair Display'; font-size: 3.5rem; line-height: 1.1;">Brezilya: Ritmin <br>ve Ruhun Ülkesi</h2>
+        <section class="hero">
+            <img src="https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=small" alt="Brezilya">
+            <div style="position:absolute; bottom:40px; left:40px; color:white;">
+                <h1 style="font-family:'Playfair Display'; font-size:3rem;">Röportaj: Brezilya</h1>
             </div>
         </section>
 
         <aside class="side-stack">
             <div class="card">
-                <span class="card-tag">CANLI ETKİNLİKLER</span>
-                <div id="event-flow">
-                    <p style="font-size: 18px; font-weight: 600;">Rio Karnavalı Hazırlıkları</p>
-                    <p style="font-size: 11px; opacity: 0.6; margin-top: 5px;">Google Calendar: Canlı Akış</p>
-                </div>
+                <span style="font-size:10px; color:var(--mardin); font-weight:900; letter-spacing:2px;">GOOGLE NEWS</span>
+                <p style="margin-top:15px; font-weight:600;">Mardin Gastronomi Fuarı Başladı</p>
             </div>
             <div class="card">
-                <span class="card-tag">SON HABERLER</span>
-                <div id="news-flow">
-                    <p style="font-size: 18px; font-weight: 600;">Mardin Gastronomi Fuarı</p>
-                    <p style="font-size: 11px; opacity: 0.6; margin-top: 5px;">Google News: Mezopotamya Güncel</p>
-                </div>
+                <span style="font-size:10px; color:var(--mardin); font-weight:900; letter-spacing:2px;">GOOGLE CALENDAR</span>
+                <p style="margin-top:15px; font-weight:600;">Rio Karnavalı Hazırlıkları</p>
             </div>
         </aside>
-
-        <section class="video-grid">
-            <div class="v-box"><iframe src="https://www.youtube.com/embed/jg2q0hXy85c"></iframe></div>
-            <div class="v-box"><iframe src="https://www.youtube.com/embed/-53mGJ4h5sQ"></iframe></div>
-        </section>
-
-        <footer>
-            <div class="f-col">
-                <h4>PROJE // PROJETO</h4>
-                <p style="font-size:13px; opacity:0.7;">Ahmet Çınarbaş ile Mardin ve Brezilya arasındaki kültürel bağları keşfedin.</p>
-            </div>
-            <div class="f-col">
-                <h4>OTORİTE // AUTOR</h4>
-                <p style="font-size:13px; opacity:0.7;">Verified Journalist<br>Kültür Elçisi</p>
-            </div>
-            <div class="f-col">
-                <h4>LOKASYON // LOCAL</h4>
-                <p style="font-size:13px; opacity:0.7;">Global Digital Archive<br>2026 Edition</p>
-            </div>
-        </footer>
     </main>
 
-    <div id="interviewPage" class="modal">
-        <button class="close-btn" onclick="closeModal('interviewPage')">KAPAT // FECHAR</button>
-        <div class="modal-inner">
-            <h1 style="font-family:'Playfair Display'; font-size: 3.5rem; margin-bottom: 20px;">Brezilya Kültürü Röportajı</h1>
-            
-            <div class="lang-group">
-                <span class="tr-text">Giriş: Bu uzun söyleşide Brezilya’nın sıcaklığını, ritmini ve gündelik yaşamının ince ayrıntılarını Ahmet Çınarbaş’ın gözünden dinliyoruz. Ahmet, 2017 yılında gazeteci kimliğiyle bağımsız bir gezi düzenleyerek São Paulo, Brasília ve Goiânia gibi kentleri gezdi.</span>
-                <span class="pt-text">Introdução: Nesta longa entrevista, ouvimos o calor, o ritmo e os detalhes finos da vida cotidiana do Brasil através dos olhos de Ahmet Çınarbaş. Ahmet viajou para cidades como São Paulo, Brasília e Goiânia em 2017.</span>
-            </div>
-
-            <h2 class="section-title">Ahmet’in Brezilya ile Bağlantısı</h2>
-            
-            <div class="lang-group">
-                <span class="q-block">Soru — Brezilya ile ilk tanışmanız nasıl oldu?</span>
-                <span class="tr-text">Ahmet: 2017’de gazeteci olarak gittim. İlk durağım São Paulo’ydu. Şehir kaotik ama davetkâr bir enerji yayıyordu. Grafitiler, küçük kahvehaneler, gece pazarları… Hepsi birbirine karışmıştı. Brasília’da modernist mimariyi, Goiânia’da ise forró ritimlerini ve sıcak insanları buldum.</span>
-                <span class="pt-text">Ahmet: Fui em 2017 como jornalista. Minha primeira parada foi São Paulo. A cidade exalava uma energia caótica, mas convidativa. Grafites, pequenos cafés, mercados noturnos... tudo misturado.</span>
-            </div>
-
-            <div class="lang-group">
-                <span class="q-block">Soru — Gazeteci gözüyle bu yolculuk size neler kattı?</span>
-                <span class="tr-text">Ahmet: Her köşe başında bir hikâye vardı. Bir pastane sahibinin kuşaklar boyu süren tarifleri, bir samba okulunun prova gecesi… Haberin sadece metin olmadığını; kokuların, seslerin ve dokunuşların da birer haber olduğunu öğrendim.</span>
-                <span class="pt-text">Ahmet: Havia uma história em cada esquina. As receitas de um dono de padaria que duram gerações, a noite de ensaio de uma escola de samba... Aprendi que a notícia não é apenas texto; cheiros, sons e toques também são notícias.</span>
-            </div>
-
-            <h2 class="section-title">Kültürün Temel Taşları</h2>
-
-            <div class="lang-group">
-                <span class="q-block">Soru — Müzik ve dans Brezilya’da ne ifade ediyor?</span>
-                <span class="tr-text">Ahmet: Müzik burada nefes almak gibi. Samba, bossa nova, forró… Her tür bir yaşam biçimini taşıyor. Rio’daki samba okulları sadece bir gösteri değil, bir aidiyet ve kolektif hafıza alanıdır. Bossa nova ise akşamüstlerinin melankolisidir.</span>
-                <span class="pt-text">Ahmet: A música aqui é como respirar. Samba, bossa nova, forró... Cada gênero carrega um estilo de vida. As escolas de samba no Rio não são apenas um espetáculo, são um espaço de pertencimento e memória coletiva.</span>
-            </div>
-
-            <blockquote>"Müzik, dil bariyerlerini yıkıyor; birkaç şarkı sonra herkes gülüyor, dans ediyor ve birbirine hikâye anlatıyor."</blockquote>
-
-            <div class="lang-group">
-                <span class="q-block">Soru — Yemek ve paylaşım kültürü nasıl?</span>
-                <span class="tr-text">Ahmet: Brezilya mutfağı bölgesel bir harita. Feijoada ulusal sembol ama gerçek tatlar sokakta: pastéis, acarajé, tapioca. Yemekler paylaşılır; sofralar uzun sürer, sohbetler derinleşir. Bir aile yemeğine yabancı olsanız bile hemen davet edilirsiniz.</span>
-                <span class="pt-text">Ahmet: A culinária brasileira é um mapa regional. A feijoada é o símbolo nacional, mas os sabores reais estão na rua. A comida é compartilhada; as mesas duram muito tempo, as conversas se aprofundam.</span>
-            </div>
-
-            <h2 class="section-title">Güncel Konular ve Direniş</h2>
-
-            <div class="lang-group">
-                <span class="q-block">Soru — Güncel toplumsal sorunlar ve kültürün rolü nedir?</span>
-                <span class="tr-text">Ahmet: Eşitsizlik ve Amazon’un korunması en kritik meseleler. Kültür bu sorunlara hem ayna tutuyor hem de alternatif anlatılar sunuyor. São Paulo’nun duvarlarındaki grafitiler sosyal adaletsizliğe dair güçlü mesajlar taşıyor. Sanat, görünmeyeni görünür kılıyor.</span>
-                <span class="pt-text">Ahmet: A desigualdade e a proteção da Amazônia são as questões mais críticas. A cultura reflete esses problemas e oferece narrativas alternativas. A arte torna o invisível visível.</span>
-            </div>
-
-            <h2 class="section-title">Seyahat İçin Sıcak Öneriler</h2>
-            <div class="lang-group">
-                <span class="tr-text">
-                    • Bölgeye göre plan yapın; Brezilya bir kıta gibidir.<br>
-                    • İnsanlarla konuşun, en iyi rehber halktır.<br>
-                    • Ritüellere ve inançlara saygılı olun; fotoğraf için izin isteyin.<br>
-                    • Acele etmeyin; küçük sokaklarda kaybolmak en iyi keşif yöntemidir.
-                </span>
-                <span class="pt-text">
-                    • Planeje de acordo com a região; o Brasil é como um continente.<br>
-                    • Fale com as pessoas, o melhor guia é o povo.<br>
-                    • Respeite rituais e crenças; peça permissão para fotos.<br>
-                    • Não tenha pressa; perder-se nas ruas pequenas é o melhor método de descoberta.
-                </span>
-            </div>
-
-            <p style="text-align:center; margin-top:80px; font-weight:900; color:var(--mardin); letter-spacing:5px;">SON SÖZ // CONCLUSÃO</p>
-        </div>
-    </div>
-
-    <div id="authorPage" class="modal">
-        <button class="close-btn" onclick="closeModal('authorPage')">KAPAT</button>
-        <div class="modal-inner" style="text-align: center;">
-            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 5px solid var(--mardin); margin-bottom: 20px;">
-            <h2 style="font-family:'Playfair Display'; font-size: 2.5rem;">Ahmet Çınarbaş</h2>
-            <p style="color:var(--mardin); font-weight: 900; letter-spacing: 3px; margin-bottom: 40px;">KÜLTÜR ELÇİSİ // EMBAIXADOR CULTURAL</p>
-            
-            <div style="text-align: left; background: #f9f9f9; padding: 45px; border-radius: 40px;">
-                <span class="card-tag" style="color:var(--brazil)">KÖŞE YAZISI // COLUNA</span>
-                <h3 style="font-family:'Playfair Display'; font-size: 2rem; margin-bottom: 20px;">Taşın Hafızası ve Ormanın Kalbi</h3>
-                <div class="lang-group">
-                    <span class="tr-text">Mardin'in sarı taşları güneşin altında nasıl terliyorsa, Amazon'un devasa ağaçları da yağmurun altında öyle nefes alıyor. Bu iki coğrafya, insanının samimiyetiyle birbirine bağlanıyor. Gazetecilik bana bu görünmez ipleri takip etmeyi öğretti.</span>
-                    <span class="pt-text">Assim como as pedras amarelas de Mardin suam sob o sol, as árvores gigantes da Amazônia respiram sob a chuva. Estas duas geografias estão ligadas pela sinceridade do seu povo. O jornalismo me ensinou a seguir esses fios invisíveis.</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openModal(id) { document.getElementById(id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
-
-        // Dinamik Haber Simülasyonu
-        const events = ["Rio Carnival 2026 Provası", "Mardin Bienali Başlıyor", "Samba Gecesi: Lapa"];
-        const news = ["Amazon Ormanları Koruma Raporu", "Mezopotamya Turizm Rekoru", "São Paulo Sanat Haftası"];
-        let i = 0;
-        setInterval(() => {
-            document.getElementById('event-flow').innerHTML = `<p style="font-size:18px;font-weight:600;animation:slideUp 0.5s">${events[i]}</p><p style="font-size:11px;opacity:0.6;">Google Calendar Live Feed</p>`;
-            document.getElementById('news-flow').innerHTML = `<p style="font-size:18px;font-weight:600;animation:slideUp 0.5s">${news[i]}</p><p style="font-size:11px;opacity:0.6;">Google News Live Feed</p>`;
-            i = (i + 1) % events.length;
-        }, 4000);
-    </script>
 </body>
 </html>
