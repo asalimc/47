@@ -26,8 +26,6 @@
         .logo-text { font-family: 'Bodoni Moda', serif; font-size: 0.9rem; font-weight: 900; line-height: 1; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px 6% 80px; }
-        
-        /* Divlerin Alt Alta Sıralanması İçin Düzenleme */
         .bento { display: flex; flex-direction: column; gap: 30px; }
 
         .card {
@@ -46,13 +44,21 @@
         .tag-dual { font-size: 0.7rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 25px; display: block; }
         .meta-info { font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Reader (Detay Penceresi) */
         #reader-modal { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding: 80px 6% 40px; }
         .reader-header { text-align: center; margin-bottom: 60px; }
         .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
         .reader-text { font-size: 1.2rem; line-height: 1.8; color: #333; }
         .reader-text b { color: var(--accent); display: block; margin-top: 20px; font-weight: 800; }
         .divider { width: 100%; height: 1px; background: rgba(176,141,87,0.3); margin: 20px 0; }
+
+        /* Paylaşım Butonları Stili */
+        .share-bar { display: flex; justify-content: center; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(0,0,0,0.05); }
+        .share-btn { 
+            background: var(--white); border: 1px solid rgba(0,0,0,0.1); padding: 10px 20px; 
+            border-radius: 50px; font-size: 0.7rem; font-weight: 800; cursor: pointer; 
+            text-decoration: none; color: var(--ink); transition: 0.3s; display: flex; align-items: center; gap: 8px;
+        }
+        .share-btn:hover { background: var(--ink); color: var(--white); transform: translateY(-3px); }
 
         .close-btn { position: fixed; top: 30px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 10000; }
 
@@ -142,46 +148,34 @@
     <script>
         const contentData = {
             author: { 
-                tag: "EDİTÖR NOTU", 
-                tr: "Kültürler Arası Köprü", 
-                pt: "Ponte Entre Culturas", 
+                tag: "EDİTÖR NOTU", tr: "Kültürler Arası Köprü", pt: "Ponte Entre Culturas", 
                 textTr: "Ahmet Çınarbaş olarak, Mardin ve Brezilya arasındaki o görünmez bağları arşive dönüştürüyorum. Mezopotamya'nın taş sokaklarından Amazon'un yeşil kalbine uzanan bu yolculuk, insan ruhunun her coğrafyada nasıl benzer ritimlerle attığının kanıtıdır.", 
                 textPt: "Como Ahmet Çınarbaş, arquivo os laços invisíveis entre Mardin e o Brasil. Esta jornada, que vai das ruas de pedra da Mesopotâmia ao coração verde da Amazônia, é a prova de como a alma humana pulsa com ritmos semelhantes em todas as geografias." 
             },
             carnaval: { 
-                tag: "MAGAZİN / RİO", 
-                tr: "Rio Karnavalı'nda Mardin Esintileri", 
-                pt: "Influências de Mardin no Rio", 
+                tag: "MAGAZİN / RİO", tr: "Rio Karnavalı'nda Mardin Esintileri", pt: "Influências de Mardin no Rio", 
                 textTr: "<b>Görkemli Buluşma:</b> Rio Karnavalı podyumlarında bu yıl Mardin telkarisinin geometrik zarafeti konuşuldu. Brezilyalı moda tasarımcıları, Mezopotamya'nın binlerce yıllık desenlerini samba okullarının devasa kostüm başlıklarına ve kanatlarına entegre ettiler.<br><br><b>Ritimlerin Kardeşliği:</b> Mardin'in vakur Reyhani dansı ile Brezilya'nın enerjik Sambası, kökeninde aynı topluluk bilincini ve kutlama arzusunu barındırıyor.", 
                 textPt: "<b>Encontro Majestoso:</b> Nas passarelas do Carnaval do Rio, a elegância geométrica da filigrana de Mardin foi o destaque deste ano. Designers brasileiros integraram padrões milenares da Mesopotâmia nos grandiosos adereços de cabeça e alas das escolas de samba.<br><br><b>Irmandade de Ritmos:</b> A solene dança Reyhani de Mardin e o enérgico Samba brasileiro compartilham, em sua essência, a mesma consciência comunitária e desejo de celebração." 
             },
             craft: { 
-                tag: "ZANAAT ANALİZİ", 
-                tr: "Gümüşün Sabrı ve Doğanın Takısı", 
-                pt: "A Paciência da Prata e o Adorno da Natureza", 
+                tag: "ZANAAT ANALİZİ", tr: "Gümüşün Sabrı ve Doğanın Takısı", pt: "A Paciência da Prata e o Adorno da Natureza", 
                 textTr: "<b>Mardin Telkarisi:</b> Gümüş tellerin mikron düzeyinde bükülerek bir dantel gibi işlenmesi sanatı olan Telkari, Mardin'un sabır taşıdır. Her motif, ustanın nefesiyle şekillenir.<br><br><b>Brezilya Yerli Takıları:</b> Amazon yerlilerinin 'Arte Indígena' geleneği, gümüş yerine tohumları ve tüyleri kullanır. Bu takılar sadece süs değil; kişinin doğayla, ruhlarla ve kabile hiyerarşisiyle olan bağını temsil eden yaşayan birer kimliktir.", 
                 textPt: "<b>Filigrana de Mardin:</b> A arte de tecer fios de prata em nível micron como uma renda é a pedra da paciência de Mardin. Cada motivo é moldado pelo fôlego do mestre.<br><br><b>Adornos Indígenas:</b> A tradição da 'Arte Indígena' amazônica utiliza sementes e penas em vez de metal. Estes adornos não são apenas enfeites; são identidades vivas que representam a conexão do indivíduo com a natureza, os espíritos e a hierarquia tribal." 
             },
             gastronomy: { 
-                tag: "GASTRONOMİ", 
-                tr: "İçli Köfte & Quibe", 
-                pt: "Kibbeh vs Quibe", 
+                tag: "GASTRONOMİ", tr: "İçli Köfte & Quibe", pt: "Kibbeh vs Quibe", 
                 textTr: "<b>Mutfak Mirası:</b> Mardin'in baharatlı, reyhan kokulu İçli Köftesi ile Brezilya sokaklarının vazgeçilmezi olan Quibe (Kibe) arasındaki benzerlik tesadüf değildir. <br><br><b>Farklar ve Benzerlikler:</b> Mardin'de haşlama veya kızartma tercih edilirken; Brezilya'da içine Catupiry peyniri eklenerek modern bir yorum kazanmıştır. Ancak her ikisi de bulgur ve etin mükemmel uyumunu simgeler.", 
                 textPt: "<b>Herança Culinária:</b> A semelhança entre o Kibbeh temperado de Mardin e o onipresente Quibe das ruas brasileiras não é coincidência.<br><br><b>Diferenças e Semelhanças:</b> Enquanto em Mardin prefere-se cozido ou frito, no Brasil ganhou uma interpretação moderna com recheios como Catupiry. No entanto, ambos simbolizam a harmonia perfeita entre o trigo e a carne." 
             },
             sinop: { 
-                tag: "COĞRAFYA", 
-                tr: "İki Sinop'un Hikayesi", 
-                pt: "Duas Sinops", 
+                tag: "COĞRAFYA", tr: "İki Sinop'un Hikayesi", pt: "Duas Sinops", 
                 textTr: "<b>İsim Benzerliğinin Ötesi:</b> Türkiye'nin en kuzey ucu Sinop ile Brezilya'nın Mato Grosso eyaletindeki Sinop arasındaki bağ şaşırtıcıdır. <br><br><b>Doğa Hattı:</b> Biri Karadeniz'in hırçın sularına bakarken, diğeri Amazon ormanlarının giriş kapısıdır. Her iki şehir de kendi coğrafyalarının 'limanı' olma görevini üstlenmiş, su ve yeşilin kader birliğini temsil etmektedir.", 
                 textPt: "<b>Além da Semelhança de Nome:</b> O vínculo entre Sinop, no extremo norte da Turquia, e Sinop, no estado de Mato Grosso, Brasil, é surpreendente.<br><br><b>Linha da Natureza:</b> Enquanto uma olha para as águas revoltas do Mar Negro, a outra é o portal de entrada para a floresta amazônica. Ambas as cidades assumiram o papel de 'porto' em suas geografias." 
             },
             society: { 
-                tag: "TOPLUM", 
-                tr: "Halk Benzerlikleri", 
-                pt: "Semelhanças Populares", 
+                tag: "TOPLUM", tr: "Halk Benzerlikleri", pt: "Semelhanças Populares", 
                 textTr: "<b>Sıcak Kanlılık:</b> Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü misafirperverliği aynı kökten beslenir. <br><br><b>Ortak Tutkular:</b> Geniş aile sofraları, yüksek sesli sohbetler ve futbolun bir dinden farksız olan birleştirici gücü, iki toplumu binlerce kilometreye rağmen komşu kılar.", 
-                textPt: "<b>Cordialidade:</b> A tradição do 'Convidado de Deus' em Mardin e a hospitalidade mundialmente famosa do Brasil bebem da mesma fonte.<br><br><b>Paixões Comuns:</b> Mesas de família estendida, conversas animadas e o poder unificador do futebol tornam as duas sociedades vizinhas, apesar dos milhares de quilômetros." 
+                textPt: "<b>Cordialidade:</b> A tradition do 'Convidado de Deus' em Mardin e a hospitalidade mundialmente famosa do Brasil bebem da mesma fonte.<br><br><b>Paixões Comuns:</b> Mesas de família estendida, conversas animadas e o poder unificador do futebol tornam as duas sociedades vizinhas, apesar dos milhares de quilômetros." 
             }
         };
 
@@ -191,6 +185,8 @@
 
             const modal = document.getElementById('reader-modal');
             const content = document.getElementById('reader-content');
+            const currentUrl = window.location.href;
+            const shareText = encodeURIComponent(`Ahmet Çınarbaş Journal: ${item.tr} / ${item.pt}`);
 
             content.innerHTML = `
                 <div class="reader-header">
@@ -203,10 +199,20 @@
                     <div class="divider"></div>
                     <div class="reader-text">${item.textPt}</div>
                 </div>
+                <div class="share-bar">
+                    <a href="https://wa.me/?text=${shareText}%20${currentUrl}" target="_blank" class="share-btn">WHATSAPP</a>
+                    <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${currentUrl}" target="_blank" class="share-btn">X / TWITTER</a>
+                    <button onclick="copyLink()" class="share-btn">LİNKİ KOPYALA</button>
+                </div>
             `;
             
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href);
+            alert("Bağlantı kopyalandı! ● Link copiado!");
         }
 
         function closeReader() {
