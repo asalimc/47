@@ -2,87 +2,55 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MB Journal | Super Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF; }
-        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; color: var(--ink); }
-        .admin-container { max-width: 800px; margin: 0 auto; background: var(--white); padding: 40px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; display: flex; justify-content: center; padding: 40px; }
+        .admin-container { width: 100%; max-width: 600px; background: var(--white); padding: 40px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         h2 { font-family: 'Bodoni Moda', serif; text-align: center; margin-bottom: 30px; }
-        
-        /* Sekme Sistemi */
-        .tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .tab-btn { padding: 10px 20px; border: none; background: none; cursor: pointer; font-weight: 600; color: #999; }
-        .tab-btn.active { color: var(--ink); border-bottom: 2px solid var(--ink); }
-        
-        .form-section { display: none; }
-        .form-section.active { display: block; }
-
-        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--ink); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; }
-        .status { margin-top: 20px; text-align: center; font-size: 0.9rem; color: var(--accent); }
+        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; outline: none; }
+        button { width: 100%; padding: 15px; background: var(--ink); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .status { margin-top: 20px; text-align: center; font-size: 0.85rem; color: var(--accent); font-weight: bold; }
     </style>
 </head>
 <body>
-
 <div class="admin-container">
-    <h2>MB Journal Yönetim Merkezi</h2>
+    <h2>Yönetim Merkezi</h2>
+    <input type="password" id="gh-token" placeholder="GitHub Token (ghp_...)">
     
-    <input type="password" id="gh-token" placeholder="GitHub Token (PAT) Giriniz">
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('article-sec')">Makale Ekle</button>
-        <button class="tab-btn" onclick="showTab('author-sec')">Yazar/Kategori Ayarları</button>
-    </div>
-
-    <div id="article-sec" class="form-section active">
-        <select id="category-select">
-            <option value="MAGAZİN">Magazin</option>
-            <option value="GASTRONOMİ">Gastronomi</option>
-            <option value="ZANAAT">Zanaat</option>
-        </select>
-        <input type="text" id="img-url" placeholder="Görsel URL (Unsplash vb.)">
-        <input type="text" id="tr-title" placeholder="Türkçe Başlık">
-        <textarea id="tr-body" rows="5" placeholder="Türkçe İçerik..."></textarea>
-        <button onclick="saveData('article')">Yazıyı Yayınla</button>
-    </div>
-
-    <div id="author-sec" class="form-section">
-        <h4 style="margin-bottom:10px">Yazar Detayları</h4>
-        <input type="text" id="author-name" placeholder="Yazar Adı (Örn: Ahmet Çınarbaş)">
-        <input type="text" id="author-title" placeholder="Yazar Ünvanı (Örn: Kültürel Arşivci)">
-        <input type="text" id="author-img" placeholder="Yazar Profil Fotoğrafı URL">
-        
-        <h4 style="margin-top:20px; margin-bottom:10px">Yeni Kategori Ekle</h4>
-        <input type="text" id="new-category" placeholder="Kategori Adı (Örn: Müzik, Tarih)">
-        
-        <button onclick="saveData('settings')" style="background:var(--accent)">Ayarları Güncelle</button>
-    </div>
-
+    <hr style="margin-bottom:20px; opacity:0.1">
+    
+    <select id="category">
+        <option value="MAGAZİN">Magazin ● Celebridade</option>
+        <option value="GASTRONOMİ">Gastronomi ● Sabor</option>
+        <option value="ZANAAT">Zanaat ● Artesanato</option>
+        <option value="COĞRAFİ KADER">Coğrafi Kader ● Destino</option>
+        <option value="TOPLUM">Toplum ● Sociedade</option>
+    </select>
+    <input type="text" id="img-url" placeholder="Görsel URL">
+    <input type="text" id="tr-title" placeholder="Türkçe Başlık">
+    <textarea id="tr-body" rows="6" placeholder="Türkçe İçerik..."></textarea>
+    
+    <button onclick="publish()">YAYINLA & OTOMATİK ÇEVİR</button>
     <div id="status" class="status"></div>
 </div>
 
 <script>
-    function showTab(id) {
-        document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        event.target.classList.add('active');
+    async function translate(text) {
+        try {
+            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=tr|pt`);
+            const data = await res.json();
+            return data.responseData.translatedText;
+        } catch { return text; }
     }
 
-    async function translateText(text) {
-        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=tr|pt`);
-        const data = await res.json();
-        return data.responseData.translatedText;
-    }
-
-    async function saveData(type) {
+    async function publish() {
         const token = document.getElementById('gh-token').value;
         const status = document.getElementById('status');
-        if(!token) { alert("Lütfen Token girin!"); return; }
+        if(!token) { status.innerText = "HATA: Token kutusu boş!"; return; }
 
-        status.innerText = "İşlem yapılıyor...";
+        status.innerText = "İşlem yapılıyor, lütfen bekleyin...";
         const url = 'https://api.github.com/repos/asalimc/47/contents/articles.json';
 
         try {
@@ -90,45 +58,33 @@
             const fileData = await getFile.json();
             let content = JSON.parse(decodeURIComponent(escape(atob(fileData.content))));
 
-            if (type === 'article') {
-                const trTitle = document.getElementById('tr-title').value;
-                const trBody = document.getElementById('tr-body').value;
-                const ptTitle = await translateText(trTitle);
-                const ptBody = await translateText(trBody);
+            const trT = document.getElementById('tr-title').value;
+            const trB = document.getElementById('tr-body').value;
+            const ptT = await translate(trT);
+            const ptB = await translate(trB);
 
-                const newEntry = {
-                    id: Date.now(),
-                    type: "post",
-                    category: document.getElementById('category-select').value,
-                    image: document.getElementById('img-url').value,
-                    tr: { title: trTitle, body: trBody },
-                    pt: { title: ptTitle, body: ptBody },
-                    date: new Date().toLocaleDateString('tr-TR')
-                };
-                content.unshift(newEntry);
-            } else {
-                // Yazar ve Kategori Ayarları
-                const settings = {
-                    type: "settings",
-                    authorName: document.getElementById('author-name').value,
-                    authorTitle: document.getElementById('author-title').value,
-                    authorImg: document.getElementById('author-img').value,
-                    categories: document.getElementById('new-category').value
-                };
-                content.push(settings); // Ayarları dosyanın sonuna ekle
-            }
+            const newPost = {
+                id: Date.now(),
+                category: document.getElementById('category').value,
+                image: document.getElementById('img-url').value || 'https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=1200',
+                tr: { title: trT, body: trB },
+                pt: { title: ptT, body: ptB },
+                date: new Date().toLocaleDateString('tr-TR'),
+                author: "Ahmet Çınarbaş"
+            };
 
-            const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
-            await fetch(url, {
+            content.unshift(newPost);
+            const updated = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
+
+            const res = await fetch(url, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}` },
-                body: JSON.stringify({ message: "Update", content: updatedContent, sha: fileData.sha })
+                body: JSON.stringify({ message: "Journal Update", content: updated, sha: fileData.sha })
             });
 
-            status.innerText = "BAŞARIYLA KAYDEDİLDİ!";
-        } catch (e) {
-            status.innerText = "Hata: " + e.message;
-        }
+            if(res.ok) status.innerText = "BAŞARIYLA YAYINLANDI!";
+            else throw new Error();
+        } catch (e) { status.innerText = "HATA: GitHub bağlantısı kurulamadı."; }
     }
 </script>
 </body>
