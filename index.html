@@ -5,16 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MB | Ahmet Çınarbaş Journal - Mardin & Brazil Cultural Bridge</title>
     
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": "Mardin ve Brezilya Kültür Hattı",
-      "author": { "@type": "Person", "name": "Ahmet Çınarbaş" },
-      "description": "Mardin'den Rio Karnavalı'na, Telkari'den Sinop benzerliğine kadar uzanan kapsamlı bir kültürel arşiv."
-    }
-    </script>
-
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
@@ -22,111 +12,124 @@
             --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF;
             --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
-        .seo-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.5; }
 
         header {
-            padding: 30px 6%; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.95); backdrop-filter: blur(20px);
+            padding: 20px 6%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.9); backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); }
-        .logo-m { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; font-weight: 900; background: var(--ink); color: var(--bg); padding: 0 12px; border-radius: 10px; margin-right: 12px; }
-        .logo-text { font-family: 'Bodoni Moda', serif; font-size: 1.1rem; font-weight: 900; line-height: 1; }
+        .logo-m { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-weight: 900; background: var(--ink); color: var(--bg); padding: 0 10px; border-radius: 8px; margin-right: 10px; }
+        .logo-text { font-family: 'Bodoni Moda', serif; font-size: 0.9rem; font-weight: 900; line-height: 1; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
-        .bento { display: flex; flex-direction: column; gap: 40px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px 6% 80px; }
+        .bento { display: grid; grid-template-columns: 1fr; gap: 25px; }
 
         .card {
-            background: var(--white); border-radius: 45px; padding: 50px;
-            transition: var(--ease) 0.6s; cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
+            background: var(--white); border-radius: 35px; padding: 40px;
+            transition: all 0.5s var(--ease); cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
             display: flex; flex-direction: column; justify-content: space-between; 
-            min-height: 550px; width: 100%; position: relative; overflow: hidden;
+            min-height: 450px; position: relative; overflow: hidden;
         }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
 
-        .card-author { align-items: center; text-align: center; justify-content: center; min-height: 500px; }
-        .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); }
+        .card-author { align-items: center; text-align: center; justify-content: center; }
+        .author-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 5px solid var(--bg); }
 
-        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 3.8rem; line-height: 1.05; margin-bottom: 15px; display: block; font-weight: 900; letter-spacing: -1.5px; }
-        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 3.8rem; line-height: 1.05; display: block; font-weight: 900; letter-spacing: -1.5px; }
-        .tag-dual { font-size: 0.8rem; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 30px; display: block; }
+        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.8rem; line-height: 1.1; margin-bottom: 10px; display: block; font-weight: 900; letter-spacing: -1px; }
+        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 2.8rem; line-height: 1.1; display: block; font-weight: 900; letter-spacing: -1px; opacity: 0.7; }
+        .tag-dual { font-size: 0.7rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
+        .meta-info { font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .reader { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: none; overflow-y: auto; padding: 120px 8% 120px; }
-        .reader-header { text-align: center; margin-bottom: 60px; }
-        .reader-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; gap: 60px; align-items: start; }
-        .reader-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.3rem; line-height: 1.8; color: #2D2D2D; }
-        .reader-img { width: 100%; border-radius: 20px; margin: 20px 0; object-fit: cover; max-height: 400px; border: 1px solid rgba(0,0,0,0.05); }
-        .divider { width: 3px; background: var(--accent); height: 100%; min-height: 800px; opacity: 0.6; }
-        
-        .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; }
-        
-        footer { padding: 80px 6%; text-align: center; border-top: 1px solid #eee; margin-top: 40px;}
-        .footer-bottom { font-size: 0.7rem; font-weight: 800; opacity: 0.4; letter-spacing: 2px; }
+        /* Reader Modal */
+        .reader { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: none; overflow-y: auto; padding: 100px 6% 60px; }
+        .reader-header { text-align: center; margin-bottom: 50px; max-width: 800px; margin-inline: auto; }
+        .reader-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+        .reader-text { font-size: 1.15rem; line-height: 1.8; color: #333; }
+        .reader-text b { color: var(--accent); display: block; margin-top: 15px; }
+        .reader-img { width: 100%; border-radius: 20px; margin: 25px 0; object-fit: cover; aspect-ratio: 16/9; background: #eee; }
+        .divider { width: 100%; height: 1px; background: rgba(176,141,87,0.2); margin: 20px 0; }
 
-        @media (max-width: 1000px) { .reader-grid { grid-template-columns: 1fr; } .divider { display: none; } .tr-line, .pt-line { font-size: 2.2rem; } }
+        .close-btn { position: fixed; top: 30px; right: 6%; background: var(--ink); color: white; border: none; padding: 12px 25px; border-radius: 30px; font-weight: 800; font-size: 0.8rem; cursor: pointer; z-index: 2100; transition: 0.3s; }
+        .close-btn:hover { transform: scale(1.05); }
+
+        /* Footer */
+        footer { padding: 40px 6%; text-align: center; border-top: 1px solid #eee; background: var(--white); }
+        .footer-bottom { font-size: 0.65rem; font-weight: 800; opacity: 0.5; letter-spacing: 2px; }
+
+        /* Responsive Settings */
+        @media (min-width: 768px) {
+            .reader-grid { grid-template-columns: 1fr 1px 1fr; gap: 50px; }
+            .divider { width: 1px; height: auto; margin: 0; }
+            .tr-line, .pt-line { font-size: 3.5rem; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo-box"><div class="logo-m">MB</div><div class="logo-text">MARDIN<br>BRAZIL</div></a>
+        <a href="#" class="logo-box">
+            <div class="logo-m">MB</div>
+            <div class="logo-text">MARDIN<br>BRAZIL</div>
+        </a>
     </header>
 
     <main class="container">
         <div class="bento">
             
             <div class="card card-author" onclick="openReader('author')">
-                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-img">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-img" alt="Ahmet Çınarbaş">
                 <span class="tr-line">Ahmet Çınarbaş</span>
-                <span class="pt-line" style="opacity: 0.5; font-size: 2rem;">Arquivista Cultural</span>
+                <span class="pt-line">Arquivista Cultural</span>
                 <div class="meta-info">EDİTÖR ● JOURNAL</div>
             </div>
 
-            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000') center/cover; color: white;" onclick="openReader('carnaval')">
+            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800') center/cover; color: white;" onclick="openReader('carnaval')">
                 <div>
                     <span class="tag-dual" style="color: white;">MAGAZİN ● CELEBRIDADE</span>
                     <span class="tr-line">Rio Karnavalı'nda Mardin Rüzgarı</span>
-                    <span class="pt-line">Vento de Mardin no Carnaval do Rio</span>
+                    <span class="pt-line">Vento de Mardin no Rio</span>
                 </div>
-                <div class="meta-info" style="color: white; opacity: 0.8;">ÖZEL HABER ● 4 DK OKUMA</div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">ÖZEL HABER</div>
             </div>
 
-            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1000') center/cover; color: white;" onclick="openReader('craft_visual')">
+            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=800') center/cover; color: white;" onclick="openReader('craft_visual')">
                 <div>
-                    <span class="tag-dual" style="color: white;">ZANAATIN RUHU ● ARTESANATO</span>
+                    <span class="tag-dual" style="color: white;">ZANAAT ● ARTESANATO</span>
                     <span class="tr-line">Gümüşün Sabrı & Doğanın Takısı</span>
-                    <span class="pt-line">Filigrana de Prata e Adornos Indígenas</span>
+                    <span class="pt-line">Filigrana e Adornos</span>
                 </div>
-                <div class="meta-info" style="color: white; opacity: 0.8;">GÖRSEL ANALİZ ● 5 DK</div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">GÖRSEL ANALİZ</div>
             </div>
 
-            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000') center/cover; color: white;" onclick="openReader('gastronomy')">
+            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800') center/cover; color: white;" onclick="openReader('gastronomy')">
                 <div>
                     <span class="tag-dual" style="color: white;">LEZZET DURAKLARI</span>
                     <span class="tr-line">İçli Köfte & Quibe Karşılaştırması</span>
-                    <span class="pt-line">Encontro de Sabores</span>
+                    <span class="pt-line">Sabores em Comum</span>
                 </div>
-                <div class="meta-info" style="color: white; opacity: 0.8;">GASTRONOMİ ANALİZİ</div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">GASTRONOMİ</div>
             </div>
 
-            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1000') center/cover; color: white;" onclick="openReader('sinop')">
+            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=800') center/cover; color: white;" onclick="openReader('sinop')">
                 <div>
                     <span class="tag-dual" style="color: white;">COĞRAFİ KADER</span>
                     <span class="tr-line">2 Kıta, 2 Şehir, Tek İsim: Sinop</span>
-                    <span class="pt-line">2 Continentes, 2 Sinops</span>
+                    <span class="pt-line">2 Sinops, 1 Nome</span>
                 </div>
-                <div class="meta-info" style="color: white; opacity: 0.8;">KARADENİZ'DEN AMAZON'A</div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">TÜRKİYE & BREZİLYA</div>
             </div>
 
-            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1000') center/cover; color: white;" onclick="openReader('society')">
+            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=800') center/cover; color: white;" onclick="openReader('society')">
                 <div>
                     <span class="tag-dual" style="color: white;">HALK BENZERLİKLERİ</span>
                     <span class="tr-line">Ortak Ruh: Mardin & Brasil</span>
-                    <span class="pt-line">Semelhanças Populares</span>
+                    <span class="pt-line">Semelhanças de Alma</span>
                 </div>
-                <div class="meta-info" style="color: white; opacity: 0.8;">SOSYOLOJİK ANALİZ</div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">SOSYOLOJİK</div>
             </div>
 
         </div>
@@ -143,58 +146,57 @@
 
     <script>
         const contentData = {
-            author: { tag: "EDİTÖR NOTU", tr: "Kültürler Arası Köprü", pt: "Ponte Entre Culturas", textTr: "Ahmet Çınarbaş olarak, Mardin ve Brezilya arasındaki görünmez bağları arşive dönüştürüyorum.", textPt: "Como Ahmet Çınarbaş, transformo em arquivo os laços invisíveis entre Mardin e o Brasil." },
-            
-            carnaval: {
-                tag: "MAGAZİN / RİO",
-                tr: "Rio Karnavalı'nda Mardin Esintileri",
-                pt: "Influências de Mardin no Carnaval do Rio",
-                textTr: "<b>Kültürel Füzyon:</b> Dünyanın en büyük şovu olan Rio Karnavalı'nda, bu yıl Mardin telkarisinden ilham alan kostümler podyumdaydı. Brezilyalı tasarımcılar, Mezopotamya'nın geometrik desenlerini Samba okullarının görkemli başlıklarına işlediler.<br><br><b>Ortak Coşku:</b> Mardin'in Reyhani dansındaki vakar ile Samba'nın enerjisi, Rio sokaklarında binlerce kişiyi aynı ritimde buluşturdu.",
-                textPt: "<b>Fusão Cultural:</b> No maior show da Terra, o Carnaval do Rio, desfilaram este ano figurinos inspirados na filigrana de Mardin. Designers brasileiros integraram padrões geométricos mesopotâmicos nos grandiosos adereços das escolas de samba.<br><br><b>Entusiasmo Comum:</b> A solenidade da dança Reyhani de Mardin e a energia do Samba uniram milhares de pessoas nas ruas do Rio sob o mesmo ritmo."
-            },
+            author: { tag: "EDİTÖR NOTU", tr: "Kültürler Arası Köprü", pt: "Ponte Entre Culturas", textTr: "Ahmet Çınarbaş olarak, Mardin ve Brezilya arasındaki görünmez bağları arşive dönüştürüyorum. Bu journal taşın ve ritmin ortak hikayesidir.", textPt: "Como Ahmet Çınarbaş, arquivo os laços invisíveis entre Mardin e o Brasil. Este journal é a história comum da pedra e do ritmo." },
+            carnaval: { tag: "MAGAZİN / RİO", tr: "Rio'da Mardin Esintileri", pt: "Influências de Mardin no Rio", textTr: "Rio Karnavalı'nda Mardin telkarisinden ilham alan kostümler podyumdaydı. Brezilyalı tasarımcılar geometrik desenleri Samba okullarının başlıklarına işlediler.", textPt: "No Carnaval do Rio, figurinos inspirados na filigrana de Mardin desfilaram. Designers brasileiros integraram padrões geométricos nos adereços das escolas." },
+            craft_visual: { tag: "ZANAAT", tr: "Zanaatın İki Yüzü", pt: "As Duas Faces", textTr: " <b>Mardin Telkarisi:</b> Gümüş tellerin dantel gibi örüldüğü sabır sanatıdır. <br><br>  <b>Yerli Takıları:</b> Doğanın sunduğu tohum ve tüylerle kurulan spiritüel bağdır.", textPt: "
 
-            craft_visual: {
-                tag: "GÖRSEL ANALİZ",
-                tr: "Zanaatın İki Yüzü",
-                pt: "As Duas Faces do Artesanato",
-                textTr: ` <b>Gümüşün Sabrı:</b> Mardin Telkarisi, gümüş tellerin bir dantel gibi örülmesiyle sabrın sembolüdür.<br><br> <b>Doğanın Ham Gücü:</b> Brezilya yerli takıları, ormanın sunduğu ham materyallerle hayat bulur.`,
-                textPt: ` <b>A Paciência da Prata:</b> A Filigrana de Mardin é o símbolo da paciência tecida em fios de prata.<br><br> <b>A Força Bruta da Natureza:</b> Adornos indígenas ganham vida com materiais crus da floresta.`
-            },
+[Image of Silver]
+ <b>Filigrana:</b> A arte da paciência em fios de prata. <br><br> 
 
-            gastronomy: { 
-                tag: "GASTRONOMİ", tr: "İçli Köfte & Quibe", pt: "Kibbeh vs Quibe", 
-                textTr: "Mardin'in Reyhanlı İçli Köftesi ile Brezilya'nın nane aromalı Quibe'si arasındaki şaşırtıcı lezzet benzerliği.", 
-                textPt: "A surpreendente semelhança de sabor entre o Kibbeh temperado com manjericão de Mardin e o Quibe de hortelã do Brasil." 
-            },
-
-            sinop: {
-                tag: "COĞRAFYANIN KADERİ", tr: "İki Sinop'un Hikayesi", pt: "A História das Duas Sinops",
-                textTr: "Karadeniz'in hırçın sularındaki Sinop ile Amazon'un derinliklerindeki Sinop arasındaki isim ve doğa birliği.",
-                textPt: "A união de nome e natureza entre Sinop, nas águas do Mar Negro, e Sinop, nas profundezas da Amazônia."
-            },
-
-            society: {
-                tag: "SOSYOLOJİK ANALİZ", tr: "Halk Benzerlikleri", pt: "Semelhanças Populares",
-                textTr: "Geniş aile bağları, misafirperverlik ve her iki toplumun da ruhundaki futbol tutkusu.",
-                textPt: "Laços de família estendida, hospitalidade e a paixão pelo futebol na alma de ambos os povos."
-            }
+[Image of Amazon]
+ <b>Adornos:</b> Conexão espiritual com sementes e penas da floresta." },
+            gastronomy: { tag: "GASTRONOMİ", tr: "İçli Köfte & Quibe", pt: "Kibbeh vs Quibe", textTr: "Mardin'in Reyhanlı İçli Köftesi ile Brezilya'nın nane aromalı Quibe'si arasındaki benzerlik dünyaca bilinir.", textPt: "A semelhança entre o Kibbeh de Mardin e o Quibe de hortelã do Brasil é mundialmente reconhecida." },
+            sinop: { tag: "COĞRAFYA", tr: "İki Sinop'un Hikayesi", pt: "Duas Sinops", textTr: "Türkiye'nin Karadeniz kıyısındaki Sinop ile Amazon girişindeki Sinop arasındaki şaşırtıcı isim ve doğa birliği.", textPt: "A incrível união de nome e natureza entre a Sinop da Turquia e a Sinop da Amazônia." },
+            society: { tag: "TOPLUM", tr: "Halk Benzerlikleri", pt: "Semelhanças Populares", textTr: "Geniş aile yapısı, misafirperverlik ve her iki toplumun ruhundaki futbol tutkusu ortak bir karakterdir.", textPt: "Família estendida, hospitalidade e paixão pelo futebol são caracteres comuns a ambos os povos." }
         };
 
         function openReader(key) {
             const item = contentData[key];
+            if(!item) return;
+
             const content = document.getElementById('reader-content');
             
-            // Görsel taglerini işleme
-            let textTrClean = item.textTr.replace(/\/g, '<img src="https://images.unsplash.com/photo-1610332850381-893081014844?q=80&w=800" class="reader-img" alt="$1">');
-            let textPtClean = item.textPt.replace(/\/g, '<img src="https://images.unsplash.com/photo-1511208687438-2c5a5abb810c?q=80&w=800" class="reader-img" alt="$1">');
+            // Görsel taglerini render et
+            let trText = item.textTr.replace(/\/g, '<img src="https://images.unsplash.com/photo-1610332850381-893081014844?q=80&w=800" class="reader-img">');
+            let ptText = item.textPt.replace(/\/g, '<img src="https://images.unsplash.com/photo-1511208687438-2c5a5abb810c?q=80&w=800" class="reader-img">');
 
             content.innerHTML = `
-                <div class="reader-header"><span class="tag-dual">${item.tag}</span><h1 class="tr-line">${item.tr}</h1><h2 class="pt-line">${item.pt}</h2></div>
-                <div class="reader-grid"><div class="reader-text">${textTrClean}</div><div class="divider"></div><div class="reader-text">${textPtClean}</div></div>`;
+                <div class="reader-header">
+                    <span class="tag-dual">${item.tag}</span>
+                    <h1 class="tr-line">${item.tr}</h1>
+                    <h2 class="pt-line">${item.pt}</h2>
+                </div>
+                <div class="reader-grid">
+                    <div class="reader-text">${trText}</div>
+                    <div class="divider"></div>
+                    <div class="reader-text">${ptText}</div>
+                </div>
+            `;
+            
             document.getElementById('reader-modal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-        function closeReader() { document.getElementById('reader-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+
+        function closeReader() {
+            document.getElementById('reader-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Modal dışına tıklayınca kapatma (Ekstra konfor)
+        window.onclick = function(event) {
+            const modal = document.getElementById('reader-modal');
+            if (event.target == modal) closeReader();
+        }
     </script>
 </body>
 </html>
