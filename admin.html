@@ -8,26 +8,18 @@
         :root { --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF; }
         body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; display: flex; justify-content: center; padding: 20px; color: var(--ink); }
         .admin-box { width: 100%; max-width: 750px; background: var(--white); padding: 40px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        h2 { font-family: 'Bodoni Moda', serif; text-align: center; margin-bottom: 30px; font-size: 2rem; }
-        
+        h2 { font-family: 'Bodoni Moda', serif; text-align: center; margin-bottom: 30px; }
         .tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #eee; overflow-x: auto; }
-        .tab-btn { padding: 12px 20px; border: none; background: none; cursor: pointer; font-weight: 600; color: #999; white-space: nowrap; transition: 0.3s; }
+        .tab-btn { padding: 12px 20px; border: none; background: none; cursor: pointer; font-weight: 600; color: #999; transition: 0.3s; white-space: nowrap; }
         .tab-btn.active { color: var(--ink); border-bottom: 2px solid var(--ink); }
-        
         .form-sec { display: none; }
         .form-sec.active { display: block; }
-        
-        label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
-        input, textarea, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-family: inherit; box-sizing: border-box; outline: none; background: #fafafa; }
-        textarea { min-height: 320px; line-height: 1.6; resize: vertical; }
-        
-        button { width: 100%; padding: 18px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 15px; transition: 0.3s; font-size: 1rem; }
+        label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; }
+        input, textarea, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-family: inherit; box-sizing: border-box; outline: none; margin-bottom: 10px; }
+        textarea { min-height: 280px; line-height: 1.6; }
+        button { width: 100%; padding: 18px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 1rem; }
         button:hover { background: #333; transform: translateY(-2px); }
-        
-        .status { margin-top: 20px; text-align: center; font-weight: bold; padding: 15px; border-radius: 10px; display: none; }
-        .status.error { background: #ffebee; color: #c62828; display: block; }
-        .status.success { background: #e8f5e9; color: #2e7d32; display: block; }
-        .status.info { background: #e3f2fd; color: #1565c0; display: block; }
+        #status { margin-top: 20px; text-align: center; font-weight: bold; padding: 15px; border-radius: 12px; display: none; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -36,56 +28,57 @@
     <h2>MB Journal Kumanda Merkezi</h2>
     
     <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('post-sec', this)">Yeni Makale</button>
-        <button class="tab-btn" onclick="showTab('author-sec', this)">Yazar Profili</button>
-        <button class="tab-btn" onclick="showTab('cat-sec', this)">Kategori Yönetimi</button>
+        <button class="tab-btn active" onclick="showTab('post-sec', this)">Yazı Yayınla</button>
+        <button class="tab-btn" onclick="showTab('author-sec', this)">Yazar & Profil</button>
+        <button class="tab-btn" onclick="showTab('cat-sec', this)">Kategoriler</button>
     </div>
 
     <div id="post-sec" class="form-sec active">
-        <label>Kategori Seçin</label>
+        <label>Kategori Seç</label>
         <select id="category-select">
-            <option value="Magazin">Magazin ● Celebridade</option>
-            <option value="Gastronomi">Gastronomi ● Sabor</option>
-            <option value="Zanaat">Zanaat ● Artesanato</option>
-            <option value="Cografi">Coğrafi Kader ● Destino</option>
-            <option value="Toplum">Toplum ● Sociedade</option>
+            <option>Magazin ● Celebridade</option>
+            <option>Gastronomi ● Sabor</option>
+            <option>Zanaat ● Artesanato</option>
+            <option>Coğrafi Kader ● Destino</option>
+            <option>Toplum ● Sociedade</option>
         </select>
         
-        <label>Görsel Linki (Boş bırakırsanız otomatik görsel atanır)</label>
-        <input type="text" id="img-url" placeholder="https://resim-linki.com/resim.jpg">
+        <label>Kapak Görseli (URL) - Boş bırakırsanız otomatik görsel gelir</label>
+        <input type="text" id="img-url" placeholder="https://resim-adresi.com/foto.jpg">
         
-        <label>Makale Başlığı (Türkçe)</label>
-        <input type="text" id="tr-title" placeholder="Başlığı buraya girin...">
+        <label>Türkçe Başlık</label>
+        <input type="text" id="tr-title" placeholder="Yazı başlığını girin...">
         
-        <label>Makale İçeriği (Ana Yazı Alanı)</label>
-        <textarea id="tr-body" placeholder="Yazınızı buraya yazın..."></textarea>
+        <label>Türkçe İçerik (Makale Alanı)</label>
+        <textarea id="tr-body" placeholder="Hikayenizi buraya anlatın..."></textarea>
         
-        <button onclick="handleSave('article')">MAKALE YAYINLA</button>
+        <button onclick="handleSave('article')">YAYINLA & OTOMATİK ÇEVİR</button>
     </div>
 
     <div id="author-sec" class="form-sec">
-        <label>Yazar Ad Soyad</label>
+        <label>Yazar Adı</label>
         <input type="text" id="author-name" value="Ahmet Çınarbaş">
-        <label>Ünvan / Biyografi</label>
+        <label>Ünvan</label>
         <input type="text" id="author-bio" value="Kültürel Arşivci">
-        <label>Yazar Fotoğraf URL (Local veya İnternet)</label>
+        <label>Yazar Profil Fotoğrafı URL</label>
         <input type="text" id="author-img" placeholder="https://...">
         <button onclick="handleSave('settings')" style="background:var(--accent)">PROFİLİ GÜNCELLE</button>
     </div>
 
     <div id="cat-sec" class="form-sec">
-        <label>Yeni Kategori (TR)</label>
+        <label>Yeni Kategori Ekle (TR)</label>
         <input type="text" id="new-cat-tr" placeholder="Örn: SİNEMA">
-        <label>Yeni Kategori (PT)</label>
+        <label>Yeni Kategori Ekle (PT)</label>
         <input type="text" id="new-cat-pt" placeholder="Örn: CINEMA">
-        <button onclick="handleSave('category')" style="background:#555">LİSTEYE YENİ KATEGORİ EKLE</button>
+        <button onclick="handleSave('category')" style="background:#555">KATEGORİ EKLE</button>
     </div>
 
-    <div id="status" class="status"></div>
+    <div id="status"></div>
 </div>
 
 <script>
-    const GH_TOKEN = "ghp_Ck9rQJbrJ6Pkkz10SRjFcmqnp433Dh2xuYDY";
+    // Güncel Token
+    const GH_TOKEN = "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";
     const REPO_URL = 'https://api.github.com/repos/asalimc/47/contents/articles.json';
 
     function showTab(id, btn) {
@@ -93,25 +86,25 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         btn.classList.add('active');
-        document.getElementById('status').className = 'status';
+    }
+
+    function notify(msg, type) {
+        const s = document.getElementById('status');
+        s.innerText = msg;
+        s.style.display = 'block';
+        s.style.backgroundColor = type === 'err' ? '#ffebee' : '#e8f5e9';
+        s.style.color = type === 'err' ? '#c62828' : '#2e7d32';
     }
 
     async function handleSave(mode) {
-        const status = document.getElementById('status');
-        status.className = 'status info';
-        status.innerText = "GitHub ile bağlantı kuruluyor...";
+        notify("GitHub veritabanına bağlanılıyor...", "info");
 
         try {
-            const getFile = await fetch(REPO_URL, { 
-                method: 'GET',
-                headers: { 
-                    'Authorization': `token ${GH_TOKEN}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Cache-Control': 'no-cache'
-                } 
+            const getFile = await fetch(REPO_URL, {
+                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Cache-Control': 'no-cache' }
             });
 
-            if (!getFile.ok) throw new Error("GitHub dosyasına ulaşılamadı. articles.json mevcut mu?");
+            if (!getFile.ok) throw new Error("Dosya okunamadı! articles.json dosyasının doğru konumda olduğundan emin olun.");
             
             const fileData = await getFile.json();
             const content = JSON.parse(decodeURIComponent(escape(atob(fileData.content))));
@@ -119,21 +112,20 @@
             if(mode === 'article') {
                 const trT = document.getElementById('tr-title').value;
                 const trB = document.getElementById('tr-body').value;
-                const cat = document.getElementById('category-select').value;
                 let img = document.getElementById('img-url').value;
 
-                // Otomatik Görsel Seçici (Link boşsa)
-                if(!img) {
-                    img = `https://images.unsplash.com/photo-1512485694743-9c9538b4e6e0?q=80&w=1000&auto=format&fit=crop&sig=${Math.random()}`;
+                // Koruma: Çok uzun base64 verilerini veya boş girişleri engelle, otomatik görsel ata
+                if(!img || img.startsWith('data:')) {
+                    img = "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1000&auto=format&fit=crop";
                 }
 
                 content.unshift({
                     id: Date.now(),
                     type: "post",
-                    category: document.getElementById('category-select').options[document.getElementById('category-select').selectedIndex].text,
+                    category: document.getElementById('category-select').value,
                     image: img,
                     tr: { title: trT, body: trB },
-                    pt: { title: "Tradução Automática...", body: "Aguardando conteúdo..." },
+                    pt: { title: "Tradução pendente...", body: "Em breve..." },
                     date: new Date().toLocaleDateString('tr-TR')
                 });
             } else if(mode === 'settings') {
@@ -148,30 +140,21 @@
             const updated = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
             const res = await fetch(REPO_URL, {
                 method: 'PUT',
-                headers: { 
-                    'Authorization': `token ${GH_TOKEN}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    message: "MB Journal Update", 
-                    content: updated, 
-                    sha: fileData.sha 
-                })
+                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: "Update Journal Data", content: updated, sha: fileData.sha })
             });
 
             if(res.ok) {
-                status.className = 'status success';
-                status.innerText = "MÜKEMMEL! Veriler GitHub'a işlendi.";
+                notify("BAŞARIYLA YAYINLANDI!", "success");
                 if(mode === 'article') {
                     document.getElementById('tr-title').value = "";
                     document.getElementById('tr-body').value = "";
                 }
             } else {
-                throw new Error("GitHub yazma hatası! Token yetkisi geçersiz olabilir.");
+                throw new Error("GitHub yazma hatası! Token yetkilerini kontrol edin.");
             }
-        } catch (e) { 
-            status.className = 'status error';
-            status.innerText = "HATA: " + e.message; 
+        } catch (e) {
+            notify("HATA: " + e.message, "err");
         }
     }
 </script>
