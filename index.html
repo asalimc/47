@@ -1,60 +1,233 @@
-<style>
-    /* DİNAMİK FİLTRELEME SINIFLARI */
-    .card { transition: all 0.5s var(--ease); }
-    .dimmed { opacity: 0.2; filter: grayscale(1); transform: scale(0.95); }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MB | Ahmet Çınarbaş Journal</title>
     
-    /* GÜN/GECE GEÇİŞİ İÇİN TEMELLER */
-    body.night-mode {
-        --bg: #121212;
-        --ink: #F8F6F2;
-        --white: #1A1A1A;
-        --clay: #2A2A2A;
-    }
-
-    /* DİNAMİK SCROLL İNDİKATÖRÜ */
-    #scroll-progress {
-        position: fixed; top: 0; left: 0; height: 3px;
-        background: var(--accent); z-index: 9999;
-        width: 0%; transition: width 0.1s linear;
-    }
-</style>
-
-<div id="scroll-progress"></div>
-
-<script>
-    // 1. DİNAMİK SCROLL TAKİBİ
-    window.onscroll = function() {
-        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        let scrolled = (winScroll / height) * 100;
-        document.getElementById("scroll-progress").style.width = scrolled + "%";
-    };
-
-    // 2. DİNAMİK COĞRAFYA ODAKLAMA (HOVER SENSITIVE)
-    function focusRegion(region) {
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            if (!card.innerText.includes(region)) {
-                card.classList.add('dimmed');
-            } else {
-                card.classList.remove('dimmed');
-            }
-        });
-    }
-
-    function resetFocus() {
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => card.classList.remove('dimmed'));
-    }
-
-    // 3. DİNAMİK GECE MODU (OTOMATİK SAAT KONTROLÜ)
-    function checkTime() {
-        const hour = new Date().getHours();
-        if (hour < 6 || hour > 19) {
-            document.body.classList.add('night-mode');
-        } else {
-            document.body.classList.remove('night-mode');
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,900;1,6..96,900&family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #F8F6F2; 
+            --ink: #1A1A1A; 
+            --accent: #B08D57; 
+            --white: #FFFFFF;
+            --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
-    }
-    checkTime(); // Sayfa yüklendiğinde çalıştır
-</script>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+
+        /* HEADER */
+        header {
+            padding: 30px 6%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); }
+        .logo-m { 
+            font-family: 'Bodoni Moda', serif; font-size: 2.2rem; font-weight: 900; 
+            background: var(--ink); color: var(--bg); padding: 0 12px; border-radius: 10px; margin-right: 12px;
+        }
+        .logo-text { font-family: 'Bodoni Moda', serif; font-size: 1.1rem; font-weight: 900; line-height: 1; }
+
+        /* FILTERS */
+        .nav-filters button {
+            background: none; border: 1px solid rgba(0,0,0,0.1); color: var(--ink);
+            padding: 8px 18px; border-radius: 50px; font-size: 0.7rem; font-weight: 800;
+            cursor: pointer; margin-left: 10px; transition: 0.3s;
+        }
+        .nav-filters button.active { background: var(--ink); color: var(--bg); }
+
+        /* BENTO GRID */
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6%; }
+        .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; min-height: 300px; }
+
+        /* CARDS */
+        .card {
+            background: var(--white); border-radius: 40px; padding: 40px;
+            transition: var(--ease) 0.6s; cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
+            display: flex; flex-direction: column; justify-content: space-between; position: relative;
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(176,141,87,0.1); border-color: var(--accent); }
+
+        .card-main { grid-column: span 8; min-height: 550px; color: white; border: none; overflow: hidden; }
+        .card-author { grid-column: span 4; align-items: center; text-align: center; }
+        .card-side { grid-column: span 4; min-height: 380px; }
+        .card-video { grid-column: span 8; padding: 0; height: 380px; overflow: hidden; border-radius: 40px; }
+
+        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; margin-bottom: 12px; display: block; }
+        .pt-line { font-size: 0.9rem; font-weight: 600; opacity: 0.8; font-style: italic; display: block; }
+        .tag-dual { font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
+
+        .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+        /* READER MODAL */
+        .reader {
+            position: fixed; inset: 0; background: var(--bg); z-index: 2000;
+            display: none; overflow-y: auto; padding: 100px 8% 150px;
+        }
+        .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
+        .reader-tr { font-family: 'Bodoni Moda', serif; font-size: 2.4rem; line-height: 1.2; color: var(--ink); margin-bottom: 30px; }
+        .reader-pt { font-size: 1.2rem; line-height: 1.8; color: #555; font-style: italic; border-left: 3px solid var(--accent); padding-left: 30px; }
+        .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; }
+
+        footer { padding: 80px 6%; background: white; text-align: center; border-top: 1px solid #eee; margin-top: 50px; }
+
+        @media (max-width: 1024px) {
+            .card-main, .card-author, .card-side, .card-video { grid-column: span 12; }
+            .reader-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo-box">
+            <div class="logo-m">MB</div>
+            <div class="logo-text">MARDIN<br>BRAZIL</div>
+        </a>
+        <div class="nav-filters">
+            <button id="btn-all" class="active" onclick="filterData('all')">HEPSİ</button>
+            <button id="btn-Mardin" onclick="filterData('Mardin')">MARDİN</button>
+            <button id="btn-Brazil" onclick="filterData('Brazil')">BRAZIL</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="bento" id="bento-grid">
+            </div>
+    </main>
+
+    <div id="reader-modal" class="reader" onclick="if(event.target.id === 'reader-modal') closeR()">
+        <button class="close-btn" onclick="closeR()">KAPAT ● FECHAR</button>
+        <div id="reader-content"></div>
+    </div>
+
+    <footer>
+        <div class="logo-text" style="font-size: 1.5rem; margin-bottom: 15px;">MARDINBRAZIL</div>
+        <p style="font-size: 0.7rem; font-weight: 800; opacity: 0.5; letter-spacing: 2px;">AHMET ÇINARBAŞ JOURNAL ● ARCHIVE 2026</p>
+    </footer>
+
+    <script>
+        let allData = [];
+
+        // 1. VERİLERİ ÇEK
+        async function loadData() {
+            const grid = document.getElementById('bento-grid');
+            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 100px; opacity: 0.5;">İçerikler Hazırlanıyor... ● Carregando...</p>';
+
+            try {
+                // Saniyeler içinde güncellenmesi için cache-busting ekledik (?v=...)
+                const response = await fetch('data.json?v=' + Date.now());
+                if (!response.ok) throw new Error("Dosya bulunamadı");
+                allData = await response.json();
+                renderCards(allData);
+            } catch (error) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red; padding: 100px;">Veri yükleme hatası. Lütfen data.json dosyanızı kontrol edin.</p>';
+                console.error(error);
+            }
+        }
+
+        // 2. KARTLARI OLUŞTUR
+        function renderCards(data) {
+            const grid = document.getElementById('bento-grid');
+            grid.innerHTML = '';
+
+            data.forEach(item => {
+                const card = document.createElement('section');
+                card.className = 'card';
+
+                if(item.type === 'main') {
+                    card.classList.add('card-main');
+                    card.style.background = `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('${item.img}') center/cover`;
+                    card.innerHTML = `
+                        <div>
+                            <span class="tag-dual" style="color:white; border-color:white;">${item.tag}</span>
+                            <span class="tr-line" style="font-size:3.5rem;">${item.tr}</span>
+                            <span class="pt-line" style="color:white; font-size:1.1rem;">${item.pt}</span>
+                        </div>
+                        <div style="font-weight:800; font-size:0.7rem; letter-spacing:2px; color:white;">${item.desc}</div>
+                    `;
+                } else if(item.type === 'author') {
+                    card.classList.add('card-author');
+                    card.innerHTML = `
+                        <img src="${item.img}" class="author-img">
+                        <span class="tr-line" style="font-size:1.8rem;">${item.name}</span>
+                        <span class="pt-line">${item.title}</span>
+                        <p style="font-size:0.8rem; margin:20px 0; opacity:0.7;">${item.bio}</p>
+                        <div style="font-size:0.7rem; font-weight:900; background:var(--ink); color:white; padding:12px 25px; border-radius:100px;">PORTFOLYO</div>
+                    `;
+                } else if(item.type === 'side') {
+                    card.classList.add('card-side');
+                    card.innerHTML = `
+                        <div>
+                            <span class="tag-dual">${item.tag}</span>
+                            <span class="tr-line">${item.tr}</span>
+                            <span class="pt-line">${item.pt}</span>
+                            <p style="font-size:0.8rem; opacity:0.6; margin-top:15px;">${item.desc}</p>
+                        </div>
+                        <span style="font-size:0.6rem; font-weight:800; opacity:0.4;">2026 ARCHIVE</span>
+                    `;
+                } else if(item.type === 'video') {
+                    card.classList.add('card-video');
+                    card.innerHTML = `<iframe src="${item.url}" style="width:100%; height:100%; border:none;"></iframe>`;
+                }
+
+                if(item.type !== 'video') card.onclick = () => openR(item);
+                grid.appendChild(card);
+            });
+        }
+
+        // 3. FİLTRELEME SİSTEMİ
+        function filterData(region) {
+            document.querySelectorAll('.nav-filters button').forEach(b => b.classList.remove('active'));
+            const btn = document.getElementById('btn-' + region);
+            if(btn) btn.classList.add('active');
+
+            const filtered = region === 'all' ? allData : allData.filter(d => d.region === region);
+            renderCards(filtered);
+        }
+
+        // 4. OKUMA MODALI
+        function openR(item) {
+            const modal = document.getElementById('reader-modal');
+            const content = document.getElementById('reader-content');
+
+            if(item.type === 'author') {
+                content.innerHTML = `
+                    <div style="text-align:center; margin-bottom:50px;">
+                        <img src="${item.img}" style="width:180px; height:180px; border-radius:50%; border:8px solid white; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                        <h1 style="font-family:'Bodoni Moda'; font-size:3.5rem; margin-top:20px;">${item.name}</h1>
+                    </div>
+                    <div class="reader-grid">
+                        <div class="reader-tr">${item.bio}</div>
+                        <div class="reader-pt">Traduzindo a alma entre Mardin e Brasil.</div>
+                    </div>`;
+            } else {
+                content.innerHTML = `
+                    <div class="reader-grid">
+                        <div>
+                            <span class="tag-dual">${item.tag}</span>
+                            <div class="reader-tr">${item.contentTR || item.tr}</div>
+                        </div>
+                        <div>
+                            <span class="tag-dual">Versão em Português</span>
+                            <div class="reader-pt">${item.contentPT || item.pt}</div>
+                        </div>
+                    </div>`;
+            }
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeR() {
+            document.getElementById('reader-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>
