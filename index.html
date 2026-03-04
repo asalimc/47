@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDINBRAZIL | Ahmet Çınarbaş Resmi Arşivi</title>
+    <title>MARDINBRAZIL | Ahmet Çınarbaş Arşivi</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
     
@@ -11,50 +11,58 @@
         :root {
             --bg: #FCFAF7; 
             --accent: #D4A373; 
-            --accent-soft: #f4e7d8;
             --text-main: #1F1F1F;
             --text-sub: #7A7A7A;
             --radius: 45px;
             --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: var(--bg); 
             color: var(--text-main); 
             font-family: 'Instrument Sans', sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
         }
 
-        /* HEADER */
         header {
-            padding: 30px 6%;
+            padding: 40px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky; top: 0; z-index: 1000;
-            background: rgba(252, 250, 247, 0.8);
+            background: rgba(252, 250, 247, 0.85);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0,0,0,0.03);
         }
 
         .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 900;
             text-decoration: none;
             color: var(--text-main);
-            letter-spacing: -1.5px;
+            letter-spacing: -2px;
         }
 
-        /* BENTO GRID */
-        .grid-system {
+        /* BENTO GRID SİSTEMİ */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px 6% 100px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin: 60px 0 30px;
+            padding-left: 20px;
+            border-left: 5px solid var(--accent);
+        }
+
+        .content-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 20px;
-            padding: 40px 6%;
-            max-width: 1600px; margin: 0 auto;
+            gap: 25px;
         }
 
         .card {
@@ -66,69 +74,49 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(212, 163, 115, 0.12);
+            transform: translateY(-10px);
+            box-shadow: 0 40px 80px rgba(212, 163, 115, 0.12);
             border-color: var(--accent);
         }
 
-        /* CARD SIZES */
-        .hero-card { grid-column: span 8; grid-row: span 2; min-height: 500px; background: url('https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=small') center/cover; border: none; }
-        .hero-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, #FCFAF7 0%, transparent 70%); }
-        .hero-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+        /* Kart Boyutları */
+        .card-large { grid-column: span 8; min-height: 400px; }
+        .card-medium { grid-column: span 4; }
+        .card-video { grid-column: span 6; padding: 0; height: 350px; }
+        .card-video iframe { width: 100%; height: 100%; border: none; border-radius: var(--radius); }
 
-        .profile-card { grid-column: span 4; text-align: center; background: #fff; }
-        .stat-card { grid-column: span 4; background: var(--accent); color: white; display: flex; justify-content: space-around; align-items: center; }
-        .video-card { grid-column: span 6; padding: 0; height: 350px; }
-        .video-card iframe { width: 100%; height: 100%; border: none; border-radius: var(--radius); }
+        /* Yazar Kartı (Özel) */
+        .profile-card { grid-column: span 4; text-align: center; justify-content: center; align-items: center; }
+        .profile-card img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; }
 
-        /* TYPOGRAPHY */
         .tag { color: var(--accent); font-weight: 700; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; display: block; }
-        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        h3 { font-family: 'Playfair Display', serif; font-size: 2rem; line-height: 1.2; }
 
-        /* MODAL SYSTEM */
+        /* MODAL (DETAY SAYFASI) */
         .modal {
             position: fixed; inset: 0; background: var(--bg); z-index: 2000;
-            display: none; overflow-y: auto; padding: 100px 5%;
+            display: none; overflow-y: auto; padding: 120px 8%;
         }
         .close-btn { 
             position: fixed; top: 40px; right: 5%; 
             background: var(--text-main); color: #fff; border: none; 
             padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer;
-            transition: 0.3s;
         }
-        .close-btn:hover { background: var(--accent); }
 
-        /* YAZAR DETAY SAYFASI (PRO) */
-        .author-detail { max-width: 1000px; margin: 0 auto; text-align: left; }
-        .author-header { display: flex; align-items: center; gap: 40px; margin-bottom: 60px; }
-        .author-header img { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 10px solid #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .author-info h1 { font-size: 4rem; margin-bottom: 10px; }
-        
-        .badge { background: #e8f5e9; color: #2e7d32; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 15px; }
+        /* ÇİFT DİL İÇERİK YAPISI */
+        .detail-container { max-width: 900px; margin: 0 auto; }
+        .lang-block { margin-bottom: 60px; }
+        .tr-content { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--text-main); line-height: 1.3; display: block; margin-bottom: 15px; }
+        .pt-content { font-size: 1.2rem; color: var(--text-sub); font-style: italic; border-left: 3px solid var(--accent); padding-left: 25px; display: block; }
 
-        .social-links { display: flex; gap: 15px; margin-top: 25px; }
-        .social-btn { 
-            padding: 10px 25px; border-radius: 30px; border: 1px solid #ddd; 
-            text-decoration: none; color: var(--text-main); font-weight: 600; font-size: 0.9rem;
-            transition: 0.3s;
-        }
-        .social-btn:hover { background: var(--text-main); color: #fff; }
-
-        .bio-section { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; border-top: 1px solid #eee; padding-top: 50px; }
-        .bio-box h4 { margin-bottom: 20px; color: var(--accent); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
-        .bio-box p { font-size: 1.15rem; line-height: 1.8; color: var(--text-sub); }
-
-        .stat-badge { text-align: center; }
-        .stat-badge span { display: block; font-size: 1.8rem; font-weight: 900; font-family: 'Playfair Display'; }
-        .stat-badge label { font-size: 0.7rem; font-weight: 700; opacity: 0.8; text-transform: uppercase; }
-
-        @media (max-width: 900px) {
-            .hero-card, .profile-card, .stat-card, .video-card { grid-column: span 12; }
-            .author-header { flex-direction: column; text-align: center; }
-            .bio-section { grid-template-columns: 1fr; }
+        @media (max-width: 1024px) {
+            .card-large, .card-medium, .card-video, .profile-card { grid-column: span 12; }
         }
     </style>
 </head>
@@ -136,92 +124,90 @@
 
     <header>
         <a href="#" class="logo">MARDINBRAZIL</a>
-        <div style="font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; color: var(--accent);">DİJİTAL ARŞİV 2026</div>
     </header>
 
-    <main class="grid-system">
-        <article class="card hero-card" onclick="openModal('intModal')">
-            <div class="hero-content">
-                <span class="tag" style="color:var(--text-main)">ÖZEL SÖYLEŞİ</span>
-                <h1 style="font-size: 3.5rem; line-height: 1;">Ritmin ve Taşın<br>Senfonisi.</h1>
-            </div>
-        </article>
-
-        <section class="card profile-card" onclick="openModal('authorModal')">
-            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:140px; height:140px; border-radius:50%; object-fit:cover; margin-bottom:20px;">
-            <div class="badge">✓ Onaylı Gazeteci</div>
-            <h3>Ahmet Çınarbaş</h3>
-            <p style="color:var(--text-sub); font-size:0.9rem; margin-top:5px;">Mardin & Brezilya Araştırmacısı</p>
-        </section>
-
-        <div class="card stat-card">
-            <div class="stat-badge"><span>9+</span><label>Yıl Deneyim</label></div>
-            <div class="stat-badge"><span>200+</span><label>Makale</label></div>
-            <div class="stat-badge"><span>2</span><label>Kıta</label></div>
+    <main class="main-container">
+        
+        <div class="content-grid">
+            <section class="card profile-card" onclick="openModal('author')">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" alt="Ahmet Çınarbaş">
+                <h3>Ahmet Çınarbaş</h3>
+                <span class="tag">GAZETECİ // JORNALISTA</span>
+            </section>
+            
+            <article class="card card-large" style="background: url('https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=small') center/cover; border: none;">
+                <div style="margin-top: auto; background: white; padding: 30px; border-radius: 30px;">
+                    <span class="tag">GÜNCEL ARŞİV</span>
+                    <h3>Mezopotamya'dan Amazon'a Kültür Köprüsü</h3>
+                </div>
+            </article>
         </div>
 
-        <div class="card video-card"><iframe src="https://www.youtube.com/embed/jg2q0hXy85c"></iframe></div>
-        <div class="card video-card"><iframe src="https://www.youtube.com/embed/-53mGJ4h5sQ"></iframe></div>
+        <h2 class="section-title">Röportajlar // Entrevistas</h2>
+        <div class="content-grid">
+            <article class="card card-medium" onclick="openModal('int1')">
+                <span class="tag">RÖPORTAJ 01</span>
+                <h3>Brezilya'nın Sokak Ritmi</h3>
+                <p>São Paulo sokaklarında geçen bir haftalık gözlem.</p>
+            </article>
+
+            <article class="card card-medium" onclick="openModal('int2')">
+                <span class="tag">RÖPORTAJ 02</span>
+                <h3>Mardin'in Sessiz Taşları</h3>
+                <p>Kadim şehrin mimarisi ve yaşam biçimi üzerine.</p>
+            </article>
+
+            <article class="card card-medium" onclick="openModal('int3')">
+                <span class="tag">RÖPORTAJ 03</span>
+                <h3>Samba ve Direniş</h3>
+                <p>Favela kültüründe müziğin sosyal rolü.</p>
+            </article>
+        </div>
+
+        <h2 class="section-title">Köşe Yazıları // Crônicas</h2>
+        <div class="content-grid">
+            <article class="card card-large" onclick="openModal('col1')">
+                <span class="tag">ANALİZ</span>
+                <h3>İki Güneşin Altında: Aidiyet</h3>
+                <p>Brezilya ve Türkiye arasındaki şaşırtıcı benzerlikler.</p>
+            </article>
+            
+            <div class="card card-video"><iframe src="https://www.youtube.com/embed/jg2q0hXy85c"></iframe></div>
+            <div class="card card-video"><iframe src="https://www.youtube.com/embed/-53mGJ4h5sQ"></iframe></div>
+        </div>
+
     </main>
 
-    <div id="authorModal" class="modal">
-        <button class="close-btn" onclick="closeModal('authorModal')">KAPAT // FECHAR</button>
-        <div class="author-detail">
-            <div class="author-header">
-                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" alt="Ahmet Çınarbaş">
-                <div class="author-info">
-                    <div class="badge">✓ VERIFIED JOURNALIST</div>
-                    <h1>Ahmet Çınarbaş</h1>
-                    <p style="font-size: 1.5rem; color: var(--accent); font-family: 'Playfair Display';">Gazeteci, Kültür Araştırmacısı ve Dijital Arşivci</p>
-                    
-                    <div class="social-links">
-                        <a href="#" class="social-btn">Twitter (X)</a>
-                        <a href="#" class="social-btn">Instagram</a>
-                        <a href="#" class="social-btn">LinkedIn</a>
-                    </div>
-                </div>
+    <div id="int1" class="modal">
+        <button class="close-btn" onclick="closeModal('int1')">KAPAT // FECHAR</button>
+        <div class="detail-container">
+            <div class="lang-block">
+                <span class="tr-content">"Brezilya'da sokak sanatı, binaların üzerinde yaşayan bir tarihtir."</span>
+                <span class="pt-content">"A arte de rua no Brasil é uma história que vive nos prédios."</span>
             </div>
-
-            <div class="bio-section">
-                <div class="bio-box">
-                    <h4>VİZYON // VISÃO</h4>
-                    <p>Mezopotamya'nın kadim sessizliği ile Latin Amerika'nın bitmek bilmeyen enerjisi arasında bir köprü kurmak. 2017'den bu yana, sadece haberleri değil, ruhları ve kültürleri de birbirine bağlayan hikayelerin peşindeyim.</p>
-                </div>
-                <div class="bio-box">
-                    <h4>DENEYİM // EXPERIÊNCIA</h4>
-                    <p>Mardin'in dar sokaklarından Rio'nun favelalarına uzanan 9 yıllık profesyonel saha gazeteciliği. Kültürel diplomasi, gastronomi ve müzik üzerine derinlemesine dosyalar ve ödüllü röportajlar serisi.</p>
-                </div>
-            </div>
-
-            <div class="bio-section" style="border:none;">
-                <div class="bio-box">
-                    <p style="font-style: italic; font-family: 'Playfair Display'; font-size: 1.8rem; color: var(--text-main);">
-                        "Gerçek, sadece görünen değil; hissedilen ritmin içindedir."
-                    </p>
-                </div>
+            <div class="lang-block">
+                <span class="tr-content">"İnsanlar burada yoksulluğu müzikle, acıyı ise dansla tedavi ediyorlar."</span>
+                <span class="pt-content">"Aqui as pessoas curam a pobreza com música e a dor com dança."</span>
             </div>
         </div>
     </div>
 
-    <div id="intModal" class="modal">
-        <button class="close-btn" onclick="closeModal('intModal')">GERİ DÖN // VOLTAR</button>
-        <div style="max-width: 800px; margin: 0 auto;">
-            <span class="tag">TAM DOSYA</span>
-            <h2 style="font-size: 3rem; margin-bottom: 40px;">Brezilya: Bir Gazetecinin Gözlemleri</h2>
-            <p style="font-size: 1.5rem; margin-bottom: 30px; font-family: 'Playfair Display'; line-height: 1.4;">"2017'de Brezilya'ya ilk adımımı attığımda, Mardin'in güneşi ile Rio'nun güneşi arasındaki o benzerliği hissetmiştim. İnsanların gözlerindeki o sıcaklık, mesafe ne kadar uzak olursa olsun değişmiyor."</p>
-            <p style="font-size: 1.1rem; color: var(--text-sub); font-style: italic; border-left: 4px solid var(--accent); padding-left: 20px;">"Quando dei meus primeiros passos no Brasil em 2017, senti a semelhança entre o sol de Mardin e o sol do Rio. Aquele calor nos olhos das pessoas não muda, por mais longe que seja a distância."</p>
+    <div id="author" class="modal">
+        <button class="close-btn" onclick="closeModal('author')">KAPAT // FECHAR</button>
+        <div class="detail-container" style="text-align: center;">
+            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 250px; height: 250px; border-radius: 50%; border: 10px solid var(--accent); margin-bottom: 30px;">
+            <h1>Ahmet Çınarbaş</h1>
+            <p class="tag" style="margin-top: 20px;">GAZETECİ // JORNALISTA</p>
+            <div class="lang-block" style="margin-top: 40px; text-align: left;">
+                <span class="tr-content" style="font-size: 1.5rem;">2017 yılından bu yana Mardin ve Brezilya arasındaki kültürel bağları belgeleyen, gerçeklerin peşinde bir arşivci.</span>
+                <span class="pt-content">Um arquivista em busca da verdade, documentando os laços culturais entre Mardin e Brasil desde 2017.</span>
+            </div>
         </div>
     </div>
 
     <script>
-        function openModal(id) { 
-            document.getElementById(id).style.display = 'block'; 
-            document.body.style.overflow = 'hidden'; 
-        }
-        function closeModal(id) { 
-            document.getElementById(id).style.display = 'none'; 
-            document.body.style.overflow = 'auto'; 
-        }
+        function openModal(id) { document.getElementById(id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
     </script>
 </body>
 </html>
