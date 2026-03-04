@@ -60,6 +60,8 @@
             .reader-grid { grid-template-columns: 1fr 1px 1fr; gap: 60px; }
             .divider { width: 1px; height: auto; margin: 0; }
             .tr-line, .pt-line { font-size: 3.5rem; }
+            .bento { display: grid; grid-template-columns: repeat(2, 1fr); }
+            .card-author { grid-column: span 2; }
         }
     </style>
 </head>
@@ -101,7 +103,7 @@
                 <div>
                     <span class="tag-dual" style="color: white;">GASTRONOMİ ● SABOR</span>
                     <span class="tr-line">İçli Köfte & Quibe Karşılaştırması</span>
-                    <span class="pt-line">Kibbeh e Quibe</span>
+                    <span class="pt-line">Encontro de Paladares</span>
                 </div>
                 <div class="meta-info" style="color: white; opacity: 0.8;">LEZZET DURAKLARI</div>
             </div>
@@ -110,7 +112,7 @@
                 <div>
                     <span class="tag-dual" style="color: white;">COĞRAFİ KADER ● DESTINO</span>
                     <span class="tr-line">2 Kıta, 2 Şehir, Tek İsim: Sinop</span>
-                    <span class="pt-line">2 Sinops, 1 Nome</span>
+                    <span class="pt-line">Da Turquia para o Brasil</span>
                 </div>
                 <div class="meta-info" style="color: white; opacity: 0.8;">TÜRKİYE & BREZİLYA</div>
             </div>
@@ -119,7 +121,7 @@
                 <div>
                     <span class="tag-dual" style="color: white;">TOPLUM ● SOCIEDADE</span>
                     <span class="tr-line">Halk Benzerlikleri: Ortak Ruh</span>
-                    <span class="pt-line">Semelhanças de Alma</span>
+                    <span class="pt-line">Almas Gêmeas Culturais</span>
                 </div>
                 <div class="meta-info" style="color: white; opacity: 0.8;">SOSYOLOJİK ANALİZ</div>
             </div>
@@ -138,18 +140,48 @@
 
     <script>
         const contentData = {
-            author: { tag: "EDİTÖR NOTU", tr: "Kültürler Arası Köprü", pt: "Ponte Entre Culturas", textTr: "Ahmet Çınarbaş olarak, Mardin ve Brezilya arasındaki o görünmez bağları arşive dönüştürüyorum. Bu journal taşın ve ritmin ortak hikayesidir.", textPt: "Como Ahmet Çınarbaş, arquivo os laços invisíveis entre Mardin e o Brasil. Este journal é a história comum da pedra e do ritmo." },
-            carnaval: { tag: "MAGAZİN / RİO", tr: "Rio Karnavalı'nda Mardin Esintileri", pt: "Influências de Mardin no Rio", textTr: "Rio Karnavalı'nda Mardin telkarisinden ilham alan kostümler podyumdaydı. Mezopotamya'nın geometrik desenleri Samba okullarının görkemli başlıklarına işlendi.", textPt: "No Carnaval do Rio, figurinos inspirados na filigrana de Mardin desfilaram. Designers brasileiros integraram padrões geométicos nos adereços das escolas." },
+            author: { 
+                tag: "EDİTÖR NOTU", 
+                tr: "Kültürler Arası Köprü", 
+                pt: "Ponte Entre Culturas", 
+                textTr: "Ahmet Çınarbaş olarak, Mardin ve Brezilya arasındaki o görünmez bağları arşive dönüştürüyorum. Mezopotamya'nın taş sokaklarından Amazon'un yeşil kalbine uzanan bu yolculuk, insan ruhunun her coğrafyada nasıl benzer ritimlerle attığının kanıtıdır.", 
+                textPt: "Como Ahmet Çınarbaş, arquivo os laços invisíveis entre Mardin e o Brasil. Esta jornada, que vai das ruas de pedra da Mesopotâmia ao coração verde da Amazônia, é a prova de como a alma humana pulsa com ritmos semelhantes em todas as geografias." 
+            },
+            carnaval: { 
+                tag: "MAGAZİN / RİO", 
+                tr: "Rio Karnavalı'nda Mardin Esintileri", 
+                pt: "Influências de Mardin no Rio", 
+                textTr: "<b>Görkemli Buluşma:</b> Rio Karnavalı podyumlarında bu yıl Mardin telkarisinin geometrik zarafeti konuşuldu. Brezilyalı moda tasarımcıları, Mezopotamya'nın binlerce yıllık desenlerini samba okullarının devasa kostüm başlıklarına ve kanatlarına entegre ettiler.<br><br><b>Ritimlerin Kardeşliği:</b> Mardin'in vakur Reyhani dansı ile Brezilya'nın enerjik Sambası, kökeninde aynı topluluk bilincini ve kutlama arzusunu barındırıyor.", 
+                textPt: "<b>Encontro Majestoso:</b> Nas passarelas do Carnaval do Rio, a elegância geométrica da filigrana de Mardin foi o destaque deste ano. Designers brasileiros integraram padrões milenares da Mesopotâmia nos grandiosos adereços de cabeça e alas das escolas de samba.<br><br><b>Irmandade de Ritmos:</b> A solene dança Reyhani de Mardin e o enérgico Samba brasileiro compartilham, em sua essência, a mesma consciência comunitária e desejo de celebração." 
+            },
             craft: { 
                 tag: "ZANAAT ANALİZİ", 
                 tr: "Gümüşün Sabrı ve Doğanın Takısı", 
                 pt: "A Paciência da Prata e o Adorno da Natureza", 
-                textTr: "<b>Mardin Telkarisi:</b> Mezopotamya'nın binlerce yıllık metal işleme dehası olan Telkari, ince gümüş tellerin bir dantel zarafetiyle örülmesidir. Bu sanat sadece bir takı değil, Mardinli ustanın gümüşle girdiği uzun bir sabır yolculuğudur. <br><br> <b>Brezilya Yerli Takıları:</b> Amazon'un derinliklerinden gelen 'Arte Indígena', gümüş yerine doğanın bizzat kendisini kullanır. Açaí tohumları, tropikal kuş tüyleri ve işlenmemiş mineraller, kişinin ormanla ve atalarıyla olan spiritüel bağını temsil eder. Mardin'de maden dile gelirken, Brezilya'da ormanın ruhu takıya dönüşür.", 
-                textPt: "<b>Filigrana de Mardin:</b> Um gênio da metalurgia mesopotâmica com milhares de anos, a Filigrana é a tecelagem de finos fios de prata com a elegância de uma renda. Esta arte não é apenas uma joia, mas uma longa jornada de paciência do mestre de Mardin com a prata. <br><br> <b>Adornos Indígenas do Brasil:</b> Vinda das profundezas da Amazônia, a 'Arte Indígena' utiliza a própria natureza em vez de prata. Sementes de Açaí, penas de pássaros tropicais e minerais brutos representam a conexão espiritual da pessoa com a floresta e seus ancestrais. Enquanto em Mardin o metal fala, no Brasil a alma da floresta se transforma em adorno." 
+                textTr: "<b>Mardin Telkarisi:</b> Gümüş tellerin mikron düzeyinde bükülerek bir dantel gibi işlenmesi sanatı olan Telkari, Mardin'in sabır taşıdır. Her motif, ustanın nefesiyle şekillenir.<br><br><b>Brezilya Yerli Takıları:</b> Amazon yerlilerinin 'Arte Indígena' geleneği, gümüş yerine tohumları ve tüyleri kullanır. Bu takılar sadece süs değil; kişinin doğayla, ruhlarla ve kabile hiyerarşisiyle olan bağını temsil eden yaşayan birer kimliktir.", 
+                textPt: "<b>Filigrana de Mardin:</b> A arte de tecer fios de prata em nível micron como uma renda é a pedra da paciência de Mardin. Cada motivo é moldado pelo fôlego do mestre.<br><br><b>Adornos Indígenas:</b> A tradição da 'Arte Indígena' amazônica utiliza sementes e penas em vez de metal. Estes adornos não são apenas enfeites; são identidades vivas que representam a conexão do indivíduo com a natureza, os espíritos e a hierarquia tribal." 
             },
-            gastronomy: { tag: "GASTRONOMİ", tr: "İçli Köfte & Quibe", pt: "Kibbeh vs Quibe", textTr: "Mardin'in Reyhanlı İçli Köftesi ile Brezilya'nın nane aromalı Quibe'si arasındaki kültürel benzerlik şaşırtıcıdır.", textPt: "A semelhança entre o Kibbeh de Mardin e o Quibe de hortelã do Brasil é uma herança cultural marcante." },
-            sinop: { tag: "COĞRAFYA", tr: "İki Sinop'un Hikayesi", pt: "Duas Sinops", textTr: "Türkiye'nin Karadeniz kıyısındaki Sinop ile Amazon girişindeki Sinop arasındaki şaşırtıcı isim ve doğa birliği.", textPt: "A incrível união de nome e natureza entre a Sinop da Turquia e a Sinop da Amazônia brasileira." },
-            society: { tag: "TOPLUM", tr: "Halk Benzerlikleri", pt: "Semelhanças Populares", textTr: "Geniş aile yapısı, misafirperverlik ve her iki toplumun ruhundaki futbol tutkusu ortak bir karakterdir.", textPt: "Família estendida, hospitalidade e paixão pelo futebol são caracteres comuns a ambos os povos." }
+            gastronomy: { 
+                tag: "GASTRONOMİ", 
+                tr: "İçli Köfte & Quibe", 
+                pt: "Kibbeh vs Quibe", 
+                textTr: "<b>Mutfak Mirası:</b> Mardin'in baharatlı, reyhan kokulu İçli Köftesi ile Brezilya sokaklarının vazgeçilmezi olan Quibe (Kibe) arasındaki benzerlik tesadüf değildir. <br><br><b>Farklar ve Benzerlikler:</b> Mardin'de haşlama veya kızartma tercih edilirken; Brezilya'da içine Catupiry peyniri eklenerek modern bir yorum kazanmıştır. Ancak her ikisi de bulgur ve etin mükemmel uyumunu simgeler.", 
+                textPt: "<b>Herança Culinária:</b> A semelhança entre o Kibbeh temperado de Mardin e o onipresente Quibe das ruas brasileiras não é coincidência.<br><br><b>Diferenças e Semelhanças:</b> Enquanto em Mardin prefere-se cozido ou frito, no Brasil ganhou uma interpretação moderna com recheios como Catupiry. No entanto, ambos simbolizam a harmonia perfeita entre o trigo e a carne." 
+            },
+            sinop: { 
+                tag: "COĞRAFYA", 
+                tr: "İki Sinop'un Hikayesi", 
+                pt: "Duas Sinops", 
+                textTr: "<b>İsim Benzerliğinin Ötesi:</b> Türkiye'nin en kuzey ucu Sinop ile Brezilya'nın Mato Grosso eyaletindeki Sinop arasındaki bağ şaşırtıcıdır. <br><br><b>Doğa Hattı:</b> Biri Karadeniz'in hırçın sularına bakarken, diğeri Amazon ormanlarının giriş kapısıdır. Her iki şehir de kendi coğrafyalarının 'limanı' olma görevini üstlenmiş, su ve yeşilin kader birliğini temsil etmektedir.", 
+                textPt: "<b>Além da Semelhança de Nome:</b> O vínculo entre Sinop, no extremo norte da Turquia, e Sinop, no estado de Mato Grosso, Brasil, é surpreendente.<br><br><b>Linha da Natureza:</b> Enquanto uma olha para as águas revoltas do Mar Negro, a outra é o portal de entrada para a floresta amazônica. Ambas as cidades assumiram o papel de 'porto' em suas geografias." 
+            },
+            society: { 
+                tag: "TOPLUM", 
+                tr: "Halk Benzerlikleri", 
+                pt: "Semelhanças Populares", 
+                textTr: "<b>Sıcak Kanlılık:</b> Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü misafirperverliği aynı kökten beslenir. <br><br><b>Ortak Tutkular:</b> Geniş aile sofraları, yüksek sesli sohbetler ve futbolun bir dinden farksız olan birleştirici gücü, iki toplumu binlerce kilometreye rağmen komşu kılar.", 
+                textPt: "<b>Cordialidade:</b> A tradição do 'Convidado de Deus' em Mardin e a hospitalidade mundialmente famosa do Brasil bebem da mesma fonte.<br><br><b>Paixões Comuns:</b> Mesas de família estendida, conversas animadas e o poder unificador do futebol tornam as duas sociedades vizinhas, apesar dos milhares de quilômetros." 
+            }
         };
 
         function openReader(key) {
