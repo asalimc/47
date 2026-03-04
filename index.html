@@ -3,205 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDIN & BRAZIL | ASC 2026</title>
+    <title>MARDIN & BRAZIL | ASC 2026 GLOBAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,600&family=Montserrat:wght@300;600;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
     <style>
-        :root { --mardin: #D4A373; --brazil: #064E3B; --dark: #121212; --light: #f8f8fa; }
+        :root { --mardin: #D4A373; --brazil: #064E3B; --dark: #0a0a0a; --bg: #f8f8fa; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--light); color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
         /* HEADER */
-        header { padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.03); }
-        .logo { font-family: 'Playfair Display'; font-size: 2.2rem; text-decoration: none; color: inherit; font-weight: 900; letter-spacing: -1px; }
+        header { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .logo { font-family: 'Playfair Display'; font-size: 2rem; text-decoration: none; color: inherit; font-weight: 900; }
         .logo span { color: var(--brazil); }
-        .profile-trigger { display: flex; align-items: center; gap: 12px; background: white; padding: 6px 18px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; border: 1px solid transparent; }
-        .profile-trigger:hover { border-color: var(--mardin); transform: translateY(-2px); }
+        .profile-trigger { display: flex; align-items: center; gap: 12px; background: white; padding: 6px 18px; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .profile-trigger:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
 
         /* GRID SYSTEM */
-        .main-grid { padding: 25px 5%; display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; max-width: 1600px; margin: 0 auto; }
+        .main-container { padding: 25px 5%; display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; max-width: 1600px; margin: 0 auto; }
 
         /* HERO CARD */
-        .hero-card { grid-column: span 8; height: 620px; border-radius: 45px; overflow: hidden; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
-        .hero-card img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 10%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: white; }
-        .badge { background: var(--brazil); color: white; padding: 5px 15px; border-radius: 20px; font-size: 9px; font-weight: 900; letter-spacing: 2px; align-self: flex-start; margin-bottom: 15px; }
+        .hero { grid-column: span 8; height: 600px; border-radius: 45px; overflow: hidden; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.08); }
+        .hero img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: white; }
+        
+        /* SIDE PANEL */
+        .side-stack { grid-column: span 4; display: grid; grid-template-rows: repeat(2, 1fr); gap: 25px; }
+        .card { background: white; border-radius: 35px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center; }
+        .card-tag { font-size: 8px; font-weight: 900; color: var(--mardin); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+        .dual-lang { font-size: 13px; line-height: 1.6; color: #444; }
+        .dual-lang em { display: block; margin-top: 5px; color: #999; font-style: normal; font-size: 11px; }
 
-        /* SIDE STACK */
-        .side-stack { grid-column: span 4; display: flex; flex-direction: column; gap: 25px; }
-        .card { background: white; border-radius: 35px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center; min-height: 220px; }
-        .card-label { font-size: 9px; font-weight: 900; color: var(--mardin); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
-
-        /* VIDEO SECTION */
+        /* VIDEO GRID */
         .video-grid { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 10px; }
-        .v-box { height: 350px; border-radius: 40px; overflow: hidden; position: relative; background: #000; }
-        .v-box video { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-        .v-caption { position: absolute; bottom: 30px; left: 30px; color: white; font-weight: 900; font-size: 11px; letter-spacing: 1px; }
+        .v-box { height: 320px; border-radius: 40px; overflow: hidden; position: relative; background: #000; }
+        .v-box video { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
 
         /* FOOTER */
-        footer { background: white; padding: 80px 5%; margin-top: 60px; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
-        .f-col h4 { font-size: 10px; font-weight: 900; letter-spacing: 2px; color: var(--mardin); margin-bottom: 25px; text-transform: uppercase; }
-        .f-col p { font-size: 13px; color: #777; line-height: 1.8; }
+        footer { grid-column: span 12; background: white; border-radius: 40px; padding: 60px; margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .f-col h4 { font-size: 10px; font-weight: 900; color: var(--mardin); margin-bottom: 20px; letter-spacing: 2px; }
 
-        /* MODAL (YAZAR DETAY) */
-        .modal { position: fixed; inset: 0; background: #fff; z-index: 9999; display: none; overflow-y: auto; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .modal-content { max-width: 900px; margin: 100px auto; padding: 0 5%; }
-        .close-btn { position: fixed; top: 40px; right: 5%; background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 900; font-size: 10px; }
+        /* MODALS */
+        .modal { position: fixed; inset: 0; background: white; z-index: 2000; display: none; overflow-y: auto; padding: 60px 5%; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-inner { max-width: 850px; margin: 0 auto; }
+        .close-btn { position: fixed; top: 40px; right: 5%; background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: 900; }
 
         /* BUTTONS */
-        .btn-speak { background: var(--white); color: var(--dark); border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 900; font-size: 10px; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; width: fit-content; }
-        .btn-speak:hover { background: var(--mardin); color: white; }
+        .btn-action { background: white; color: var(--dark); border: none; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 10px; cursor: pointer; margin-top: 20px; transition: 0.3s; width: fit-content; }
+        .btn-action:hover { background: var(--mardin); color: white; transform: scale(1.05); }
 
-        @media (max-width: 1024px) { .hero-card, .side-stack, .video-grid { grid-column: span 12; } .video-grid { grid-template-columns: 1fr; } footer { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 1024px) { .hero, .side-stack, .video-grid { grid-column: span 12; } footer { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
 
     <header>
         <a href="#" class="logo">MARDIN<span>BRAZIL</span></a>
-        <div class="profile-trigger" onclick="toggleModal(true)">
+        <div class="profile-trigger" onclick="openModal('authorModal')">
             <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:35px; height:35px; border-radius:50%; object-fit:cover;">
-            <span id="txt-profile" style="font-size: 10px; font-weight: 900;"></span>
+            <span style="font-size: 10px; font-weight: 900;">A. ÇINARBAŞ // BIO</span>
         </div>
     </header>
 
-    <main class="main-grid">
-        <div class="hero-card">
+    <main class="main-container">
+        <div class="hero">
             <img src="https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=large">
             <div class="hero-overlay">
-                <span class="badge" id="txt-badge"></span>
-                <h1 id="txt-hero-title" style="font-family:'Playfair Display'; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin-bottom: 20px;"></h1>
-                <button class="btn-speak" onclick="handleTTS()">
-                    <span id="tts-icon">🔊</span> <span id="txt-btn-listen"></span>
-                </button>
+                <span style="background:var(--brazil); color:white; padding:5px 15px; border-radius:20px; font-size:8px; font-weight:900; letter-spacing:2px; margin-bottom:15px;">RÖPORTAJ // ENTREVISTA</span>
+                <h1 style="font-family:'Playfair Display'; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1;">Taşın Hafızası & Ormanın Kalbi <br> <span style="font-size: 1.5rem; opacity: 0.8;">Memória da Pedra e Coração da Floresta</span></h1>
+                <button class="btn-action" onclick="openModal('interviewModal')">DETAYLARI GÖR // VER DETALHES</button>
             </div>
         </div>
 
         <div class="side-stack">
             <div class="card">
-                <span class="card-label" id="txt-news-label"></span>
-                <p id="txt-news-p" style="font-family:'Lora'; font-size: 1.05rem; color: #444;"></p>
+                <span class="card-tag">GÜNCEL // NOTÍCIAS</span>
+                <p class="dual-lang">Dijital köprü 2026'da Mardin'de kuruluyor. <em>A ponte digital será estabelecida em Mardin em 2026.</em></p>
             </div>
-            <div class="card" style="background: var(--brazil); color: white;">
-                <span class="card-label" id="txt-event-label" style="color: rgba(255,255,255,0.6);"></span>
-                <p id="txt-event-p" style="font-size: 1.1rem; font-weight: 600;"></p>
+            <div class="card" style="background:var(--brazil); color:white;">
+                <span class="card-tag" style="color:rgba(255,255,255,0.6);">EVENT // ETKİNLİK</span>
+                <p class="dual-lang" style="color:white;">14 Mart: Mezopotamya Tasarım Zirvesi. <em>14 de Março: Cúpula de Design da Mesopotâmia.</em></p>
             </div>
         </div>
 
         <div class="video-grid">
             <div class="v-box">
-                <span class="v-caption">MARDIN: THE STONE SYMPHONY</span>
                 <video muted loop autoplay playsinline><source src="https://assets.mixkit.co/videos/preview/mixkit-flying-over-a-golden-field-of-wheat-4100-large.mp4" type="video/mp4"></video>
             </div>
             <div class="v-box">
-                <span class="v-caption">AMAZON: THE GREEN HEART</span>
                 <video muted loop autoplay playsinline><source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-401-large.mp4" type="video/mp4"></video>
             </div>
         </div>
+
+        <footer>
+            <div class="f-col">
+                <h4>PLATFORM</h4>
+                <p class="dual-lang">Kültürel Mirasın Geleceği. <em>O Futuro do Patrimônio Cultural.</em></p>
+            </div>
+            <div class="f-col">
+                <h4>CONTACT // İLETİŞİM</h4>
+                <p>info@asc2026.com</p>
+            </div>
+            <div class="f-col">
+                <h4>FOLLOW // TAKİP</h4>
+                <p>@asc2026_global</p>
+            </div>
+            <div class="f-col">
+                <h4>LEGAL // KÜNYE</h4>
+                <p>© 2026 ASC Portal.</p>
+            </div>
+        </footer>
     </main>
 
-    <footer>
-        <div class="f-col">
-            <h4 id="f-1-h"></h4>
-            <p id="f-1-p"></p>
-        </div>
-        <div class="f-col">
-            <h4 id="f-2-h"></h4>
-            <p>Mardin: Artuklu, 47100<br>Rio: Ipanema, 22410</p>
-        </div>
-        <div class="f-col">
-            <h4 id="f-3-h"></h4>
-            <p>Instagram: @asc2026<br>LinkedIn: /ahmetcinarbas</p>
-        </div>
-        <div class="f-col">
-            <h4 id="f-4-h"></h4>
-            <p>© 2026 MARDIN BRAZIL ASC.<br>All rights reserved.</p>
-        </div>
-    </footer>
-
     <div id="authorModal" class="modal">
-        <button class="close-btn" onclick="toggleModal(false)">CLOSE // KAPAT</button>
-        <div class="modal-content">
-            <div style="display: flex; align-items: center; gap: 30px; margin-bottom: 50px;">
-                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border: 5px solid var(--mardin);">
-                <div>
-                    <h2 style="font-family:'Playfair Display'; font-size: 2.5rem;">Ahmet Çınarbaş</h2>
-                    <p style="font-weight: 900; font-size: 10px; letter-spacing: 3px; color: var(--mardin);">KÜRATÖR & YAZAR</p>
+        <button class="close-btn" onclick="closeModal('authorModal')">KAPAT // FECHAR</button>
+        <div class="modal-inner">
+            <div style="text-align: center;">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border: 6px solid var(--mardin); margin-bottom: 30px;">
+                <h2 style="font-family:'Playfair Display'; font-size: 2.5rem;">Ahmet Çınarbaş</h2>
+                <p style="font-weight: 900; letter-spacing: 3px; color: var(--mardin); font-size: 10px; margin-bottom: 30px;">KÜRATÖR & YAZAR // CURADOR E ESCRITOR</p>
+                <div style="font-family:'Lora'; font-size: 1.2rem; line-height: 1.8; color: #555; text-align: justify;">
+                    <p>Mezopotamya'nın binlerce yıllık taş hafızası ile Amazon'un bitmek bilmeyen yaşam enerjisini birleştiren Ahmet Çınarbaş, ASC 2026 projesinin vizyoner lideridir. Mardin ve Brezilya arasındaki bu dijital köprü, insanlığın ortak hafızasına bir saygı duruşudur.</p>
                 </div>
             </div>
-            <div id="txt-full-article" style="font-family:'Lora'; font-size: 1.4rem; line-height: 1.8; color: #333; text-align: justify;">
-                </div>
+        </div>
+    </div>
+
+    <div id="interviewModal" class="modal">
+        <button class="close-btn" onclick="closeModal('interviewModal')">KAPAT // FECHAR</button>
+        <div class="modal-inner">
+            <button class="btn-action" style="background:var(--brazil); color:white; margin-bottom:40px;" onclick="speakArticle()">🔊 SESLİ DİNLE / OUVIR</button>
+            <h1 style="font-family:'Playfair Display'; font-size: 3rem; line-height: 1.1; margin-bottom: 40px;">Taşın Hafızası ve Ormanın Kalbi</h1>
+            
+            <div style="font-family:'Lora'; font-size: 1.4rem; line-height: 1.9; color: #222; text-align: justify;">
+                <p>Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. 2026 yılında bu iki uç noktayı dijital bir köprüyle bağladık. Taşın içindeki matematiksel desenleri, ormanın biyolojik ritmiyle senkronize ettik. Bu sadece bir sergi değil, iki coğrafyanın ruhsal birleşimidir.</p>
+                <br>
+                <p style="color: #888; border-left: 4px solid var(--mardin); padding-left: 20px; font-style: italic;">Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro. Em 2026, conectamos esses dois extremos com uma ponte digital. Sincronizamos os padrões matemáticos dentro da pedra com o ritmo biológico da floresta.</p>
+            </div>
         </div>
     </div>
 
     <script>
-        const langData = {
-            tr: {
-                profile: "AC PORTFOLYO",
-                badge: "ÖZEL RÖPORTAJ",
-                title: "Taşın Hafızası ve Ormanın Kalbi",
-                listen: "DİNLE", stop: "DURDUR",
-                newsL: "GÜNCEL HABERLER", newsP: "Mardin 2026 Arkeoloji Zirvesi için geri sayım başladı. Amazon ve Mezopotamya dijital bir köprüyle birleşiyor.",
-                eventL: "YAKLAŞAN ETKİNLİK", eventP: "14 Mart: Mezopotamya Kodlama ve Tasarım Atölyesi Açılışı.",
-                f1h: "Platform", f1p: "Mardin ve Brezilya arasındaki binlerce yıllık kültürel bağı dijital sanatla yeniden inşa ediyoruz.",
-                f2h: "Lokasyon", f3h: "Sosyal Medya", f4h: "Yasal",
-                article: "Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. 2026 yılında bu iki uç noktayı dijital bir köprüyle bağladık. Taşın içindeki matematiksel desenleri, ormanın biyolojik ritmiyle senkronize ettik. Bu sadece bir sergi değil, iki coğrafyanın ruhsal birleşimidir. Taşın hafızası sabrı, ormanın kalbi ise canlılığı temsil eder."
-            },
-            pt: {
-                profile: "AC PORTFÓLIO",
-                badge: "ENTREVISTA EXCLUSIVA",
-                title: "A Memória da Pedra e o Coração da Floresta",
-                listen: "OUVIR", stop: "PARAR",
-                newsL: "NOTÍCIAS RECENTES", newsP: "A contagem regressiva para a Cúpula de Arqueologia de Mardin 2026 começou. Amazônia e Mesopotâmia se unem.",
-                eventL: "PRÓXIMO EVENTO", eventP: "14 de Março: Abertura do Workshop de Codificação e Design da Mesopotâmia.",
-                f1h: "Plataforma", f1p: "Reconstruímos o vínculo cultural milenar entre Mardin e o Brasil através da arte digital.",
-                f2h: "Localização", f3h: "Redes Sociais", f4h: "Legal",
-                article: "Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro. Em 2026, conectamos esses dois extremos com uma ponte digital. Sincronizamos os padrões matemáticos dentro da pedra com o ritmo biológico da floresta. Isto não é apenas uma exposição, é uma união espiritual."
-            }
-        };
+        // MODAL YÖNETİMİ
+        function openModal(id) { document.getElementById(id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; window.speechSynthesis.cancel(); }
 
-        const currentLang = navigator.language.startsWith('pt') ? 'pt' : 'tr';
-        const d = langData[currentLang];
+        // SMART TTS (DİNLE DENİLDİĞİNDE OTOMATİK DİL ALGILAMA)
+        function speakArticle() {
+            window.speechSynthesis.cancel();
+            const lang = navigator.language.startsWith('pt') ? 'pt-BR' : 'tr-TR';
+            
+            const textTr = "Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. Bu sadece bir sergi değil, iki coğrafyanın ruhsal birleşimidir.";
+            const textPt = "Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro. Esta não é apenas uma exposição, é uma união espiritual.";
 
-        function setupUI() {
-            document.getElementById('txt-profile').innerText = d.profile;
-            document.getElementById('txt-badge').innerText = d.badge;
-            document.getElementById('txt-hero-title').innerText = d.title;
-            document.getElementById('txt-btn-listen').innerText = d.listen;
-            document.getElementById('txt-news-label').innerText = d.newsL;
-            document.getElementById('txt-news-p').innerText = d.newsP;
-            document.getElementById('txt-event-label').innerText = d.eventL;
-            document.getElementById('txt-event-p').innerText = d.eventP;
-            document.getElementById('f-1-h').innerText = d.f1h; document.getElementById('f-1-p').innerText = d.f1p;
-            document.getElementById('f-2-h').innerText = d.f2h; document.getElementById('f-3-h').innerText = d.f3h;
-            document.getElementById('f-4-h').innerText = d.f4h;
-            document.getElementById('txt-full-article').innerText = d.article;
+            const utterance = new SpeechSynthesisUtterance(lang === 'pt-BR' ? textPt : textTr);
+            utterance.lang = lang;
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
         }
-
-        function toggleModal(show) { document.getElementById('authorModal').style.display = show ? 'block' : 'none'; }
-
-        let isReading = false;
-        function handleTTS() {
-            if (isReading) { 
-                window.speechSynthesis.cancel(); isReading = false; 
-                document.getElementById('txt-btn-listen').innerText = d.listen;
-                document.getElementById('tts-icon').innerText = "🔊";
-            } else {
-                const speech = new SpeechSynthesisUtterance(d.article);
-                speech.lang = currentLang === 'pt' ? 'pt-BR' : 'tr-TR';
-                speech.onend = () => { 
-                    isReading = false; 
-                    document.getElementById('txt-btn-listen').innerText = d.listen;
-                    document.getElementById('tts-icon').innerText = "🔊";
-                };
-                window.speechSynthesis.speak(speech);
-                isReading = true;
-                document.getElementById('txt-btn-listen').innerText = d.stop;
-                document.getElementById('tts-icon').innerText = "⏹";
-            }
-        }
-
-        window.onload = setupUI;
     </script>
 </body>
 </html>
