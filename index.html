@@ -42,7 +42,7 @@
 
         /* BENTO GRID */
         .container { max-width: 1400px; margin: 0 auto; padding: 40px 6%; }
-        .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; min-height: 300px; }
+        .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; }
 
         /* CARDS */
         .card {
@@ -111,26 +111,44 @@
     </footer>
 
     <script>
-        let allData = [];
-
-        // 1. VERİLERİ ÇEK
-        async function loadData() {
-            const grid = document.getElementById('bento-grid');
-            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 100px; opacity: 0.5;">İçerikler Hazırlanıyor... ● Carregando...</p>';
-
-            try {
-                // Saniyeler içinde güncellenmesi için cache-busting ekledik (?v=...)
-                const response = await fetch('data.json?v=' + Date.now());
-                if (!response.ok) throw new Error("Dosya bulunamadı");
-                allData = await response.json();
-                renderCards(allData);
-            } catch (error) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red; padding: 100px;">Veri yükleme hatası. Lütfen data.json dosyanızı kontrol edin.</p>';
-                console.error(error);
+        // İÇERİKLER BURADA (Artık json dosyasına gerek yok, buradan ekleme yapabilirsin)
+        const myContent = [
+            {
+                type: "main",
+                region: "Brazil",
+                tag: "Özel Röportaj ● Entrevista Exclusiva",
+                tr: "Ritmin Kökeni: Samba ve Direniş.",
+                pt: "A Origem do Ritmo: Samba e Resistência.",
+                desc: "TAM METNİ OKU ● LER TEXTO COMPLETO →",
+                img: "https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=large",
+                contentTR: "Brezilya sokaklarında Samba bir eğlence değil, toplumsal bir haykırıştır. Mardin'in dar küçelerindeki dengbejler gibi, onlar da acıyı ritme dönüştürür.",
+                contentPT: "Nas ruas do Brasil, o samba não é diversão, é um grito social. Assim como os dengbejs nas vielas estreitas de Mardin, eles transformam a dor em ritmo."
+            },
+            {
+                type: "author",
+                region: "Mardin",
+                name: "Ahmet Çınarbaş",
+                title: "Kültürel Arşivci ● Arquivista Cultural",
+                bio: "Mardin'den Brezilya'ya uzanan 9 yıllık gazetecilik serüveni.",
+                img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg"
+            },
+            {
+                type: "side",
+                region: "Mardin",
+                tag: "Köşe Yazısı ● Crônica",
+                tr: "Taşın Fısıltısı",
+                pt: "Sussurro da Pedra",
+                desc: "Mardin'in sarı kalker taşlarının anlattığı bin yıllık hikaye.",
+                contentTR: "Taşın hafızası vardır. Mardin'in sarı kalker taşlarına dokunduğunuzda, binlerce yıllık bir hikaye anlatır. Rio'nun granit tepeleri de aynı şekilde şehrin karakterini belirler.",
+                contentPT: "A pedra tem memória. Quando você toca nas pedras de calcário amarelo de Mardin, elas contam uma história de milhares de anos. As colinas de granito do Rio determinam o caráter da cidade."
+            },
+            {
+                type: "video",
+                region: "Brazil",
+                url: "https://www.youtube.com/embed/jg2q0hXy85c"
             }
-        }
+        ];
 
-        // 2. KARTLARI OLUŞTUR
         function renderCards(data) {
             const grid = document.getElementById('bento-grid');
             grid.innerHTML = '';
@@ -142,34 +160,13 @@
                 if(item.type === 'main') {
                     card.classList.add('card-main');
                     card.style.background = `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('${item.img}') center/cover`;
-                    card.innerHTML = `
-                        <div>
-                            <span class="tag-dual" style="color:white; border-color:white;">${item.tag}</span>
-                            <span class="tr-line" style="font-size:3.5rem;">${item.tr}</span>
-                            <span class="pt-line" style="color:white; font-size:1.1rem;">${item.pt}</span>
-                        </div>
-                        <div style="font-weight:800; font-size:0.7rem; letter-spacing:2px; color:white;">${item.desc}</div>
-                    `;
+                    card.innerHTML = `<div><span class="tag-dual" style="color:white;">${item.tag}</span><span class="tr-line" style="font-size:3.2rem;">${item.tr}</span><span class="pt-line" style="color:white;">${item.pt}</span></div><div style="font-weight:800; font-size:0.7rem; color:white;">${item.desc}</div>`;
                 } else if(item.type === 'author') {
                     card.classList.add('card-author');
-                    card.innerHTML = `
-                        <img src="${item.img}" class="author-img">
-                        <span class="tr-line" style="font-size:1.8rem;">${item.name}</span>
-                        <span class="pt-line">${item.title}</span>
-                        <p style="font-size:0.8rem; margin:20px 0; opacity:0.7;">${item.bio}</p>
-                        <div style="font-size:0.7rem; font-weight:900; background:var(--ink); color:white; padding:12px 25px; border-radius:100px;">PORTFOLYO</div>
-                    `;
+                    card.innerHTML = `<img src="${item.img}" class="author-img"><span class="tr-line" style="font-size:1.8rem;">${item.name}</span><span class="pt-line">${item.title}</span><p style="font-size:0.8rem; margin:20px 0; opacity:0.7;">${item.bio}</p><div style="font-size:0.7rem; font-weight:900; background:var(--ink); color:white; padding:12px 25px; border-radius:100px;">PORTFOLYO</div>`;
                 } else if(item.type === 'side') {
                     card.classList.add('card-side');
-                    card.innerHTML = `
-                        <div>
-                            <span class="tag-dual">${item.tag}</span>
-                            <span class="tr-line">${item.tr}</span>
-                            <span class="pt-line">${item.pt}</span>
-                            <p style="font-size:0.8rem; opacity:0.6; margin-top:15px;">${item.desc}</p>
-                        </div>
-                        <span style="font-size:0.6rem; font-weight:800; opacity:0.4;">2026 ARCHIVE</span>
-                    `;
+                    card.innerHTML = `<div><span class="tag-dual">${item.tag}</span><span class="tr-line">${item.tr}</span><span class="pt-line">${item.pt}</span><p style="font-size:0.8rem; opacity:0.6; margin-top:15px;">${item.desc}</p></div><span style="font-size:0.6rem; font-weight:800; opacity:0.4;">2026 ARCHIVE</span>`;
                 } else if(item.type === 'video') {
                     card.classList.add('card-video');
                     card.innerHTML = `<iframe src="${item.url}" style="width:100%; height:100%; border:none;"></iframe>`;
@@ -180,44 +177,19 @@
             });
         }
 
-        // 3. FİLTRELEME SİSTEMİ
         function filterData(region) {
             document.querySelectorAll('.nav-filters button').forEach(b => b.classList.remove('active'));
-            const btn = document.getElementById('btn-' + region);
-            if(btn) btn.classList.add('active');
-
-            const filtered = region === 'all' ? allData : allData.filter(d => d.region === region);
+            document.getElementById('btn-' + region).classList.add('active');
+            const filtered = region === 'all' ? myContent : myContent.filter(d => d.region === region);
             renderCards(filtered);
         }
 
-        // 4. OKUMA MODALI
         function openR(item) {
             const modal = document.getElementById('reader-modal');
             const content = document.getElementById('reader-content');
-
-            if(item.type === 'author') {
-                content.innerHTML = `
-                    <div style="text-align:center; margin-bottom:50px;">
-                        <img src="${item.img}" style="width:180px; height:180px; border-radius:50%; border:8px solid white; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-                        <h1 style="font-family:'Bodoni Moda'; font-size:3.5rem; margin-top:20px;">${item.name}</h1>
-                    </div>
-                    <div class="reader-grid">
-                        <div class="reader-tr">${item.bio}</div>
-                        <div class="reader-pt">Traduzindo a alma entre Mardin e Brasil.</div>
-                    </div>`;
-            } else {
-                content.innerHTML = `
-                    <div class="reader-grid">
-                        <div>
-                            <span class="tag-dual">${item.tag}</span>
-                            <div class="reader-tr">${item.contentTR || item.tr}</div>
-                        </div>
-                        <div>
-                            <span class="tag-dual">Versão em Português</span>
-                            <div class="reader-pt">${item.contentPT || item.pt}</div>
-                        </div>
-                    </div>`;
-            }
+            content.innerHTML = item.type === 'author' ? 
+                `<div style="text-align:center;"><img src="${item.img}" style="width:180px; border-radius:50%; border:8px solid white;"><h1 style="font-family:'Bodoni Moda'; font-size:3rem; margin-top:20px;">${item.name}</h1><div class="reader-grid" style="margin-top:40px;"><div class="reader-tr">${item.bio}</div><div class="reader-pt">Traduzindo a alma entre Mardin e Brasil.</div></div></div>` :
+                `<div class="reader-grid"><div><span class="tag-dual">${item.tag}</span><div class="reader-tr">${item.contentTR || item.tr}</div></div><div><span class="tag-dual">Versão em Português</span><div class="reader-pt">${item.contentPT || item.pt}</div></div></div>`;
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
@@ -227,7 +199,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        window.onload = loadData;
+        window.onload = () => renderCards(myContent);
     </script>
 </body>
 </html>
