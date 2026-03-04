@@ -13,11 +13,10 @@
             --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* --- 4. CUSTOM SCROLLBAR --- */
+        /* CUSTOM SCROLLBAR */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #8e7146; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.6; }
@@ -62,12 +61,19 @@
         .tag-dual { font-size: 0.75rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
         .entry-no { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; opacity: 0.5; margin-top: 25px; text-transform: uppercase; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; width: fit-content; }
 
+        /* MODAL & READER */
         #reader-modal { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding: 100px 6% 60px; }
         .reader-header { text-align: center; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 50px; }
+        .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 50px; position: relative; }
         
-        /* --- 3. TİPOGRAFİK HİYERARŞİ & DROP CAP --- */
-        .reader-text { font-size: 1.25rem; line-height: 1.9; color: #2D2D2D; font-weight: 400; text-align: justify; text-justify: inter-word; }
+        /* 3. DINAMIK DIL ODAKLAMASI */
+        .reader-text { 
+            font-size: 1.25rem; line-height: 1.9; color: #2D2D2D; font-weight: 400; text-align: justify; 
+            transition: opacity 0.4s ease, filter 0.4s ease;
+        }
+        .reader-grid:has(.text-tr:hover) .text-pt { opacity: 0.3; filter: blur(1px); }
+        .reader-grid:has(.text-pt:hover) .text-tr { opacity: 0.3; filter: blur(1px); }
+
         .reader-text::first-letter {
             float: left; font-family: 'Bodoni Moda', serif; font-size: 4.5rem; line-height: 1; font-weight: 900;
             padding-right: 12px; color: var(--accent);
@@ -75,6 +81,15 @@
         .reader-text b { color: var(--ink); display: block; margin-top: 25px; font-weight: 800; font-size: 1.4rem; font-family: 'Bodoni Moda', serif; }
         
         .divider { width: 100%; height: 1px; background: rgba(176,141,87,0.2); margin: 20px 0; }
+
+        /* 1. DIGITAL STAMP */
+        .cultural-stamp {
+            position: fixed; bottom: 40px; right: 40px; width: 120px; height: 120px;
+            background: url('https://cdn-icons-png.flaticon.com/512/3938/3938163.png'); /* Örnek mühür ikonu */
+            background-size: contain; opacity: 0.15; z-index: 10002; pointer-events: none;
+            animation: rotateStamp 20s linear infinite; mix-blend-mode: multiply; display: none;
+        }
+        @keyframes rotateStamp { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .share-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(0,0,0,0.08); }
         .share-btn { background: var(--white); border: 1px solid rgba(0,0,0,0.1); padding: 12px 25px; border-radius: 50px; font-size: 0.75rem; font-weight: 800; cursor: pointer; color: var(--ink); text-decoration: none; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
@@ -91,6 +106,7 @@
 <body>
 
     <div id="progress-container"><div id="progress-bar"></div></div>
+    <div id="digital-stamp" class="cultural-stamp"></div>
 
     <header>
         <a href="#" class="logo-box"><div class="logo-m">MB</div><div class="logo-text">MARDIN<br>BRAZIL</div></a>
@@ -128,7 +144,7 @@
                     <div class="entry-no">JOURNAL ENTRY #002</div>
                 </div>
             </div>
-
+            
             <div class="card" onclick="openReader('gastronomy')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
@@ -169,32 +185,43 @@
         const contentData = {
             author: { 
                 tag: "KÜRASYON FELSEFESİ ● MANIFESTO", tr: "Sabrın ve Akışın Arşivcisi", pt: "O Arquivista da Paciência e do Fluxo", 
-                textTr: `Manifesto: Coğrafyaların Duygusal Ticareti<br>Mardin’in "sabrı" ile Brezilya’nın "akışını" (o jeito) birleştirmek, benim için sadece bir yazı dizisi değil, bir varoluş biçimidir. Mardin’de zaman, taşların üzerine işlenen telkari gibi ağır, vakur ve derindir. Brezilya’da ise zaman, Amazon’un suları veya bir samba ritmi gibi sürekli bir akış, bir kutlama halidir. Bu iki zıt ama tamamlayıcı kutbu bir araya getirerek, insan ruhunun evrensel haritasını çıkarıyorum.<br><br>Kültürel farklılıklar bizi ayıran duvarlar değil, birbirimizi tanımamızı sağlayan pencerelerdir. Mardin’in dar sokaklarındaki mırra kokusuyla, Rio’nun plajlarındaki o özgür ruhu aynı cümle içinde kurabilmek, dünyayı daha yaşanabilir kılan bir "duygusal ticaret" başlatmaktır.`, 
-                textPt: `Manifesto: O Intercâmbio Emocional das Geografias<br>Unir a "paciência" de Mardin com o "fluxo" (o jeitinho) do Brasil não é apenas uma série de artigos para mim, é um modo de existência. Em Mardin, o tempo é pesado, solene e profundo como a filigrana esculpida nas pedras. No Brasil, o tempo é um fluxo constante, uma celebração, como as águas da Amazônia ou o ritmo de um samba. Ao unir estes dois polos opostos mas complementares, mapeio a alma humana universal.<br><br>As diferenças culturais não são muros que nos separam, mas janelas que nos permitem nos conhecer. Poder sentir o aroma do mofra nas ruas estreitas de Mardin e o espírito livre das praias do Rio na mesma frase é iniciar um "intercâmbio emocional" que torna o mundo mais habitável.` 
+                textTr: `Kadim Mardin’in taş sessizliği ile Amazon’un gürültülü yeşili arasında kurduğum bu köprü, sadece bir mesafe değil, bir ruh yolculuğudur. Ben Ahmet Çınarbaş; telkari ustasının gümüş teldeki sabrını, Sambodrom’un terli neşesiyle harmanlayan bir kültürel küratörüm. Yazılarımda, Karadeniz’in hırçın limanı Sinop’un, Mato Grosso’nun içlerindeki adaşıyla nasıl fısıldaştığını; Mezopotamya’nın baharatlı İçli Köftesi’nin Brezilya sokaklarında 'Quibe'ye dönüşürken neleri koruduğunu anlatıyorum.<br><br>Bu "Journal", bir gurbet hikayesi değil, bir "ev bulma" çabasıdır. Mardin’in dar küçelerinde mırra yudumlayan bir zihinle, Rio’nun nemli sıcağında cafezinho içen bir kalbin aynı ritimde atabileceğine inanıyorum. Her yazı, bu iki coğrafyanın birbirine sunduğu sessiz bir hediyedir.`, 
+                textPt: `A ponte que construí entre o silêncio de pedra da antiga Mardin e o verde barulhento da Amazônia não é apenas uma distância, mas uma jornada da alma. Sou Ahmet Çınarbaş; um curador cultural que mescla a paciência do mestre da filigrana no fio de prata com a alegria suada do Sambódromo. Em meus escritos, conto como o porto rebelde de Sinop, no Mar Negro, sussurra para seu homônimo no interior de Mato Grosso; e o que o Kibbeh temperado da Mesopotâmia preservou ao se transformar em 'Quibe' nas ruas do Brasil.<br><br>Este "Journal" não é uma história de exílio, mas um esforço para "encontrar um lar". Acredito que uma mente que toma mofra nas ruelas de Mardin e um coração que toma cafezinho no calor úmido do Rio podem bater no mesmo ritmo. Cada artigo é um presente silencioso que essas duas geografias oferecem uma à outra.` 
             },
-            carnaval: { tag: "MAGAZİN / RİO", tr: "Rio Karnavalı'nda Mardin Rüzgarı", pt: "Influências de Mardin no Rio", textTr: "Görkemli Buluşma: Rio de Janeiro'nun ünlü Sapucaí podyumlarında bu yıl Mardin'in telkari sanatının geometrik estetiği yankılandı. Brezilyalı moda küratörleri, Mezopotamya'nın binlerce yıllık gümüş işleme motiflerini, devasa kostüm başlıklarına ve kanat tasarımlarına entegre ederek kültürel bir füzyon yarattılar.<br><br><b>Ritimlerin Kardeşliği:</b> Mardin'in ağırbaşlı Reyhani dansı ile Brezilya'nın yerinde duramayan Sambası, aslında aynı topluluk bilincinden ve yaşamı kutlama arzusundan besleniyor.", textPt: "Encontro Majestoso: Nas famosas passarelas da Sapucaí, ecoou este ano a estética geométrica da filigrana de Mardin. Curadores de moda brasileiros integraram padrões milenares da Mesopotâmia em grandiosos adereços, criando uma fusão cultural única.<br><br><b>Irmandade de Ritmos:</b> A solene dança Reyhani e o enérgico Samba compartilham a mesma essência de celebração comunitária." },
-            craft: { tag: "ZANAAT ANALİZİ", tr: "Gümüşün Sabrı ve Doğanın Takısı", pt: "A Paciência da Prata e o Adorno da Natureza", textTr: "Mardin Telkarisi: Gümüş tellerin mikron düzeyinde inceltilip sabırla bükülmesiyle oluşan bu sanat, Mardin'in karakterini yansıtır. Her bir motif, bir ustanın ömründen süzülen sessiz bir hikayedir.<br><br><b>Brezilya Yerli Takıları:</b> Amazon'un kalbinde, yerli halklar metali değil doğayı işler. Tohumlar, renkli kuş tüyleri ve bitki lifleri, sadece birer süs değil; kişinin doğayla olan ruhsal kontratını simgeleyen yaşayan kimliklerdir.", textPt: "Filigrana de Mardin: A arte de tecer fios de prata em nível mícron reflete o caráter de Mardin. Cada motivo é uma história silenciosa moldada pela paciência.<br><br><b>Adornos Indígenas:</b> No coração da Amazônia, os povos indígenas trabalham a natureza, não o metal. Sementes e penas não são apenas adornos, mas identidades que simbolizam o contrato espiritual com a floresta." },
-            gastronomy: { tag: "MUTFAK KÜLTÜRÜ", tr: "İçli Köfte & Quibe Karşılaştırması", pt: "Kibbeh vs Quibe", textTr: "Mutfak Mirası: Mardin'un baharatlı, reyhan dokunuşlu İçli Köftesi (Irok) ile Brezilya'nın her köşe başında bulabileceğiniz Quibe'si (Kibe) arasındaki benzerlik büyüleyicidir. Ortadoğu'dan Brezilya'ya göç eden bu lezzet, yeni dünyada kendine has bir kimlik bulmuştur.<br><br><b>Farklı Yorumlar:</b> Mardin'de haşlama ve kızartma teknikleri geleneksel yapıyı korurken; Brezilya'da içine 'Catupiry' peyniri eklenen modern versiyonlar popülerlik kazanmıştır.", textPt: "Herança Culinária: A semelhança entre o Kibbeh temperado de Mardin e o onipresente Quibe brasileiro é fascinante. Esta iguaria, que migrou do Oriente Médio, encontrou uma identidade própria no Brasil.<br><br><b>Interpretações:</b> Enquanto em Mardin as técnicas tradicionais predominam, no Brasil versões modernas com queijo Catupiry tornaram-se extremamente populares." },
-            sinop: { tag: "COĞRAFİ KADER", tr: "İki Sinop'un Hikayesi", pt: "Duas Sinops", textTr: "İsim Benzerliğinin Ötesi: Türkiye'nin en kuzeyindeki Sinop ile Brezilya'nın Mato Grosso eyaletindeki Sinop arasındaki bağ sadece isimden ibaret değildir. Her iki şehir de kendi coğrafyalarının 'limanı' olma misyonunu taşır.<br><br><b>Su ve Yeşil:</b> Biri Karadeniz'in hırçın sularına set çekerken, diğeri Amazon ormanlarının derinliklerine açılan yeşil bir kapıdır. Her iki şehir de doğanın insan yerleşimiyle kurduğu zorlu ama huzurlu dengeyi temsil eder.", textPt: "Além do Nome: O vínculo entre a Sinop turca e a Sinop no Mato Grosso vai além do nome. Ambas as cidades funcionam como 'portos' em suas geografias.<br><br><b>Água e Verde:</b> Enquanto uma enfrenta as águas do Mar Negro, a outra é o portal para as profundezas da Amazônia, representando o equilíbrio entre homem e natureza." },
-            society: { tag: "SOSYOLOJİK ANALİZ", tr: "Halk Benzerlikleri: Ortak Ruh", pt: "Almas Gêmeas Culturais", textTr: "Sıcak Kanlılık: Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü misafirperverliği (Cordialidade) aynı kökten beslenir. İki kültürde de yabancı, içeriye davet edilen bir dosttur.<br><br><b>Ortak Tutkular:</b> Bitmek bilmeyen geniş aile sofraları, yüksek sesli ve kahkahalı sohbetler, müziğin gündelik hayatın ayrılmaz bir parçası olması... Bu ortak paydalar, Mardin ve Brezilya'yı binlerce kilometreye rağmen gönül komşusu yapar.", textPt: "Cordialidade: A tradição do 'Convidado de Deus' em Mardin e a hospitalidade brasileira bebem da mesma fonte. Em ambas as culturas, o estranho é um amigo a ser convidado para entrar.<br><br><b>Paixões Comuns:</b> Longas mesas familiares, conversas animadas e a música como parte da vida tornam Mardin e Brasil vizinhos de alma, apesar da distância." }
+            carnaval: { tag: "MAGAZİN / RİO", tr: "Rio Karnavalı'nda Mardin Rüzgarı", pt: "Vento de Mardin no Rio", textTr: "Görkemli Buluşma: Rio de Janeiro'nun ünlü Sapucaí podyumlarında bu yıl Mardin'in telkari sanatının geometrik estetiği yankılandı...", textPt: "Encontro Majestoso: Nas famosas passarelas da Sapucaí, ecoou este ano a estética geométrica da filigrana de Mardin..." },
+            craft: { tag: "ZANAAT ANALİZİ", tr: "Gümüşün Sabrı ve Doğanın Takısı", pt: "A Paciência da Prata", textTr: "Mardin Telkarisi: Gümüş tellerin mikron düzeyinde inceltilip sabırla bükülmesiyle oluşan bu sanat, Mardin'in karakterini yansıtır...", textPt: "Filigrana de Mardin: A arte de tecer fios de prata em nível mícron reflete o caráter de Mardin..." },
+            gastronomy: { tag: "MUTFAK KÜLTÜRÜ", tr: "İçli Köfte & Quibe Karşılaştırması", pt: "Kibbeh vs Quibe", textTr: "Mutfak Mirası: Mardin'un baharatlı, reyhan dokunuşlu İçli Köftesi (Irok) ile Brezilya'nın her köşe başında bulabileceğiniz Quibe'si...", textPt: "Herança Culinária: A semelhança entre o Kibbeh temperado de Mardin e o onipresente Quibe brasileiro é fascinante..." },
+            sinop: { tag: "COĞRAFİ KADER", tr: "İki Sinop'un Hikayesi", pt: "Duas Sinops", textTr: "İsim Benzerliğinin Ötesi: Türkiye'nin en kuzeyindeki Sinop ile Brezilya'nın Mato Grosso eyaletindeki Sinop arasındaki bağ...", textPt: "Além do Nome: O vínculo entre a Sinop turca e a Sinop no Mato Grosso vai além do nome..." },
+            society: { tag: "SOSYOLOJİK ANALİZ", tr: "Halk Benzerlikleri: Ortak Ruh", pt: "Almas Gêmeas Culturais", textTr: "Sıcak Kanlılık: Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü misafirperverliği aynı kökten beslenir...", textPt: "Cordialidade: A tradição do 'Convidado de Deus' em Mardin e a hospitalidade brasileira bebem da mesma fonte..." }
         };
 
         function openReader(key) {
             const item = contentData[key]; if(!item) return;
             const modal = document.getElementById('reader-modal');
             const content = document.getElementById('reader-content');
-            const currentUrl = window.location.href;
-            const shareText = encodeURIComponent(`Ahmet Çınarbaş Journal: ${item.tr}`);
+            const stamp = document.getElementById('digital-stamp');
             content.innerHTML = `
-                <div class="reader-header"><span class="tag-dual">${item.tag}</span><h1 class="tr-line" style="color:var(--ink)">${item.tr}</h1><h2 class="pt-line" style="color:var(--ink)">${item.pt}</h2></div>
-                <div class="reader-grid"><div class="reader-text">${item.textTr}</div><div class="divider"></div><div class="reader-text">${item.textPt}</div></div>
+                <div class="reader-header"><span class="tag-dual">${item.tag}</span><h1 class="tr-line">${item.tr}</h1><h2 class="pt-line">${item.pt}</h2></div>
+                <div class="reader-grid">
+                    <div class="reader-text text-tr">${item.textTr}</div>
+                    <div class="divider"></div>
+                    <div class="reader-text text-pt">${item.textPt}</div>
+                </div>
                 <div class="share-bar">
-                    <a href="https://wa.me/?text=${shareText}%20${currentUrl}" target="_blank" class="share-btn">WHATSAPP</a>
-                    <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${currentUrl}" target="_blank" class="share-btn">X / TWITTER</a>
                     <button onclick="copyLink()" class="share-btn">BAĞLANTIYI KOPYALA</button>
                 </div>`;
-            modal.style.display = 'block'; document.getElementById('progress-container').style.display = 'block';
-            document.body.style.overflow = 'hidden'; modal.scrollTop = 0;
+            modal.style.display = 'block'; 
+            stamp.style.display = 'block';
+            document.getElementById('progress-container').style.display = 'block';
+            document.body.style.overflow = 'hidden'; 
+            modal.scrollTop = 0;
+        }
+
+        function closeReader() { 
+            document.getElementById('reader-modal').style.display = 'none'; 
+            document.getElementById('digital-stamp').style.display = 'none';
+            document.getElementById('progress-container').style.display = 'none'; 
+            document.body.style.overflow = 'auto'; 
         }
 
         function updateProgress() {
@@ -204,8 +231,8 @@
         }
 
         function copyLink() { navigator.clipboard.writeText(window.location.href); alert("Bağlantı kopyalandı!"); }
-        function closeReader() { document.getElementById('reader-modal').style.display = 'none'; document.getElementById('progress-container').style.display = 'none'; document.body.style.overflow = 'auto'; }
         
+        // MOUSE PARALLAX
         if (window.innerWidth > 1024) {
             document.addEventListener('mousemove', (e) => {
                 const cards = document.querySelectorAll('.card');
@@ -217,7 +244,6 @@
                 });
             });
         }
-        window.onclick = function(event) { if (event.target == document.getElementById('reader-modal')) closeReader(); };
     </script>
 </body>
 </html>
