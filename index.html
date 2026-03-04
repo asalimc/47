@@ -9,9 +9,9 @@
     {
       "@context": "https://schema.org",
       "@type": "NewsArticle",
-      "headline": "Mardin Telkari ve Brezilya Yerli Takıları Karşılaştırması",
+      "headline": "Mardin ve Brezilya Kültür Hattı",
       "author": { "@type": "Person", "name": "Ahmet Çınarbaş" },
-      "description": "Gümüşün sabrı ve doğanın takısı: Mardin ve Brezilya zanaat kültürleri üzerine görsel bir inceleme."
+      "description": "Mardin'den Rio Karnavalı'na, Telkari'den Sinop benzerliğine kadar uzanan kapsamlı bir kültürel arşiv."
     }
     </script>
 
@@ -62,10 +62,10 @@
         
         .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; }
         
-        footer { padding: 80px 6%; text-align: center; border-top: 1px solid #eee; }
+        footer { padding: 80px 6%; text-align: center; border-top: 1px solid #eee; margin-top: 40px;}
         .footer-bottom { font-size: 0.7rem; font-weight: 800; opacity: 0.4; letter-spacing: 2px; }
 
-        @media (max-width: 1000px) { .reader-grid { grid-template-columns: 1fr; } .divider { display: none; } }
+        @media (max-width: 1000px) { .reader-grid { grid-template-columns: 1fr; } .divider { display: none; } .tr-line, .pt-line { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
@@ -84,22 +84,31 @@
                 <div class="meta-info">EDİTÖR ● JOURNAL</div>
             </div>
 
+            <div class="card" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000') center/cover; color: white;" onclick="openReader('carnaval')">
+                <div>
+                    <span class="tag-dual" style="color: white;">MAGAZİN ● CELEBRIDADE</span>
+                    <span class="tr-line">Rio Karnavalı'nda Mardin Rüzgarı</span>
+                    <span class="pt-line">Vento de Mardin no Carnaval do Rio</span>
+                </div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">ÖZEL HABER ● 4 DK OKUMA</div>
+            </div>
+
             <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1000') center/cover; color: white;" onclick="openReader('craft_visual')">
                 <div>
                     <span class="tag-dual" style="color: white;">ZANAATIN RUHU ● ARTESANATO</span>
                     <span class="tr-line">Gümüşün Sabrı & Doğanın Takısı</span>
                     <span class="pt-line">Filigrana de Prata e Adornos Indígenas</span>
                 </div>
-                <div class="meta-info" style="color: white; opacity: 0.8;">GÖRSEL ANALİZ ● 5 DK OKUMA</div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">GÖRSEL ANALİZ ● 5 DK</div>
             </div>
 
             <div class="card" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000') center/cover; color: white;" onclick="openReader('gastronomy')">
                 <div>
                     <span class="tag-dual" style="color: white;">LEZZET DURAKLARI</span>
                     <span class="tr-line">İçli Köfte & Quibe Karşılaştırması</span>
-                    <span class="pt-line">Kibbeh vs Quibe</span>
+                    <span class="pt-line">Encontro de Sabores</span>
                 </div>
-                <div class="meta-info" style="color: white; opacity: 0.8;">GASTRONOMİ</div>
+                <div class="meta-info" style="color: white; opacity: 0.8;">GASTRONOMİ ANALİZİ</div>
             </div>
 
             <div class="card" style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1000') center/cover; color: white;" onclick="openReader('sinop')">
@@ -115,7 +124,7 @@
                 <div>
                     <span class="tag-dual" style="color: white;">HALK BENZERLİKLERİ</span>
                     <span class="tr-line">Ortak Ruh: Mardin & Brasil</span>
-                    <span class="pt-line">Alma Comum</span>
+                    <span class="pt-line">Semelhanças Populares</span>
                 </div>
                 <div class="meta-info" style="color: white; opacity: 0.8;">SOSYOLOJİK ANALİZ</div>
             </div>
@@ -134,24 +143,48 @@
 
     <script>
         const contentData = {
+            author: { tag: "EDİTÖR NOTU", tr: "Kültürler Arası Köprü", pt: "Ponte Entre Culturas", textTr: "Ahmet Çınarbaş olarak, Mardin ve Brezilya arasındaki görünmez bağları arşive dönüştürüyorum.", textPt: "Como Ahmet Çınarbaş, transformo em arquivo os laços invisíveis entre Mardin e o Brasil." },
+            
+            carnaval: {
+                tag: "MAGAZİN / RİO",
+                tr: "Rio Karnavalı'nda Mardin Esintileri",
+                pt: "Influências de Mardin no Carnaval do Rio",
+                textTr: "<b>Kültürel Füzyon:</b> Dünyanın en büyük şovu olan Rio Karnavalı'nda, bu yıl Mardin telkarisinden ilham alan kostümler podyumdaydı. Brezilyalı tasarımcılar, Mezopotamya'nın geometrik desenlerini Samba okullarının görkemli başlıklarına işlediler.<br><br><b>Ortak Coşku:</b> Mardin'in Reyhani dansındaki vakar ile Samba'nın enerjisi, Rio sokaklarında binlerce kişiyi aynı ritimde buluşturdu.",
+                textPt: "<b>Fusão Cultural:</b> No maior show da Terra, o Carnaval do Rio, desfilaram este ano figurinos inspirados na filigrana de Mardin. Designers brasileiros integraram padrões geométricos mesopotâmicos nos grandiosos adereços das escolas de samba.<br><br><b>Entusiasmo Comum:</b> A solenidade da dança Reyhani de Mardin e a energia do Samba uniram milhares de pessoas nas ruas do Rio sob o mesmo ritmo."
+            },
+
             craft_visual: {
-                tag: "GÖRSEL KARŞILAŞTIRMA",
+                tag: "GÖRSEL ANALİZ",
                 tr: "Zanaatın İki Yüzü",
                 pt: "As Duas Faces do Artesanato",
-                textTr: ` <b>Mardin Telkarisi:</b> Sabırla bükülen gümüş tellerin hikayesi. Her kıvrım, Mezopotamya'nın binlerce yıllık metal işleme dehasını yansıtır.<br><br> <b>Brezilya Yerli Takıları:</b> Doğanın sunduğu Açaí tohumları ve Amazon kuşlarının renkli tüyleriyle kurulan spiritüel bağ. Gümüşün yerini ormanın ham enerjisi alır.`,
-                textPt: ` <b>Filigrana de Mardin:</b> A história dos fios de prata dobrados com paciência. Cada curva reflete o gênio milenar da Mesopotâmia.<br><br> <b>Adornos Indígenas:</b> Uma conexão espiritual feita com sementes de Açaí e penas coloridas da Amazônia. A energia bruta da floresta substitui a prata.`
+                textTr: ` <b>Gümüşün Sabrı:</b> Mardin Telkarisi, gümüş tellerin bir dantel gibi örülmesiyle sabrın sembolüdür.<br><br> <b>Doğanın Ham Gücü:</b> Brezilya yerli takıları, ormanın sunduğu ham materyallerle hayat bulur.`,
+                textPt: ` <b>A Paciência da Prata:</b> A Filigrana de Mardin é o símbolo da paciência tecida em fios de prata.<br><br> <b>A Força Bruta da Natureza:</b> Adornos indígenas ganham vida com materiais crus da floresta.`
             },
-            author: { tag: "EDİTÖR", tr: "Kültürel Köprüler", pt: "Pontes Culturais", textTr: "Mardin ve Brezilya'nın gizli bağlarını keşfedin.", textPt: "Descubra os laços ocultos entre Mardin e o Brasil." },
-            gastronomy: { tag: "GASTRONOMİ", tr: "İçli Köfte & Quibe", pt: "Kibbeh vs Quibe", textTr: "Mardin'in Reyhan'ı ile Brezilya'nın Nane'si arasındaki lezzet köprüsü.", textPt: "A ponte de sabores entre o Manjericão de Mardin e a Hortelã do Brasil." },
-            sinop: { tag: "COĞRAFYA", tr: "Sinop Bağlantısı", pt: "Conexão Sinop", textTr: "Türkiye'nin Karadeniz kıyısından Brezilya'nın Amazon kapısına.", textPt: "Da costa do Mar Negro na Turquia ao portal da Amazônia no Brasil." },
-            society: { tag: "TOPLUM", tr: "Ortak Ruh", pt: "Alma Comum", textTr: "Geniş aile yapısı ve sıcak misafirperverlik.", textPt: "Estrutura familiar estendida e hospitalidade calorosa." }
+
+            gastronomy: { 
+                tag: "GASTRONOMİ", tr: "İçli Köfte & Quibe", pt: "Kibbeh vs Quibe", 
+                textTr: "Mardin'in Reyhanlı İçli Köftesi ile Brezilya'nın nane aromalı Quibe'si arasındaki şaşırtıcı lezzet benzerliği.", 
+                textPt: "A surpreendente semelhança de sabor entre o Kibbeh temperado com manjericão de Mardin e o Quibe de hortelã do Brasil." 
+            },
+
+            sinop: {
+                tag: "COĞRAFYANIN KADERİ", tr: "İki Sinop'un Hikayesi", pt: "A História das Duas Sinops",
+                textTr: "Karadeniz'in hırçın sularındaki Sinop ile Amazon'un derinliklerindeki Sinop arasındaki isim ve doğa birliği.",
+                textPt: "A união de nome e natureza entre Sinop, nas águas do Mar Negro, e Sinop, nas profundezas da Amazônia."
+            },
+
+            society: {
+                tag: "SOSYOLOJİK ANALİZ", tr: "Halk Benzerlikleri", pt: "Semelhanças Populares",
+                textTr: "Geniş aile bağları, misafirperverlik ve her iki toplumun da ruhundaki futbol tutkusu.",
+                textPt: "Laços de família estendida, hospitalidade e a paixão pelo futebol na alma de ambos os povos."
+            }
         };
 
         function openReader(key) {
             const item = contentData[key];
             const content = document.getElementById('reader-content');
             
-            // Görsel taglerini gerçek HTML img taglerine dönüştürme simülasyonu
+            // Görsel taglerini işleme
             let textTrClean = item.textTr.replace(/\/g, '<img src="https://images.unsplash.com/photo-1610332850381-893081014844?q=80&w=800" class="reader-img" alt="$1">');
             let textPtClean = item.textPt.replace(/\/g, '<img src="https://images.unsplash.com/photo-1511208687438-2c5a5abb810c?q=80&w=800" class="reader-img" alt="$1">');
 
