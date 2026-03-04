@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Ahmet Çınarbaş Journal</title>
+    <title>MB | Ahmet Çınarbaş Journal - Mardin & Brazil Cultural Bridge</title>
+    
+    <meta name="description" content="Ahmet Çınarbaş ile Mardin'den Brezilya'ya kültürel bir yolculuk. Gastronomi, sanat, Rio Karnavalı ve Mezopotamya hikayeleri.">
+    <meta name="keywords" content="Mardin, Brezilya, Ahmet Çınarbaş, Rio de Janeiro, Mezopotamya, Telkari, Samba, Reyhani, Kültür Sanat, Gastronomi">
     
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
@@ -14,6 +17,18 @@
             --accent: #B08D57; 
             --white: #FFFFFF;
             --ease: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* SEO İÇİN GİZLİ KELİME HAVUZU STİLİ */
+        .seo-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,7 +49,6 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
         .bento { display: flex; flex-direction: column; gap: 40px; }
 
-        /* KARTLAR */
         .card {
             background: var(--white); border-radius: 45px; padding: 50px;
             transition: var(--ease) 0.6s; cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
@@ -46,12 +60,10 @@
         .card-author { align-items: center; text-align: center; justify-content: center; min-height: 500px; }
         .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); }
 
-        /* MANŞET TİPOGRAFİSİ - TAM SİMETRİ */
         .tr-line { font-family: 'Bodoni Moda', serif; font-size: 3.8rem; line-height: 1.05; margin-bottom: 15px; display: block; font-weight: 900; letter-spacing: -1.5px; }
         .pt-line { font-family: 'Bodoni Moda', serif; font-size: 3.8rem; line-height: 1.05; display: block; font-weight: 900; letter-spacing: -1.5px; color: var(--ink); }
         .tag-dual { font-size: 0.8rem; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 30px; display: block; }
 
-        /* OKUMA MODALİ (READER) */
         .reader {
             position: fixed; inset: 0; background: var(--bg); z-index: 2000;
             display: none; overflow-y: auto; padding: 120px 8% 120px;
@@ -63,7 +75,6 @@
             gap: 80px; align-items: start;
         }
         
-        /* DETAY METİN - image_02c987.png STİLİ */
         .reader-text { 
             font-family: 'Bodoni Moda', serif; 
             font-size: 3rem; 
@@ -73,13 +84,8 @@
             letter-spacing: -1px;
         }
 
-        /* AYRAÇ - DAHA BELİRGİN */
         .divider {
-            width: 3px;
-            background: var(--accent);
-            height: 100%;
-            min-height: 450px;
-            box-shadow: 0 0 15px rgba(176,141,87,0.2);
+            width: 3px; background: var(--accent); height: 100%; min-height: 450px; box-shadow: 0 0 15px rgba(176,141,87,0.2);
         }
         
         .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; font-size: 0.9rem; }
@@ -94,6 +100,12 @@
     </style>
 </head>
 <body>
+
+    <div class="seo-hidden">
+        <h1>Mardin ve Brezilya Kültür Rehberi</h1>
+        <h2>Ahmet Çınarbaş Gazetecilik Portfolyosu</h2>
+        <p>Mardin haberleri, Brezilya yaşamı, Sao Paulo Türk restoranları, Rio Karnavalı 2026, Mezopotamya tarihi, Mardin gümüş telkari, Güneydoğu Anadolu kültürü, Güney Amerika seyahat notları, Portekizce öğrenme, Türkçe-Portekizce çeviri hikayeleri, Mardin mutfağı tarifleri, Brezilya kahvesi, Samba vs Reyhani, Mardin taş evleri, Ahmet Çınarbaş yazıları.</p>
+    </div>
 
     <header>
         <a href="#" class="logo-box">
@@ -179,24 +191,11 @@
                 card.className = 'card';
                 if(item.type === 'author') {
                     card.classList.add('card-author');
-                    card.innerHTML = `
-                        <img src="${item.img}" class="author-img">
-                        <span class="tr-line" style="font-size:3.5rem;">${item.name}</span>
-                        <span class="pt-line" style="font-size:2rem; opacity:0.6;">${item.title}</span>
-                        <p style="font-size:1.1rem; margin:30px 0; opacity:0.8; max-width:600px; line-height:1.6;">${item.bio}</p>
-                        <div style="font-size:0.8rem; font-weight:900; background:var(--ink); color:white; padding:20px 50px; border-radius:100px; letter-spacing:1px;">KÖŞE YAZISINI OKU ● LER COLUNA</div>
-                    `;
+                    card.innerHTML = `<img src="${item.img}" class="author-img"><span class="tr-line" style="font-size:3.5rem;">${item.name}</span><span class="pt-line" style="font-size:2rem; opacity:0.6;">${item.title}</span><p style="font-size:1.1rem; margin:30px 0; opacity:0.8; max-width:600px; line-height:1.6;">${item.bio}</p><div style="font-size:0.8rem; font-weight:900; background:var(--ink); color:white; padding:20px 50px; border-radius:100px; letter-spacing:1px;">KÖŞE YAZISINI OKU ● LER COLUNA</div>`;
                 } else {
                     card.style.background = `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.85)), url('${item.img}') center/cover`;
                     card.style.color = "white";
-                    card.innerHTML = `
-                        <div>
-                            <span class="tag-dual" style="color:white; border-color:white;">${item.tag}</span>
-                            <span class="tr-line">${item.tr}</span>
-                            <span class="pt-line" style="color:white;">${item.pt}</span>
-                        </div>
-                        <div style="font-weight:800; font-size:0.8rem; letter-spacing:3px;">${item.desc}</div>
-                    `;
+                    card.innerHTML = `<div><span class="tag-dual" style="color:white; border-color:white;">${item.tag}</span><span class="tr-line">${item.tr}</span><span class="pt-line" style="color:white;">${item.pt}</span></div><div style="font-weight:800; font-size:0.8rem; letter-spacing:3px;">${item.desc}</div>`;
                 }
                 card.onclick = () => openR(item);
                 grid.appendChild(card);
@@ -206,28 +205,12 @@
         function openR(item) {
             const modal = document.getElementById('reader-modal');
             const content = document.getElementById('reader-content');
-            
-            content.innerHTML = `
-                <div class="reader-header">
-                    <span class="tag-dual">${item.tag || 'YAZAR ● AUTOR'}</span>
-                    <h1 class="tr-line">${item.columnTitleTR || item.tr}</h1>
-                    <h2 class="pt-line">${item.columnTitlePT || item.pt}</h2>
-                </div>
-                <div class="reader-grid">
-                    <div class="reader-text">${item.columnTextTR || item.contentTR}</div>
-                    <div class="divider"></div>
-                    <div class="reader-text">${item.columnTextPT || item.contentPT}</div>
-                </div>`;
-            
+            content.innerHTML = `<div class="reader-header"><span class="tag-dual">${item.tag || 'YAZAR ● AUTOR'}</span><h1 class="tr-line">${item.columnTitleTR || item.tr}</h1><h2 class="pt-line">${item.columnTitlePT || item.pt}</h2></div><div class="reader-grid"><div class="reader-text">${item.columnTextTR || item.contentTR}</div><div class="divider"></div><div class="reader-text">${item.columnTextPT || item.contentPT}</div></div>`;
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
-        function closeR() {
-            document.getElementById('reader-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
+        function closeR() { document.getElementById('reader-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
         window.onload = () => renderCards(myContent);
     </script>
 </body>
