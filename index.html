@@ -8,41 +8,42 @@
     <style>
         :root { --mardin: #D4A373; --brazil: #064E3B; --dark: #0a0a0a; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #f8f8fa; color: var(--dark); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        body { background: #f8f8fa; color: var(--dark); font-family: 'Montserrat', sans-serif; line-height: 1.5; }
 
         /* HEADER */
         header { padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .logo { font-family: 'Playfair Display'; font-size: 2.2rem; text-decoration: none; color: inherit; letter-spacing: -1px; }
         .logo span { color: var(--mardin); }
 
-        /* HERO & MAIN GRID */
-        .main-container { padding: 30px 5%; max-width: 1600px; margin: 0 auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; }
+        /* ANA KONTEYNER */
+        .main-container { padding: 20px 5% 50px; max-width: 1600px; margin: 0 auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; }
 
-        /* GÜNÜN KARESİ - TEK VE DEV */
-        .photo-section { grid-column: span 12; height: 60vh; border-radius: 40px; position: relative; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        /* GÜNÜN KARESİ (EN ÜSTTE) */
+        .photo-section { grid-column: span 12; height: 500px; border-radius: 40px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         .photo-section img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7)); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px; color: white; }
-        .loc-badge { position: absolute; top: 30px; right: 30px; background: white; color: var(--dark); padding: 8px 20px; border-radius: 50px; font-weight: 900; font-size: 10px; }
+        .photo-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; color: white; }
+        .loc-badge { position: absolute; top: 25px; right: 25px; background: white; color: var(--dark); padding: 8px 18px; border-radius: 50px; font-weight: 900; font-size: 9px; }
 
-        /* MAKALE ALANI */
-        .article-card { grid-column: span 8; background: white; padding: 60px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
-        .article-card h1 { font-family: 'Playfair Display'; font-size: 3.5rem; line-height: 1.1; margin-bottom: 30px; }
-        .article-body { font-family: 'Lora'; font-size: 1.3rem; line-height: 1.8; color: #333; }
+        /* MAKALE KARTI (SOL) */
+        .article-card { grid-column: span 8; background: white; padding: 50px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .article-card h1 { font-family: 'Playfair Display'; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin-bottom: 25px; }
+        .article-body { font-family: 'Lora'; font-size: 1.25rem; line-height: 1.8; color: #333; margin-top: 30px; text-align: justify; }
 
-        /* YAN PANEL */
+        /* YAN PANEL (SAĞ) */
         .side-panel { grid-column: span 4; display: flex; flex-direction: column; gap: 20px; }
-        .side-card { background: white; padding: 30px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.03); }
-        .side-card h4 { font-size: 10px; letter-spacing: 2px; color: var(--mardin); margin-bottom: 15px; text-transform: uppercase; }
+        .side-card { background: white; padding: 30px; border-radius: 35px; border: 1px solid rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .side-card h4 { font-size: 9px; letter-spacing: 2px; color: var(--mardin); margin-bottom: 12px; text-transform: uppercase; font-weight: 900; }
+        .side-card p { font-size: 1rem; color: #444; font-family: 'Lora'; }
 
-        /* BUTONLAR */
-        .btn-action { background: var(--dark); color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-weight: 900; font-size: 11px; margin-top: 20px; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; }
-        .btn-action:hover { background: var(--brazil); transform: translateY(-2px); }
+        /* BUTON */
+        .btn-audio { background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 900; font-size: 10px; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; margin-top: 10px; }
+        .btn-audio:hover { background: var(--brazil); }
 
         /* RESPONSIVE */
         @media (max-width: 1024px) {
             .article-card, .side-panel { grid-column: span 12; }
+            .photo-section { height: 350px; }
             .article-card { padding: 30px; }
-            .article-card h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -50,7 +51,7 @@
 
     <header>
         <a href="#" class="logo">MARDIN<span>BRAZIL</span></a>
-        <div id="nav-info" style="font-size: 10px; font-weight: 900; opacity: 0.6;">ASC 2026 // GLOBAL PORTAL</div>
+        <div id="portal-tag" style="font-size: 9px; font-weight: 900; opacity: 0.5; letter-spacing: 1px;">ASC 2026 // GLOBAL PORTAL</div>
     </header>
 
     <main class="main-container">
@@ -58,70 +59,56 @@
             <span class="loc-badge" id="loc-text">MARDIN, TURKEY</span>
             <img id="main-img" src="https://images.unsplash.com/photo-1582260600078-fa6c88825832?auto=format&fit=crop&w=1600">
             <div class="photo-overlay">
-                <h2 id="photo-title">Günün Karesi</h2>
+                <h2 id="photo-title" style="font-family: 'Playfair Display'; font-size: 2.5rem;">Günün Karesi</h2>
             </div>
         </section>
 
         <article class="article-card">
-            <span id="tag-exclusive" style="color: var(--brazil); font-weight: 900; font-size: 10px; letter-spacing: 2px;">ÖZEL MAKALE</span>
+            <span id="tag-exclusive" style="color: var(--brazil); font-weight: 900; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;">ÖZEL MAKALE</span>
             <h1 id="main-title">Taşın Hafızası ve Ormanın Kalbi</h1>
             
-            <button class="btn-action" onclick="toggleAudio()">
+            <button class="btn-audio" onclick="toggleAudio()">
                 <span id="btn-icon">🔊</span> <span id="btn-text">DİNLE</span>
             </button>
 
-            <div id="article-content" class="article-body" style="margin-top: 40px;">
+            <div id="article-content" class="article-body">
                 </div>
         </article>
 
         <aside class="side-panel">
             <div class="side-card">
                 <h4 id="side-news-tag">HABERLER</h4>
-                <p id="side-news-content" style="font-size: 0.9rem; color: #666;"></p>
+                <p id="side-news-content"></p>
             </div>
-            <div class="side-card" style="background: var(--mardin); color: white;">
-                <h4 id="side-event-tag" style="color: white;">ETKİNLİK</h4>
-                <p id="side-event-content" style="font-weight: 600;"></p>
+            <div class="side-card" style="background: var(--brazil); color: white;">
+                <h4 id="side-event-tag" style="color: rgba(255,255,255,0.7);">ETKİNLİK</h4>
+                <p id="side-event-content" style="font-weight: 600; color: white;"></p>
             </div>
         </aside>
     </main>
 
     <script>
-        // TÜM SİTE VERİSİ (TR & PT)
         const translations = {
             tr: {
-                loc: "MARDİN, TÜRKİYE",
-                photoTitle: "Günün Karesi",
-                exclusive: "ÖZEL MAKALE",
-                title: "Taşın Hafızası ve Ormanın Kalbi",
-                btnListen: "DİNLE",
-                btnStop: "DURDUR",
-                newsTag: "HABERLER",
-                news: "2026 Arkeoloji Zirvesi hazırlıkları Mardin'de başladı. Küresel mirasçılar buluşuyor.",
-                eventTag: "ETKİNLİK",
-                event: "14 Mart: Mezopotamya Tasarım Haftası Açılışı.",
+                loc: "MARDİN, TÜRKİYE", photoTitle: "Günün Karesi", exclusive: "ÖZEL MAKALE",
+                title: "Taşın Hafızası ve Ormanın Kalbi", btnListen: "DİNLE", btnStop: "DURDUR",
+                newsTag: "HABERLER", news: "2026 Arkeoloji Zirvesi hazırlıkları Mardin'de başladı. Küresel mirasçılar buluşuyor.",
+                eventTag: "ETKİNLİK", event: "14 Mart: Mezopotamya Tasarım Haftası Açılışı.",
                 article: "Mardin'in sarı kalker taşları binlerce yıllık bir hikaye anlatırken, Amazon'un devasa yaprakları geleceğin nefesini tutuyor. 2026 yılında bu iki uç noktayı dijital bir köprüyle bağladık. Taşın içindeki matematiksel desenleri, ormanın biyolojik ritmiyle senkronize ettik. Bu sadece bir sergi değil, iki coğrafyanın ruhsal birleşimidir."
             },
             pt: {
-                loc: "RIO DE JANEIRO, BRASIL",
-                photoTitle: "A Foto do Dia",
-                exclusive: "ARTIGO EXCLUSIVO",
-                title: "A Memória da Pedra e o Coração da Floresta",
-                btnListen: "OUVIR",
-                btnStop: "PARAR",
-                newsTag: "NOTÍCIAS",
-                news: "Os preparativos para a Cúpula de Arqueologia 2026 começaram em Mardin. Herdeiros globais se reúnem.",
-                eventTag: "EVENTO",
-                event: "14 de Março: Abertura da Semana de Design da Mesopotâmia.",
-                article: "Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro. Em 2026, conectamos esses dois extremos com uma ponte digital. Sincronizamos os padrões matemáticos dentro da pedra com o ritmo biológico da floresta. Isto não é apenas uma exposição, é uma união espiritual de duas geografias."
+                loc: "RIO DE JANEIRO, BRASIL", photoTitle: "A Foto do Dia", exclusive: "ARTIGO EXCLUSIVO",
+                title: "A Memória da Pedra e o Coração da Floresta", btnListen: "OUVIR", btnStop: "PARAR",
+                newsTag: "NOTÍCIAS", news: "Os preparativos para a Cúpula de Arqueologia 2026 começaram em Mardin.",
+                eventTag: "EVENTO", event: "14 de Março: Abertura da Semana de Design da Mesopotâmia.",
+                article: "Enquanto as pedras calcárias amarelas de Mardin contam uma história de milhares de anos, as folhas gigantes da Amazônia guardam o fôlego do futuro. Em 2026, conectamos esses dois extremos com uma ponte digital. Sincronizamos os padrões matemáticos dentro da pedra com o ritmo biológico da floresta."
             }
         };
 
-        // DİL ALGILAMA VE UYGULAMA
         const userLang = navigator.language.startsWith('pt') ? 'pt' : 'tr';
         const data = translations[userLang];
 
-        function applyTranslations() {
+        function init() {
             document.getElementById('loc-text').innerText = data.loc;
             document.getElementById('photo-title').innerText = data.photoTitle;
             document.getElementById('tag-exclusive').innerText = data.exclusive;
@@ -132,17 +119,12 @@
             document.getElementById('side-news-content').innerText = data.news;
             document.getElementById('side-event-tag').innerText = data.eventTag;
             document.getElementById('side-event-content').innerText = data.event;
-        }
-
-        // GÜNÜN KARESİ ROTASYONU
-        function setupPhoto() {
-            const img = document.getElementById('main-img');
+            
             if(userLang === 'pt') {
-                img.src = "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1600";
+                document.getElementById('main-img').src = "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1600";
             }
         }
 
-        // AKILLI SESLENDİRME
         let isSpeaking = false;
         function toggleAudio() {
             if (isSpeaking) {
@@ -153,14 +135,11 @@
             } else {
                 const utterance = new SpeechSynthesisUtterance(data.article);
                 utterance.lang = userLang === 'pt' ? 'pt-BR' : 'tr-TR';
-                utterance.rate = 0.9;
-                
                 utterance.onend = () => {
                     isSpeaking = false;
                     document.getElementById('btn-text').innerText = data.btnListen;
                     document.getElementById('btn-icon').innerText = "🔊";
                 };
-
                 window.speechSynthesis.speak(utterance);
                 document.getElementById('btn-text').innerText = data.btnStop;
                 document.getElementById('btn-icon').innerText = "⏹";
@@ -168,11 +147,7 @@
             }
         }
 
-        // BAŞLAT
-        window.onload = () => {
-            applyTranslations();
-            setupPhoto();
-        };
+        window.onload = init;
     </script>
 </body>
 </html>
