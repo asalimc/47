@@ -2,62 +2,127 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>MB Journal | Profesyonel Yönetim</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MB Journal | Süper Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF; }
         body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; display: flex; justify-content: center; padding: 40px; color: var(--ink); }
         .admin-container { width: 100%; max-width: 650px; background: var(--white); padding: 40px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        h2 { font-family: 'Bodoni Moda', serif; text-align: center; margin-bottom: 30px; }
-        .tabs { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #eee; }
-        .tab-btn { padding: 10px 15px; border: none; background: none; cursor: pointer; font-weight: 600; color: #999; border-bottom: 2px solid transparent; }
-        .tab-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
+        h2 { font-family: 'Bodoni Moda', serif; text-align: center; margin-bottom: 30px; letter-spacing: -1px; }
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .tab-btn { padding: 10px 20px; border: none; background: none; cursor: pointer; font-weight: 600; color: #999; transition: 0.3s; border-radius: 10px; }
+        .tab-btn.active { color: var(--ink); background: #f0ede7; }
+        
         .form-section { display: none; }
         .form-section.active { display: block; }
-        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; outline: none; font-family: inherit; }
-        button { width: 100%; padding: 15px; background: var(--ink); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        button:hover { opacity: 0.9; transform: translateY(-1px); }
-        .status { margin-top: 20px; text-align: center; font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.85rem; color: var(--accent); }
+        input, textarea, select { width: 100%; padding: 14px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 12px; outline: none; font-family: inherit; font-size: 0.95rem; box-sizing: border-box; }
+        input:focus, textarea:focus { border-color: var(--ink); }
+        
+        button { width: 100%; padding: 16px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .status { margin-top: 25px; text-align: center; font-size: 0.9rem; font-weight: 700; min-height: 20px; }
+        .info-text { font-size: 0.8rem; color: #777; margin-bottom: 15px; margin-top: -10px; }
     </style>
 </head>
 <body>
 
 <div class="admin-container">
-    <h2>Yönetim Merkezi</h2>
+    <h2>MB Journal Kumanda Merkezi</h2>
     
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('article-sec', this)">Yazı Yayınla</button>
-        <button class="tab-btn" onclick="showTab('author-sec', this)">Yazar & Kategori</button>
+        <button class="tab-btn" onclick="showTab('author-sec', this)">Yazar & Profil</button>
+        <button class="tab-btn" onclick="showTab('cat-sec', this)">Kategoriler</button>
     </div>
 
     <div id="article-sec" class="form-section active">
+        <label>Kategori Seç</label>
         <select id="category-select">
-            <option value="MAGAZİN">Magazin ● Celebridade</option>
-            <option value="GASTRONOMİ">Gastronomi ● Sabor</option>
-            <option value="ZANAAT">Zanaat ● Artesanato</option>
-            <option value="COĞRAFİ KADER">Coğrafi Kader ● Destino</option>
-        </select>
-        <input type="text" id="img-url" placeholder="Görsel URL">
-        <input type="text" id="tr-title" placeholder="Türkçe Başlık">
-        <textarea id="tr-body" rows="6" placeholder="Türkçe İçerik..."></textarea>
-        <button onclick="handleSave('article')">YAYINLA & ÇEVİR</button>
+            </select>
+        
+        <label>Kapak Görseli (URL)</label>
+        <input type="text" id="img-url" placeholder="Örn: https://images.unsplash.com/photo-123...">
+        
+        <label>Türkçe Başlık</label>
+        <input type="text" id="tr-title" placeholder="Yazı başlığını girin">
+        
+        <label>Türkçe İçerik</label>
+        <textarea id="tr-body" rows="8" placeholder="Hikayenizi anlatın..."></textarea>
+        
+        <button onclick="handleSave('article')">YAYINLA VE OTOMATİK ÇEVİR</button>
     </div>
 
     <div id="author-sec" class="form-section">
-        <input type="text" id="author-name" placeholder="Yazar Adı (Ahmet Çınarbaş)">
-        <input type="text" id="author-bio" placeholder="Ünvan (Kültürel Arşivci)">
-        <input type="text" id="author-img" placeholder="Yazar Fotoğraf URL">
-        <div style="height:1px; background:#eee; margin: 20px 0;"></div>
-        <input type="text" id="new-cat" placeholder="Yeni Kategori Ekle (Örn: MÜZİK)">
-        <button onclick="handleSave('settings')" style="background:var(--accent)">AYARLARI GÜNCELLE</button>
+        <label>Yazar Adı</label>
+        <input type="text" id="author-name" placeholder="Örn: Ahmet Çınarbaş">
+        
+        <label>Yazar Ünvanı (Kısa Bio)</label>
+        <input type="text" id="author-bio" placeholder="Örn: Kültürel Arşivci">
+        
+        <label>Profil Fotoğrafı (URL)</label>
+        <input type="text" id="author-img" placeholder="Profil resmi linki">
+        <p class="info-text">Bu bilgiler ana sayfadaki "Yazar Kartı"nda görünür.</p>
+        
+        <button onclick="handleSave('settings')" style="background:var(--accent)">PROFİLİ GÜNCELLE</button>
+    </div>
+
+    <div id="cat-sec" class="form-section">
+        <label>Yeni Kategori Ekle</label>
+        <input type="text" id="new-cat-name" placeholder="Örn: MÜZİK">
+        
+        <label>Portekizce Karşılığı</label>
+        <input type="text" id="new-cat-pt" placeholder="Örn: MÚSICA">
+        <p class="info-text">Eklediğiniz kategori anında yazı listesine eklenir.</p>
+        
+        <button onclick="handleSave('category')" style="background:#555">KATEGORİYİ KAYDET</button>
     </div>
 
     <div id="status" class="status"></div>
 </div>
 
 <script>
+    // GitHub Token Gömüldü
     const GH_TOKEN = "ghp_Ck9rQJbrJ6Pkkz10SRjFcmqnp433Dh2xuYDY";
     const REPO_URL = 'https://api.github.com/repos/asalimc/47/contents/articles.json';
+
+    let globalContent = [];
+
+    // Sayfa açıldığında verileri çek ve kategorileri doldur
+    async function loadInitialData() {
+        try {
+            const res = await fetch(REPO_URL, { headers: { 'Authorization': `token ${GH_TOKEN}` } });
+            const data = await res.json();
+            globalContent = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+            updateCategoryList();
+            fillAuthorFields();
+        } catch (e) { console.error("Veri yüklenemedi."); }
+    }
+
+    function updateCategoryList() {
+        const select = document.getElementById('category-select');
+        const meta = globalContent.find(i => i.type === "metadata");
+        const categories = meta?.categories || [
+            {tr: "MAGAZİN", pt: "CELEBRIDADE"},
+            {tr: "GASTRONOMİ", pt: "SABOR"},
+            {tr: "ZANAAT", pt: "ARTESANATO"},
+            {tr: "COĞRAFİ KADER", pt: "DESTINO"}
+        ];
+        select.innerHTML = categories.map(c => `<option value="${c.tr} ● ${c.pt}">${c.tr} ● ${c.pt}</option>`).join('');
+    }
+
+    function fillAuthorFields() {
+        const meta = globalContent.find(i => i.type === "metadata");
+        if(meta?.author) {
+            document.getElementById('author-name').value = meta.author.name;
+            document.getElementById('author-bio').value = meta.author.bio;
+            document.getElementById('author-img').value = meta.author.img;
+        }
+    }
 
     function showTab(id, btn) {
         document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
@@ -76,7 +141,8 @@
 
     async function handleSave(mode) {
         const status = document.getElementById('status');
-        status.innerText = "İşlem yapılıyor...";
+        status.style.color = "orange";
+        status.innerText = "GitHub güncelleniyor, lütfen bekleyin...";
 
         try {
             const getFile = await fetch(REPO_URL, { headers: { 'Authorization': `token ${GH_TOKEN}` } });
@@ -98,30 +164,43 @@
                     pt: { title: ptT, body: ptB },
                     date: new Date().toLocaleDateString('tr-TR')
                 });
-            } else {
-                // Ayarları güncelle (Eski metadata varsa sil/güncelle)
-                content = content.filter(i => i.type !== "metadata");
-                content.push({
-                    type: "metadata",
-                    author: {
-                        name: document.getElementById('author-name').value,
-                        bio: document.getElementById('author-bio').value,
-                        img: document.getElementById('author-img').value
-                    },
-                    customCat: document.getElementById('new-cat').value
+            } else if(mode === 'settings') {
+                let metaIndex = content.findIndex(i => i.type === "metadata");
+                if(metaIndex === -1) { content.push({ type: "metadata", categories: [], author: {} }); metaIndex = content.length -1; }
+                content[metaIndex].author = {
+                    name: document.getElementById('author-name').value,
+                    bio: document.getElementById('author-bio').value,
+                    img: document.getElementById('author-img').value
+                };
+            } else if(mode === 'category') {
+                let metaIndex = content.findIndex(i => i.type === "metadata");
+                if(metaIndex === -1) { content.push({ type: "metadata", categories: [], author: {} }); metaIndex = content.length -1; }
+                if(!content[metaIndex].categories) content[metaIndex].categories = [];
+                content[metaIndex].categories.push({
+                    tr: document.getElementById('new-cat-name').value.toUpperCase(),
+                    pt: document.getElementById('new-cat-pt').value.toUpperCase()
                 });
             }
 
             const updated = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
-            await fetch(REPO_URL, {
+            const res = await fetch(REPO_URL, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "Update Journal", content: updated, sha: fileData.sha })
+                body: JSON.stringify({ message: "Süper Admin Güncelleme", content: updated, sha: fileData.sha })
             });
 
-            status.innerText = "BAŞARIYLA KAYDEDİLDİ!";
-        } catch (e) { status.innerText = "Hata oluştu!"; }
+            if(res.ok) {
+                status.style.color = "green";
+                status.innerText = "İŞLEM BAŞARILI! 5 saniye sonra sayfa yenilenecek.";
+                setTimeout(() => location.reload(), 5000);
+            }
+        } catch (e) { 
+            status.style.color = "red";
+            status.innerText = "Hata: GitHub bağlantısı kurulamadı."; 
+        }
     }
+
+    loadInitialData();
 </script>
 </body>
 </html>
