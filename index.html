@@ -3,126 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDIN & BRAZIL | ASC 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;700;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <title>MARDIN & BRAZIL | ASC 2026 ULTIMATE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,600&family=Montserrat:wght@300;600;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
     <style>
-        :root { --mardin: #D4A373; --brazil: #064E3B; --dark: #050505; --white: #F5F5F7; }
-
-        body { 
-            background-color: #fafaf9;
-            background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
-            background-size: 40px 40px; font-family: 'Montserrat', sans-serif; color: var(--dark);
-            overflow-x: hidden; min-height: 100vh;
+        :root {
+            --mardin: #D4A373; --brazil: #064E3B; --dark: #0a0a0a; --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.7); --shadow: 0 20px 40px rgba(0,0,0,0.1);
+            --fs-body: 1.1rem;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+        body { background: #f0f0f2; color: var(--dark); font-family: 'Montserrat', sans-serif; line-height: 1.6; overflow-x: hidden; }
 
-        header { padding: 40px 5% 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
-        .brand-title { font-family: 'Playfair Display'; font-size: clamp(2rem, 6vw, 6rem); line-height: 0.8; }
-        .brand-title .m-text { color: var(--mardin); }
-        .brand-title .b-text { color: var(--brazil); font-weight: 900; }
-
-        .curator-box { 
-            display: flex; align-items: center; gap: 15px; background: white; padding: 10px 25px; 
-            border-radius: 60px; border: 1px solid rgba(0,0,0,0.06); cursor: pointer;
+        /* NEUMORPHIC HEADER */
+        header { 
+            padding: 40px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, var(--white), transparent); position: sticky; top: 0; z-index: 1000;
         }
-        .curator-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--mardin); object-fit: cover; }
+        .brand-logo { font-family: 'Playfair Display'; font-size: clamp(1.5rem, 4vw, 4rem); letter-spacing: -2px; text-decoration: none; color: inherit; }
+        .m-accent { color: var(--mardin); } .b-accent { color: var(--brazil); }
 
-        /* ANA TASIYICI - TASMALARI ONLEYEN GRID */
-        .master-wrapper { padding: 0 5% 50px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; align-items: stretch; }
+        .nav-tools { display: flex; gap: 20px; align-items: center; }
+        .control-pill { background: var(--white); padding: 8px 18px; border-radius: 50px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; font-weight: 600; font-size: 12px; box-shadow: var(--shadow); }
+        .control-pill:hover { transform: translateY(-3px); border-color: var(--mardin); }
 
-        /* SOL AREA - SABIT YUKSEKLIK */
-        .hero-main { grid-column: span 8; border-radius: 40px; overflow: hidden; position: relative; cursor: pointer; height: 700px; }
-        .hero-main img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); transition: 0.5s; }
-        .hero-overlay { position: absolute; bottom: 40px; left: 40px; z-index: 10; max-width: 85%; }
-        .hero-overlay h2 { font-family: 'Playfair Display'; color: white; font-size: clamp(1.8rem, 3.5vw, 3.5rem); line-height: 1.1; }
+        /* GRID SYSTEM */
+        .main-container { padding: 20px 5% 100px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; max-width: 1800px; margin: 0 auto; }
 
-        /* SAG PANEL - SOLA ESITLENMIS 3'LU YAPI */
-        .side-panel { grid-column: span 4; display: grid; grid-template-rows: repeat(3, 1fr); gap: 20px; height: 700px; }
-        .data-card { background: white; border-radius: 35px; padding: 25px; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
-        
-        .tag { font-size: 8px; font-weight: 900; color: var(--mardin); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; display: block; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 5px; }
-        .card-content { font-family: 'Lora'; font-size: clamp(11px, 1.2vw, 13px); line-height: 1.5; color: #444; }
-        .card-content b { color: var(--dark); font-family: 'Montserrat'; font-weight: 700; }
-
-        /* GÜNÜN KARESİ - TASMAYI ONLEYEN YAPI */
-        .photo-card { padding: 0; }
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-tag { position: absolute; top: 20px; left: 20px; z-index: 5; background: rgba(255,255,255,0.9); padding: 4px 10px; border-radius: 6px; font-size: 8px; font-weight: 900; }
-
-        /* VİDEOLAR VE FOOTER */
-        .bottom-row { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 10px; }
-        .video-box { height: 400px; border-radius: 40px; overflow: hidden; background: #000; }
-        .video-box iframe { width: 100%; height: 100%; border: none; opacity: 0.8; }
-
-        footer { grid-column: span 12; padding: 60px 0 40px; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; }
-        footer h6 { font-size: 9px; font-weight: 900; color: var(--mardin); margin-bottom: 10px; }
-
-        /* RESPONSIVE AYARLARI */
-        @media (max-width: 1024px) { 
-            .hero-main, .side-panel, .bottom-row { grid-column: span 12; }
-            .hero-main { height: 450px; border-radius: 30px; }
-            .side-panel { height: auto; grid-template-rows: auto auto 300px; }
-            .data-card { border-radius: 30px; padding: 30px; }
-            footer { grid-template-columns: 1fr; gap: 20px; }
+        /* HERO SECTION */
+        .hero-section { 
+            grid-column: span 8; height: 750px; border-radius: 50px; overflow: hidden; position: relative;
+            box-shadow: var(--shadow); cursor: pointer;
         }
+        .hero-section img { width: 100%; height: 100%; object-fit: cover; scale: 1.1; }
+        .hero-section:hover img { scale: 1; filter: brightness(0.5); }
+        .hero-content { position: absolute; bottom: 60px; left: 60px; right: 60px; color: var(--white); z-index: 10; }
+        .hero-content h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 0.9; margin-bottom: 20px; }
+
+        /* SIDE PANEL */
+        .side-stack { grid-column: span 4; display: grid; grid-template-rows: repeat(3, 1fr); gap: 30px; height: 750px; }
+        .glass-card { 
+            background: var(--glass); backdrop-filter: blur(15px); border-radius: 40px; padding: 35px;
+            border: 1px solid rgba(255,255,255,0.4); display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--shadow);
+        }
+        .card-tag { font-size: 10px; font-weight: 900; letter-spacing: 3px; color: var(--mardin); text-transform: uppercase; margin-bottom: 15px; }
+        .card-text { font-family: 'Lora'; font-size: var(--fs-body); color: #333; }
+
+        /* DUAL DAILY PHOTO */
+        .daily-split { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; height: 100%; padding: 10px; }
+        .split-box { border-radius: 30px; overflow: hidden; position: relative; }
+        .split-box img { width: 100%; height: 100%; object-fit: cover; }
+        .split-label { position: absolute; top: 15px; left: 15px; background: white; padding: 5px 12px; border-radius: 12px; font-size: 9px; font-weight: 900; }
+
+        /* PORTAL OVERLAY (GLASSMORPHISM) */
+        .full-portal {
+            position: fixed; inset: 0; background: rgba(255,255,255,0.8); backdrop-filter: blur(30px);
+            z-index: 2000; display: none; padding: 5%; overflow-y: auto;
+        }
+        .portal-content { max-width: 1200px; margin: 0 auto; }
+        .close-portal { position: fixed; top: 40px; right: 40px; padding: 15px 30px; border-radius: 50px; background: var(--dark); color: white; border: none; font-weight: 900; cursor: pointer; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) { .hero-section, .side-stack { grid-column: span 12; height: auto; } .hero-section { height: 500px; } .side-stack { height: auto; } }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand-title"><span class="m-text">MARDIN</span><span class="b-text">BRAZIL</span></div>
-        <div class="curator-box">
-            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="curator-img">
-            <div class="curator-info"><b>AHMET ÇINARBAŞ</b><span style="font-size:8px; display:block; opacity:0.6; letter-spacing:1px;">CURADOR-CHEFE / CHIEF</span></div>
+        <a href="#" class="brand-logo"><span class="m-accent">MARDIN</span><span class="b-accent">BRAZIL</span></a>
+        <div class="nav-tools">
+            <button class="control-pill" onclick="adjustText(1.1)">A+</button>
+            <button class="control-pill" onclick="adjustText(0.9)">A-</button>
+            <div class="control-pill" style="display: flex; align-items: center; gap: 10px;" onclick="openPortal()">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:25px; height:25px; border-radius:50%;">
+                <span>AC PORTFOLIO</span>
+            </div>
         </div>
     </header>
 
-    <div class="master-wrapper">
-        <div class="hero-main">
-            <img src="https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=small">
-            <div class="hero-overlay">
-                <span style="background:var(--brazil); color:white; padding:4px 12px; border-radius:20px; font-size:8px; font-weight:900;">ROPORTAJ // ENTREVISTA</span>
-                <h2>"Taşın Hafızası ve Ormanın Kalbi" <br>
-                    <small style="font-size:0.4em; opacity:0.8; font-family:'Montserrat'; font-weight:300;">"A Memória da Pedra e o Coração da Floresta"</small>
-                </h2>
+    <main class="main-container">
+        <section class="hero-section" onclick="openPortal()">
+            <img src="https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=large" id="mainImage">
+            <div class="hero-content">
+                <span style="background:var(--brazil); padding:8px 20px; border-radius:50px; font-size:10px; font-weight:900; letter-spacing:2px;">FEATURED INTERVIEW</span>
+                <h2>"Taşın Hafızası ve Ormanın Kalbi"<br>
+                <small style="font-size:0.4em; font-weight:300; opacity:0.8; font-family:'Montserrat';">"A Memória da Pedra e o Coração da Floresta"</small></h2>
             </div>
-        </div>
+        </section>
 
-        <div class="side-panel">
-            <div class="data-card">
-                <span class="tag">NOTÍCIAS // HABERLER</span>
-                <div class="card-content">
-                    <p><b>• Mardin:</b> Artuklu Mimarisi ve Dijital Veri Köprüsü <br><i>(Mardin: Arquitetura e Ponte de Dados)</i></p>
-                    <p style="margin-top:8px;"><b>• Brazil:</b> Amazon Ekosistem Takip Projesi <br><i>(Brasil: Projeto de Monitoramento do Ecossistema)</i></p>
+        <aside class="side-stack">
+            <div class="glass-card">
+                <span class="card-tag">Google News / Notícias</span>
+                <div class="card-text">
+                    <b>• Mardin:</b> 2026 Tasarım Bienali hazırlıkları taş evlerde başladı.<br>
+                    <b>• Manaus:</b> Amazon yağmur ormanlarında dijital sanat enstalasyonu.
+                </div>
+            </div>
+            
+            <div class="glass-card">
+                <span class="card-tag">Events / Eventos</span>
+                <div class="card-text">
+                    <b>14.03:</b> Mezopotamya Kodlama Atölyesi<br>
+                    <b>20.03:</b> Festival de Inverno de Garanhuns 2026
                 </div>
             </div>
 
-            <div class="data-card">
-                <span class="tag">EVENTOS // ETKİNLİKLER</span>
-                <div class="card-content">
-                    <p><b>14.03.2026:</b> Mezopotamya Tasarım Zirvesi <br><i>(Cúpula de Design da Mesopotâmia)</i></p>
-                    <p style="margin-top:8px;"><b>22.03.2026:</b> Manaus Art Bienali <br><i>(Bienal de Arte de Manaus)</i></p>
+            <div class="glass-card" style="padding:0;">
+                <div class="daily-split">
+                    <div class="split-box">
+                        <img src="https://images.unsplash.com/photo-1582260600078-fa6c88825832?auto=format&fit=crop&w=400">
+                        <span class="split-label">MARDIN</span>
+                    </div>
+                    <div class="split-box">
+                        <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=400">
+                        <span class="split-label">BRASÍLIA</span>
+                    </div>
                 </div>
             </div>
+        </aside>
 
-            <div class="data-card photo-card">
-                <div class="photo-tag">GÜNÜN KARESİ // IMAGEM</div>
-                <img src="https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=800">
+        <section style="grid-column: span 6;" class="hero-section" style="height:450px;">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/3r9cOuTmVu4" frameborder="0" style="opacity:0.8;"></iframe>
+        </section>
+        <section style="grid-column: span 6;" class="hero-section" style="height:450px;">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/E6Ndg4pvLh8" frameborder="0" style="opacity:0.8;"></iframe>
+        </section>
+    </main>
+
+    <div id="portal" class="full-portal">
+        <button class="close-portal" onclick="closePortal()">KAPAT / FECHAR</button>
+        <div class="portal-content">
+            <h1 style="font-family:'Playfair Display'; font-size:6rem; margin-bottom:40px;">Röportaj Detayı</h1>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px;">
+                <div class="card-text" style="font-size:1.8rem;">
+                    Mardin'in sarı taşları ile Amazon'un yeşil ruhu arasında kurulan bu köprü, 2026'nın en büyük sanat projesidir.
+                </div>
+                <div class="card-text" style="font-size:1.8rem; opacity:0.6;">
+                    A ponte estabelecida entre as pedras amarelas de Mardin e a alma verde da Amazônia é o maior projeto de arte de 2026.
+                </div>
             </div>
+            <button class="control-pill" style="margin-top:50px; padding:20px 40px;" onclick="speakText()">SESLİ OKU / OUVIR</button>
         </div>
-
-        <div class="bottom-row">
-            <div class="video-box"><iframe src="https://www.youtube.com/embed/3r9cOuTmVu4"></iframe></div>
-            <div class="video-box"><iframe src="https://www.youtube.com/embed/E6Ndg4pvLh8"></iframe></div>
-        </div>
-
-        <footer>
-            <div><h6>ASC 2026</h6><p style="font-size:12px; opacity:0.7; font-family:'Lora';">Taşın matematiği ve ormanın biyolojisi. <br><i>A matemática da pedra e a biologia.</i></p></div>
-            <div><h6>KONUMLAR // LOCAIS</h6><p style="font-size:12px; opacity:0.7; font-family:'Lora';">Mardin (37°N) | Manaus (3°S)</p></div>
-            <div><h6>İLETİŞİM</h6><p style="font-size:12px; opacity:0.7; font-family:'Lora';">curator@asc2026.art</p></div>
-        </footer>
     </div>
 
+    <script>
+        function adjustText(multiplier) {
+            const root = document.documentElement;
+            const currentSize = parseFloat(getComputedStyle(root).getPropertyValue('--fs-body'));
+            root.style.setProperty('--fs-body', (currentSize * multiplier) + 'rem');
+        }
+
+        function openPortal() { 
+            document.getElementById('portal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePortal() { 
+            document.getElementById('portal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function speakText() {
+            const msg = new SpeechSynthesisUtterance("Mardin'in sarı taşları ile Amazon'un yeşil ruhu arasında kurulan bu köprü...");
+            msg.lang = window.navigator.language.startsWith('pt') ? 'pt-BR' : 'tr-TR';
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
 </body>
 </html>
