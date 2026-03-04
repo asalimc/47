@@ -104,7 +104,7 @@
             </div>
     </main>
 
-    <div id="reader-modal" class="reader">
+    <div id="reader-modal" class="reader" onclick="closeModalOutside(event)">
         <button class="close-btn" onclick="closeR()">KAPAT ● FECHAR</button>
         <div id="reader-content"></div>
     </div>
@@ -117,18 +117,24 @@
     <script>
         let allData = [];
 
-        // 1. DATA ÇEKME (JSON DOSYASINDAN)
+        // 1. DATA ÇEKME FONKSİYONU
         async function loadData() {
+            const grid = document.getElementById('bento-grid');
+            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.5; padding: 50px;">Yazılar Yükleniyor... ● Carregando...</p>';
+
             try {
-                const response = await fetch('data.json'); // Telefonundan güncelleyeceğin dosya
+                // Not: data.json dosyası index.html ile aynı klasörde olmalı
+                const response = await fetch('data.json'); 
+                if (!response.ok) throw new Error("Dosya bulunamadı");
                 allData = await response.json();
                 renderCards(allData);
             } catch (error) {
-                console.error("Veri yüklenemedi. data.json dosyasının varlığından emin olun.", error);
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red; padding: 50px;">Veri yüklenemedi. Lütfen GitHub üzerindeki data.json dosyasını kontrol edin.</p>';
+                console.error("Hata:", error);
             }
         }
 
-        // 2. KARTLARI ÇİZME
+        // 2. KARTLARI ÇİZEN MOTOR
         function renderCards(data) {
             const grid = document.getElementById('bento-grid');
             grid.innerHTML = '';
@@ -187,7 +193,7 @@
             renderCards(filtered);
         }
 
-        // 4. MODAL AÇ/KAPAT
+        // 4. OKUMA MODALI
         function openR(item) {
             const modal = document.getElementById('reader-modal');
             const content = document.getElementById('reader-content');
@@ -195,12 +201,12 @@
             if(item.type === 'author') {
                 content.innerHTML = `
                     <div style="text-align:center; margin-bottom:50px;">
-                        <img src="${item.img}" style="width:180px; height:180px; border-radius:50%; border:8px solid white;">
+                        <img src="${item.img}" style="width:180px; height:180px; border-radius:50%; border:8px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
                         <h1 style="font-family:'Bodoni Moda'; font-size:3.5rem; margin-top:20px;">${item.name}</h1>
                     </div>
                     <div class="reader-grid">
                         <div class="reader-tr">${item.bio}</div>
-                        <div class="reader-pt">Traduzindo histórias entre dois mundos.</div>
+                        <div class="reader-pt">Traduzindo histórias entre dois mundos: Mesopotâmia e América Latina.</div>
                     </div>`;
             } else {
                 content.innerHTML = `
@@ -224,7 +230,11 @@
             document.body.style.overflow = 'auto';
         }
 
-        // BAŞLAT
+        function closeModalOutside(e) {
+            if(e.target.id === 'reader-modal') closeR();
+        }
+
+        // Sayfa yüklendiğinde çalıştır
         window.onload = loadData;
     </script>
 </body>
