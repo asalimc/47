@@ -2,85 +2,147 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MB Journal | Editör Paneli</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #F8F6F2; font-family: sans-serif; padding: 50px; }
-        .admin-box { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        input, textarea, select { width: 100%; margin-bottom: 15px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { background: #1A1A1A; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .status { margin-top: 15px; font-size: 0.8rem; color: #B08D57; text-align: center; }
+        :root { --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF; }
+        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .admin-box { background: var(--white); width: 90%; max-width: 500px; padding: 40px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        h2 { font-family: 'Bodoni Moda', serif; text-align: center; margin-bottom: 30px; color: var(--ink); }
+        input, textarea, select { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; font-family: inherit; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus, textarea:focus { border-color: var(--accent); }
+        button { width: 100%; padding: 15px; background: var(--ink); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .status { margin-top: 20px; text-align: center; font-size: 0.85rem; font-weight: 600; color: var(--accent); min-height: 20px; }
     </style>
 </head>
 <body>
-    <div class="admin-box">
-        <h2 style="font-family: serif; text-align: center;">Yeni Yazı Ekle</h2>
-        <input type="password" id="gh-token" placeholder="GitHub Token (PAT)">
-        <select id="category">
-            <option value="MAGAZİN">Magazin</option>
-            <option value="GASTRONOMİ">Gastronomi</option>
-            <option value="ZANAAT">Zanaat</option>
-            <option value="COĞRAFİ KADER">Coğrafi Kader</option>
-        </select>
-        <input type="text" id="img-url" placeholder="Görsel URL">
-        <input type="text" id="tr-title" placeholder="Türkçe Başlık">
-        <textarea id="tr-body" rows="6" placeholder="Türkçe İçerik..."></textarea>
-        <button onclick="publishArticle()">YAYINLA & OTOMATİK ÇEVİR</button>
-        <div id="status" class="status"></div>
-    </div>
 
-    <script>
-        async function translateText(text) {
+<div class="admin-box">
+    <h2>Yeni Yazı Ekle</h2>
+    
+    <input type="password" id="gh-token" placeholder="GitHub Token (PAT) Yapıştırın">
+    
+    <select id="category">
+        <option value="MAGAZİN">Magazin ● Celebridade</option>
+        <option value="GASTRONOMİ">Gastronomi ● Sabor</option>
+        <option value="ZANAAT">Zanaat ● Artesanato</option>
+        <option value="COĞRAFİ KADER">Coğrafi Kader ● Destino</option>
+        <option value="TOPLUM">Toplum ● Sociedade</option>
+    </select>
+    
+    <input type="text" id="img-url" placeholder="Görsel URL (Örn: https://images.unsplash.com/...)">
+    <input type="text" id="tr-title" placeholder="Türkçe Başlık">
+    <textarea id="tr-body" rows="6" placeholder="Türkçe İçerik..."></textarea>
+    
+    <button id="submit-btn" onclick="publishArticle()">YAYINLA & OTOMATİK ÇEVİR</button>
+    <div id="status" class="status"></div>
+</div>
+
+<script>
+    // Ücretsiz Çeviri API Servisi (MyMemory)
+    async function translateText(text) {
+        try {
             const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=tr|pt`);
             const data = await res.json();
             return data.responseData.translatedText;
+        } catch (e) {
+            console.error("Çeviri hatası:", e);
+            return text; // Hata olursa orijinal metni döndür
+        }
+    }
+
+    async function publishArticle() {
+        const btn = document.getElementById('submit-btn');
+        const status = document.getElementById('status');
+        const token = document.getElementById('gh-token').value;
+        const trTitle = document.getElementById('tr-title').value;
+        const trBody = document.getElementById('tr-body').value;
+        const imgUrl = document.getElementById('img-url').value;
+        const category = document.getElementById('category').value;
+
+        if(!token || !trTitle || !trBody) {
+            status.innerText = "Lütfen tüm alanları doldurun!";
+            return;
         }
 
-        async function publishArticle() {
-            const token = document.getElementById('gh-token').value;
-            const status = document.getElementById('status');
-            status.innerText = "Çevriliyor ve gönderiliyor...";
+        btn.disabled = true;
+        status.innerText = "Portekizceye çevriliyor...";
 
-            // Verileri al
-            const trTitle = document.getElementById('tr-title').value;
-            const trBody = document.getElementById('tr-body').value;
+        // 1. OTOMATİK ÇEVİRİ
+        const ptTitle = await translateText(trTitle);
+        const ptBody = await translateText(trBody);
+
+        status.innerText = "GitHub veritabanına bağlanılıyor...";
+
+        // 2. GITHUB AYARLARI (Senin depona göre güncellendi)
+        const owner = "asalimc";
+        const repo = "47";
+        const path = "articles.json";
+        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+
+        try {
+            // Önce mevcut dosyayı oku
+            const getFile = await fetch(url, {
+                headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+            });
             
-            // Otomatik Çeviri
-            const ptTitle = await translateText(trTitle);
-            const ptBody = await translateText(trBody);
+            const fileData = await getFile.json();
+            const sha = fileData.sha;
+            // Base64 decode işlemi (Türkçe karakter desteği ile)
+            const currentContent = JSON.parse(decodeURIComponent(escape(atob(fileData.content))));
 
+            // Yeni yazıyı oluştur
             const newEntry = {
                 id: Date.now(),
-                category: document.getElementById('category').value,
-                image: document.getElementById('img-url').value,
+                category: category,
+                image: imgUrl || 'https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200',
                 tr: { title: trTitle, body: trBody },
                 pt: { title: ptTitle, body: ptBody },
-                atmos: "HAVA: GÜNEŞLİ ● RUH HALİ: ÜRETKEN",
-                date: new Date().toLocaleDateString('tr-TR')
+                date: new Date().toLocaleDateString('tr-TR'),
+                atmos: "HAVA: GÜNEŞLİ ● RUH HALİ: ÜRETKEN"
             };
 
-            // GitHub API İşlemleri (Dosyayı oku ve güncelle)
-            const url = 'https://api.github.com/repos/KULLANICI_ADIN/REPO_ADIN/contents/47/articles.json';
-            
-            try {
-                const getFile = await fetch(url, { headers: { Authorization: `token ${token}` } });
-                const fileData = await getFile.json();
-                const content = JSON.parse(atob(fileData.content));
-                content.unshift(newEntry); // En başa ekle
+            // Yeni listeyi oluştur (En başa ekle)
+            currentContent.unshift(newEntry);
 
-                await fetch(url, {
-                    method: 'PUT',
-                    headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: "Yeni yazı eklendi",
-                        content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
-                        sha: fileData.sha
-                    })
-                });
+            // 3. GITHUB'A GERİ GÖNDER
+            const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(currentContent, null, 2))));
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: `Yeni yazı eklendi: ${trTitle}`,
+                    content: updatedContent,
+                    sha: sha
+                })
+            });
+
+            if(response.ok) {
+                status.style.color = "green";
                 status.innerText = "BAŞARIYLA YAYINLANDI!";
-            } catch (e) {
-                status.innerText = "Hata oluştu: " + e.message;
+                // Formu temizle
+                document.getElementById('tr-title').value = '';
+                document.getElementById('tr-body').value = '';
+                document.getElementById('img-url').value = '';
+            } else {
+                throw new Error("GitHub hatası!");
             }
+
+        } catch (e) {
+            status.style.color = "red";
+            status.innerText = "Hata: " + e.message;
+        } finally {
+            btn.disabled = false;
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
