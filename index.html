@@ -66,7 +66,6 @@
         .reader-header { text-align: center; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto; }
         .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 50px; position: relative; }
         
-        /* 3. DINAMIK DIL ODAKLAMASI */
         .reader-text { 
             font-size: 1.25rem; line-height: 1.9; color: #2D2D2D; font-weight: 400; text-align: justify; 
             transition: opacity 0.4s ease, filter 0.4s ease;
@@ -82,10 +81,10 @@
         
         .divider { width: 100%; height: 1px; background: rgba(176,141,87,0.2); margin: 20px 0; }
 
-        /* 1. DIGITAL STAMP */
+        /* CULTURAL STAMP */
         .cultural-stamp {
             position: fixed; bottom: 40px; right: 40px; width: 120px; height: 120px;
-            background: url('https://cdn-icons-png.flaticon.com/512/3938/3938163.png'); /* Örnek mühür ikonu */
+            background: url('https://cdn-icons-png.flaticon.com/512/3938/3938163.png');
             background-size: contain; opacity: 0.15; z-index: 10002; pointer-events: none;
             animation: rotateStamp 20s linear infinite; mix-blend-mode: multiply; display: none;
         }
@@ -114,7 +113,6 @@
 
     <main class="container">
         <div class="bento">
-            
             <div class="card card-author" onclick="openReader('author')">
                 <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-img">
                 <div class="card-content">
@@ -144,7 +142,7 @@
                     <div class="entry-no">JOURNAL ENTRY #002</div>
                 </div>
             </div>
-            
+
             <div class="card" onclick="openReader('gastronomy')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
@@ -185,14 +183,34 @@
         const contentData = {
             author: { 
                 tag: "KÜRASYON FELSEFESİ ● MANIFESTO", tr: "Sabrın ve Akışın Arşivcisi", pt: "O Arquivista da Paciência e do Fluxo", 
-                textTr: `Kadim Mardin’in taş sessizliği ile Amazon’un gürültülü yeşili arasında kurduğum bu köprü, sadece bir mesafe değil, bir ruh yolculuğudur. Ben Ahmet Çınarbaş; telkari ustasının gümüş teldeki sabrını, Sambodrom’un terli neşesiyle harmanlayan bir kültürel küratörüm. Yazılarımda, Karadeniz’in hırçın limanı Sinop’un, Mato Grosso’nun içlerindeki adaşıyla nasıl fısıldaştığını; Mezopotamya’nın baharatlı İçli Köftesi’nin Brezilya sokaklarında 'Quibe'ye dönüşürken neleri koruduğunu anlatıyorum.<br><br>Bu "Journal", bir gurbet hikayesi değil, bir "ev bulma" çabasıdır. Mardin’in dar küçelerinde mırra yudumlayan bir zihinle, Rio’nun nemli sıcağında cafezinho içen bir kalbin aynı ritimde atabileceğine inanıyorum. Her yazı, bu iki coğrafyanın birbirine sunduğu sessiz bir hediyedir.`, 
-                textPt: `A ponte que construí entre o silêncio de pedra da antiga Mardin e o verde barulhento da Amazônia não é apenas uma distância, mas uma jornada da alma. Sou Ahmet Çınarbaş; um curador cultural que mescla a paciência do mestre da filigrana no fio de prata com a alegria suada do Sambódromo. Em meus escritos, conto como o porto rebelde de Sinop, no Mar Negro, sussurra para seu homônimo no interior de Mato Grosso; e o que o Kibbeh temperado da Mesopotâmia preservou ao se transformar em 'Quibe' nas ruas do Brasil.<br><br>Este "Journal" não é uma história de exílio, mas um esforço para "encontrar um lar". Acredito que uma mente que toma mofra nas ruelas de Mardin e um coração que toma cafezinho no calor úmido do Rio podem bater no mesmo ritmo. Cada artigo é um presente silencioso que essas duas geografias oferecem uma à outra.` 
+                textTr: `Kadim Mardin’in taş sessizliği ile Amazon’un gürültülü yeşili arasında kurduğum bu köprü, sadece bir coğrafi mesafe değil, derin bir ruh yolculuğudur. Ben Ahmet Çınarbaş; telkari ustasının ince gümüş teldeki o devasa sabrını, Sambodrom’un terli ve coşkulu neşesiyle harmanlayan bir kültürel arşivciyim. Mezopotamya’da zaman taşın üzerine kazınırken, Brezilya’da ritmin içine gizlenir. Her iki dünyada da insan, doğaya ve tarihe tutunmanın en estetik yolunu aramıştır.<br><br><b>Köprülerin Mimarı:</b> Yazılarımda, Karadeniz’in hırçın limanı Sinop’un, Mato Grosso’nun balta girmemiş ormanlarındaki adaşıyla nasıl benzer kaderleri fısıldaştığını inceliyorum. Mardin’in dar küçelerinde tüten mırra kokusuyla, Rio’nun nemli kaldırımlarında yudumlanan cafezinho’nun aynı "ev" hissini verdiğini biliyorum. Bu "Journal", bir gurbet hikayesi değil, küresel bir aidiyet manifestosudur. Mardin’in taş oymacılığındaki geometriyle, favelalardaki grafiti sanatının aynı isyan ve güzellik arayışından beslendiğine inanıyorum. Her yeni girdi (ENTRY), bu iki uzak ama gönül komşusu coğrafyanın birbirine sunduğu sessiz bir hediyedir.`, 
+                textPt: `A ponte que construí entre o silêncio de pedra da antiga Mardin e o verde vibrante da Amazônia não é apenas uma distância, mas uma profunda jornada da alma. Sou Ahmet Çınarbaş; um arquivista cultural que mescla a paciência monumental do mestre da filigrana com a alegria suada e eufórica do Sambódromo. Enquanto na Mesopotâmia o tempo é esculpido na pedra, no Brasil ele se esconde no ritmo. Em ambos os mundos, o ser humano busca a forma mais estética de se apegar à natureza e à história.<br><br><b>O Arquiteto de Pontes:</b> Em meus escritos, examino como o porto rebelde de Sinop, no Mar Negro, sussurra destinos semelhantes ao seu homônimo nas florestas de Mato Grosso. Sei que o aroma do mofra nas ruelas de Mardin e o cafezinho tomado nas calçadas úmidas do Rio evocam o mesmo sentimento de "lar". Este "Journal" não é um relato de exílio, mas um manifesto de pertencimento global. Acredito que a geometria na escultura em pedra de Mardin e a arte do grafite nas favelas bebem da mesma fonte de rebeldia e busca pela beleza. Cada nova entrada (ENTRY) é um presente silencioso que essas duas geografias vizinhas de alma oferecem uma à outra.` 
             },
-            carnaval: { tag: "MAGAZİN / RİO", tr: "Rio Karnavalı'nda Mardin Rüzgarı", pt: "Vento de Mardin no Rio", textTr: "Görkemli Buluşma: Rio de Janeiro'nun ünlü Sapucaí podyumlarında bu yıl Mardin'in telkari sanatının geometrik estetiği yankılandı...", textPt: "Encontro Majestoso: Nas famosas passarelas da Sapucaí, ecoou este ano a estética geométrica da filigrana de Mardin..." },
-            craft: { tag: "ZANAAT ANALİZİ", tr: "Gümüşün Sabrı ve Doğanın Takısı", pt: "A Paciência da Prata", textTr: "Mardin Telkarisi: Gümüş tellerin mikron düzeyinde inceltilip sabırla bükülmesiyle oluşan bu sanat, Mardin'in karakterini yansıtır...", textPt: "Filigrana de Mardin: A arte de tecer fios de prata em nível mícron reflete o caráter de Mardin..." },
-            gastronomy: { tag: "MUTFAK KÜLTÜRÜ", tr: "İçli Köfte & Quibe Karşılaştırması", pt: "Kibbeh vs Quibe", textTr: "Mutfak Mirası: Mardin'un baharatlı, reyhan dokunuşlu İçli Köftesi (Irok) ile Brezilya'nın her köşe başında bulabileceğiniz Quibe'si...", textPt: "Herança Culinária: A semelhança entre o Kibbeh temperado de Mardin e o onipresente Quibe brasileiro é fascinante..." },
-            sinop: { tag: "COĞRAFİ KADER", tr: "İki Sinop'un Hikayesi", pt: "Duas Sinops", textTr: "İsim Benzerliğinin Ötesi: Türkiye'nin en kuzeyindeki Sinop ile Brezilya'nın Mato Grosso eyaletindeki Sinop arasındaki bağ...", textPt: "Além do Nome: O vínculo entre a Sinop turca e a Sinop no Mato Grosso vai além do nome..." },
-            society: { tag: "SOSYOLOJİK ANALİZ", tr: "Halk Benzerlikleri: Ortak Ruh", pt: "Almas Gêmeas Culturais", textTr: "Sıcak Kanlılık: Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü misafirperverliği aynı kökten beslenir...", textPt: "Cordialidade: A tradição do 'Convidado de Deus' em Mardin e a hospitalidade brasileira bebem da mesma fonte..." }
+            carnaval: { 
+                tag: "MAGAZİN / RİO", tr: "Rio Karnavalı'nda Mardin Rüzgarı", pt: "Vento de Mardin no Rio", 
+                textTr: `Görkemli Buluşma: Rio de Janeiro'nun ünlü Sapucaí podyumlarında bu yıl beklenmedik bir estetik rüzgarı esti. Mardin'in binlerce yıllık telkari sanatının geometrik formları, Brezilyalı moda küratörlerinin radarına girdi. Dev kostüm başlıklarında ve kanat tasarımlarında, Mezopotamya gümüş işçiliğinin asaletini görmek tüm dünyayı şaşırttı.<br><br><b>Ritimlerin Kardeşliği:</b> Mardin'in ağırbaşlı Reyhani dansı ile Brezilya'nın durdurulamaz Sambası, ilk bakışta zıt görünse de her ikisi de topluluk bilincinden besleniyor. Reyhani'deki o vakur duruş, Sambadaki bedensel özgürlükle birleştiğinde; insanın ritme olan ebedi ihtiyacı ortaya çıkıyor. Rio sokaklarındaki coşku, Mardin düğünlerindeki zılgıt sesleriyle aynı frekansta yankılanıyor. Bu, sınırları aşan bir kutlama biçimi.`, 
+                textPt: `Encontro Majestoso: Nas famosas passarelas da Sapucaí, em Rio de Janeiro, soprou este ano um vento estético inesperado. As formas geométricas da milenar arte da filigrana de Mardin entraram no radar dos curadores de moda brasileiros. Ver a nobreza do trabalho em prata da Mesopotâmia em enormes adereços de cabeça e designs de asas surpreendeu o mundo inteiro.<br><br><b>Fraternidade de Ritmos:</b> A solene dança Reyhani de Mardin e o imparável Samba do Brasil podem parecer opostos à primeira vista, mas ambos se alimentam da consciência comunitária. Quando a postura digna da Reyhani se une à liberdade corporal do Samba, revela-se a necessidade eterna do ser humano pelo ritmo. A euforia nas ruas do Rio ecoa na mesma frequência que os sons de celebração nos casamentos de Mardin. É uma forma de celebração que transcende fronteiras.` 
+            },
+            craft: { 
+                tag: "ZANAAT ANALİZİ", tr: "Gümüşün Sabrı ve Doğanın Takısı", pt: "A Paciência da Prata e o Adorno da Natureza", 
+                textTr: `Mardin Telkarisi: Gümüş tellerin mikron düzeyinde inceltilip, sadece bir cımbız ve ateşle sabırla bükülmesiyle oluşan bu sanat, Mardin'in karakteridir. Her bir motif, bir ustanın ömründen süzülen sessiz bir hikaye, bir taşın üzerine düşen gölge kadar narindir.<br><br><b>Doğanın Ham Hali:</b> Öte yandan Amazon'un kalbinde, yerli halklar metali değil doğayı bizzat işlerler. Renkli kuş tüyleri, kurutulmuş tohumlar ve bitki lifleri; sadece birer süs değil, kişinin ormanla imzaladığı ruhsal kontratın nişanesidir. Mardinli ustanın gümüşteki detaycılığı ile Amazonlu yerlinin doğayı taklit etme yeteneği, insanın 'güzel' olanı yaratma hırsının iki farklı yansımasıdır. Biri ateşi kullanır, diğeri toprağı; ama sonuç aynıdır: Unutulmaya direnen bir miras.`, 
+                textPt: `Filigrana de Mardin: A arte formada pela redução de fios de prata ao nível mícron e pela curvatura paciente apenas com pinças e fogo é o próprio caráter de Mardin. Cada motivo é uma história silenciosa filtrada pela vida de um mestre, tão delicada quanto uma sombra caindo sobre a pedra.<br><br><b>O Estado Bruto da Natureza:</b> Por outro lado, no coração da Amazônia, os povos indígenas trabalham a própria natureza, não o metal. Penas coloridas, sementes secas e fibras vegetais não são meros adornos; são insígnias do contrato espiritual que o indivíduo assina com a floresta. O detalhismo do mestre de Mardin na prata e a habilidade do indígena amazônico em imitar a natureza são dois reflexos diferentes da ambição humana de criar o "belo". Um usa o fogo, o outro a terra; mas o resultado é o mesmo: um legado que resiste ao esquecimento.` 
+            },
+            gastronomy: { 
+                tag: "MUTFAK KÜLTÜRÜ", tr: "İçli Köfte & Quibe Karşılaştırması", pt: "Encontro de Paladares: Kibbeh vs Quibe", 
+                textTr: `Mutfak Mirası: Mardin'in baharatlı, reyhan dokunuşlu 'Irok'u ile Brezilya'nın her köşe başında bulabileceğiniz 'Quibe'si arasındaki benzerlik bir tesadüf değildir. Lübnan ve Suriye üzerinden Güney Amerika'ya göç eden bu lezzet, Brezilya toprağında yeni bir kimlik kazandı.<br><br><b>Kültürel Dönüşüm:</b> Mardin'de haşlama tekniği saflığı temsil ederken, Brezilya'da içine eklenen 'Catupiry' peyniri modern dünyanın bir yorumudur. Ancak ilk ısırığı aldığınızda o kimyonun ve bulgurun verdiği his, sizi binlerce kilometre ötedeki bir Mezopotamya sofrasına götürür. İki kültür de sofrayı bir paylaşım alanı, bir barış masası olarak görür. Mardin'de misafire mırra ikram etmek neyse, Brezilya'da dostla paylaşılan bir Quibe de odur; bir kalbe girme anahtarı.`, 
+                textPt: `Herança Culinária: A semelhança entre o 'Irok' de Mardin, temperado e com um toque de manjericão, e o 'Quibe' brasileiro encontrado em cada esquina não é coincidência. Essa iguaria, que migrou para a América do Sul via Líbano e Síria, ganhou uma nova identidade em solo brasileiro.<br><br><b>Transformação Cultural:</b> Enquanto em Mardin a técnica do cozimento representa a pureza, no Brasil a adição do queijo 'Catupiry' é uma interpretação do mundo moderno. No entanto, ao dar a primeira mordida, a sensação do cominho e do trigo te leva a uma mesa mesopotâmica a milhares de quilômetros de distância. Ambas as culturas veem a mesa como um espaço de partilha e paz. O que o mofra representa para o convidado em Mardin, o Quibe compartilhado com um amigo representa no Brasil: uma chave para entrar no coração.` 
+            },
+            sinop: { 
+                tag: "COĞRAFİ KADER", tr: "2 Kıta, 2 Şehir, Tek İsim: Sinop", pt: "Da Turquia para o Brasil: Duas Sinops", 
+                textTr: `İsim Benzerliğinin Ötesi: Türkiye'nin en kuzey ucu olan Karadeniz’in incisi Sinop ile Brezilya'nın Mato Grosso eyaletindeki genç şehir Sinop arasındaki bağ, haritadaki bir hatadan çok daha fazlasıdır. Her iki şehir de kendi coğrafyalarının 'limanı' olma misyonunu üstlenmiştir.<br><br><b>Su ve Yeşil:</b> Karadeniz Sinop’u, hırçın dalgalara karşı asırlardır dimdik duran bir kale şehriyken; Brezilya Sinop’u, Amazon ormanlarının sonsuz yeşilliğine açılan bir kapıdır. Birinde tarih taşlarda, diğerinde ise devasa ağaç köklerindedir. İsim babası olan kolonizasyon şirketinin bu ismi bir saygı duruşu olarak seçmesi, iki kıta arasında görünmez bir enerji hattı oluşturmuştur. Her iki Sinop da doğanın insan yerleşimiyle kurduğu o zorlu ama huzurlu dengeyi temsil eden yaşayan laboratuvarlar gibidir.`, 
+                textPt: `Além da Semelhança de Nome: O vínculo entre Sinop, a pérola do Mar Negro e o ponto mais ao norte da Turquia, e a jovem cidade de Sinop, no estado de Mato Grosso, no Brasil, é muito mais do que um erro no mapa. Ambas as cidades assumiram a missão de ser o 'porto' de suas respectivas geografias.<br><br><b>Água e Verde:</b> Enquanto a Sinop turca é uma cidade-fortaleza que se mantém erguida há séculos contra as ondas revoltas; a Sinop brasileira é um portal para o verde infinito da floresta amazônica. Em uma, a história está nas pedras; na outra, nas raízes de árvores colossais. O fato de a empresa de colonização ter escolhido este nome como uma homenagem criou uma linha de energia invisível entre os dois continentes. Ambas as Sinops são como laboratórios vivos que representam o equilíbrio difícil, mas pacífico, que a natureza estabelece com a ocupação humana.` 
+            },
+            society: { 
+                tag: "TOPLUM ● SOCIEDADE", tr: "Halk Benzerlikleri: Ortak Ruh", pt: "Almas Gêmeas Culturais", 
+                textTr: `Sıcak Kanlılık: Mardin'in 'Tanrı Misafiri' geleneği ile Brezilya'nın dünyaca ünlü 'Cordialidade' (misafirperverlik) ruhu aynı insani kökten beslenir. İki kültürde de yabancı, kapıdan girdiği andan itibaren bir tehdit değil, Tanrı tarafından gönderilmiş bir dosttur.<br><br><b>Ortak Tutkular:</b> Bitmek bilmeyen kalabalık aile sofraları, yüksek sesli ve kahkahası bol sohbetler, müziğin acıda da sevinçte de en yakın yoldaş olması... Bunlar Mardin ve Brezilya'yı binlerce kilometreye rağmen gönül komşusu yapar. Her iki halk da hayatın zorluklarına karşı aynı silahı kullanır: Kutlama. Mardin’de bir taziye evindeki sessiz dayanışma ile Brezilya’daki bir topluluk dayanışması, insanın yalnız kalamayacağının en büyük kanıtıdır. Biz, mesafelerin ayıramadığı bir 'insanlık ailesinin' farklı lehçeleriyiz.`, 
+                textPt: `Cordialidade: A tradição do 'Convidado de Deus' em Mardin e o espírito de 'Cordialidade' mundialmente famoso do Brasil bebem da mesma raiz humana. Em ambas as culturas, o estrangeiro, a partir do momento em que cruza a porta, não é uma ameaça, mas um amigo enviado por Deus.<br><br><b>Paixões Comuns:</b> Mesas familiares intermináveis e lotadas, conversas barulhentas e cheias de risadas, a música como a companheira mais próxima tanto na dor quanto na alegria... Isso torna Mardin e Brasil vizinhos de alma, apesar dos milhares de quilômetros. Ambos os povos usam a mesma arma contra as dificuldades da vida: a celebração. A solidariedade silenciosa em uma casa de luto em Mardin e a solidariade comunitária no Brasil são as maiores provas de que o ser humano não pode ficar sozinho. Somos diferentes dialetos de uma 'família humana' que as distâncias não conseguem separar.` 
+            }
         };
 
         function openReader(key) {
@@ -231,19 +249,6 @@
         }
 
         function copyLink() { navigator.clipboard.writeText(window.location.href); alert("Bağlantı kopyalandı!"); }
-        
-        // MOUSE PARALLAX
-        if (window.innerWidth > 1024) {
-            document.addEventListener('mousemove', (e) => {
-                const cards = document.querySelectorAll('.card');
-                cards.forEach(card => {
-                    const bg = card.querySelector('.card-bg'); if(!bg) return;
-                    const rect = card.getBoundingClientRect();
-                    const x = (e.clientX - rect.left) / rect.width; const y = (e.clientY - rect.top) / rect.height;
-                    bg.style.transform = `translate(${(x - 0.5) * 35}px, ${(y - 0.5) * 35}px) scale(1.15)`;
-                });
-            });
-        }
     </script>
 </body>
 </html>
