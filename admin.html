@@ -1,1 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>MB Journal | Editör Paneli</title>
+    <style>
+        body { background: #F8F6F2; font-family: sans-serif; padding: 50px; }
+        .admin-box { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        input, textarea, select { width: 100%; margin-bottom: 15px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { background: #1A1A1A; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .status { margin-top: 15px; font-size: 0.8rem; color: #B08D57; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="admin-box">
+        <h2 style="font-family: serif; text-align: center;">Yeni Yazı Ekle</h2>
+        <input type="password" id="gh-token" placeholder="GitHub Token (PAT)">
+        <select id="category">
+            <option value="MAGAZİN">Magazin</option>
+            <option value="GASTRONOMİ">Gastronomi</option>
+            <option value="ZANAAT">Zanaat</option>
+            <option value="COĞRAFİ KADER">Coğrafi Kader</option>
+        </select>
+        <input type="text" id="img-url" placeholder="Görsel URL">
+        <input type="text" id="tr-title" placeholder="Türkçe Başlık">
+        <textarea id="tr-body" rows="6" placeholder="Türkçe İçerik..."></textarea>
+        <button onclick="publishArticle()">YAYINLA & OTOMATİK ÇEVİR</button>
+        <div id="status" class="status"></div>
+    </div>
 
+    <script>
+        async function translateText(text) {
+            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=tr|pt`);
+            const data = await res.json();
+            return data.responseData.translatedText;
+        }
+
+        async function publishArticle() {
+            const token = document.getElementById('gh-token').value;
+            const status = document.getElementById('status');
+            status.innerText = "Çevriliyor ve gönderiliyor...";
+
+            // Verileri al
+            const trTitle = document.getElementById('tr-title').value;
+            const trBody = document.getElementById('tr-body').value;
+            
+            // Otomatik Çeviri
+            const ptTitle = await translateText(trTitle);
+            const ptBody = await translateText(trBody);
+
+            const newEntry = {
+                id: Date.now(),
+                category: document.getElementById('category').value,
+                image: document.getElementById('img-url').value,
+                tr: { title: trTitle, body: trBody },
+                pt: { title: ptTitle, body: ptBody },
+                atmos: "HAVA: GÜNEŞLİ ● RUH HALİ: ÜRETKEN",
+                date: new Date().toLocaleDateString('tr-TR')
+            };
+
+            // GitHub API İşlemleri (Dosyayı oku ve güncelle)
+            const url = 'https://api.github.com/repos/KULLANICI_ADIN/REPO_ADIN/contents/47/articles.json';
+            
+            try {
+                const getFile = await fetch(url, { headers: { Authorization: `token ${token}` } });
+                const fileData = await getFile.json();
+                const content = JSON.parse(atob(fileData.content));
+                content.unshift(newEntry); // En başa ekle
+
+                await fetch(url, {
+                    method: 'PUT',
+                    headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: "Yeni yazı eklendi",
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+                        sha: fileData.sha
+                    })
+                });
+                status.innerText = "BAŞARIYLA YAYINLANDI!";
+            } catch (e) {
+                status.innerText = "Hata oluştu: " + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
