@@ -3,134 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDINBRAZIL | Ahmet Çınarbaş Exclusive</title>
+    <title>MARDINBRAZIL | Ahmet Çınarbaş Journal</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,900;1,6..96,900&family=Plus+Jakarta+Sans:wght@200;400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,900;1,6..96,400&family=Plus+Jakarta+Sans:wght@200;400;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #FDFCFB; 
-            --ink: #121212; 
-            --accent: #C5A059; /* Antik Altın */
-            --glass: rgba(255, 255, 255, 0.7);
-            --radius-lg: 60px;
-            --radius-sm: 30px;
-            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+            --bg: #F9F7F2; 
+            --ink: #1D1D1B; 
+            --accent: #B08D57; 
+            --white: #FFFFFF;
+            --clay: #E8E2D9;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
             background: var(--bg); 
             color: var(--ink); 
             font-family: 'Plus Jakarta Sans', sans-serif;
-            line-height: 1.6;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(197, 160, 89, 0.05) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(31, 122, 31, 0.05) 0%, transparent 40%);
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* CUSTOM CURSOR EFFECT (İsteğe Bağlı) */
-        .cursor-hint { position: fixed; font-size: 0.6rem; font-weight: 800; pointer-events: none; z-index: 9999; text-transform: uppercase; color: var(--accent); }
+        /* DİNAMİK ARKA PLAN DOKUSU */
+        body::before {
+            content: ""; position: fixed; inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+            opacity: 0.3; pointer-events: none; z-index: -1;
+        }
 
-        /* HEADER: Glassmorphism */
+        /* HEADER: ARCHIVAL MINIMALISM */
         header {
-            padding: 40px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky; top: 0; z-index: 1000;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0,0,0,0.03);
+            padding: 50px 8%;
+            display: flex; justify-content: space-between; align-items: baseline;
+            position: relative; z-index: 100;
         }
 
         .logo {
             font-family: 'Bodoni Moda', serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            text-decoration: none;
-            color: var(--ink);
-            letter-spacing: -3px;
+            font-size: 2.8rem; font-weight: 900; letter-spacing: -3px;
+            text-decoration: none; color: var(--ink);
         }
 
-        /* GRID SYSTEM */
-        .main-wrapper { max-width: 1500px; margin: 0 auto; padding: 80px 8%; }
-        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 40px; }
+        .header-meta { text-align: right; line-height: 1; }
+        .header-meta span { display: block; font-size: 0.65rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px; }
 
-        /* HERO CARD */
-        .hero-card {
-            grid-column: span 8;
-            height: 600px;
-            background: url('https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=small') center/cover;
-            border-radius: var(--radius-lg);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.08);
-            transition: var(--ease) 0.8s;
-        }
-        .hero-card:hover { transform: scale(0.98); }
-        .hero-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 10%, transparent 60%);
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 60px; color: white;
-        }
+        /* BENTO-EDITORIAL GRID */
+        .wrapper { max-width: 1600px; margin: 0 auto; padding: 0 8% 100px; }
+        
+        .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px; }
 
-        /* PROFILE SECTION */
-        .profile-card {
-            grid-column: span 4;
-            background: white;
-            border-radius: var(--radius-lg);
+        /* ANA KARTLAR */
+        .tile {
+            background: var(--white);
+            border-radius: 50px;
             padding: 50px;
-            text-align: center;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            border: 1px solid rgba(0,0,0,0.05);
             transition: var(--ease) 0.6s;
-        }
-        .profile-card:hover { border-color: var(--accent); }
-        .profile-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; margin-bottom: 30px; border: 10px solid var(--bg); }
-
-        /* ARTICLE CARDS */
-        .post-card {
-            grid-column: span 4;
-            background: white;
-            border-radius: var(--radius-sm);
-            padding: 40px;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: var(--ease) 0.5s;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.04);
             display: flex; flex-direction: column; justify-content: space-between;
-            min-height: 450px;
+            position: relative; overflow: hidden;
         }
-        .post-card:hover { background: var(--ink); color: white; transform: translateY(-20px); }
 
-        /* TYPOGRAPHY DETAILS */
-        .eyebrow { font-size: 0.65rem; font-weight: 800; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
-        .title-h2 { font-family: 'Bodoni Moda', serif; font-size: 3.5rem; line-height: 0.9; margin-bottom: 25px; }
-        .title-h3 { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; margin-bottom: 15px; }
+        .tile:hover {
+            transform: scale(0.98);
+            box-shadow: 0 40px 80px rgba(176, 141, 87, 0.08);
+            border-color: var(--accent);
+        }
 
-        /* MODAL (THE READER) */
-        .reader {
+        .tile-main { grid-column: span 8; height: 550px; background: var(--clay) url('https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=large') center/cover; color: white; border: none; }
+        .tile-main::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); }
+        .tile-main .content { position: relative; z-index: 2; margin-top: auto; }
+
+        .tile-author { grid-column: span 4; background: var(--white); align-items: center; text-align: center; }
+        .tile-author img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 30px; border: 1px solid var(--clay); padding: 10px; }
+
+        .tile-text { grid-column: span 4; min-height: 400px; }
+        .tile-video { grid-column: span 8; padding: 0; height: 400px; }
+        .tile-video iframe { width: 100%; height: 100%; border: none; border-radius: 50px; }
+
+        /* TYPOGRAPHY */
+        .category { font-size: 0.7rem; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 25px; display: block; }
+        .display-1 { font-family: 'Bodoni Moda', serif; font-size: 3.8rem; line-height: 0.85; margin-bottom: 20px; font-style: italic; }
+        .display-2 { font-family: 'Bodoni Moda', serif; font-size: 2.5rem; line-height: 1.1; margin-bottom: 20px; }
+
+        /* THE READ-ROOM (MODAL) */
+        .read-room {
             position: fixed; inset: 0; background: var(--bg); z-index: 2000;
             display: none; overflow-y: auto; padding: 120px 10%;
-            cursor: default;
         }
-        .reader-header { max-width: 1000px; margin: 0 auto 80px; text-align: center; }
-        .dual-flow { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; max-width: 1200px; margin: 0 auto; }
-        .tr-flow { font-family: 'Bodoni Moda', serif; font-size: 2.5rem; line-height: 1.2; font-style: italic; }
-        .pt-flow { font-size: 1.3rem; line-height: 1.8; color: #555; border-left: 2px solid var(--accent); padding-left: 40px; }
 
-        .close-reader {
-            position: fixed; top: 50px; right: 8%; background: var(--ink); color: white;
-            width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 1.5rem;
-            display: flex; align-items: center; justify-content: center; z-index: 2100;
+        .room-close {
+            position: fixed; top: 50px; right: 50px; width: 50px; height: 50px;
+            background: var(--ink); color: white; border: none; border-radius: 50%;
+            font-size: 1.5rem; cursor: pointer; z-index: 2100; transition: 0.3s;
         }
+
+        .article-layout { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+
+        .column-tr { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.2; color: var(--ink); }
+        .column-pt { font-size: 1.2rem; line-height: 1.8; color: #666; font-style: italic; border-top: 1px solid var(--accent); padding-top: 30px; }
 
         /* FOOTER */
-        footer { padding: 100px 8%; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        footer { padding: 100px 8%; display: flex; justify-content: space-between; align-items: center; opacity: 0.4; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
 
-        @media (max-width: 1100px) {
-            .hero-card, .profile-card, .post-card { grid-column: span 12; }
-            .dual-flow { grid-template-columns: 1fr; gap: 40px; }
-            .tr-flow { font-size: 1.8rem; }
+        @media (max-width: 1024px) {
+            .tile-main, .tile-author, .tile-text, .tile-video { grid-column: span 12; }
+            .article-layout { grid-template-columns: 1fr; }
+            .display-1 { font-size: 2.8rem; }
         }
     </style>
 </head>
@@ -138,117 +120,106 @@
 
     <header>
         <a href="#" class="logo">MARDINBRAZIL</a>
-        <div style="font-weight: 800; font-size: 0.7rem; letter-spacing: 2px;">JOURNALIST ARCHIVE / 2026</div>
+        <div class="header-meta">
+            <span>Ahmet Çınarbaş</span>
+            <span style="opacity: 0.5;">Digital Archive 2026</span>
+        </div>
     </header>
 
-    <main class="main-wrapper">
-        <div class="bento-grid">
+    <main class="wrapper">
+        <div class="bento">
             
-            <section class="hero-card" onclick="show('feat-1')">
-                <div class="hero-overlay">
-                    <span class="eyebrow" style="color: var(--accent);">Featured Story</span>
-                    <h2 class="title-h2">Amazon’un Kalbinde<br>Mardin İzleri.</h2>
-                    <p style="opacity: 0.8; max-width: 500px;">Brezilya’nın nemli ormanlarından Mezopotamya’nın kuru rüzgarlarına uzanan derin bir analiz.</p>
+            <section class="tile tile-main" onclick="openRoom('feat-1')">
+                <div class="content">
+                    <span class="category" style="color: white; opacity: 0.8;">Haftalık Makale</span>
+                    <h2 class="display-1">Kıtalararası<br>Sessizliğin Dili.</h2>
+                    <p>Mardin'in taşlarından Amazon'un sularına uzanan bir hafıza yolculuğu.</p>
                 </div>
             </section>
 
-            <section class="profile-card" onclick="show('bio')">
-                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="profile-img">
-                <span class="eyebrow">The Author</span>
-                <h3 class="title-h3">Ahmet Çınarbaş</h3>
-                <p style="font-size: 0.8rem; color: #777;">Mardin-Brezilya Kültürel Diplomasisi</p>
-                <div style="margin-top: 30px; padding: 10px 30px; border-radius: 100px; border: 1px solid #eee; font-size: 0.7rem; font-weight: 800;">PROFILE INFO</div>
+            <section class="tile tile-author" onclick="openRoom('author-room')">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" alt="Ahmet Çınarbaş">
+                <span class="category">O Escritor</span>
+                <h3 class="display-2">Ahmet<br>Çınarbaş</h3>
+                <p style="font-size: 0.8rem; margin-top: 15px;">Kültürel Köprüler İnşa Eden Bir Gazeteci</p>
             </section>
 
-            <article class="post-card" onclick="show('post-1')">
+            <article class="tile tile-text" onclick="openRoom('post-1')">
                 <div>
-                    <span class="eyebrow">Daily Column</span>
-                    <h3 class="title-h3">Güneşin İki Farklı Coğrafyada Aynı Doğuşu</h3>
-                    <p>Coğrafya kaderdir ama ritim evrenseldir.</p>
+                    <span class="category">Köşe Yazısı</span>
+                    <h3 class="display-2">Güneşin İki Doğuşu</h3>
+                    <p>Mardin ve Rio arasındaki gizli benzerlikler üzerine.</p>
                 </div>
-                <div style="font-weight: 800; font-size: 0.7rem; letter-spacing: 2px;">READ STORY →</div>
+                <div style="font-weight: 900; font-size: 0.7rem; letter-spacing: 2px; margin-top: 30px;">TR // PT</div>
             </article>
 
-            <div class="post-card" style="grid-column: span 8; padding: 0; overflow: hidden; height: 450px;">
-                <iframe src="https://www.youtube.com/embed/jg2q0hXy85c" style="width: 100%; height: 100%; border: none;"></iframe>
+            <div class="tile tile-video">
+                <iframe src="https://www.youtube.com/embed/jg2q0hXy85c" title="MardinBrazil Video"></iframe>
             </div>
+
+            <article class="tile tile-text" onclick="openRoom('post-2')">
+                <div>
+                    <span class="category">Röportaj</span>
+                    <h3 class="display-2">Ritmin Peşinde</h3>
+                    <p>Brezilya sokaklarında sosyolojik bir yolculuk.</p>
+                </div>
+                <div style="font-weight: 900; font-size: 0.7rem; letter-spacing: 2px; margin-top: 30px;">FULL TEXT →</div>
+            </article>
 
         </div>
     </main>
 
-    <div id="feat-1" class="reader">
-        <button class="close-reader" onclick="hide('feat-1')">×</button>
-        <div class="reader-header">
-            <span class="eyebrow">Haftalık Analiz</span>
-            <h2 class="title-h2">Kayıp Zamanın İzinde İki Kıta</h2>
-        </div>
-        <div class="dual-flow">
-            <div class="tr-flow">
-                "Mardin’in dar sokaklarında yürürken duyduğunuz o yankı, aslında São Paulo’nun arka sokaklarındaki o melankolik fado ile aynı kökten gelir."
+    <div id="feat-1" class="read-room">
+        <button class="room-close" onclick="closeRoom('feat-1')">×</button>
+        <div class="article-layout">
+            <div class="column-tr">
+                "Bir yanda Mezopotamya’nın sarı sıcak taşları, diğer yanda Amazon’un nemli yeşilliği... İki farklı dünya, tek bir insanlık hikayesi."
             </div>
-            <div class="pt-flow">
-                "O eco que você ouve ao caminhar pelas ruas estreitas de Mardin na verdade vem da mesma raiz que aquele fado melancólico nas ruas secundárias de São Paulo. A busca pelo sentido da existência une essas duas terras distantes."
+            <div class="column-pt">
+                "De um lado as pedras quentes e amarelas da Mesopotâmia, do outro o verde úmido da Amazônia... Dois mundos diferentes, uma única história da humanidade."
             </div>
         </div>
     </div>
 
-    <div id="bio" class="reader">
-        <button class="close-reader" onclick="hide('bio')">×</button>
-        <div class="reader-header">
-            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 150px; height: 150px; border-radius: 50%; margin-bottom: 30px;">
-            <h2 class="title-h3">Ahmet Çınarbaş</h2>
-        </div>
-        <div class="dual-flow">
-            <div class="tr-flow">
-                Gazetecilik benim için sadece olayları raporlamak değil, bir insanın ruhunu başka bir kıtaya tercüme etmektir.
-            </div>
-            <div class="pt-flow">
-                Para mim, o jornalismo não é apenas relatar eventos, é traduzir a alma de uma pessoa para outro continente. Ahmet Çınarbaş é um arquivista cultural dedicado a documentar a conexão humana entre o Oriente e o Ocidente.
+    <div id="author-room" class="read-room">
+        <button class="room-close" onclick="closeRoom('author-room')">×</button>
+        <div class="article-layout" style="text-align: center; grid-template-columns: 1fr;">
+            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 50px;">
+            <div class="column-tr" style="font-size: 3rem;">Ahmet Çınarbaş</div>
+            <div class="column-pt" style="max-width: 700px; margin: 0 auto; border: none;">
+                Jornalista e pesquisador. Documentando as conexões culturais entre a Turquia e o Brasil desde 2017. 
+                <br><br>
+                Gazeteci ve araştırmacı. 2017'den bu yana Türkiye ve Brezilya arasındaki kültürel bağları belgeliyor.
             </div>
         </div>
     </div>
 
-    <div id="post-1" class="reader">
-        <button class="close-reader" onclick="hide('post-1')">×</button>
-        <div class="reader-header">
-            <span class="eyebrow">04.03.2026</span>
-            <h2 class="title-h2">Güneşin Ritmi</h2>
-        </div>
-        <div class="dual-flow">
-            <div class="tr-flow">
-                Mardin'in sarı taşlarına vuran ışık ile Ipanema'nın sularına vuran ışık aynı kaynaktan beslenir: İnsanlık tarihi.
+    <div id="post-1" class="read-room">
+        <button class="room-close" onclick="closeRoom('post-1')">×</button>
+        <div class="article-layout">
+            <div class="column-tr">
+                Mardin’in kalesinden batan güneş ile Ipanema’da denizin içine düşen gün ışığı, aslında aynı özlemi fısıldar.
             </div>
-            <div class="pt-flow">
-                A luz que atinge as pedras amarelas de Mardin e a luz que atinge as águas de Ipanema vêm da mesma fonte: a história humana. Através de minhas crônicas, procuro mostrar que não somos tão diferentes quanto os mapas sugerem.
+            <div class="column-pt">
+                O sol que se põe do castelo de Mardin e a luz do dia que cai no mar em Ipanema sussurram, na verdade, o mesmo anseio.
             </div>
         </div>
     </div>
 
     <footer>
-        <div class="logo" style="font-size: 1.5rem;">MARDINBRAZIL</div>
-        <div style="font-size: 0.7rem; font-weight: 800; opacity: 0.5;">© 2026 Ahmet Çınarbaş Arşivi. Mezopotamya’dan Brezilya’ya.</div>
+        <div>MardinBrazil © 2026</div>
+        <div style="text-align: right;">Ahmet Çınarbaş Digital Project</div>
     </footer>
 
     <script>
-        function show(id) {
+        function openRoom(id) {
             document.getElementById(id).style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-        function hide(id) {
+        function closeRoom(id) {
             document.getElementById(id).style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-
-        // Escape tuşu ile kapatma
-        document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") {
-                const readers = document.querySelectorAll('.reader');
-                readers.forEach(r => {
-                    r.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                });
-            }
-        });
     </script>
 </body>
 </html>
