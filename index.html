@@ -3,200 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARDINBRAZIL | Ahmet Çınarbaş Arşivi</title>
+    <title>MARDINBRAZIL | Ahmet Çınarbaş</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,900;1,6..96,900&family=Plus+Jakarta+Sans:wght@300;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #FCFAF7; 
-            --accent: #D4A373; 
-            --text-main: #1F1F1F;
-            --text-sub: #7A7A7A;
-            --radius: 45px;
-            --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            --bg: #f2f0eb;
+            --ink: #1a1a1a;
+            --gold: #c5a059;
+            --soft-white: #ffffff;
+            --transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: var(--bg); 
-            color: var(--text-main); 
-            font-family: 'Instrument Sans', sans-serif;
-            line-height: 1.6;
+            color: var(--ink); 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
         }
 
-        /* HEADER */
+        /* LOGO MERKEZİ VE SABİT */
+        .brand-layer {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bodoni Moda', serif;
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 900;
+            color: rgba(0,0,0,0.03);
+            white-space: nowrap;
+            z-index: -1;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+
         header {
-            padding: 30px 6%;
+            padding: 50px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky; top: 0; z-index: 1000;
-            background: rgba(252, 250, 247, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0,0,0,0.03);
+            mix-blend-mode: multiply;
         }
 
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+        .logo-top {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 1.5rem;
             font-weight: 900;
             text-decoration: none;
-            color: var(--text-main);
-            letter-spacing: -1.5px;
+            color: var(--ink);
+            border-bottom: 2px solid var(--gold);
         }
 
-        /* GRID SYSTEM */
-        .main-container { max-width: 1400px; margin: 0 auto; padding: 40px 6%; }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 25px;
-        }
-
-        .card {
-            background: #FFFFFF;
-            border-radius: var(--radius);
-            padding: 40px;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: var(--transition);
-            cursor: pointer;
-            overflow: hidden;
+        /* İÇERİK AKIŞI */
+        .editorial-wrapper {
+            padding: 0 8% 100px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 150px;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 40px 80px rgba(212, 163, 115, 0.1);
-            border-color: var(--accent);
+        .content-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 100px;
+            cursor: pointer;
         }
 
-        .card-large { grid-column: span 8; min-height: 450px; }
-        .card-medium { grid-column: span 4; }
-        .card-video { grid-column: span 6; padding: 0; height: 350px; }
-        .card-video iframe { width: 100%; height: 100%; border: none; border-radius: var(--radius); }
+        .content-item:nth-child(even) { direction: rtl; }
+        .content-item:nth-child(even) .text-side { direction: ltr; }
 
-        /* YAZAR KARTI */
-        .profile-card { grid-column: span 4; text-align: center; align-items: center; justify-content: center; }
-        .profile-card img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 5px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-
-        .tag { color: var(--accent); font-weight: 700; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; display: block; }
-        h3 { font-family: 'Playfair Display', serif; font-size: 2rem; line-height: 1.2; }
-
-        /* MODAL */
-        .modal {
-            position: fixed; inset: 0; background: var(--bg); z-index: 2000;
-            display: none; overflow-y: auto; padding: 100px 8%;
-        }
-        .close-btn { 
-            position: fixed; top: 40px; right: 5%; 
-            background: var(--text-main); color: #fff; border: none; 
-            padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer;
+        .image-side {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 150px 0 150px;
+            aspect-ratio: 4/5;
+            transition: var(--transition);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.05);
         }
 
-        /* ÇİFT DİL İÇERİK */
-        .detail-wrap { max-width: 900px; margin: 0 auto; }
-        .tr-text { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--text-main); margin-bottom: 15px; display: block; }
-        .pt-text { font-size: 1.2rem; color: var(--text-sub); font-style: italic; border-left: 3px solid var(--accent); padding-left: 25px; display: block; margin-bottom: 60px; }
+        .content-item:hover .image-side {
+            transform: scale(0.95) rotate(-2deg);
+            border-radius: 150px 0 150px 0;
+        }
 
-        /* FOOTER */
-        footer {
-            margin-top: 100px;
-            padding: 80px 6%;
-            background: #fff;
-            border-top: 1px solid rgba(0,0,0,0.05);
+        .text-side h2 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            line-height: 0.9;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .tag-meta {
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: block;
+            font-weight: 800;
+        }
+
+        /* YAZAR PORTRESİ - PROFESYONEL */
+        .author-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 0;
             text-align: center;
         }
-        .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; margin-bottom: 20px; display: block; }
-        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; list-style: none; }
-        .footer-links a { text-decoration: none; color: var(--text-sub); font-size: 0.9rem; font-weight: 600; transition: 0.3s; }
-        .footer-links a:hover { color: var(--accent); }
 
-        @media (max-width: 1024px) { .card-large, .card-medium, .card-video, .profile-card { grid-column: span 12; } }
+        .author-trigger {
+            position: relative;
+            display: inline-block;
+        }
+
+        .author-trigger img {
+            width: 300px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 200px;
+            filter: sepia(0.5) contrast(1.1);
+            transition: var(--transition);
+        }
+
+        .author-trigger:hover img {
+            filter: sepia(0);
+            transform: translateY(-20px);
+        }
+
+        /* MODAL - ÇİFT DİL ODAKLI */
+        .reader-modal {
+            position: fixed; inset: 0; background: var(--soft-white); z-index: 2000;
+            display: none; overflow-y: auto; padding: 150px 10%;
+        }
+
+        .close-reader {
+            position: fixed; top: 50px; left: 50px; font-weight: 800; cursor: pointer;
+            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;
+        }
+
+        .dual-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            margin-top: 50px;
+        }
+
+        .tr-side { font-family: 'Bodoni Moda', serif; font-size: 2.5rem; line-height: 1.1; }
+        .pt-side { font-size: 1.2rem; line-height: 1.8; color: #666; font-style: italic; border-top: 1px solid var(--gold); padding-top: 30px; }
+
+        footer {
+            padding: 100px 8%;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .content-item { grid-template-columns: 1fr; gap: 40px; }
+            .dual-column { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="brand-layer">MARDINBRAZIL</div>
+
     <header>
-        <a href="#" class="logo">MARDINBRAZIL</a>
+        <a href="#" class="logo-top">AHMET ÇINARBAŞ</a>
+        <div style="font-weight: 800; font-size: 0.7rem; letter-spacing: 3px;">2017 — 2026 ARCHIVE</div>
     </header>
 
-    <main class="main-container">
-        <div class="content-grid">
-            
-            <section class="card profile-card" onclick="openModal('authorDetail')">
+    <div class="editorial-wrapper">
+        
+        <section class="author-section">
+            <div class="author-trigger" onclick="openFull('author-modal')">
                 <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" alt="Ahmet Çınarbaş">
-                <h3>Ahmet Çınarbaş</h3>
-                <span class="tag">GAZETECİ // JORNALISTA</span>
-            </section>
+                <h3 style="margin-top: 30px; font-family: 'Bodoni Moda'; font-size: 3rem;">O Escritor.</h3>
+                <span class="tag-meta">Profili Gör</span>
+            </div>
+        </section>
 
-            <article class="card card-large" onclick="openModal('koseYazisi')">
-                <div style="margin-bottom: auto;"><span class="tag">YENİ KÖŞE YAZISI</span></div>
-                <h3>Güneşin İki Farklı Coğrafyada Aynı Doğuşu</h3>
-                <p style="color: var(--text-sub);">Mardin'in sarı taşlarından Brezilya'nın sonsuz yeşiline bir bakış.</p>
-            </article>
+        <article class="content-item" onclick="openFull('column-1')">
+            <div class="image-side" style="background: url('https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=small') center/cover;"></div>
+            <div class="text-side">
+                <span class="tag-meta">Köşe Yazısı // Crônica</span>
+                <h2>Taşın ve<br>Güneşin<br>Hafızası.</h2>
+                <p style="opacity: 0.6; max-width: 400px;">Mardin'den Brezilya'ya uzanan kültürel bir manifesto.</p>
+            </div>
+        </article>
 
-            <div class="card card-video"><iframe src="https://www.youtube.com/embed/jg2q0hXy85c"></iframe></div>
-            <div class="card card-video"><iframe src="https://www.youtube.com/embed/-53mGJ4h5sQ"></iframe></div>
+        <article class="content-item" onclick="openFull('interview-1')">
+            <div class="image-side" style="background: #e5e5e5; display: flex; align-items: center; justify-content: center;">
+                <span style="font-family: 'Bodoni Moda'; font-size: 10rem; color: #fff;">01</span>
+            </div>
+            <div class="text-side">
+                <span class="tag-meta">Röportaj // Entrevista</span>
+                <h2>Ritmin<br>Sosyolojisi.</h2>
+                <p style="opacity: 0.6; max-width: 400px;">Samba okullarının derinliklerinde bir gazetecilik serüveni.</p>
+            </div>
+        </article>
 
-            <article class="card card-medium" onclick="openModal('roportaj1')">
-                <span class="tag">RÖPORTAJ</span>
-                <h3>Ritmin Kalbi</h3>
-                <p>Brezilya'daki toplumsal yapı üzerine özel söyleşi.</p>
-            </article>
-        </div>
-    </main>
+    </div>
 
-    <div id="authorDetail" class="modal">
-        <button class="close-btn" onclick="closeModal('authorDetail')">KAPAT // FECHAR</button>
-        <div class="detail-wrap" style="text-align: center;">
-            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:220px; height:220px; border-radius:50%; border:10px solid #fff; box-shadow:0 20px 40px rgba(0,0,0,0.05); margin-bottom:30px;">
-            <h1 style="font-family:'Playfair Display'; font-size:3.5rem;">Ahmet Çınarbaş</h1>
-            <p style="font-size: 1.4rem; color:var(--accent); margin-bottom:40px;">Gazeteci, Kültür Araştırmacısı ve Dijital Arşivci</p>
-            <div style="text-align: left;">
-                <span class="tr-text">"Haberin peşinde geçen bir ömür, kültürlerin izinde atılan adımlar."</span>
-                <span class="pt-text">"Uma vida perseguindo a notícia, passos seguindo o rastro das culturas."</span>
+    <div id="author-modal" class="reader-modal">
+        <span class="close-reader" onclick="closeFull('author-modal')">← Geri Dön / Voltar</span>
+        <div class="dual-column">
+            <div class="tr-side">
+                Gerçeğin peşinde, Mezopotamya'dan Latin Amerika'ya uzanan bir köprü.
+            </div>
+            <div class="pt-side">
+                Em busca da verdade, uma ponte que se estende da Mesopotâmia à América Latina. Ahmet Çınarbaş é um jornalista dedicado a documentar a essência das culturas.
             </div>
         </div>
     </div>
 
-    <div id="koseYazisi" class="modal">
-        <button class="close-btn" onclick="closeModal('koseYazisi')">KAPAT // FECHAR</button>
-        <div class="detail-wrap">
-            <span class="tag">KÖŞE YAZISI // CRÔNICA</span>
-            <span class="tr-text">Mardin’den Amazon’a: Taşın ve Suyun Hikayesi</span>
-            <span class="pt-text">De Mardin à Amazônia: A História da Pedra e da Água</span>
-            <p style="font-size: 1.3rem; margin-bottom: 30px;">Mardin'in kadim taşları binlerce yıllık bir sessizliği fısıldarken, Brezilya'nın nehirleri durmak bilmeyen bir enerjiyi taşır. Bu iki uç nokta aslında tek bir hakikatte birleşir: İnsanın hikayesi.</p>
-            <p style="font-size: 1.1rem; color: var(--text-sub); font-style: italic;">Enquanto as antigas pedras de Mardin sussurram um silêncio de milênios, os rios do Brasil carregam uma energia incessante. Esses dois extremos se unem em uma única verdade: A história humana.</p>
-        </div>
-    </div>
-
-    <div id="roportaj1" class="modal">
-        <button class="close-btn" onclick="closeModal('roportaj1')">KAPAT // FECHAR</button>
-        <div class="detail-wrap">
-            <span class="tag">RÖPORTAJ // ENTREVISTA</span>
-            <span class="tr-text">"Brezilya'da sokaklar, insanların kimliğini yansıtan dev bir sahne gibidir."</span>
-            <span class="pt-text">"No Brasil, as ruas são como um palco gigante que reflete a identidade das pessoas."</span>
+    <div id="column-1" class="reader-modal">
+        <span class="close-reader" onclick="closeFull('column-1')">← Geri Dön / Voltar</span>
+        <span class="tag-meta">Köşe Yazısı</span>
+        <div class="dual-column">
+            <div class="tr-side">
+                Mardin'in sarı taşları ile Brezilya'nın enerjisi aslında aynı insani özlemin iki farklı yansımasıdır.
+            </div>
+            <div class="pt-side">
+                As pedras amarelas de Mardin e a energia do Brasil são, na verdade, dois reflexos diferentes do mesmo anseio humano. Através das minhas crônicas, exploro essa conexão profunda.
+            </div>
         </div>
     </div>
 
     <footer>
-        <span class="footer-logo">MARDINBRAZIL</span>
-        <ul class="footer-links">
-            <li><a href="#">Arşiv</a></li>
-            <li><a href="#">Röportajlar</a></li>
-            <li><a href="#">Köşe Yazıları</a></li>
-            <li><a href="#">İletişim</a></li>
-        </ul>
-        <p style="font-size: 0.8rem; color: var(--text-sub);">© 2026 Ahmet Çınarbaş Dijital Arşivi. Tüm Hakları Saklıdır.</p>
+        <div>MARDINBRAZIL © 2026</div>
+        <div>Ahmet Çınarbaş Digital Archive</div>
     </footer>
 
     <script>
-        function openModal(id) { document.getElementById(id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function openFull(id) {
+            document.getElementById(id).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeFull(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     </script>
 </body>
 </html>
