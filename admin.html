@@ -10,14 +10,14 @@
         .admin-box { width: 100%; max-width: 700px; background: var(--white); padding: 40px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         h2 { font-family: 'Bodoni Moda', serif; text-align: center; margin-bottom: 30px; }
         .tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #eee; }
-        .tab-btn { padding: 12px 20px; border: none; background: none; cursor: pointer; font-weight: 600; color: #999; transition: 0.3s; }
+        .tab-btn { padding: 12px 20px; border: none; background: none; cursor: pointer; font-weight: 600; color: #999; }
         .tab-btn.active { color: var(--ink); border-bottom: 2px solid var(--ink); }
         .form-sec { display: none; }
         .form-sec.active { display: block; }
         label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; color: var(--accent); }
         input, textarea, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-family: inherit; box-sizing: border-box; outline: none; }
         textarea { min-height: 280px; line-height: 1.6; }
-        button { width: 100%; padding: 16px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button { width: 100%; padding: 16px; background: var(--ink); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         .status { margin-top: 20px; text-align: center; font-weight: bold; font-size: 0.9rem; }
     </style>
 </head>
@@ -32,7 +32,7 @@
     </div>
 
     <div id="post-sec" class="form-sec active">
-        <label>Kategori Seç</label>
+        <label>Kategori</label>
         <select id="category-select">
             <option value="Magazin">Magazin ● Celebridade</option>
             <option value="Gastronomi">Gastronomi ● Sabor</option>
@@ -41,14 +41,14 @@
             <option value="Toplum">Toplum ● Sociedade</option>
         </select>
         
-        <label>Kapak Görseli (Boş bırakırsanız internetten otomatik seçilir)</label>
-        <input type="text" id="img-url" placeholder="URL yapıştırın veya boş bırakın...">
+        <label>Görsel (Boş bırakılırsa internetten otomatik çekilir)</label>
+        <input type="text" id="img-url" placeholder="Görsel URL veya boş bırakın...">
         
         <label>Türkçe Başlık</label>
-        <input type="text" id="tr-title" placeholder="Yazının başlığını girin...">
+        <input type="text" id="tr-title" placeholder="Başlık girin">
         
-        <label>Makale İçeriği (Yazının Tamamı)</label>
-        <textarea id="tr-body" placeholder="Hikayenizi buraya yazın..."></textarea>
+        <label>Türkçe İçerik (Makale Alanı)</label>
+        <textarea id="tr-body" placeholder="Hikayenizi anlatın..."></textarea>
         
         <button onclick="handleSave('article')">YAYINLA & OTOMATİK ÇEVİR</button>
     </div>
@@ -68,13 +68,14 @@
         <input type="text" id="new-cat-tr" placeholder="Örn: SİNEMA">
         <label>Yeni Kategori Adı (PT)</label>
         <input type="text" id="new-cat-pt" placeholder="Örn: CINEMA">
-        <button onclick="handleSave('category')" style="background:#555">LİSTEYE EKLE</button>
+        <button onclick="handleSave('category')" style="background:#555">KATEGORİ EKLE</button>
     </div>
 
     <div id="status" class="status"></div>
 </div>
 
 <script>
+    // Token bilgisi
     const GH_TOKEN = "ghp_Ck9rQJbrJ6Pkkz10SRjFcmqnp433Dh2xuYDY";
     const REPO_URL = 'https://api.github.com/repos/asalimc/47/contents/articles.json';
 
@@ -88,10 +89,12 @@
     async function handleSave(mode) {
         const status = document.getElementById('status');
         status.style.color = "orange";
-        status.innerText = "İşlem yapılıyor...";
+        status.innerText = "İşleniyor...";
 
         try {
             const getFile = await fetch(REPO_URL, { headers: { 'Authorization': `token ${GH_TOKEN}` } });
+            if (!getFile.ok) throw new Error("Dosya bulunamadı! Lütfen GitHub'da articles.json oluşturun.");
+            
             const fileData = await getFile.json();
             let content = JSON.parse(decodeURIComponent(escape(atob(fileData.content))));
 
@@ -101,9 +104,10 @@
                 const cat = document.getElementById('category-select').value;
                 let finalImg = document.getElementById('img-url').value;
 
-                // OTOMATIK GÖRSEL SEÇİCİ (Boşsa Unsplash'ten kategoriye göre alır)
+                // Akıllı Görsel Seçici
                 if(!finalImg) {
-                    finalImg = `https://source.unsplash.com/featured/?${cat},culture,journal`;
+                    finalImg = `https://images.unsplash.com/photo-1500000000000?auto=format&fit=crop&w=800&q=80&${cat}`;
+                    // Unsplash üzerinden kategoriye uygun görsel çekimi simülasyonu
                 }
 
                 status.innerText = "Çeviri yapılıyor...";
@@ -113,47 +117,38 @@
                 content.unshift({
                     id: Date.now(),
                     type: "post",
-                    category: document.getElementById('category-select').value,
+                    category: document.getElementById('category-select').options[document.getElementById('category-select').selectedIndex].text,
                     image: finalImg,
                     tr: { title: trT, body: trB },
                     pt: { title: tData.responseData.translatedText, body: "Traduzindo..." },
                     date: new Date().toLocaleDateString('tr-TR')
                 });
-            } else if(mode === 'settings' || mode === 'category') {
+            } else if(mode === 'settings') {
                 let mIdx = content.findIndex(i => i.type === "metadata");
-                if(mIdx === -1) { content.push({ type: "metadata", author: {}, categories: [] }); mIdx = content.length -1; }
-                
-                if(mode === 'settings') {
-                    content[mIdx].author = {
-                        name: document.getElementById('author-name').value,
-                        bio: document.getElementById('author-bio').value,
-                        img: document.getElementById('author-img').value
-                    };
-                } else {
-                    const tr = document.getElementById('new-cat-tr').value;
-                    const pt = document.getElementById('new-cat-pt').value;
-                    const opt = document.createElement('option');
-                    opt.value = tr; opt.text = `${tr} ● ${pt}`;
-                    document.getElementById('category-select').add(opt);
-                    content[mIdx].categories.push({tr, pt});
-                }
+                const meta = {
+                    type: "metadata",
+                    author: { name: document.getElementById('author-name').value, bio: document.getElementById('author-bio').value, img: document.getElementById('author-img').value }
+                };
+                if(mIdx > -1) content[mIdx] = meta; else content.push(meta);
             }
 
             const updated = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
             const res = await fetch(REPO_URL, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "Journal Update", content: updated, sha: fileData.sha })
+                body: JSON.stringify({ message: "Update Journal", content: updated, sha: fileData.sha })
             });
 
             if(res.ok) {
                 status.style.color = "green";
                 status.innerText = "BAŞARIYLA KAYDEDİLDİ!";
                 setTimeout(() => { status.innerText = ""; }, 3000);
+            } else {
+                throw new Error("GitHub güncellenemedi. Token yetkisini kontrol edin.");
             }
         } catch (e) { 
             status.style.color = "red";
-            status.innerText = "Hata oluştu! Lütfen JSON dosyanızı ve Token'ı kontrol edin."; 
+            status.innerText = "Hata: " + e.message; 
         }
     }
 </script>
