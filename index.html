@@ -17,12 +17,12 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; transition: background 0.5s ease; }
 
-        /* HEADER & LOGO */
+        /* HEADER */
         header {
             padding: 30px 6%; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.9); backdrop-filter: blur(20px);
+            position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.95); backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); }
@@ -31,6 +31,14 @@
             background: var(--ink); color: var(--bg); padding: 0 12px; border-radius: 10px; margin-right: 12px;
         }
         .logo-text { font-family: 'Bodoni Moda', serif; font-size: 1.1rem; font-weight: 900; line-height: 1; }
+
+        /* DİNAMİK NAVİGASYON */
+        .nav-filters button {
+            background: none; border: 1px solid rgba(0,0,0,0.1); color: var(--ink);
+            padding: 8px 18px; border-radius: 50px; font-size: 0.7rem; font-weight: 800;
+            cursor: pointer; margin-left: 10px; transition: 0.3s;
+        }
+        .nav-filters button:hover, .nav-filters button.active { background: var(--ink); color: var(--bg); }
 
         /* BENTO GRID */
         .container { max-width: 1400px; margin: 0 auto; padding: 40px 6%; }
@@ -41,28 +49,25 @@
             background: var(--white); border-radius: 40px; padding: 40px;
             transition: var(--ease) 0.6s; cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
             display: flex; flex-direction: column; justify-content: space-between; position: relative;
+            animation: inkSpread 0.8s var(--ease) forwards;
         }
+        @keyframes inkSpread { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
         .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(176,141,87,0.1); border-color: var(--accent); }
 
-        /* MANŞET: RÖPORTAJ ODAKLI */
-        .card-interview-main { 
-            grid-column: span 8; min-height: 550px; 
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=large') center/cover;
-            color: white; border: none;
-        }
-
-        .card-author-pro { grid-column: span 4; align-items: center; text-align: center; background: var(--white); }
+        .card-main { grid-column: span 8; min-height: 550px; color: white; border: none; overflow: hidden; }
+        .card-author { grid-column: span 4; align-items: center; text-align: center; background: var(--white); }
         .card-side { grid-column: span 4; min-height: 380px; }
         .card-video { grid-column: span 8; padding: 0; height: 380px; overflow: hidden; border-radius: 40px; }
 
         /* TYPOGRAPHY */
-        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.4rem; line-height: 1; margin-bottom: 12px; display: block; }
-        .pt-line { font-size: 0.95rem; font-weight: 600; opacity: 0.8; font-style: italic; display: block; }
-        .tag-dual { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
+        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; margin-bottom: 12px; display: block; }
+        .pt-line { font-size: 0.9rem; font-weight: 600; opacity: 0.8; font-style: italic; display: block; }
+        .tag-dual { font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
 
         .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
 
-        /* READER & AUTHOR DETAIL PAGE */
+        /* READER */
         .reader {
             position: fixed; inset: 0; background: var(--bg); z-index: 2000;
             display: none; overflow-y: auto; padding: 100px 8% 150px;
@@ -73,17 +78,13 @@
         }
 
         .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
-        .reader-tr { font-family: 'Bodoni Moda', serif; font-size: 2.6rem; line-height: 1.1; color: var(--ink); margin-bottom: 30px; }
+        .reader-tr { font-family: 'Bodoni Moda', serif; font-size: 2.4rem; line-height: 1.2; color: var(--ink); margin-bottom: 30px; }
         .reader-pt { font-size: 1.2rem; line-height: 1.8; color: #555; font-style: italic; border-left: 3px solid var(--accent); padding-left: 30px; }
-        
-        /* AUTHOR SPECIFIC STYLE */
-        .author-detail-header { text-align: center; margin-bottom: 80px; }
-        .author-stats { display: flex; justify-content: center; gap: 40px; margin-top: 30px; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
 
         footer { padding: 80px 6%; background: white; text-align: center; border-top: 1px solid #eee; }
 
         @media (max-width: 1024px) {
-            .card-interview-main, .card-author-pro, .card-side, .card-video { grid-column: span 12; }
+            .card-main, .card-author, .card-side, .card-video { grid-column: span 12; }
             .reader-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -95,95 +96,21 @@
             <div class="logo-m">MB</div>
             <div class="logo-text">MARDIN<br>BRAZIL</div>
         </a>
-        <div style="font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5;">Gazetecilik ● Jornalismo</div>
+        <div class="nav-filters">
+            <button class="active" onclick="renderApp('all', this)">HEPSİ</button>
+            <button onclick="renderApp('Mardin', this)">MARDİN</button>
+            <button onclick="renderApp('Brazil', this)">BRAZIL</button>
+        </div>
     </header>
 
     <main class="container">
-        <div class="bento">
-            
-            <section class="card card-interview-main" onclick="openR('interview-main')">
-                <div>
-                    <span class="tag-dual" style="color:white;">Özel Röportaj ● Entrevista Exclusiva</span>
-                    <span class="tr-line" style="font-size: 4rem;">Ritmin Kökeni: <br>Samba ve Direniş.</span>
-                    <span class="pt-line" style="color: white; font-size: 1.2rem;">A Origem do Ritmo: Samba e Resistência.</span>
-                </div>
-                <div style="font-weight: 800; font-size: 0.8rem; letter-spacing: 2px;">TAM METNİ OKU ● LER TEXTO COMPLETO →</div>
-            </section>
-
-            <section class="card card-author-pro" onclick="openR('author-detail')">
-                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-img">
-                <span class="tr-line" style="font-size: 1.8rem;">Ahmet Çınarbaş</span>
-                <span class="pt-line">Kültürel Arşivci ● Arquivista Cultural</span>
-                <p style="font-size: 0.8rem; margin: 20px 0; opacity: 0.7;">Mardin'den Brezilya'ya uzanan 9 yıllık gazetecilik serüveni.</p>
-                <div style="font-size: 0.7rem; font-weight: 900; background: var(--ink); color: white; padding: 12px 25px; border-radius: 100px;">PORTFOLYO ● PORTFÓLIO</div>
-            </section>
-
-            <article class="card card-side" onclick="openR('post-1')">
-                <div>
-                    <span class="tag-dual">Köşe Yazısı ● Crônica</span>
-                    <span class="tr-line">Taş ve Su.</span>
-                    <span class="pt-line">Pedra e Água.</span>
-                    <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 15px;">Mardin mimarisi ile Rio kıyılarının mistik bağı.</p>
-                </div>
-                <span style="font-size: 0.6rem; font-weight: 800; opacity: 0.4;">2026 ARCHIVE</span>
-            </article>
-
-            <div class="card card-video">
-                <iframe src="https://www.youtube.com/embed/jg2q0hXy85c" title="MardinBrazil Video Analysis"></iframe>
+        <div class="bento" id="bento-grid">
             </div>
-
-        </div>
     </main>
 
-    <div id="interview-main" class="reader">
-        <button class="close-btn" onclick="closeR('interview-main')">KAPAT ● FECHAR</button>
-        <div class="reader-grid">
-            <div>
-                <span class="tag-dual">Tam Metin Röportaj</span>
-                <div class="reader-tr">
-                    "Brezilya sokaklarında Samba bir eğlence değil, toplumsal bir haykırıştır. Mardin'in dar küçelerindeki dengbejler gibi, onlar da acıyı ritme dönüştürür."
-                </div>
-            </div>
-            <div>
-                <span class="tag-dual">Entrevista Completa</span>
-                <div class="reader-pt">
-                    "Nas ruas do Brasil, o samba não é diversão, é um grito social. Assim como os dengbejs nas vielas estreitas de Mardin, eles transformam a dor em ritmo. É a linguagem universal da resistência que documentei durante anos."
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="author-detail" class="reader">
-        <button class="close-btn" onclick="closeR('author-detail')">KAPAT ● FECHAR</button>
-        <div class="author-detail-header">
-            <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 200px; height: 200px; border-radius: 50%; margin-bottom: 30px; border: 8px solid white;">
-            <h1 style="font-family: 'Bodoni Moda'; font-size: 4rem;">Ahmet Çınarbaş</h1>
-            <div class="author-stats">
-                <span>9 Yıl ● Anos</span>
-                <span>2 Kıta ● Continentes</span>
-                <span>∞ Hikaye ● Histórias</span>
-            </div>
-        </div>
-        <div class="reader-grid">
-            <div class="reader-tr">
-                Gazetecilik benim için sadece bir meslek değil; Mezopotamya’nın kadim sessizliği ile Latin Amerika’nın gürültülü umudunu birbirine tercüme etme sanatıdır. 2017'den bu yana bu iki coğrafyanın ruhunu belgeliyorum.
-            </div>
-            <div class="reader-pt">
-                O jornalismo para mim não é apenas uma profissão; é a arte de traduzir o silêncio antigo da Mesopotâmia e a esperança barulhenta da América Latina entre si. Desde 2017, documento a alma dessas duas geografias através de crônicas, vídeos e entrevistas profundas.
-            </div>
-        </div>
-    </div>
-
-    <div id="post-1" class="reader">
-        <button class="close-btn" onclick="closeR('post-1')">KAPAT ● FECHAR</button>
-        <div class="reader-grid">
-            <div class="reader-tr">
-                Taşın hafızası vardır. Mardin'in sarı kalker taşlarına dokunduğunuzda, binlerce yıllık bir hikaye anlatır. Rio'nun granit tepeleri de aynı şekilde şehrin karakterini belirler.
-            </div>
-            <div class="reader-pt">
-                A pedra tem memória. Quando você toca nas pedras de calcário amarelo de Mardin, elas contam uma história de milhares de anos. As colinas de granito do Rio determinam o caráter da cidade da mesma forma. A natureza escreve a cultura antes mesmo do homem.
-            </div>
-        </div>
+    <div id="reader-modal" class="reader" onclick="closeModalOutside(event)">
+        <button class="close-btn" onclick="closeR()">KAPAT ● FECHAR</button>
+        <div id="reader-content"></div>
     </div>
 
     <footer>
@@ -192,21 +119,166 @@
     </footer>
 
     <script>
+        /* 1. VERİ MERKEZİ (İçerikleri Buradan Güncelle) */
+        const archiveData = [
+            {
+                id: "interview-main",
+                type: "main",
+                region: "Brazil",
+                tag: "Özel Röportaj ● Entrevista Exclusiva",
+                tr: "Ritmin Kökeni: Samba ve Direniş.",
+                pt: "A Origem do Ritmo: Samba e Resistência.",
+                desc: "TAM METNİ OKU ● LER TEXTO COMPLETO →",
+                img: "https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=large",
+                contentTR: "Brezilya sokaklarında Samba bir eğlence değil, toplumsal bir haykırıştır. Mardin'in dar küçelerindeki dengbejler gibi, onlar da acıyı ritme dönüştürür.",
+                contentPT: "Nas ruas do Brasil, o samba não é diversão, é um grito social. Assim como os dengbejs nas vielas estreitas de Mardin, eles transformam a dor em ritmo."
+            },
+            {
+                id: "author-detail",
+                type: "author",
+                region: "Mardin",
+                name: "Ahmet Çınarbaş",
+                title: "Kültürel Arşivci ● Arquivista Cultural",
+                bio: "Mardin'den Brezilya'ya uzanan 9 yıllık gazetecilik serüveni.",
+                img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg",
+                stats: ["9 Yıl ● Anos", "2 Kıta ● Continentes", "∞ Hikaye ● Histórias"]
+            },
+            {
+                id: "post-1",
+                type: "side",
+                region: "Mardin",
+                tag: "Köşe Yazısı ● Crônica",
+                tr: "Taş ve Su.",
+                pt: "Pedra e Água.",
+                desc: "Mardin mimarisi ile Rio kıyılarının mistik bağı.",
+                contentTR: "Taşın hafızası vardır. Mardin'in sarı kalker taşlarına dokunduğunuzda, binlerce yıllık bir hikaye anlatır.",
+                contentPT: "A pedra tem memória. Quando você toca nas pedras de calcário amarelo de Mardin, elas contam uma história de milhares de anos."
+            },
+            {
+                id: "video-1",
+                type: "video",
+                region: "Brazil",
+                url: "https://www.youtube.com/embed/jg2q0hXy85c"
+            }
+        ];
+
+        /* 2. UYGULAMA MOTORU */
+        function renderApp(filter = 'all', btn = null) {
+            const grid = document.getElementById('bento-grid');
+            grid.innerHTML = ''; // Temizle
+
+            // Aktif buton görseli
+            if(btn) {
+                document.querySelectorAll('.nav-filters button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+
+            const filteredData = filter === 'all' ? archiveData : archiveData.filter(item => item.region === filter);
+
+            filteredData.forEach(item => {
+                let card = document.createElement('section');
+                card.className = 'card';
+
+                if(item.type === 'main') {
+                    card.className += ' card-main';
+                    card.style.background = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('${item.img}') center/cover`;
+                    card.innerHTML = `
+                        <div>
+                            <span class="tag-dual" style="color:white;">${item.tag}</span>
+                            <span class="tr-line" style="font-size:3.5rem;">${item.tr}</span>
+                            <span class="pt-line" style="color:white; font-size:1.1rem;">${item.pt}</span>
+                        </div>
+                        <div style="font-weight:800; font-size:0.7rem; letter-spacing:2px; color:white;">${item.desc}</div>
+                    `;
+                    card.onclick = () => openR(item.id);
+                } 
+                else if(item.type === 'author') {
+                    card.className += ' card-author';
+                    card.innerHTML = `
+                        <img src="${item.img}" class="author-img">
+                        <span class="tr-line" style="font-size:1.8rem;">${item.name}</span>
+                        <span class="pt-line">${item.title}</span>
+                        <p style="font-size:0.8rem; margin:20px 0; opacity:0.7;">${item.bio}</p>
+                        <div style="font-size:0.7rem; font-weight:900; background:var(--ink); color:white; padding:12px 25px; border-radius:100px;">PORTFOLYO ● PORTFÓLIO</div>
+                    `;
+                    card.onclick = () => openAuthor(item);
+                }
+                else if(item.type === 'side') {
+                    card.className += ' card-side';
+                    card.innerHTML = `
+                        <div>
+                            <span class="tag-dual">${item.tag}</span>
+                            <span class="tr-line">${item.tr}</span>
+                            <span class="pt-line">${item.pt}</span>
+                            <p style="font-size:0.8rem; opacity:0.6; margin-top:15px;">${item.desc}</p>
+                        </div>
+                        <span style="font-size:0.6rem; font-weight:800; opacity:0.4;">2026 ARCHIVE</span>
+                    `;
+                    card.onclick = () => openR(item.id);
+                }
+                else if(item.type === 'video') {
+                    card.className += ' card-video';
+                    card.innerHTML = `<iframe src="${item.url}" style="width:100%; height:100%; border:none;"></iframe>`;
+                }
+
+                grid.appendChild(card);
+            });
+        }
+
+        /* 3. MODAL YÖNETİMİ */
         function openR(id) {
-            document.getElementById(id).style.display = 'block';
+            const item = archiveData.find(a => a.id === id);
+            const modal = document.getElementById('reader-modal');
+            const content = document.getElementById('reader-content');
+
+            content.innerHTML = `
+                <div class="reader-grid">
+                    <div>
+                        <span class="tag-dual">${item.tag || 'Detay'}</span>
+                        <div class="reader-tr">${item.contentTR}</div>
+                    </div>
+                    <div>
+                        <span class="tag-dual">Versão em Português</span>
+                        <div class="reader-pt">${item.contentPT}</div>
+                    </div>
+                </div>
+            `;
+            modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-        function closeModalOutside(event) {
-            if (event.target.className === 'reader') {
-                event.target.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
+
+        function openAuthor(item) {
+            const modal = document.getElementById('reader-modal');
+            const content = document.getElementById('reader-content');
+
+            content.innerHTML = `
+                <div class="author-detail-header">
+                    <img src="${item.img}" style="width:180px; height:180px; border-radius:50%; border:8px solid white; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                    <h1 style="font-family:'Bodoni Moda'; font-size:3.5rem; margin-top:20px;">${item.name}</h1>
+                    <div class="author-stats">
+                        ${item.stats.map(s => `<span>${s}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="reader-grid">
+                    <div class="reader-tr">Mezopotamya’nın kadim sessizliği ile Latin Amerika’nın gürültülü umudunu birbirine tercüme ediyorum. Kariyerim boyunca her iki kıtada da adaletin ve sanatın peşinden gittim.</div>
+                    <div class="reader-pt">Traduzo o silêncio antigo da Mesopotâmia e a esperança barulhenta da América Latina. Ao longo da minha carreira, busquei justiça e arte em ambos os continentes.</div>
+                </div>
+            `;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
-        function closeR(id) {
-            document.getElementById(id).style.display = 'none';
+
+        function closeR() {
+            document.getElementById('reader-modal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-        window.onclick = closeModalOutside;
+
+        function closeModalOutside(e) {
+            if(e.target.id === 'reader-modal') closeR();
+        }
+
+        // İlk Çalıştırma
+        window.onload = () => renderApp();
     </script>
 </body>
 </html>
