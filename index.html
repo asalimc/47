@@ -12,7 +12,7 @@
             background-color: #fafaf9;
             background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
             background-size: 40px 40px; font-family: 'Montserrat', sans-serif; color: var(--dark);
-            overflow-x: hidden; line-height: 1.5;
+            overflow-x: hidden;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
@@ -22,51 +22,49 @@
         .brand-title .m-text { color: var(--mardin); }
         .brand-title .b-text { color: var(--brazil); font-weight: 900; }
 
-        /* YAZAR KUTUSU */
         .curator-box { 
             display: flex; align-items: center; gap: 20px; background: white; padding: 12px 30px; 
-            border-radius: 60px; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; text-decoration: none; color: inherit;
+            border-radius: 60px; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; transition: 0.3s;
         }
+        .curator-box:hover { border-color: var(--mardin); transform: translateY(-2px); }
         .curator-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--mardin); object-fit: cover; }
 
-        /* MASTER GRID - HİZALAMA MERKEZİ */
         .master-wrapper { padding: 0 5% 50px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; }
 
-        /* SOL RÖPORTAJ ALANI */
-        .hero-main { grid-column: span 8; border-radius: 50px; overflow: hidden; position: relative; cursor: pointer; height: 680px; }
-        .hero-main img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.75); }
+        /* ANA GÖRSEL (RÖPORTAJ) */
+        .hero-main { grid-column: span 8; border-radius: 50px; overflow: hidden; position: relative; cursor: pointer; height: 700px; }
+        .hero-main img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); transition: 0.6s; }
+        .hero-main:hover img { transform: scale(1.03); }
         .hero-overlay { position: absolute; bottom: 50px; left: 50px; z-index: 10; pointer-events: none; }
-        .hero-overlay h2 { font-family: 'Playfair Display'; color: white; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.9; }
+        .hero-overlay h2 { font-family: 'Playfair Display'; color: white; font-size: clamp(2rem, 5vw, 4.5rem); line-height: 0.95; }
 
-        /* SAĞ 3 DİV - MILIMETRIK ORANTI */
+        /* SAĞ PANEL - DİNAMİK AKIŞ (MILIMETRIK HIZALI) */
         .side-panel { grid-column: span 4; display: grid; grid-template-rows: repeat(3, 1fr); gap: 20px; }
-        .data-card { background: white; border-radius: 40px; padding: 25px; border: 1px solid rgba(0,0,0,0.03); overflow: hidden; position: relative; }
+        .data-card { background: white; border-radius: 40px; border: 1px solid rgba(0,0,0,0.03); overflow: hidden; position: relative; cursor: pointer; }
         
-        /* GÜNÜN KARESİ İÇİN ÖZEL ESTETİK */
-        .data-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9); transition: 0.5s; }
-        .data-card:hover img { transform: scale(1.05); }
+        .card-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); }
+        .card-info { position: absolute; bottom: 25px; left: 25px; right: 25px; color: white; z-index: 5; }
+        .card-tag { font-size: 8px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; background: var(--mardin); padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+        .card-title { font-family: 'Playfair Display'; font-size: 1.3rem; line-height: 1.2; }
 
-        .tag { font-size: 9px; font-weight: 900; color: var(--mardin); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: block; position: relative; z-index: 2; }
-        .card-title { font-family: 'Playfair Display'; font-size: 1.4rem; position: relative; z-index: 2; line-height: 1.2; }
-
-        /* VİDEO VE FOOTER */
-        .bottom-section { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 15px; }
-        .video-box { height: 420px; border-radius: 50px; overflow: hidden; background: #000; position: relative; }
+        /* VİDEOLAR */
+        .video-row { grid-column: span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 10px; }
+        .video-box { height: 450px; border-radius: 50px; overflow: hidden; background: #000; }
         .video-box iframe { width: 100%; height: 100%; border: none; opacity: 0.8; }
 
-        footer { grid-column: span 12; padding: 80px 0 40px; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        /* YAZAR PORTALI (MODAL) */
+        .portal-overlay { position: fixed; inset: 0; background: var(--white); z-index: 10000; display: none; overflow-y: auto; padding: 5%; }
+        .portal-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
+        .portal-close { position: fixed; top: 40px; right: 40px; background: var(--dark); color: white; border: none; padding: 15px 35px; border-radius: 50px; cursor: pointer; font-weight: 900; font-size: 11px; }
 
-        /* STANDART AÇILIŞ MODAL (DIĞER SITELER GIBI) */
-        .standard-modal { position: fixed; inset: 0; background: var(--white); z-index: 9999; display: none; overflow-y: auto; padding: 5%; }
-        .close-btn { position: fixed; top: 30px; right: 40px; background: var(--dark); color: white; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 11px; font-weight: 900; }
+        .archive-card { background: white; padding: 30px; border-radius: 35px; border: 1px solid #eee; margin-bottom: 20px; cursor: pointer; transition: 0.3s; }
+        .archive-card:hover { border-color: var(--mardin); }
+        .archive-content { display: none; padding-top: 20px; margin-top: 20px; border-top: 1px dashed #ddd; font-family: 'Lora'; font-size: 1.1rem; line-height: 1.8; color: #333; }
 
-        /* MOBIL UYUM (RESPONSIVE) */
         @media (max-width: 1024px) { 
-            .hero-main, .side-panel, .bottom-section { grid-column: span 12; }
-            .hero-main { height: 450px; border-radius: 35px; }
+            .hero-main, .side-panel, .video-row, .portal-container { grid-column: span 12; grid-template-columns: 1fr; }
+            .hero-main { height: 450px; }
             .side-panel { grid-template-rows: auto auto 300px; }
-            .video-box { height: 300px; }
-            footer { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -74,77 +72,87 @@
 
     <header>
         <div class="brand-title"><span class="m-text">MARDIN</span><span class="b-text">BRAZIL</span></div>
-        <a href="javascript:void(0)" onclick="openPage('writerModal')" class="curator-box">
+        <div class="curator-box" onclick="openPortal()">
             <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="curator-img">
             <div class="curator-info"><b>AHMET ÇINARBAŞ</b><span style="display:block; font-size:10px; opacity:0.6;">CHIEF CURATOR</span></div>
-        </a>
+        </div>
     </header>
 
     <div class="master-wrapper">
-        <div class="hero-main" onclick="openPage('interviewModal')">
+        <div class="hero-main" onclick="openPortal()">
             <img src="https://pbs.twimg.com/media/GIlW38KWEAALcYB?format=jpg&name=small">
             <div class="hero-overlay">
-                <span style="background:var(--brazil); color:white; padding:5px 15px; border-radius:20px; font-size:9px; font-weight:900; letter-spacing:1px; margin-bottom:15px; display:inline-block;">ÖZEL RÖPORTAJ</span>
+                <span style="background:var(--brazil); color:white; padding:5px 15px; border-radius:20px; font-size:9px; font-weight:900;">ÖZEL RÖPORTAJ</span>
                 <h2>"Taşın Hafızası ve <br>Ormanın Kalbi"</h2>
             </div>
         </div>
 
         <div class="side-panel">
             <div class="data-card">
-                <span class="tag">GÜNCEL HABERLER</span>
-                <h4 class="card-title">Mardin Artuklu & Manaus: <br>Kültürel Veri Ağı Genişliyor</h4>
-                <p style="font-size:12px; margin-top:10px; opacity:0.7;">Google News: 2 dakika önce güncellendi.</p>
+                <img src="https://images.unsplash.com/photo-1544923246-77307dd654ca?auto=format&fit=crop&w=600" class="card-image">
+                <div class="card-info"><span class="card-tag">GOOGLE NEWS</span><h4 class="card-title">Mardin'de Yeni <br>Arkeolojik Bulgular</h4></div>
             </div>
-
             <div class="data-card">
-                <span class="tag">YAKLAŞAN ETKİNLİK</span>
-                <h4 class="card-title">Dijital Taş İşçiliği Atölyesi // Mezopotamya</h4>
-                <div style="margin-top:15px; font-size:11px; font-weight:900;">14 MART 2026</div>
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600" class="card-image">
+                <div class="card-info"><span class="card-tag">BRAZIL EVENT</span><h4 class="card-title">Manaus Dijital <br>Sanat Zirvesi 2026</h4></div>
             </div>
-
-            <div class="data-card" style="padding:0;">
-                <span class="tag" style="position:absolute; top:20px; left:20px; background:white; padding:4px 10px; border-radius:5px;">GÜNÜN KARESİ</span>
-                <img src="https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=800">
+            <div class="data-card">
+                <img src="https://images.unsplash.com/photo-1493246507139-91e8bef99c1a?auto=format&fit=crop&w=600" class="card-image">
+                <div class="card-info"><span class="card-tag">GÜNÜN KARESİ</span><h4 class="card-title">Amazon'un <br>Derin Sessizliği</h4></div>
             </div>
         </div>
 
-        <div class="bottom-section">
+        <div class="video-row">
             <div class="video-box"><iframe src="https://www.youtube.com/embed/3r9cOuTmVu4"></iframe></div>
             <div class="video-box"><iframe src="https://www.youtube.com/embed/E6Ndg4pvLh8"></iframe></div>
         </div>
-
-        <footer>
-            <div><h6>ASC 2026</h6><p style="font-size:13px; opacity:0.7;">Taşın matematiği ve ormanın biyolojisi.</p></div>
-            <div><h6>LOKASYON</h6><p style="font-size:13px; opacity:0.7;">TR: Mardin | BR: Manaus</p></div>
-            <div><h6>KÜRATÖR</h6><p style="font-size:13px; opacity:0.7;">Ahmet Çınarbaş</p></div>
-        </footer>
     </div>
 
-    <div id="writerModal" class="standard-modal">
-        <span class="close-btn" onclick="closePage('writerModal')">GERİ DÖN</span>
-        <div style="max-width:800px; margin:50px auto;">
-            <h1 style="font-family:'Playfair Display'; font-size:3.5rem;">Ahmet Çınarbaş</h1>
-            <hr style="margin:30px 0; opacity:0.1;">
-            <p style="font-family:'Lora'; font-size:1.4rem; line-height:1.8;">Yazarın biyografisi ve tüm makale arşivi burada standart bir akışla listelenir...</p>
-        </div>
-    </div>
+    <div id="authorPortal" class="portal-overlay">
+        <button class="portal-close" onclick="closePortal()">KAPAT [X]</button>
+        <div class="portal-container">
+            <div class="author-info-side">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width:100%; border-radius:40px; margin-bottom:30px; border:3px solid var(--mardin);">
+                <h1 style="font-family:'Playfair Display'; font-size:3.5rem;">Ahmet Çınarbaş</h1>
+                <p style="font-family:'Lora'; font-size:1.3rem; opacity:0.8; margin:20px 0;">Dijital küratör ve Mezopotamya-Amazon veri köprüsü araştırmacısı. Taşın matematiği üzerine uzmanlaştı.</p>
+                <div style="font-size:10px; font-weight:900; color:var(--mardin);">ASC 2026 CHIEF CURATOR</div>
+            </div>
+            <div class="archive-side">
+                <h6 style="letter-spacing:4px; font-size:10px; margin-bottom:40px; color:var(--brazil);">TÜM YAZILARI</h6>
+                
+                <div class="archive-card" onclick="toggleArticle(this)">
+                    <span style="font-size:9px; font-weight:900;">01 // ANALİZ</span>
+                    <h3 style="font-family:'Playfair Display'; font-size:1.8rem; margin:10px 0;">Taşın Matematiği: Mardin</h3>
+                    <div class="archive-content">Mardin'deki taş oymaların fraktal yapısı, evrenin temel geometrisini barındırıyor. Bu çalışmada, Artuklu mimarisindeki sayı dizilerini dijital veriye dönüştürdük...</div>
+                </div>
 
-    <div id="interviewModal" class="standard-modal">
-        <span class="close-btn" onclick="closePage('interviewModal')">GERİ DÖN</span>
-        <div style="max-width:800px; margin:50px auto;">
-            <h1 style="font-family:'Playfair Display'; font-size:3.5rem;">Taşın Hafızası ve Ormanın Kalbi</h1>
-            <p style="font-family:'Lora'; font-size:1.4rem; line-height:1.8; margin-top:30px;">Bu röportaj, kadim Mardin taşları ile yaşayan Amazon ormanları arasındaki bağı inceler...</p>
+                <div class="archive-card" onclick="toggleArticle(this)">
+                    <span style="font-size:9px; font-weight:900;">02 // ARAŞTIRMA</span>
+                    <h3 style="font-family:'Playfair Display'; font-size:1.8rem; margin:10px 0;">Amazon'un Dijital Kalbi</h3>
+                    <div class="archive-content">Yağmur ormanlarının biyolojik ritmi ile Mardin'in statik hafızası arasındaki bağ, ASC 2026 projesinin çekirdeğini oluşturuyor...</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        function openPage(id) {
-            document.getElementById(id).style.display = 'block';
+        function openPortal() {
+            document.getElementById('authorPortal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-        function closePage(id) {
-            document.getElementById(id).style.display = 'none';
+        function closePortal() {
+            document.getElementById('authorPortal').style.display = 'none';
             document.body.style.overflow = 'auto';
+        }
+        function toggleArticle(card) {
+            const content = card.querySelector('.archive-content');
+            const isVisible = content.style.display === 'block';
+            
+            // Diğerlerini kapat
+            document.querySelectorAll('.archive-content').forEach(el => el.style.display = 'none');
+            
+            // Mevcut olanı aç/kapat
+            content.style.display = isVisible ? 'none' : 'block';
         }
     </script>
 </body>
