@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MB | Ahmet Çınarbaş Journal</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,900&family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -34,62 +34,62 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
         .bento { display: flex; flex-direction: column; gap: 40px; }
 
-        /* KART TASARIMLARI */
+        /* KARTLAR */
         .card {
             background: var(--white); border-radius: 45px; padding: 50px;
             transition: var(--ease) 0.6s; cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
             display: flex; flex-direction: column; justify-content: space-between; 
             min-height: 550px; width: 100%; position: relative; overflow: hidden;
         }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(176,141,87,0.15); border-color: var(--accent); }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
 
-        .card-author { align-items: center; text-align: center; justify-content: center; min-height: 480px; }
+        .card-author { align-items: center; text-align: center; justify-content: center; min-height: 500px; }
         .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); }
 
-        /* ANA SAYFA METİN STİLLERİ - İTALİK KALDIRILDI */
-        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 3.5rem; line-height: 1.1; margin-bottom: 15px; display: block; font-weight: 900; letter-spacing: -1px; }
-        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 2.8rem; line-height: 1.1; opacity: 1; display: block; font-weight: 900; margin-top: 10px; }
-        .tag-dual { font-size: 0.75rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 25px; display: block; }
+        /* MANŞET TİPOGRAFİSİ - TAM SİMETRİ */
+        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 3.8rem; line-height: 1.05; margin-bottom: 15px; display: block; font-weight: 900; letter-spacing: -1.5px; }
+        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 3.8rem; line-height: 1.05; display: block; font-weight: 900; letter-spacing: -1.5px; color: var(--ink); }
+        .tag-dual { font-size: 0.8rem; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 30px; display: block; }
 
-        /* READER MODAL - MÜKEMMEL AYRAÇ SİSTEMİ */
+        /* OKUMA MODALİ (READER) */
         .reader {
             position: fixed; inset: 0; background: var(--bg); z-index: 2000;
-            display: none; overflow-y: auto; padding: 100px 8% 120px;
+            display: none; overflow-y: auto; padding: 120px 8% 120px;
         }
+        .reader-header { text-align: center; margin-bottom: 100px; }
         .reader-grid { 
             max-width: 1400px; margin: 0 auto; 
-            display: grid; grid-template-columns: 1fr auto 1fr; /* Üç sütun: TR - Ayraç - PT */
-            gap: 60px; align-items: start;
+            display: grid; grid-template-columns: 1fr auto 1fr; 
+            gap: 80px; align-items: start;
         }
         
+        /* DETAY METİN - image_02c987.png STİLİ */
         .reader-text { 
             font-family: 'Bodoni Moda', serif; 
-            font-size: 2.8rem; 
+            font-size: 3rem; 
             line-height: 1.15; 
             color: var(--ink); 
             font-weight: 900; 
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
         }
 
-        /* DİKEY AYRAÇ (DIVIDER) */
+        /* AYRAÇ - DAHA BELİRGİN */
         .divider {
-            width: 2px;
+            width: 3px;
             background: var(--accent);
             height: 100%;
-            opacity: 0.3;
-            min-height: 400px;
+            min-height: 450px;
+            box-shadow: 0 0 15px rgba(176,141,87,0.2);
         }
         
-        .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; }
+        .close-btn { position: fixed; top: 40px; right: 6%; background: var(--ink); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 2100; font-size: 0.9rem; }
 
-        footer { padding: 80px 6%; background: white; text-align: center; border-top: 1px solid #eee; margin-top: 50px; }
+        footer { padding: 100px 6%; background: white; text-align: center; border-top: 1px solid #eee; }
 
-        @media (max-width: 1100px) {
-            .reader-grid { grid-template-columns: 1fr; }
-            .divider { width: 100%; height: 2px; min-height: 2px; margin: 20px 0; }
-            .tr-line { font-size: 2.6rem; }
-            .pt-line { font-size: 2.2rem; }
-            .reader-text { font-size: 1.8rem; }
+        @media (max-width: 1200px) {
+            .reader-grid { grid-template-columns: 1fr; gap: 40px; }
+            .divider { width: 100%; height: 3px; min-height: 3px; margin: 40px 0; }
+            .tr-line, .pt-line, .reader-text { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -112,8 +112,8 @@
     </div>
 
     <footer>
-        <div class="logo-text" style="font-size: 1.5rem; margin-bottom: 15px;">MARDINBRAZIL</div>
-        <p style="font-size: 0.7rem; font-weight: 800; opacity: 0.5; letter-spacing: 2px;">AHMET ÇINARBAŞ JOURNAL ● ARCHIVE 2026</p>
+        <div class="logo-text" style="font-size: 1.8rem; margin-bottom: 20px;">MARDINBRAZIL</div>
+        <p style="font-size: 0.75rem; font-weight: 800; opacity: 0.5; letter-spacing: 3px;">AHMET ÇINARBAŞ JOURNAL ● ARCHIVE 2026</p>
     </footer>
 
     <script>
@@ -179,11 +179,24 @@
                 card.className = 'card';
                 if(item.type === 'author') {
                     card.classList.add('card-author');
-                    card.innerHTML = `<img src="${item.img}" class="author-img"><span class="tr-line" style="font-size:3rem;">${item.name}</span><span class="pt-line" style="font-size:1.8rem; opacity:0.6;">${item.title}</span><p style="font-size:1.1rem; margin:25px 0; opacity:0.7; max-width:550px; line-height:1.6;">${item.bio}</p><div style="font-size:0.75rem; font-weight:900; background:var(--ink); color:white; padding:18px 45px; border-radius:100px;">KÖŞE YAZISINI OKU ● LER COLUNA</div>`;
+                    card.innerHTML = `
+                        <img src="${item.img}" class="author-img">
+                        <span class="tr-line" style="font-size:3.5rem;">${item.name}</span>
+                        <span class="pt-line" style="font-size:2rem; opacity:0.6;">${item.title}</span>
+                        <p style="font-size:1.1rem; margin:30px 0; opacity:0.8; max-width:600px; line-height:1.6;">${item.bio}</p>
+                        <div style="font-size:0.8rem; font-weight:900; background:var(--ink); color:white; padding:20px 50px; border-radius:100px; letter-spacing:1px;">KÖŞE YAZISINI OKU ● LER COLUNA</div>
+                    `;
                 } else {
-                    card.style.background = `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url('${item.img}') center/cover`;
+                    card.style.background = `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.85)), url('${item.img}') center/cover`;
                     card.style.color = "white";
-                    card.innerHTML = `<div><span class="tag-dual" style="color:white; border-color:white;">${item.tag}</span><span class="tr-line">${item.tr}</span><span class="pt-line">${item.pt}</span></div><div style="font-weight:800; font-size:0.75rem; letter-spacing:2px;">${item.desc}</div>`;
+                    card.innerHTML = `
+                        <div>
+                            <span class="tag-dual" style="color:white; border-color:white;">${item.tag}</span>
+                            <span class="tr-line">${item.tr}</span>
+                            <span class="pt-line" style="color:white;">${item.pt}</span>
+                        </div>
+                        <div style="font-weight:800; font-size:0.8rem; letter-spacing:3px;">${item.desc}</div>
+                    `;
                 }
                 card.onclick = () => openR(item);
                 grid.appendChild(card);
@@ -195,10 +208,10 @@
             const content = document.getElementById('reader-content');
             
             content.innerHTML = `
-                <div style="margin-bottom:80px; text-align:center;">
+                <div class="reader-header">
                     <span class="tag-dual">${item.tag || 'YAZAR ● AUTOR'}</span>
-                    <h1 style="font-family:'Bodoni Moda'; font-size:3.5rem; font-weight:900; line-height:1.1;">${item.columnTitleTR || item.tr}</h1>
-                    <h2 style="font-family:'Bodoni Moda'; font-size:3.5rem; font-weight:900; line-height:1.1; margin-top:10px;">${item.columnTitlePT || item.pt}</h2>
+                    <h1 class="tr-line">${item.columnTitleTR || item.tr}</h1>
+                    <h2 class="pt-line">${item.columnTitlePT || item.pt}</h2>
                 </div>
                 <div class="reader-grid">
                     <div class="reader-text">${item.columnTextTR || item.contentTR}</div>
