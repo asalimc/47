@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Ahmet Çınarbaş - The Grand Archive 2026</title>
+    <title>ASC 2026 | Ahmet Çınarbaş: Arquiteto das Almas</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,400&family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -15,76 +15,88 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
 
+        /* Header */
         header {
-            padding: 20px 6%; display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 6%; display: flex; justify-content: space-between; align-items: center;
             position: fixed; width: 100%; top: 0; z-index: 1000;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .container { max-width: 1400px; margin: 120px auto 100px; padding: 0 6%; }
-        .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 25px; }
+        .container { max-width: 1400px; margin: 100px auto; padding: 0 5%; }
+        
+        /* Bento Grid & Mobile Logic */
+        .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
         
         @media (max-width: 900px) {
             .bento { display: flex; flex-direction: column; }
-            .card { min-height: 400px !important; }
+            .card { min-height: 450px !important; }
+            .comparison-grid { grid-template-columns: 1fr !important; gap: 30px !important; }
+            .hero-title { font-size: 2.5rem !important; }
         }
 
         .card {
-            background: var(--white); border-radius: 40px; min-height: 500px;
+            background: var(--white); border-radius: 30px; min-height: 550px;
             position: relative; overflow: hidden; cursor: pointer;
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: all 0.5s ease;
         }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
         
         .card-full { grid-column: span 6; }
         .card-wide { grid-column: span 4; }
         .card-medium { grid-column: span 3; }
-        .card-small { grid-column: span 2; }
 
-        .card-bg { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: 0; transition: transform 0.6s ease; }
-        .card:hover .card-bg { transform: scale(1.05); }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95) 5%, transparent 80%); z-index: 1; }
+        .card-bg { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: 0; transition: transform 1s ease; }
+        .card:hover .card-bg { transform: scale(1.1); }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 10%, transparent 70%); z-index: 1; }
         .card-content { position: relative; z-index: 2; color: white; }
 
-        .title-container { position: relative; text-align: center; }
-        .main-title { font-family: 'Bodoni Moda', serif; font-size: 3.5rem; font-weight: 900; line-height: 1; color: var(--ink); margin: 0; }
-        .sub-title-art { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; font-style: italic; color: var(--accent); opacity: 0.5; display: block; margin-top: -10px; }
+        /* Artistik Başlık */
+        .art-title-wrap { position: relative; text-align: center; }
+        .art-main { font-family: 'Bodoni Moda', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; color: var(--ink); z-index: 2; position: relative; }
+        .art-sub { font-family: 'Bodoni Moda', serif; font-size: clamp(1.2rem, 3vw, 2.2rem); font-style: italic; color: var(--accent); opacity: 0.4; margin-top: -15px; display: block; }
 
+        /* Reader Modal */
         #reader { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: none; overflow-y: auto; }
-        .hero-box { width: 100%; height: 75vh; position: relative; }
-        .hero-box img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.1) contrast(1.1); }
-        .hero-title-wrap { position: absolute; bottom: 10%; left: 6%; color: white; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-
-        .modal-body { max-width: 1200px; margin: 0 auto; padding: 80px 5%; }
-        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-        @media (max-width: 900px) { .comparison-grid { grid-template-columns: 1fr; } }
-
-        .text-block { font-size: 1.25rem; line-height: 2.4; text-align: justify; color: #222; }
-        .text-pt { border-left: 3px solid var(--accent); padding-left: 45px; font-style: italic; color: #555; }
-
-        .close-btn { position: fixed; top: 30px; right: 30px; background: var(--ink); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; z-index: 100001; cursor: pointer; font-size: 1.8rem; }
-
-        .footer-seal { width: 140px; height: 140px; background: var(--red); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 100px auto; font-weight: 900; box-shadow: 0 10px 25px rgba(178, 34, 34, 0.4); }
+        .hero-section { width: 100%; height: 65vh; position: relative; overflow: hidden; }
+        .hero-section img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-mask { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--bg)); }
         
-        b { color: var(--red); font-weight: 800; }
+        .modal-body { max-width: 1200px; margin: -100px auto 0; position: relative; z-index: 10; padding: 0 5% 100px; }
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        
+        /* Metin Kutuları (Scrollable for Mobile) */
+        .text-box { 
+            background: white; padding: 40px; border-radius: 25px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            max-height: 600px; overflow-y: auto; scrollbar-width: thin;
+        }
+        .text-box h3 { margin-bottom: 20px; color: var(--accent); letter-spacing: 2px; font-size: 0.9rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .text-content { font-size: 1.1rem; line-height: 2; text-align: justify; color: #333; }
+
+        .close-btn { position: fixed; top: 25px; right: 25px; background: var(--red); color: white; border: none; width: 55px; height: 55px; border-radius: 50%; z-index: 100000; cursor: pointer; font-size: 1.2rem; box-shadow: 0 5px 15px rgba(178, 34, 34, 0.4); }
+
+        .footer-seal { width: 120px; height: 120px; background: var(--red); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 60px auto; font-weight: 900; font-size: 0.8rem; letter-spacing: 2px; }
+
+        b { color: var(--red); }
     </style>
 </head>
 <body>
 
     <header>
-        <div style="font-family: 'Bodoni Moda', serif; font-size: 1.6rem; font-weight: 900;">MB</div>
-        <div id="status" style="font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; color: var(--accent);">STATION CONNECTED // MARCH 2026</div>
+        <div style="font-family: 'Bodoni Moda', serif; font-size: 1.4rem; font-weight: 900;">ASC</div>
+        <div id="lang-status" style="font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; color: var(--accent);">LOCALE: SEARCHING...</div>
     </header>
 
     <main class="container">
         <div class="bento">
+            
             <div class="card card-full" onclick="openReader('author')" style="background: white; justify-content: center; align-items: center;">
-                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 6px solid var(--bg); margin-bottom: 25px;">
-                <div class="title-container">
-                    <h1 class="main-title">Ahmet Çınarbaş</h1>
-                    <span class="sub-title-art">Kültürlerin Sessiz Mimarı // Arquiteto das Almas</span>
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid var(--bg);">
+                <div class="art-title-wrap">
+                    <h1 class="art-main">Ahmet Çınarbaş</h1>
+                    <span class="art-sub">Kültürlerin Sessiz Mimarı // Arquiteto das Almas</span>
                 </div>
             </div>
 
@@ -92,17 +104,15 @@
                 <div class="card-bg" style="background-image: url('https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">The Sociology of Pitch - LIVE 2026</span>
-                    <h2 style="font-family: 'Bodoni Moda'; font-size: 2.5rem;">Tozun ve Terin Kardeşliği</h2>
-                    <p style="font-style: italic; opacity: 0.9;">Mardin 1969: 2. Lig Zirve Analizi</p>
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 2.2rem;">Tozun ve Terin Kardeşliği</h2>
+                    <p style="font-style: italic; opacity: 0.8;">Mardin 1969 Spor: 2. Lig Zirve Analizi</p>
                 </div>
             </div>
 
-            <div class="card card-small" onclick="openReader('silver')">
+            <div class="card card-medium" onclick="openReader('silver')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1610555356070-d0efb6505f81?q=80&w=800')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">Silver Mastery</span>
                     <h2 style="font-family: 'Bodoni Moda'; font-size: 1.8rem;">Gümüşün Sabrı</h2>
                     <p style="font-style: italic; opacity: 0.8;">A Paciência da Prata</p>
                 </div>
@@ -112,89 +122,67 @@
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1596707447291-38e9c4d92b8d?q=80&w=800')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">Rhythmic Storm</span>
-                    <h2 style="font-family: 'Bodoni Moda'; font-size: 2rem;">Rio'da Mardin Rüzgarı</h2>
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 1.8rem;">Rio'da Mardin Rüzgarı</h2>
                     <p style="font-style: italic; opacity: 0.8;">Vento de Mardin no Rio</p>
                 </div>
             </div>
 
-            <div class="card card-medium" onclick="openReader('food')">
-                <div class="card-bg" style="background-image: url('https://www.receitasdemae.com.br/wp-content/uploads/2008/07/Quibe-frito.jpg')"></div>
-                <div class="card-overlay"></div>
-                <div class="card-content">
-                    <span class="tag">Gastronomic Exile</span>
-                    <h2 style="font-family: 'Bodoni Moda'; font-size: 2rem;">İrok'tan Quibe'ye</h2>
-                    <p style="font-style: italic; opacity: 0.8;">Do Irok ao Quibe</p>
-                </div>
-            </div>
         </div>
     </main>
 
     <div id="reader">
         <button class="close-btn" onclick="closeReader()">✕</button>
-        <div id="modal-container"></div>
+        <div id="modal-content"></div>
     </div>
 
     <script>
         const archive = {
             author: {
-                titleTr: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde",
-                titlePt: "Ahmet Çınarbaş: Entre Dois Mundos",
+                title: "Ahmet Çınarbaş: O Arquiteto das Almas",
                 hero: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600",
-                tr: `Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğasıyla harmanlayan bir <b>estetik küratördür</b>. Onun gözünde Mardin'in bir 'abbara'sı (dar sokak tüneli), Rio de Janeiro'nun bir 'beco'su (ara sokak) ile aynı sırları fısıldar. Yazıları; hüzün, keder ve bitmek bilmeyen bir umudun manifestosudur.`,
-                pt: `Ahmet Çınarbaş é um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem do Brasil.`
+                tr: `Ahmet Çınarbaş, sadece bir yazar değil, coğrafyalar arasındaki keder ve neşe köprülerini inşa eden sessiz bir mimardır. Mardin’in <b>bin yıllık taş konaklarında</b> yankılanan hüznü, Brezilya’nın nemli yağmur ormanlarındaki hayatta kalma içgüdüsüyle kıyaslar. Onun kaleminde Mardin'in dar 'abbara'ları, Rio'nun kaotik 'favela' geçitleriyle kardeş olur. Her iki dünya da dışarıdan sert, içeriden ise alabildiğine sıcaktır. Çınarbaş, insan ruhunun en saf halini; gümüşün telkari olup incelmesinde ve samba davulunun derisindeki gerginlikte bulur. Bu kütüphane, onun Mezopotamya’dan Amazon’a uzanan ruhsal yolculuğunun dökümüdür.`,
+                pt: `Ahmet Çınarbaş não é apenas um escritor, é um arquiteto silencioso que constrói pontes entre a melancolia e a alegria das geografias. Ele compara a tristeza que ecoa nas <b>mansões de pedra milenares</b> de Mardin com o instinto de sobrevivência nas úmidas florestas tropicais do Brasil. Em sua pena, as estreitas 'abbaras' de Mardin tornam-se irmãs das caóticas passagens das 'favelas' do Rio. Ambos os mundos são duros por fora, mas infinitamente acolhedores por dentro. Çınarbaş encontra o estado mais puro da alma humana na finura da prata tornando-se filigrana e na tensão do couro do tambor de samba.`
             },
             sports: {
-                titleTr: "Mardinspor: Bir Mezopotamya Ayini ve Rio Ruhu",
-                titlePt: "Mardinspor: Um Ritual Mesopotâmico e a Alma do Rio",
+                title: "O Ritual do Suor: Mardin vs Rio",
                 hero: "https://images.unsplash.com/photo-1511261685244-88404a377035?q=80&w=1600",
-                tr: `Gözlerinizi kapatın ve Mart 2026’nın o tozlu ama gururlu atmosferini hayal edin. **Mardin 1969 Spor**, TFF 2. Lig Kırmızı Grup’ta adeta bir aslan gibi kükrüyor. 1 Mart 2026 günü 21 Kasım Stadı’nda yaşanan o tarihi **5-0’lık Adanaspor galibiyeti**, sadece bir futbol skoru değil; Mezopotamya’nın Rio de Janeiro sokaklarına gönderdiği bir selamdır. <br><br> Puan tablosuna baktığımızda gördüğümüz o **55 puanlık** devasa duruş, Mardin’in 3. sıraya çökmesi değil, zirveye attığı bir 'telkari' imzasıdır. Lider Bursaspor’un 60, Maraş İstiklal’in 57 puanla önümüzde olması, Mardinli bir taraftar için engel değil, sadece birer 'basamak'tır. <br><br> **Tribün Sosyolojisi Kıyaslaması:** Rio’da Maracanã Stadı’nın önünde karnaval havasında dans eden çılgın fanatikler ne ise, Mardin’de **'Beleş Tepe'** olarak bilinen o meşhur kayalıklarda, elinde radyosu ve demli çayıyla takımı izleyen amcalarımız da odur. Rio’da taraftar yenilgiyi bir samba figürüyle unutur; Mardin’de ise bir 'Sadıklar' grubu üyesi, mağlubiyetin kederini 'Kaderdir kurban' diyerek bir acı kahveye gömer. <br><br> Ancak Mart 2026’da keder değil, **coşku** hakim! Adanaspor kalesine atılan her golde, Mardin kalesinden havalanan binlerce güvercin gökyüzünü Kırmızı-Lacivert’e boyarken; Brezilya’nın favelalarındaki çocuklar da okyanus kıyısında aynı ritimle top koşturuyor. 26 maçta 17 galibiyet almak, Brezilya'nın o meşhur **'Ginga'** ruhunun (imkansızlıktan doğan kıvraklık) Mezopotamya taşlarına çarparak yankılanmasıdır. <br><br> **Fanatizm ve Romantizm:** Mardinspor taraftarı için futbol, bir 90 dakika değil, bir kimlik savaşıdır. Isparta 32 Spor deplasmanına kilitlenen o binlerce yürek, aslında Rio’daki bir Flamengo taraftarının duyduğu 'aşk' ile aynı frekansta atar. İkisinde de hüzün, her an patlamaya hazır bir neşeye gebedir. Kısacası; Mardinspor şampiyonluk yolunda yürürken sadece topu değil, bir şehrin yüzyıllık suskunluğunu ve kederini de filelere gönderiyor.`,
-                pt: `O Mardin 1969 Spor, em março de 2026, está em uma luta épica no topo da 2ª Liga TFF. A vitória histórica de 5 a 0 sobre o Adanaspor não foi apenas futebol; foi uma saudação da Mesopotâmia ao Rio de Janeiro. Com 55 pontos na 3ª posição, o time mostra que o espírito 'Ginga' brasileiro vive nas pedras de Mardin. Enquanto os torcedores no Rio dançam samba, em Mardin os 'Sadıklar' transformam a paixão em um ritual de lealdade. É a nobreza que irrompe da poeira.`
+                tr: `<b>Mart 2026:</b> Mardin 1969 Spor, TFF 2. Lig Kırmızı Grup’ta 55 puanla 3. sırada, zirveyi sarsıyor! 1 Mart’taki o unutulmaz 5-0’lık Adanaspor galibiyeti, Mezopotamya’da bir karnaval havası yarattı. <br><br><b>Kıyaslama:</b> Rio’nun Maracanã stadındaki fanatiklerin 'Torcida' çığlıkları ile Mardin’in <b>Beleş Tepe</b>’sindeki amcaların sitemkar duaları aslında aynı tutkunun ürünüdür. Rio’da gol olduğunda okyanus dalgalanır; Mardin’de gol olduğunda Mezopotamya’nın güvercinleri Kırmızı-Lacivert’e kanat çırpar. Brezilya’nın 'Ginga' ruhu, Mardin’in tozlu sahalarındaki direnişle birdir. Bursaspor lider olabilir, ama Mardin 1969 Spor’un yüreği tüm ligi kapsayacak kadar geniştir. Futbol burada sadece oyun değil, bir kimlik beyanıdır.`,
+                pt: `<b>Março de 2026:</b> O Mardin 1969 Spor está em 3º lugar na 2ª Liga TFF com 55 pontos, abalando o topo! A inesquecível vitória de 5 a 0 sobre o Adanaspor em 1º de março criou uma atmosfera de carnaval na Mesopotâmia. <br><br><b>Comparação:</b> Os gritos 'Torcida' dos fanáticos no Maracanã e as orações dos tios na <b>Beleş Tepe</b> de Mardin são frutos da mesma paixão. No Rio, quando sai um gol, o oceano ondula; em Mardin, os pombos da Mesopotâmia voam em Vermelho-Anil. O espírito 'Ginga' do Brasil é um com a resistência nos campos empoeirados de Mardin. O futebol aqui não é apenas um jogo, é uma declaração de identidade.`
             },
             silver: {
-                titleTr: "Gümüşün ve Tohumun Sabrı",
-                titlePt: "A Paciência da Prata e da Semente",
-                hero: "https://images.unsplash.com/photo-1610555356070-d0efb6505f81?q=80&w=1600",
-                tr: `Mardin’in <b>Telkarisi</b>, bir gümüş telin sabırla nakışa dönüşmesidir. Amazon'da bir yerli, ormandan topladıkları tohumları aynı kutsal dikkatle takıya dönüştürür. İkisinde de ortak nokta, hızlı tüketime karşı duran el emeği anıtı olmalarıdır.`,
-                pt: `A Filigrana de Mardin é a transformação de um fio de prata em bordado com paciência. Ambas são monumentos ao trabalho manual contra o consumo rápido.`
+                title: "A Alma da Prata: Mardin & Amazonia",
+                hero: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1600",
+                tr: `Mardin’in <b>Telkarisi</b>, gümüşü bir dantel gibi işleyen bin yıllık bir sabır testidir. Amazon ormanlarının kalbinde ise yerli kabileler, doğanın sunduğu tohumları aynı kutsal dikkatle takıya dönüştürür. <br><br><b>Analiz:</b> Mardinli ustanın ateşte büktüğü gümüş, geçmişin asaletini simgelerken; Amazonlu kadının ipe dizdiği tohum, geleceğin filizlenişini temsil eder. Her iki zanaat da modern dünyanın 'hızlı tüketim' vahşetine karşı yükselen sessiz birer protestodur. Gümüş soğuktur ama usta dokunuşuyla ısınır; tohum sıcaktır ama ormanın gizemiyle serinler. Çınarbaş bu iki sanatı 'insan elinin evrensel duası' olarak tanımlar.`,
+                pt: `A <b>Filigrana</b> de Mardin é um teste de paciência milenar que trabalha a prata como uma renda. No coração da Amazônia, tribos indígenas transformam sementes em adornos com a mesma atenção sagrada. <br><br><b>Análise:</b> Enquanto a prata dobrada no fogo pelo mestre de Mardin simboliza a nobreza do passado, a semente enfiada pela mulher amazônica representa o brotar do futuro. Ambos os ofícios são protestos silenciosos contra a brutalidade do 'consumo rápido' do mundo moderno. Çınarbaş define essas duas artes como a 'oração universal da mão humana'.`
             },
             carnival: {
-                titleTr: "Rio Karnavalı'nda Bir Mardin Gecesi",
-                titlePt: "Uma Noite de Mardin no Carnaval do Rio",
+                title: "Vento de Mardin no Rio: O Carnaval Místico",
                 hero: "https://images.unsplash.com/photo-1596707447291-38e9c4d92b8d?q=80&w=1600",
-                tr: `Rio Karnavalı'nın renk cümbüşü ile Mardin’in 'Gece Gerdanlık' ışıkları arasındaki mistik bağ şaşırtıcıdır. Rio’da davullar çalarken, Mardin’in dar sokaklarında Reyhaniye ezgileri yükselir. Bu, kutlamayı bir varoluş biçimi olarak seçen iki uzak ruhun buluşmasıdır.`,
-                pt: `Há uma ligação mística entre a explosão de cores do Carnaval do Rio e o visual noturno de Mardin. É a celebração como forma de existência.`
-            },
-            food: {
-                titleTr: "İrok'un Okyanus Ötesi Göçü",
-                titlePt: "A Migração Transoceânica do Irok",
-                hero: "https://images.unsplash.com/photo-1541529086526-db283c563270?q=80&w=1600",
-                tr: `Mardin’in kederli yemeği İçli Köfte (İrok), Brezilya’da <b>Quibe</b> adını almıştır. Rio plajlarında Quibe yiyen bir yabancı, aslında Mardinli bir annenin binlerce mil öteden gönderdiği lezzet mektubunu okur.`,
-                pt: `O Irok (quibe), a comida saborosa de Mardin, chegou ao Brasil e assumiu o nome de Quibe. O cheiro de bulgur prova que os sabores não precisam de passaporte.`
+                tr: `Rio Karnavalı’nın o patlayıcı renkleri, Mardin’in gece ışıklandırmasındaki mistik sarıyla buluşur. Rio’da davullar (surdo) çalmaya başladığında, Mardin’in dar sokaklarındaki bir düğün alayının ritmiyle senkronize olur. <br><br><b>Kıyaslama:</b> Sambodromo’daki bir dansçının trans hali ile Mardin’de <b>Reyhaniye</b> oynayan bir gencin vakur duruşu aslında aynı kökten gelir: Yaşamı kutsamak. Rio’da maskeler ardına saklanan kimlikler, Mardin’in taş duvarları arasındaki bin yıllık sırlar gibidir. Çınarbaş’a göre her iki coğrafya da acıyı dansla, kederi ise ritimle iyileştirmeyi çok iyi bilir. Rio karnavalı bir patlama, Mardin gecesi ise derin bir yankıdır.`,
+                pt: `As cores explosivas do Carnaval do Rio encontram o amarelo místico da iluminação noturna de Mardin. Quando os tambores (surdo) começam a tocar no Rio, sincronizam-se com o ritmo de um cortejo de casamento nas ruas de Mardin. <br><br><b>Comparação:</b> O estado de transe de um passista no Sambódromo e a postura digna de um jovem dançando <b>Reyhaniye</b> em Mardin vêm da mesma raiz: celebrar a vida. De acordo com Çınarbaş, ambas as geografias sabem muito bem como curar a dor com a dança e a tristeza com o ritmo. O carnaval do Rio é uma explosão, a noite de Mardin é um eco profundo.`
             }
         };
 
         function openReader(key) {
             const data = archive[key];
-            const container = document.getElementById('modal-container');
+            const modal = document.getElementById('modal-content');
+            const isPt = navigator.language.startsWith('pt');
             
-            container.innerHTML = `
-                <div class="hero-box">
+            modal.innerHTML = `
+                <div class="hero-section">
                     <img src="${data.hero}">
-                    <div class="hero-title-wrap">
-                        <h1 style="font-family:'Bodoni Moda'; font-size:4rem; margin:0;">${data.titleTr}</h1>
-                        <h2 style="font-family:'Bodoni Moda'; font-size:2rem; font-style:italic; opacity:0.8;">${data.titlePt}</h2>
-                    </div>
+                    <div class="hero-mask"></div>
+                    <h1 class="hero-title" style="position:absolute; bottom:50px; left:5%; color:white; font-family:'Bodoni Moda'; font-size:4rem; text-shadow:0 10px 30px rgba(0,0,0,0.5);">${data.title}</h1>
                 </div>
                 <div class="modal-body">
                     <div class="comparison-grid">
-                        <div class="text-block">
-                            <h3 style="color:var(--accent); border-bottom:1px solid #ddd; margin-bottom:20px; padding-bottom:10px;">TR // ANALİZ</h3>
-                            ${data.tr}
+                        <div class="text-box">
+                            <h3>TR // MEZOPOTAMYA ANALİZİ</h3>
+                            <div class="text-content">${data.tr}</div>
                         </div>
-                        <div class="text-block text-pt">
-                            <h3 style="color:var(--accent); border-bottom:1px solid #ddd; margin-bottom:20px; padding-bottom:10px;">PT // ANÁLISE</h3>
-                            ${data.pt}
+                        <div class="text-box" style="border-left: 4px solid var(--accent);">
+                            <h3>PT // ANÁLISE BRASILEIRA</h3>
+                            <div class="text-content" style="font-style:italic;">${data.pt}</div>
                         </div>
                     </div>
                     <div class="footer-seal">ASC 2026</div>
@@ -207,6 +195,11 @@
         function closeReader() {
             document.getElementById('reader').style.display = 'none';
             document.body.style.overflow = 'auto';
+        }
+
+        window.onload = () => {
+            const isPt = navigator.language.startsWith('pt');
+            document.getElementById('lang-status').innerText = isPt ? "LOCALIDADE: BRASIL // PT-BR" : "YEREL: TÜRKİYE // TR-TR";
         }
     </script>
 </body>
