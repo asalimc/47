@@ -70,7 +70,7 @@
 
         .reader-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-top: 40px; }
         @media (min-width: 800px) { .reader-grid { grid-template-columns: 1fr 1fr; gap: 60px; } }
-        .text-tr, .text-pt { font-size: 1.15rem; line-height: 1.9; color: var(--ink); text-align: justify; }
+        .text-tr, .text-pt { font-size: 1.15rem; line-height: 1.9; color: var(--ink); text-align: justify; height: auto; overflow: visible; }
         .text-pt { color: #555; font-style: italic; border-left: 3px solid var(--accent); padding-left: 20px; }
 
         .share-bar { margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: center; }
@@ -95,11 +95,11 @@
     <main class="container">
         <div class="bento" id="bento-grid">
             <div class="card card-wide" onclick="openReader('author')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1200')"></div>
+                <div class="card-bg" style="background-image: url('https://pbs.twimg.com/media/GifApT2XEAAqees.jpg')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <div class="tag-wrapper">
-                        <span class="tag-dual">MANIFESTO</span>
+                        <span class="tag-dual">MANIFESTO ● MANIFESTO</span>
                         <span class="view-count" id="view-author">LOADING...</span>
                     </div>
                     <h2 class="tr-line">Ahmet Çınarbaş</h2>
@@ -156,31 +156,48 @@
     <footer>AHMET ÇINARBAŞ JOURNAL © 2026 ● MARDIN TO BRAZIL</footer>
 
     <script>
-        // İÇERİK VERİLERİ
+        // TAM İÇERİK VERİ TABANI
         const contentData = {
-            author: { tag: "MANIFESTO", tr: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", pt: "O Arquivista das Almas", img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg", textTr: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğasıyla harmanlayan bir anlatıcıdır.", textPt: "Um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia." },
-            architecture: { tag: "MİMARİ ANALİZ", tr: "Mimarinin Hafızası: Taş Evler & Favelalar", pt: "A Memória da Arquitetura", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200", textTr: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı...", textPt: "As casas de pedra de Mardin são a moral da arquitetura." },
-            sports: { tag: "SPOR ANALİZ", tr: "Tozun ve Terin Kardeşliği", pt: "O Ritual do Suor", img: "https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg", textTr: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir.", textPt: "Para o Mardinspor, o futebol não é apenas um jogo." },
-            faith: { tag: "İNANÇ ANALİZ", tr: "İnanç ve Ritüel: Kırklar & Cristo", pt: "Fé e Ritual", img: "https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200", textTr: "Mardin ve Rio, 'Kutsalın Estetiği' noktasında ikizdir. Ölüm Mardin’de siyah bir ağıt...", textPt: "Mardin e Rio são gêmeas na 'Estética do Sagrado'." }
+            author: { 
+                tag: "MANIFESTO", tr: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", pt: "O Arquivista das Almas", 
+                img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg", 
+                textTr: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğası ve kaotik ama büyüleyici şehir yapısıyla harmanlayan bir estetik küratörüdür. Onun için Mardin'in sessizliği Rio'nun ritmiyle, telkâri işçiliği ise favelaların renkli karmaşasıyla bir bütündür. Bu journal, iki farklı kıtanın ama aynı ortak ruhun bir izdüşümüdür.", 
+                textPt: "Ahmet Çınarbaş é um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem e a estrutura urbana fascinante do Brasil. Para ele, o silêncio de Mardin funde-se com o ritmo do Rio." 
+            },
+            architecture: { 
+                tag: "MİMARİ ANALİZ", tr: "Mimarinin Hafızası: Taş Evler & Favelalar", pt: "A Memória da Arquitetura", 
+                img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200", 
+                textTr: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı. Mardin’de evler birbirinin güneşini kesmez, bu bir 'saygı' mimarisidir. Favelalarda ise evler birbirinin omuzlarına tırmanır; şehre tutunmak için. Her iki coğrafyada da taş ve tuğla, insan ruhunun sığınacak bir liman arayışını temsil eder. Mardin'in dar sokakları ile favelaların labirentleri, modernizmin öldüremediği birer organik hafıza merkezidir.", 
+                textPt: "As casas de pedra de Mardin são a moral da arquitetura; as favelas do Rio são o grito de sobrevivência. Em Mardin, as casas não cortam o sol umas das outras. Na favela, a arquitetura baseia-se no 'inacabado'; cada tijolo é uma esperança de um amanhã melhor." 
+            },
+            sports: { 
+                tag: "SPOR ANALİZ", tr: "Tozun ve Terin Kardeşliği", pt: "O Ritual do Suor", 
+                img: "https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg", 
+                textTr: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir. Maç başlamadan saatler önce stadyumun tellerine yapışan ateşli taraftar, 'Burası Mardin, Buradan Çıkış Yok!' sloganıyla aslında kendi kimliğini ve toprağını savunur. Bu tutku, Rio’daki favela sahalarında çıplak ayakla top koşturan çocukların 'Favela Venceu!' (Favela Kazandı) haykırışıyla kardeştir. Tozun ve terin birleştiği bu hikayede neşe ve keder, topun çizgiyi geçtiği o anki patlamada birleşir.", 
+                textPt: "Para o Mardinspor, o futebol não é apenas um jogo, é uma luta pela existência. O fervor dos adeptos que se agarram aos arames é o mesmo espírito da 'Torcida' brasileira nas favelas. O orgulho no 'Beleş Tepe' é irmão da alegria carioca que floresce no asfalto quente." 
+            },
+            faith: { 
+                tag: "İNANÇ ANALİZ", tr: "İnanç ve Ritüel: Kırklar & Cristo", pt: "Fé e Ritual", 
+                img: "https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200", 
+                textTr: "Mardin ve Rio, 'Kutsalın Estetiği' noktasında ikizdir. Kırklar Kilisesi’nin tütsü kokusuyla Cristo Redentor’un spiritüel gölgesi aynı göğe bakar. Mardin’de inanç muhafaza (korumak), Brezilya’da ise senkretizm (karıştırmak) üzerine kuruludur. Düğünlerde yükselen erbane sesiyle, Rio sokaklarında yankılanan Samba-de-Roda ritimleri aynı evrensel sızının, umudun ve ilahi teslimiyetin farklı dilleridir. Ölüm Mardin’de siyah bir ağıt, Rio’da ışığa giden ritmik bir yolculuktur.", 
+                textPt: "Mardin e Rio são gêmeas na 'Estética do Sagrado'. O perfume de incenso da Igreja dos Quarenta e a sombra espiritual do Cristo Redentor olham para o mesmo céu. Em Mardin, a fé é conservação; no Brasil, é sincretismo e celebração da vida através da dor." 
+            }
         };
 
-        // GERÇEK ZAMANLI SAYAÇ SİSTEMİ (Unique Visitor / IP Mantığı)
-        // Her makale için ayrı sayaç tutar. Tarayıcı kapatılsa bile localStorage sayesinde aynı kişiyi 1 kez sayar.
+        // SAYAC SİSTEMİ (Unique Visitor - IP Simülasyonu)
         function handleCounting(key) {
-            let views = parseInt(localStorage.getItem('view_count_' + key)) || Math.floor(Math.random() * 200) + 100;
-            
-            // Eğer bu kullanıcı bu makaleyi bu cihazdan ilk kez açıyorsa sayacı artır
-            if (!sessionStorage.getItem('counted_' + key)) {
+            let views = parseInt(localStorage.getItem('v_cnt_' + key)) || (Math.floor(Math.random() * 100) + 150);
+            if (!sessionStorage.getItem('read_' + key)) {
                 views++;
-                localStorage.setItem('view_count_' + key, views);
-                sessionStorage.setItem('counted_' + key, 'true');
+                localStorage.setItem('v_cnt_' + key, views);
+                sessionStorage.setItem('read_' + key, '1');
             }
             return views;
         }
 
         function updateUIViews() {
             for (let key in contentData) {
-                const count = localStorage.getItem('view_count_' + key) || (Math.floor(Math.random() * 200) + 100);
+                const count = localStorage.getItem('v_cnt_' + key) || (Math.floor(Math.random() * 100) + 150);
                 const el = document.getElementById(`view-${key}`);
                 if (el) el.innerText = `${count} VIEWS`;
             }
