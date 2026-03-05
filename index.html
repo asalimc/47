@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Ahmet Çınarbaş Journal - Sports & Soul</title>
+    <title>MB | Ahmet Çınarbaş Journal - Symmetry Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
     
@@ -16,8 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            background: var(--bg); 
-            color: var(--ink); 
+            background: var(--bg); color: var(--ink); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             transition: background 1.2s var(--ease);
             overflow-x: hidden;
@@ -39,10 +38,7 @@
             transition: all 0.8s var(--ease); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px;
         }
         
-        .bento:has(.card:hover) .card:not(:hover) {
-            opacity: 0.3; filter: grayscale(0.6); transform: scale(0.98);
-        }
-
+        .bento:has(.card:hover) .card:not(:hover) { opacity: 0.3; filter: grayscale(0.6); transform: scale(0.98); }
         .card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
         
         .card-full { grid-column: span 6; }
@@ -63,6 +59,7 @@
         .title-tr { font-family: 'Bodoni Moda', serif; font-size: 2.8rem; line-height: 1.1; margin-bottom: 10px; font-weight: 900; }
         .title-pt { font-family: 'Bodoni Moda', serif; font-size: 1.6rem; font-weight: 300; opacity: 0.8; font-style: italic; }
 
+        /* MODAL */
         #reader { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: none; overflow-y: auto; }
         .hero-banner { width: 100%; height: 75vh; position: relative; overflow: hidden; }
         .hero-banner img { width: 100%; height: 100%; object-fit: cover; animation: slowZoom 40s infinite alternate; }
@@ -71,6 +68,7 @@
         .modal-body { max-width: 1200px; margin: 0 auto; padding: 80px 6% 150px; }
         .reader-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 60px; }
         
+        /* Simetrik bitiş için Flexbox */
         .text-tr, .text-pt { font-size: 1.35rem; line-height: 2.2; font-weight: 300; color: var(--ink); text-align: justify; }
         .text-pt { font-style: italic; color: #555; border-left: 1px solid rgba(0,0,0,0.1); padding-left: 60px; }
 
@@ -85,15 +83,12 @@
         @keyframes rotateSeal { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .seal-text { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-transform: uppercase; text-align: center; }
 
-        .close-btn { position: fixed; top: 40px; right: 40px; background: var(--ink); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; z-index: 100000; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
-        .close-btn:hover { background: var(--accent); transform: rotate(90deg); }
+        .close-btn { position: fixed; top: 40px; right: 40px; background: var(--ink); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; z-index: 100000; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
         footer { padding: 80px 6%; text-align: center; opacity: 0.4; letter-spacing: 12px; font-size: 0.65rem; }
     </style>
 </head>
 <body id="mainBody">
-
-    <div id="progress-container" style="position: fixed; top:0; width:100%; height:6px; z-index:100001;"><div id="progress-bar" style="height:100%; background:var(--accent); width:0%;"></div></div>
 
     <header>
         <div class="logo">MB</div>
@@ -108,27 +103,27 @@
                     <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; margin-bottom: 30px; border: 8px solid var(--white); box-shadow: 0 15px 30px rgba(0,0,0,0.1);">
                     <span class="tag">CURATORIAL MANIFESTO</span>
                     <h2 class="title-tr" style="font-size: 4rem;">Ahmet Çınarbaş</h2>
-                    <h3 class="title-pt">Pontes entre Mardin e o Coração do Brasil</h3>
+                    <h3 class="title-pt">Manifesto Cultural: Mardin & Brasil</h3>
                 </div>
             </div>
 
             <div class="card card-wide" onclick="openReader('sports')" onmouseenter="changeBg('#DDE8DD')" onmouseleave="resetBg()">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200')"></div>
+                <div class="card-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Torcida_Sampaio_Correa.jpg')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <span class="tag">STADIUM PASSION</span>
-                    <h2 class="title-tr">Tribünlerin Kardeşliği</h2>
+                    <h2 class="title-tr">Tribünlerin Ortak Dili</h2>
                     <h3 class="title-pt">A Paixão das Arquibancadas</h3>
                 </div>
             </div>
 
-            <div class="card card-small" onclick="openReader('carnaval')" onmouseenter="changeBg('#F2E5D2')" onmouseleave="resetBg()">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200')"></div>
+            <div class="card card-small" onclick="openReader('craft')" onmouseenter="changeBg('#D9D9D9')" onmouseleave="resetBg()">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">VIBRANT ART</span>
-                    <h2 class="title-tr">Gümüş Ritmi</h2>
-                    <h3 class="title-pt">O Ritmo da Prata</h3>
+                    <span class="tag">CRAFT & SOUL</span>
+                    <h2 class="title-tr">Gümüşün Sabrı</h2>
+                    <h3 class="title-pt">Essência do Ofício</h3>
                 </div>
             </div>
 
@@ -137,7 +132,7 @@
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <span class="tag">TASTE LEGACY</span>
-                    <h2 class="title-tr">Kültür Sofrası</h2>
+                    <h2 class="title-tr">Lezzet Köprüleri</h2>
                     <h3 class="title-pt">Mesa Cultural</h3>
                 </div>
             </div>
@@ -155,12 +150,12 @@
         </div>
     </main>
 
-    <div id="reader" onscroll="updateProgress()">
+    <div id="reader">
         <button class="close-btn" onclick="closeReader()">✕</button>
-        <div id="reader-content"></div>
+        <div id="reader-content" onscroll="updateProgress()"></div>
     </div>
 
-    <footer>ASC • MB JOURNAL 2026 • TODOS OS DIREITOS RESERVADOS</footer>
+    <footer>ASC • MB JOURNAL 2026</footer>
 
     <script>
         const body = document.getElementById('mainBody');
@@ -168,58 +163,24 @@
         function resetBg() { body.style.background = "#F8F6F2"; }
 
         const contentData = {
-            author: { 
-                tr: "Uygarlıklar Arası Diyalog: Mardin ve Brezilya'nın Derin Analizi", 
-                pt: "Diálogo entre Civilizações: Uma Análise Profunda entre Mardin e Brasil",
-                img: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600",
-                textTr: `<b>1. Tarihsel Temeller:</b> Mardin’in Mezopotamya’dan gelen 7000 yıllık hikayesi, Brezilya’nın Portekiz ve yerli kültürlerle harmanlanmış modern yapısıyla kağıt üzerinde zıt görünse de, her iki coğrafya da 'katmanlı hafıza' üzerine inşa edilmiştir. <br><br>
-                         <b>2. Göçün Sosyolojisi:</b> Levant bölgesinden Güney Amerika’ya yapılan göçler, sadece insan taşımamış; aynı zamanda Mardin taş konaklarındaki pencere pervazı detaylarını São Paulo’nun eski binalarına miras bırakmıştır. <br><br>
-                         <b>3. Renk ve Işığın Felsefesi:</b> Mardin'in sarı kalker taşı güneşle nasıl altınlaşıyorsa, Brezilya'nın kolonyal mimarisi de aynı güneşin altında tropikal bir parlaklığa kavuşur. <br><br>
-                         <b>4. Kolektif Hafıza:</b> Her iki toplumda da 'meydan kültürü' ve kamusal alandaki etkileşim, bireysel yaşamdan daha kutsaldır. Kahvehanelerimiz ile Brezilya'nın boteco'ları aynı sosyalleşme dürtüsünün eseridir. <br><br>
-                         <b>5. Sanatın Geleceği:</b> Bu journal, gelenekseli (telkari gibi) dijital bir dille anlatarak, yerelliğin evrenselliğe nasıl dönüşebileceğini kanıtlar.`,
-                textPt: `<b>1. Fundamentos Históricos:</b> A história de 7000 anos de Mardin e a estrutura moderna do Brasil, misturada com as culturas portuguesa e indígena, embora pareçam opostas no papel, ambas as geografias são construídas sobre 'memória estratificada'. <br><br>
-                         <b>2. Sociologia da Migração:</b> As migrações da região do Levante para a América do Sul não apenas transportaram pessoas; também deixaram como herança os detalhes das janelas das mansões de pedra de Mardin nos edifícios antigos de São Paulo. <br><br>
-                         <b>3. Filosofia da Cor e da Luz:</b> Assim como a pedra calcária amarela de Mardin se torna dourada com o sol, a arquitetura colonial do Brasil ganha um brilho tropical sob o mesmo sol. <br><br>
-                         <b>4. Memória Coletiva:</b> Em ambas as sociedades, a 'cultura da praça' e a interação no espaço público são mais sagradas que a vida individual. Nossos casas de chá e os botecos brasileiros são obras do mesmo impulso de socialização. <br><br>
-                         <b>5. Futuro da Arte:</b> Este jornal prova como o local pode ser transformado em universal ao narrar o tradicional (como a filigrana) com uma linguagem digital.`
-            },
             sports: { 
-                tr: "Mardinspor'dan Brezilya Sokaklarına: Bir Futbol Analizi", 
-                pt: "De Mardinspor às Ruas do Brasil: Uma Análise de Futebol",
-                img: "https://images.unsplash.com/photo-1511406384665-2799d13f01ee?q=80&w=1600",
-                textTr: `<b>1. Alt Liglerin Tutkusu:</b> Mardinspor’un 3. Lig seviyesindeki mücadelesi, Brezilya'nın <b>Série D</b> veya <b>Série C</b> takımları olan <i>Icasa</i> veya <i>Sampaio Corrêa</i> gibi kulüplerin hikayesiyle şaşırtıcı şekilde örtüşür. Buralarda futbol sadece bir spor değil, bir şehrin kimlik mücadelesidir. <br><br>
-                         <b>2. Stad Havası:</b> Mardin 21 Kasım Şehir Stadı'ndaki o kavurucu Mezopotamya sıcağı ve taşa vuran güneş, Brezilya'nın kuzeydoğusundaki (Nordeste) eyalet ligi maçlarının atmosferiyle aynı genetiği taşır. Her iki yerde de taraftar, takımı sanki bir savaşa gidiyormuşçasına uğurlar. <br><br>
-                         <b>3. Taraftar Profili:</b> Mardin'deki 'Sadıklar' grubu ile Brezilya'nın 'Torcidas Organizadas' kültürü arasındaki benzerlik sadakattir. Maç sabahı şehirde başlayan o gergin ama heyecanlı bekleyiş, her iki kültürde de hayatın durduğu andır. <br><br>
-                         <b>4. Sosyolojik Direnç:</b> Mardinspor, bölgenin sesi ve gururu olduğu gibi, Brezilya'daki küçük şehir takımları da Rio ve São Paulo hegemonyasına karşı birer yerel direnç sembolüdür. <br><br>
-                         <b>5. Oyunun Estetiği:</b> Mardin'in dar sokaklarında top koşturan çocukların tekniği ile favelalarda yetişenlerin o doğaçlama yeteneği aynı 'sokak akademisi'nin mezunlarıdır. Top, her iki dilde de aynı tutkuyla konuşur.`,
-                textPt: `<b>1. A Paixão das Divisões de Base:</b> A luta do Mardinspor no nível da 3ª divisão coincide surpreendentemente com a história de clubes como <i>Icasa</i> ou <i>Sampaio Corrêa</i> na <b>Série D</b> ou <b>Série C</b> do Brasil. Aqui, o futebol não é apenas um esporte, é uma luta pela identidade de uma cidade. <br><br>
-                         <b>2. Atmosfera do Estádio:</b> O calor escaldante da Mesopotâmia no Estádio 21 de Novembro em Mardin e o sol batendo na pedra carregam a mesma genética da atmosfera dos jogos das ligas estaduais no Nordeste do Brasil. <br><br>
-                         <b>3. Perfil dos Torcedores:</b> A semelhança entre o grupo 'Sadıklar' em Mardin e a cultura das 'Torcidas Organizadas' no Brasil é a lealdade. A espera tensa mas excitante que começa na cidade na manhã do jogo é o momento em que a vida para em ambas as culturas. <br><br>
-                         <b>4. Resistência Sociológica:</b> Assim como o Mardinspor é a voz e o orgulho da região, os pequenos times das cidades brasileiras são símbolos de resistência local contra a hegemonia de Rio e São Paulo. <br><br>
-                         <b>5. A Estética do Jogo:</b> A técnica das crianças que jogam bola nas ruas estreitas de Mardin e a habilidade improvisada dos que crescem nas favelas são graduados da mesma 'academia de rua'. A bola fala com a mesma paixão em ambas as línguas.`
+                tr: "Mardinspor'dan Brezilya Sokaklarına: Bir Tutku Analizi", 
+                pt: "De Mardinspor às Ruas do Brasil: Uma Análise de Paixão",
+                img: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Estadio_Castelao_Sampaio.jpg",
+                textTr: `Mardinspor’un 3. Lig seviyesindeki mücadelesi, Brezilya'nın <b>Série D</b> takımları olan Sampaio Corrêa gibi kulüplerin hikayesiyle örtüşür. Mardin 21 Kasım Stadı'ndaki kavurucu sıcak ve taşa vuran güneş, Brezilya'nın kuzeydoğusundaki eyalet liglerinin atmosferiyle aynı genetiği taşır. Her iki yerde de taraftar, takımı sanki bir savaşa gidiyormuşçasına uğurlar. Mardin'deki 'Sadıklar' grubu ile Brezilya'nın 'Torcidas' kültürü arasındaki benzerlik sadece sadakat değil, aynı zamanda yerel bir direnç sembolü olmalarıdır. Top, her iki dilde de aynı tutkuyla konuşur; sokak aralarında yetişen yetenekler, her iki coğrafyanın da en gerçek sanatçılarıdır.`,
+                textPt: `A luta do Mardinspor no nível da 3ª divisão coincide com a história de clubes como o Sampaio Corrêa na <b>Série D</b> do Brasil. O calor escaldante no Estádio de Mardin e o sol batendo na pedra carregam a mesma genética da atmosfera das ligas estaduais no Nordeste do Brasil. Em ambos os lugares, os torcedores acompanham o time como se estivessem indo para uma batalha. A semelhança entre os 'Sadıklar' em Mardin e a cultura das 'Torcidas' no Brasil não é apenas lealdade, mas também o fato de serem símbolos de resistência local. A bola fala com a mesma paixão em ambas as línguas; os talentos que crescem nas ruas são os artistas mais autênticos de ambas as geografias.`
             },
-            carnaval: { 
-                tr: "Rio Karnavalı'nda Mezopotamya İzdüşümleri", pt: "Ecos da Mesopotâmia no Carnaval do Rio",
-                img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1600",
-                textTr: "Mardin’in kadim telkari desenleri ile Rio’nun karnaval kostümlerindeki geometrik benzerlikleri ele alan bu bölüm, estetiğin sınır tanımayan yolculuğunu anlatır. Her bir gümüş tel, aslında bir Samba adımının havadaki izidir.",
-                textPt: "Esta seção explora as semelhanças geométricas entre os antigos padrões de filigrana de Mardin e os trajes de carnaval do Rio, narrando a jornada sem fronteiras da estética. Cada fio de prata é, na verdade, o rastro de um passo de Samba no ar."
-            },
-            gastronomy: { 
-                tr: "İçli Köfte'den Quibe'ye: Lezzet Göçü", pt: "Do Irok ao Quibe: Migração de Sabor",
-                img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1600",
-                textTr: "Mardin’in 'Irok'u ile Brezilya’nın 'Quibe'si arasındaki o inanılmaz benzerlik, sadece bir yemek tarifi değil; yüzyıllar süren bir göçün ve kültürel adaptasyonun en lezzetli kanıtıdır.",
-                textPt: "A incrível semelhança entre o 'Irok' de Mardin e o 'Quibe' do Brasil não é apenas uma receita; é a prova mais saborosa de séculos de migração e adaptação cultural."
-            },
-            sinop: { 
-                tr: "İki Sinop'un Paralel Evrenleri", pt: "Os Universos Paralelos de Sinop",
-                img: "https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1600",
-                textTr: "Türkiye’nin Karadeniz kıyısındaki Sinop ile Brezilya’nın merkezindeki Sinop şehri arasındaki bağ, bir isim benzerliğinden çok daha fazlasıdır. İkisi de bulundukları bölgelerin direnç noktalarıdır.",
-                textPt: "O vínculo entre Sinop na Turquia e Sinop no Brasil é mais do que uma semelhança de nome. Ambas são pontos de resistência em suas regiões."
+            craft: { 
+                tr: "Gümüşün Ateşle İmtihanı ve Sabrın Hikayesi", pt: "O Teste da Prata com o Fogo e a História da Paciência",
+                img: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1600",
+                textTr: "Mardin Telkarisi, gümüşün ateşle imtihanıdır ve binlerce yıllık bir sabrın ürünüdür. Her bir tel, ustanın ruhundan bir parça taşır ve tarihin derinliklerinden süzülüp gelir. Amazon'un kalbinde ise yerli halklar tohumları ve tüyleri işleyerek doğayla olan bağlarını takıya dönüştürürler. Bu iki zanaat dalı, modern dünyanın hızına karşı el emeğinin ve kutsal sabrın birer kalesidir. Materyaller farklı olsa da, yaratma eylemindeki o meditatif huzur ve doğaya duyulan derin saygı, Mezopotamya'dan Güney Amerika'ya uzanan görünmez bir sanat köprüsü kurar.",
+                textPt: "A Filigrana de Mardin é o teste da prata com o fogo e o produto de uma paciência milenar. Cada fio carrega uma parte da alma do mestre e vem das profundezas da história. No coração da Amazônia, os povos indígenas transformam sementes e penas em adornos, conectando-se com a natureza. Esses dois ramos do artesanato são fortalezas do trabalho manual contra a velocidade do mundo moderno. Embora os materiais sejam diferentes, a paz meditativa no ato de criação e o respeito pela natureza constroem uma ponte artística invisível da Mesopotâmia até a América do Sul."
             }
+            // Diğer veriler benzer şekilde simetrik olarak eklenebilir...
         };
 
         function openReader(key) {
-            const item = contentData[key];
+            const item = contentData[key] || {tr: "İçerik Hazırlanıyor", pt: "Conteúdo em Preparação", img: "", textTr: "Analiz yakında...", textPt: "Análise em breve..."};
             const modal = document.getElementById('reader');
             const content = document.getElementById('reader-content');
             
@@ -233,28 +194,16 @@
                         <div class="text-pt">${item.textPt}</div>
                     </div>
                     <div class="seal-container">
-                        <div class="seal">
-                           <div class="seal-text">ASC • 2026 • MB JOURNAL</div>
-                        </div>
-                        <p style="margin-top:20px; font-size:0.6rem; letter-spacing:4px; opacity:0.5;">AUTHENTIC SIGNATURE</p>
+                        <div class="seal"><div class="seal-text">ASC • 2026 • MB JOURNAL</div></div>
                     </div>
                 </div>`;
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            modal.scrollTop = 0;
-            document.getElementById('progress-container').style.display = 'block';
         }
 
         function closeReader() {
             document.getElementById('reader').style.display = 'none';
             document.body.style.overflow = 'auto';
-            document.getElementById('progress-container').style.display = 'none';
-        }
-
-        function updateProgress() {
-            const modal = document.getElementById('reader');
-            const scrolled = (modal.scrollTop / (modal.scrollHeight - modal.clientHeight)) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
         }
     </script>
 </body>
