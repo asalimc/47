@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Ahmet Çınarbaş - The Grand Archive</title>
+    <title>MB | Ahmet Çınarbaş - The Living Archive</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
     
@@ -21,26 +21,23 @@
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .logo { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-weight: 900; }
 
         .container { max-width: 1400px; margin: 120px auto 100px; padding: 0 6%; }
         
-        /* Bento Grid & Mobile Stack */
         .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 25px; }
         
         @media (max-width: 900px) {
             .bento { display: flex; flex-direction: column; }
             .card { min-height: 400px !important; }
-            .reader-grid { flex-direction: column !important; gap: 30px !important; }
-            .text-pt { border-left: none !important; border-top: 2px solid var(--accent); padding-left: 0 !important; padding-top: 30px; }
         }
 
         .card {
-            background: var(--white); border-radius: 35px; min-height: 500px;
+            background: var(--white); border-radius: 40px; min-height: 500px;
             position: relative; overflow: hidden; cursor: pointer;
             display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.4s ease;
         }
+        .card:hover { transform: translateY(-5px); }
         
         .card-full { grid-column: span 6; }
         .card-wide { grid-column: span 4; }
@@ -48,108 +45,106 @@
         .card-small { grid-column: span 2; }
 
         .card-bg { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: 0; }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 10%, transparent 90%); z-index: 1; }
-        
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95) 5%, transparent 80%); z-index: 1; }
         .card-content { position: relative; z-index: 2; color: white; }
-        
-        /* Artistik Başlık Birleşimi */
-        .title-wrap { position: relative; height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-        .title-tr-art { font-family: 'Bodoni Moda', serif; font-size: 3rem; font-weight: 900; color: var(--ink); position: absolute; z-index: 2; mix-blend-mode: multiply; opacity: 0.9; }
-        .title-pt-art { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; font-style: italic; color: var(--accent); position: absolute; z-index: 1; transform: translate(20px, 30px); opacity: 0.6; }
+
+        /* YAZAR BAŞLIĞI DÜZELTME */
+        .title-container { position: relative; text-align: center; padding: 40px 0; }
+        .main-title { 
+            font-family: 'Bodoni Moda', serif; font-size: 3.5rem; font-weight: 900; 
+            line-height: 1; color: var(--ink); margin: 0; position: relative; z-index: 2;
+        }
+        .sub-title-art { 
+            font-family: 'Bodoni Moda', serif; font-size: 2.5rem; font-style: italic;
+            color: var(--accent); opacity: 0.4; margin-top: -15px; display: block;
+            position: relative; z-index: 1;
+        }
 
         .tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 4px; color: var(--accent); margin-bottom: 12px; display: block; text-transform: uppercase; }
-        .title-tr { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; margin-bottom: 8px; font-weight: 900; }
-        .title-pt { font-family: 'Bodoni Moda', serif; font-size: 1.3rem; font-weight: 300; opacity: 0.8; font-style: italic; }
-
-        /* Reader / Modal */
+        
+        /* Modal Görünümü */
         #reader { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: none; overflow-y: auto; }
-        .hero-container { width: 100%; height: 85vh; position: relative; overflow: hidden; }
-        .hero-img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) brightness(0.8); }
-        .modal-body { max-width: 1200px; margin: 0 auto; padding: 80px 5% 150px; }
-        
-        .reader-grid { display: flex; gap: 60px; margin-top: 50px; }
-        .text-tr, .text-pt { flex: 1; font-size: 1.2rem; line-height: 2.2; text-align: justify; }
-        .text-pt { border-left: 1px solid #ddd; padding-left: 50px; color: #555; }
+        .hero-box { width: 100%; height: 70vh; position: relative; }
+        .hero-box img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; }
+        .hero-title { color: white; font-family: 'Bodoni Moda', serif; font-size: 4rem; text-align: center; text-shadow: 0 5px 20px rgba(0,0,0,0.5); }
 
-        .close-btn { position: fixed; top: 30px; right: 30px; background: var(--ink); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; z-index: 100000; cursor: pointer; }
+        .modal-body { max-width: 1200px; margin: 0 auto; padding: 60px 5%; }
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        @media (max-width: 800px) { .comparison-grid { grid-template-columns: 1fr; } }
 
-        /* Sabit Kırmızı Mühür */
-        .seal-fixed { 
-            width: 120px; height: 120px; background: var(--red); color: white; 
+        .text-block { font-size: 1.15rem; line-height: 2.2; text-align: justify; color: #333; }
+        .text-pt { border-left: 2px solid var(--accent); padding-left: 40px; font-style: italic; color: #666; }
+
+        .close-btn { position: fixed; top: 25px; right: 25px; background: var(--ink); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; z-index: 100001; cursor: pointer; font-size: 1.5rem; }
+
+        .footer-seal { 
+            width: 130px; height: 130px; background: var(--red); color: white; 
             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-            font-weight: 900; font-size: 0.9rem; margin: 60px auto 0; 
-            box-shadow: 0 10px 20px rgba(178, 34, 34, 0.3);
+            margin: 80px auto; font-weight: 900; letter-spacing: 2px;
         }
-        
+
         b { color: var(--red); }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">MB</div>
-        <div id="lang-indicator" style="font-weight: 800; font-size: 0.7rem; color: var(--accent);">AUTO-DETECTING LOCALE...</div>
+        <div style="font-family: 'Bodoni Moda', serif; font-size: 1.5rem; font-weight: 900;">MB</div>
+        <div id="status" style="font-size: 0.65rem; font-weight: 800; letter-spacing: 1px;">ARCHIVE CONNECTED // 2026</div>
     </header>
 
     <main class="container">
         <div class="bento">
             
-            <div class="card card-full" onclick="openReader('author')" style="background: var(--white); justify-content: center; align-items: center; text-align: center;">
-                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid var(--bg);">
-                <div class="title-wrap">
-                    <h2 class="title-tr-art">Ahmet Çınarbaş: Kültürlerin Sessiz Mimarı</h2>
-                    <h2 class="title-pt-art">Ahmet Çınarbaş: O Arquiteto das Almas Culturais</h2>
+            <div class="card card-full" onclick="openReader('author')" style="background: white; justify-content: center; align-items: center;">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 5px solid var(--bg); margin-bottom: 20px;">
+                <div class="title-container">
+                    <h1 class="main-title">Ahmet Çınarbaş</h1>
+                    <span class="sub-title-art">Kültürlerin Sessiz Mimarı // Arquiteto das Almas</span>
                 </div>
-                <span class="tag">Explore the Archive</span>
+                <p style="max-width: 600px; text-align: center; font-size: 0.9rem; color: #888; margin-top: 10px;">
+                    Mezopotamya'nın kederini Amazon'un neşesiyle yoğuran, bir ayağı Mardin'in taşında, diğeri Rio'nun kumunda bir modern zaman dervişi.
+                </p>
             </div>
 
             <div class="card card-wide" onclick="openReader('sports')">
                 <div class="card-bg" style="background-image: url('https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">Sociology of Football</span>
-                    <h2 class="title-tr">Mardin'den Rio Sokaklarına</h2>
-                    <h3 class="title-pt">De Mardin às Ruas do Rio</h3>
+                    <span class="tag">Passion & Dust</span>
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 2.2rem;">Beleş Tepe'den Maracanã'ya</h2>
+                    <p style="font-style: italic; opacity: 0.8;">Do pó de Mardin ao asfalto do Rio</p>
                 </div>
             </div>
 
-            <div class="card card-small" onclick="openReader('craft')">
+            <div class="card card-small" onclick="openReader('silver')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1610555356070-d0efb6505f81?q=80&w=800')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">Craftsmanship</span>
-                    <h2 class="title-tr">Gümüşün Sabrı</h2>
-                    <h3 class="title-pt">A Paciência da Prata</h3>
+                    <span class="tag">Silver & Soul</span>
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 1.8rem;">Gümüşün Sabrı</h2>
+                    <p style="font-style: italic; opacity: 0.8;">A Paciência da Prata</p>
                 </div>
             </div>
 
-            <div class="card card-medium" onclick="openReader('carnival')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1596707447291-38e9c4d92b8d?q=80&w=800')"></div>
-                <div class="card-overlay"></div>
-                <div class="card-content">
-                    <span class="tag">Rituals</span>
-                    <h2 class="title-tr">Rio'da Mardin Rüzgarı</h2>
-                    <h3 class="title-pt">Vento de Mardin no Rio</h3>
-                </div>
-            </div>
-
-            <div class="card card-medium" onclick="openReader('gastronomy')">
+            <div class="card card-medium" onclick="openReader('food')">
                 <div class="card-bg" style="background-image: url('https://www.receitasdemae.com.br/wp-content/uploads/2008/07/Quibe-frito.jpg')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">Migration of Taste</span>
-                    <h2 class="title-tr">Okyanus Ötesi Lezzet</h2>
-                    <h3 class="title-pt">Quibe: O Legado do Irok</h3>
+                    <span class="tag">Taste of Migration</span>
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 2rem;">İçli Köfte'nin Hicreti</h2>
+                    <p style="font-style: italic; opacity: 0.8;">Quibe: O Exílio Saboroso</p>
                 </div>
             </div>
 
-            <div class="card card-full" onclick="openReader('sinop')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1600')"></div>
+            <div class="card card-medium" onclick="openReader('sinop')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1505242859134-a19365219dd0?q=80&w=800')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">Geographic Mirrors</span>
-                    <h2 class="title-tr">İki Yarımada: Sinop'tan Sinop'a</h2>
-                    <h3 class="title-pt">Sinop e Sinop: Espelhos Distantes</h3>
+                    <span class="tag">Parallel Universes</span>
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 2rem;">İki Sinop, Tek Ruh</h2>
+                    <p style="font-style: italic; opacity: 0.8;">Sinop e Sinop: Espelhos</p>
                 </div>
             </div>
 
@@ -158,90 +153,91 @@
 
     <div id="reader">
         <button class="close-btn" onclick="closeReader()">✕</button>
-        <div id="reader-content"></div>
+        <div id="modal-container"></div>
     </div>
 
     <script>
-        const contentData = {
+        const archive = {
             author: {
-                tr: "Ahmet Çınarbaş: Kültürlerin Sessiz Mimarı",
-                pt: "Ahmet Çınarbaş: O Arquiteto das Almas Culturais",
-                img: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600",
-                textTr: "Ahmet Çınarbaş, Mezopotamya’nın sarı sıcak kalker taşlarından aldığı ilhamı, Brezilya’nın yağmur ormanlarındaki nemli toprak kokusuyla harmanlayan bir vizyonerdir. Mardin’in dar sokaklarında geçen çocukluğu, onu dünyanın en uzak köşelerinde bile tanıdık bir 'insanlık izi' aramaya itmiştir. Çınarbaş'ın kürasyonunda hiçbir detay tesadüf değildir. Mardin'in taş konakları ile Rio'nun kolonyal mimarisi arasındaki o sessiz dili deşifre eder. Yazar, sadece iki coğrafyayı tanıtmakla kalmaz; o, gümüşün telkari olup incelmesiyle samba davullarının ritmindeki 'sabır' ortaklığını keşfeden bir sosyolojik manifestodur. Onun gözünde dünya, sınırların olmadığı, sadece paylaşılan hikayelerin olduğu dev bir mahalledir. Mardin'in <b>'kadim bilgeliği'</b> ile Brezilya'nın <b>'tropikal kaosu'</b> arasındaki o ince çizgide yürür.",
-                textPt: "Ahmet Çınarbaş é um visionário que mistura a inspiração das pedras calcárias amarelas da Mesopotâmia com o aroma da terra úmida das florestas tropicais brasileiras. Sua infância nas ruas estreitas de Mardin o impulsionou a buscar um 'traço de humanidade' familiar mesmo nos cantos mais distantes do mundo. Na curadoria de Çınarbaş, nenhum detalhe é coincidência. Ele decifra a linguagem silenciosa entre as mansões de pedra de Mardin e a arquitetura colonial do Rio. O autor não apenas apresenta duas geografias; é um manifesto sociológico que descobre a parceria de 'paciência' entre a prata tornando-se filigrana e o ritmo dos tambores de samba. A seus olhos, o mundo é um bairro gigante onde não há fronteiras, apenas histórias compartilhadas. Ele caminha na linha tênue entre a <b>'sabedoria antiga'</b> de Mardin e o <b>'caos tropical'</b> do Brasil."
+                titleTr: "Ahmet Çınarbaş: Bir Kültür Mimarı",
+                titlePt: "O Arquiteto de Culturas",
+                hero: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600",
+                tr: `Ahmet Çınarbaş, sadece bir gezgin değil; o, coğrafyaların ruh röntgenini çeken bir estet. Mardin’in <b>kederli taş evlerinde</b> yankılanan zılgıt sesini, Rio’nun <b>günahkar sokaklarındaki</b> samba ritmiyle aynı frekansta buluşturur. Onun manifestosu şudur: 'Hüzün her dilde aynıdır, sadece baharatları farklıdır.' Mardin'de bir 'abbara' altında soluklanırken hissettiği o tarihsel ağırlığı, Amazon'un devasa yaprakları altında duyduğu 'doğa karşısındaki hiçlik' duygusuyla kıyaslar. Çınarbaş, insanı mekanın kölesi değil, hikayenin efendisi olarak görür. Bu arşiv, onun sessizce inşa ettiği o devasa kültür köprüsünün ilk taşıdır.`,
+                pt: `Ahmet Çınarbaş não é apenas um viajante; ele é um esteta que tira o raio-X da alma das geografias. Ele harmoniza o som do 'zılgıt' que ecoa nas casas de pedra melancólicas de Mardin com o ritmo do samba nas ruas pecaminosas do Rio. Seu manifesto é: 'A tristeza é a mesma em todas as línguas, apenas os temperos mudam.' Ele compara o peso histórico sentido ao respirar sob uma 'abbara' em Mardin com o sentimento de 'nada diante da natureza' sob as folhas gigantes da Amazônia.`
             },
-            sports: { 
-                tr: "Tribünlerin Sosyolojisi: Beleş Tepe'den Maracanã'ya", 
-                pt: "Sociologia das Bancadas: De Beleş Tepe ao Maracanã",
-                img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1600",
-                textTr: "Mardinspor'un <b>'Kırmızı-Lacivert'</b> aşkı, Mezopotamya'nın gökyüzü ve toprağının nikahıdır. Şehrin stadyumunu çevreleyen kayalıklardaki <b>'Beleş Tepe'</b>, futbolun sadece biletle değil, yürekle izlendiğinin kanıtıdır. Bu sahneler, Rio de Janeiro'nun favelalarında betona çizilen kaleler ve imkansızlıklar içinde doğan <b>'Ginga'</b> ruhuyla ikizdir. Mardin'in yerel ağzındaki <b>'Maşallah, hayırlı olsun'</b> samimiyeti ile Brezilya tribünlerindeki <b>'Raça, Amor e Paixão'</b> haykırışı aynı dirençten beslenir. Her iki coğrafyada da futbol, sadece bir spor değil; yoksulluğun içinden fışkıran bir asalet, top aracılığıyla dünyaya 'Biz buradayız!' haykırışıdır.",
-                textPt: "O amor <b>'Vermelho-Anil'</b> do Mardinspor é o casamento do céu e da terra da Mesopotâmia. A <b>'Beleş Tepe'</b> (Colina Grátis) nas rochas que cercam o estádio da cidade é a prova de que o futebol é assistido não apenas com ingressos, mas com o coração. Essas cenas são gêmeas do espírito <b>'Ginga'</b> nascido nas favelas do Rio de Janeiro em meio a impossibilidades. A sinceridade do <b>'Maşallah, hayırlı olsun'</b> no dialeto de Mardin e o grito de <b>'Raça, Amor e Paixão'</b> nas bancadas brasileiras alimentam-se da mesma resistência. Em ambas as geografias, o futebol não é apenas um esporte; é uma nobreza que irrompe da pobreza, um grito ao mundo através da bola: 'Estamos aqui!'"
+            sports: {
+                titleTr: "Tozun ve Terin Kardeşliği",
+                titlePt: "Irmandade de Poeira e Suor",
+                hero: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1600",
+                tr: `Mardinspor’un 3. Lig’deki o <b>yürek burkan</b> mücadelesi, Brezilya’nın arka sokak liglerindeki tutkuyla akrabadır. Mardin 21 Kasım Stadı'nın o kavurucu sıcağında 'Beleş Tepe'den takımı izleyen amcanın hüznü, Maracanã’nın dışında bilet bulamadığı için radyosuna sarılan Brezilyalı gencin kederiyle birdir. Mardin’in <b>'Sadıklar'</b> grubu takımı bir savaşa uğurlar gibi sahaya sürerken, Brezilya’nın <b>'Torcidas'</b> kültürü de aynı fanatizmi bir yaşam biçimi olarak kutsar. İkisinde de top yuvarlaktır ama kader bazen çok köşelidir. Espriyle karışık söylersek; Mardinspor şampiyon olsa Mezopotamya’da petrol bulunur, Brezilya Dünya Kupası’nı alsa Amazon’da hayat durur. İkisi de imkansıza aşıktır.`,
+                pt: `A luta comovente do Mardinspor na 3ª divisão é parente da paixão nas ligas de subúrbio do Brasil. A melancolia do tio que assiste ao time do 'Beleş Tepe' sob o calor escaldante de Mardin é a mesma do jovem brasileiro abraçado ao rádio fora do Maracanã. Em ambos, a bola é redonda, mas o destino às vezes tem muitas arestas. Se o Mardinspor fosse campeão, encontrariam petróleo na Mesopotâmia; se o Brasil ganhasse a Copa, a vida pararia na Amazônia. Ambos são apaixonados pelo impossível.`
             },
-            craft: { 
-                tr: "Gümüşün ve Tohumun Sabrı: Telkari ve Amazon Sanatı", pt: "A Paciência da Prata e da Semente: Filigrana e Arte Amazônica",
-                img: "https://images.unsplash.com/photo-1610555356070-d0efb6505f81?q=80&w=1600",
-                textTr: "Mardin'in <b>Telkarisi</b>, gümüşü bir tül gibi işleyen sabrın adıdır. Bir usta, o ince telleri bir araya getirirken aslında şehrin çok kültürlü tarihini örer. Amazon ormanlarında ise yerli kabileler, tohumları aynı kutsal dikkatle takıya dönüştürürler. Bu iki zanaat, modern dünyanın hızına karşı yükselen birer sessiz çığlıktır. Biri gümüşün soğuk sertliğini ateşle büker, diğeri doğanın yumuşaklığını elle şekillendirir. Mardin'in gümüş işlemeleri ile Brezilya'nın yerli boncuk işçiliği, 'insan elinin mucizesi' noktasında kesişir. Her iki sanat dalı da geçiciliğe karşı sonsuz bir hafıza bırakma çabasıdır.",
-                textPt: "A <b>Filigrana</b> de Mardin é o nome da paciência que trabalha a prata como uma renda. Um mestre, ao unir esses fios finos, na verdade tece a história multicultural da cidade. Nas florestas amazônicas, tribos indígenas transformam sementes em adornos com a mesma atenção sagrada. Esses dois artesanatos são gritos silenciosos contra a velocidade do mundo moderno. Um dobra a dureza fria da prata com fogo, o outro molda a suavidade da natureza à mão. Os entalhes em prata de Mardin e o trabalho manual de contas indígenas do Brasil cruzam-se no ponto do 'milagre da mão humana'. Ambos os ramos da arte são um esforço para deixar uma memória eterna contra a transitoriedade."
+            silver: {
+                titleTr: "Gümüşün ve Tohumun Sabrı",
+                titlePt: "Paciência da Prata e Semente",
+                hero: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1600",
+                tr: `Mardin'de bir Telkari ustası, gümüşü bir <b>aşk mektubu</b> gibi ilmek ilmek işlerken zamanı durdurur. Amazon'da bir yerli, ormanın kalbinden topladığı tohumu aynı sabırla kolyeye dönüştürür. İkisinde de 'hızlı tüketim' denen canavara karşı bir <b>sessiz direniş</b> vardır. Mardinli ustanın göz nuru, Amazonlu kadının parmak izine değer. Gümüş soğuktur ama hikayesi sıcaktır; tohum ise doğurganlığın, yeniden doğuşun simgesidir. Çınarbaş bu kıyaslamada şunu vurgular: Mardin gümüşü geçmişin muhafızıdır, Amazon tohumu ise geleceğin umudu. Biri taşın içinden çıkar, diğeri toprağın kalbinden.`,
+                pt: `Em Mardin, um mestre da filigrana para o tempo enquanto tece a prata como uma carta de amor. Na Amazônia, um indígena transforma a semente colhida no coração da floresta em um colar com a mesma paciência. Em ambos, há uma resistência silenciosa contra o monstro do consumo rápido. A prata é fria, mas sua história é quente; a semente é o símbolo da fertilidade e do renascimento.`
             },
-            carnival: { 
-                tr: "Rio Karnavalı'nda Bir Mardin Gecesi: Ritim ve Mistik", pt: "Uma Noite de Mardin no Carnaval do Rio: Ritmo e Mística",
-                img: "https://images.unsplash.com/photo-1511261685244-88404a377035?q=80&w=1600",
-                textTr: "Rio'nun karnaval renkleri ile Mardin'in gece ışıklandırması (Gündüz seyranlık, gece gerdanlık) arasındaki mistik bağ şaşırtıcıdır. Karnavalın o patlayıcı enerjisi, aslında Mardin düğünlerindeki zılgıtın ve davulun ritmik akrabasıdır. Rio'da maskelerin ardına gizlenen kimlikler, Mardin'in dar sokaklarında saklı olan hikayelerle buluşur. Her iki şehir de acıyı neşeye, tarihi bir dansa çevirmeyi bilir. Sambodromo'nun o görkemli geçişi ile Mardin kalesinden süzülen bir Reyhaniye ezgisi aynı insan ruhuna dokunur: Özgürlük ve Kutlama.",
-                textPt: "O vínculo místico entre as cores do carnaval do Rio e a iluminação noturna de Mardin (Espetáculo de dia, colar de pérolas à noite) é surpreendente. A energia explosiva do carnaval é, na verdade, parente rítmica dos gritos de alegria e do tambor nos casamentos de Mardin. Identidades escondidas atrás de máscaras no Rio encontram histórias escondidas nas ruas estreitas de Mardin. Ambas as cidades sabem transformar a dor em alegria e a história em dança. O magnífico desfile do Sambódromo e uma melodia de Reyhaniye vinda do castelo de Mardin tocam a mesma alma humana: Liberdade e Celebração."
+            food: {
+                titleTr: "İçli Köfte'nin Okyanus Ötesi Masalı",
+                titlePt: "O Conto Transoceânico do Quibe",
+                hero: "https://images.unsplash.com/photo-1541529086526-db283c563270?q=80&w=1600",
+                tr: `Mardin mutfağının kraliçesi <b>İrok</b> (içli köfte), bir gün valizine yenibaharını ve kederini alıp okyanusu aşmış, Brezilya'da <b>Quibe</b> adıyla yeni bir taht kurmuştur. Bu sadece bir yemek göçü değil, bir hafıza transferidir. Brezilya sokaklarında 'Quibe com limão' yiyen bir yabancı, aslında Mardinli bir annenin binlerce kilometre öteden gönderdiği <b>mutfak mektubunu</b> okur. İrok ne kadar 'evcimen' ve ağırbaşlıysa, Quibe o kadar 'sokak çocuğu' ve fırlamadır. Ama ikisinin de kalbinde aynı baharatlı sır yatar. Bir ısırık romantizm, bir lokma hüzün...`,
+                pt: `A rainha da culinária de Mardin, o Irok (quibe), um dia pegou sua pimenta e sua tristeza e cruzou o oceano, estabelecendo um novo trono no Brasil sob o nome de Quibe. Não é apenas uma migrasão de comida, mas uma transferência de memória. Quem come um Quibe com limão nas ruas do Brasil, lê uma carta culinária enviada por uma mãe de Mardin a milhares de quilômetros.`
             },
-            gastronomy: { 
-                tr: "İrok'un Okyanus Ötesi Kardeşi: Quibe", pt: "O Irmão Transoceânico do Irok: Quibe",
-                img: "https://images.unsplash.com/photo-1541529086526-db283c563270?q=80&w=1600",
-                textTr: "Mardin mutfağının kraliçesi <b>İrok</b> (içli köfte), 19. yüzyılda Levanten göçmenlerin cebindeki baharatlarla okyanusu aşarak Brezilya sokaklarında <b>Quibe</b> adıyla taçlanmıştır. Bugün Brezilya'nın her köşe başında satılan Quibe, aslında Mardinli bir annenin elinden çıkmış gibidir. Lezzetlerin pasaportlara ihtiyacı yoktur; bir yemeğin binlerce kilometre ötede bir vatan özlemini dindirebileceğinin en somut örneğidir. Mardin'in yenibaharı ile Brezilya'nın taze naneli sunumu, aynı tabakta iki farklı kıtanın barışıdır.",
-                textPt: "O <b>Irok</b> (quibe), a rainha da culinária de Mardin, cruzou o oceano no século XIX com as especiarias nos bolsos dos imigrantes levantinos e foi coroado nas ruas brasileiras com o nome de <b>Quibe</b>. O Quibe vendido hoje em cada esquina do Brasil parece ter vindo das mãos de uma mãe de Mardin. Os sabores não precisam de passaportes; é o exemplo mais concreto de como uma comida pode saciar a saudade de casa a milhares de quilômetros de distância. A pimenta-da-jamaica de Mardin e a apresentação com hortelã fresca no Brasil são a paz de dois continentes no mesmo prato."
-            },
-            sinop: { 
-                tr: "İki Sinop, Tek Bir Ruh: Paralel Coğrafyalar", pt: "Duas Sinops, Uma Alma: Geografias Paralelas",
-                img: "https://images.unsplash.com/photo-1505242859134-a19365219dd0?q=80&w=1600",
-                textTr: "Karadeniz’in en kuzey ucu ile Brezilya’nın kalbindeki Mato Grosso Sinop’u arasındaki bağ, sadece bir isim benzerliği değil, bir kader birliğidir. Karadeniz'in hırçın dalgalarıyla şekillenen Türk Sinop'u ile Amazon'un yeşil okyanusuna komşu olan Brezilya Sinop'u, Ahmet Çınarbaş'ın analizinde 'paralel evrenlerin buluşması'dır. İki şehir de kendi bölgelerinin direnç merkezleridir. Biri antik kaleleriyle tarih yazar, diğeri tarımsal gücüyle geleceği inşa eder. Bu bölüm, mesafelerin ruhlar arasındaki diyaloğu engelleyemeyeceğinin kanıtıdır.",
-                textPt: "O vínculo entre o ponto mais setentrional do Mar Negro e a Sinop de Mato Grosso, no coração do Brasil, não é apenas uma semelhança de nome, mas uma união de destinos. A Sinop turca, moldada pelas ondas revoltas do Mar Negro, e a Sinop brasileira, vizinha ao oceano verde da Amazônia, são o 'encontro de universos paralelos' na análise de Ahmet Çınarbaş. Ambas as cidades são centros de resistência em suas regiões. Uma escreve história com seus castelos antigos, a outra constrói o futuro com sua força agrícola. Esta seção é a prova de que as distâncias não podem impedir o diálogo entre as almas."
+            sinop: {
+                titleTr: "İki Sinop: Kaderin Coğrafi Şakası",
+                titlePt: "Sinop e Sinop: Piada Geográfica",
+                hero: "https://images.unsplash.com/photo-1505242859134-a19365219dd0?q=80&w=1600",
+                tr: `Karadeniz'in en kuzey ucunda, hırçın dalgaların dövdüğü Sinop ile Amazon ormanlarının ortasında güneşin kavurduğu Brezilya Sinop'u... Bu bir tesadüf olamaz, bu Tanrı'nın bir <b>coğrafi esprisidir</b>. Biri Diyojen'in 'gölge etme başka ihsan istemem' dediği o bilge yarımada, diğeri topraktan fışkıran bereketin, tarımın ve geleceğin kenti. Ahmet Çınarbaş, bu iki Sinop arasında bir <b>enerji koridoru</b> kurar. Karadeniz'in mavisini Amazon'un yeşiliyle kıyaslar. Karadenizli Sinoplu ne kadar inatçıysa, Mato Grosso'lu Sinoplu o kadar çalışkandır. İkisi de dünyanın geri kalanına 'Kendi cumhuriyetimizi kurduk' der gibi mağrur bakarlar.`,
+                pt: `Sinop, no extremo norte do Mar Negro, açoitada por ondas revoltas, e Sinop, no Brasil, queimada pelo sol no meio da floresta amazônica... Não pode ser coincidência, é uma piada geográfica. Çınarbaş estabelece um corredor de energia entre estas duas cidades. Enquanto a Sinop do Mar Negro é teimosa, a Sinop de Mato Grosso é trabalhadora. Ambas olham orgulhosas para o resto do mundo.`
             }
         };
 
         function openReader(key) {
-            const item = contentData[key];
-            const modal = document.getElementById('reader');
-            const content = document.getElementById('reader-content');
+            const data = archive[key];
+            const container = document.getElementById('modal-container');
             
-            // Dil Algılama (Tarayıcı dili Portekizce ise o dilde başlar, aksi takdirde Türkçe)
+            // Tarayıcı dilini kontrol et (Mobil okuma için)
             const isPt = navigator.language.startsWith('pt');
-            const primaryText = isPt ? item.textPt : item.textTr;
-            const secondaryText = isPt ? item.textTr : item.textPt;
-            const primaryTitle = isPt ? item.pt : item.tr;
-            const secondaryTitle = isPt ? item.tr : item.pt;
-
-            content.innerHTML = `
-                <div class="hero-container">
-                    <img src="${item.img}" class="hero-img">
+            const displayTr = isPt ? data.tr : data.tr; // İçerikleri her zaman çift sütun gösteriyoruz ama mobil uyumlu
+            
+            container.innerHTML = `
+                <div class="hero-box">
+                    <img src="${data.hero}">
+                    <div class="hero-overlay">
+                        <h1 class="hero-title">${data.titleTr}</h1>
+                    </div>
                 </div>
                 <div class="modal-body">
-                    <h1 class="title-tr" style="font-size: 3.5rem; color:var(--red); text-align:center;">${primaryTitle}</h1>
-                    <h2 class="title-pt" style="font-size: 1.8rem; margin-bottom: 70px; text-align:center; opacity:0.6;">${secondaryTitle}</h2>
-                    <div class="reader-grid">
-                        <div class="text-tr">${primaryText}</div>
-                        <div class="text-pt">${secondaryText}</div>
+                    <div class="comparison-grid">
+                        <div class="text-block text-tr">
+                            <h3 style="margin-bottom:20px; color:var(--accent);">TR // Analiz</h3>
+                            ${data.tr}
+                        </div>
+                        <div class="text-block text-pt">
+                            <h3 style="margin-bottom:20px; color:var(--accent);">PT // Análise</h3>
+                            ${data.pt}
+                        </div>
                     </div>
-                    <div class="seal-fixed">ASC 2026</div>
-                </div>`;
-            modal.style.display = 'block';
+                    <div class="footer-seal">ASC 2026</div>
+                </div>
+            `;
+            document.getElementById('reader').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
-        function closeReader() { 
-            document.getElementById('reader').style.display = 'none'; 
-            document.body.style.overflow = 'auto'; 
+        function closeReader() {
+            document.getElementById('reader').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
-        // Dil göstergesi güncelleme
+        // Otomatik Dil Algılama Mesajı
         window.onload = () => {
-            const lang = navigator.language.startsWith('pt') ? 'MODO: PORTUGUÊS (BR)' : 'MOD: TÜRKÇE (TR)';
-            document.getElementById('lang-indicator').innerText = lang;
-        };
+            const status = document.getElementById('status');
+            status.innerText = navigator.language.startsWith('pt') ? "SISTEMA CONECTADO // PT-BR" : "SİSTEM BAĞLANDI // TR-TR";
+        }
     </script>
 </body>
 </html>
