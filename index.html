@@ -23,48 +23,51 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo-m">MB</div>
-        <div style="font-family:'Bodoni Moda'; font-weight:900;">MARDIN BRAZIL</div>
-    </header>
-
-    <div class="container">
-        <div class="bento" id="main-grid">Arşiv yükleniyor...</div>
-    </div>
+    <header><div class="logo-m">MB</div><div style="font-family:'Bodoni Moda'; font-weight:900;">MARDIN BRAZIL</div></header>
+    <div class="container"><div class="bento" id="main-grid">Veriler çekiliyor...</div></div>
 
     <script>
         const _u = "https://toomlocgdhkwrypuveof.supabase.co";
-        // Şifrelenmiş API Key
         const _m = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
         
         const key = atob(_m.replace(/[^A-Za-z0-9+/=]/g, ""));
-        const client = supabase.createClient(_u, key);
+        
+        // CORS ve Fetch sorunlarını aşmak için optimize edilmiş client
+        const client = supabase.createClient(_u, key, {
+            auth: { persistSession: false }
+        });
 
         async function init() {
             try {
-                // Verileri 'articles' tablosundan çekiyoruz
                 const { data, error } = await client.from('articles').select('*');
                 
-                if (error) throw error;
-
-                if (data) {
-                    document.getElementById('main-grid').innerHTML = data.map(i => `
-                        <div class="card ${i.type === 'author' ? 'author-card' : ''}">
-                            ${i.type !== 'author' ? `
-                                <div class="card-bg" style="background-image:url('${i.img}')"></div>
-                                <div class="card-overlay"></div>
-                            ` : `
-                                <img src="${i.img}" class="author-img">
-                            `}
-                            <div class="card-content" style="${i.type === 'author' ? 'color:black' : ''}">
-                                <h2 style="margin:0; font-family:'Bodoni Moda'">${i.tr}</h2>
-                                <p style="opacity:0.7; font-size:0.9rem;">${i.tag}</p>
-                            </div>
-                        </div>`).join('');
+                if (error) {
+                    console.error("Supabase Hatası:", error);
+                    document.getElementById('main-grid').innerHTML = `Hata: ${error.message} (Kod: ${error.code})`;
+                    return;
                 }
+
+                if (!data || data.length === 0) {
+                    document.getElementById('main-grid').innerHTML = "Tabloda veri bulunamadı.";
+                    return;
+                }
+
+                document.getElementById('main-grid').innerHTML = data.map(i => `
+                    <div class="card ${i.type === 'author' ? 'author-card' : ''}">
+                        ${i.type !== 'author' ? `
+                            <div class="card-bg" style="background-image:url('${i.img}')"></div>
+                            <div class="card-overlay"></div>
+                        ` : `
+                            <img src="${i.img}" class="author-img">
+                        `}
+                        <div class="card-content" style="${i.type === 'author' ? 'color:black' : ''}">
+                            <h2 style="margin:0; font-family:'Bodoni Moda'">${i.tr}</h2>
+                            <p style="opacity:0.7; font-size:0.9rem;">${i.tag}</p>
+                        </div>
+                    </div>`).join('');
             } catch (err) {
-                console.error(err);
-                document.getElementById('main-grid').innerHTML = "Bağlantı Hatası: " + err.message;
+                console.error("Genel Hata:", err);
+                document.getElementById('main-grid').innerHTML = "Bağlantı sağlanamadı. Lütfen internetinizi ve Supabase izinlerini kontrol edin.";
             }
         }
         init();
