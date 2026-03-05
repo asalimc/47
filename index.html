@@ -1,59 +1,33 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Mardin Brazil</title>
+    <title>Bağlantı Testi</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body { background: #f4f4f4; font-family: sans-serif; padding: 20px; text-align: center; }
-        .card { background: white; border-radius: 15px; padding: 20px; margin: 15px auto; max-width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        img { width: 100%; border-radius: 10px; height: 250px; object-fit: cover; }
-        .error { color: red; font-weight: bold; margin-top: 20px; }
-    </style>
 </head>
 <body>
-    <h1>MARDIN BRAZIL</h1>
-    <div id="status">Veritabanına bağlanılıyor...</div>
-    <div id="app"></div>
+    <h2 id="durum">Bağlanıyor...</h2>
+    <pre id="cikti"></pre>
 
     <script>
         const _u = "https://toomlocgdhkwrypuveof.supabase.co";
-        const _m = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
-        const key = atob(_m.replace(/[^A-Za-z0-9+/=]/g, ""));
+        const _k = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
+        const key = atob(_k.replace(/[^A-Za-z0-9+/=]/g, ""));
         
         const client = supabase.createClient(_u, key);
 
-        async function start() {
-            const statusDiv = document.getElementById('status');
-            const appDiv = document.getElementById('app');
-
+        async function test() {
             try {
-                // Tablo: articles
-                const { data, error } = await client.from('articles').select('*');
-                
+                const { data, error } = await client.from('articles').select('*').limit(1);
                 if (error) throw error;
-
-                if (!data || data.length === 0) {
-                    statusDiv.innerHTML = "Bağlantı başarılı ama tabloda veri yok.";
-                    return;
-                }
-
-                statusDiv.style.display = 'none';
-                appDiv.innerHTML = data.map(item => `
-                    <div class="card">
-                        <img src="${item.img}" onerror="this.src='https://via.placeholder.com/400x250?text=Resim+Bulunamadi'">
-                        <h2>${item.tr}</h2>
-                        <p style="color:gray">${item.tag}</p>
-                    </div>
-                `).join('');
-
+                document.getElementById('durum').innerText = "BAŞARILI! Veri Geldi:";
+                document.getElementById('cikti').innerText = JSON.stringify(data, null, 2);
             } catch (err) {
-                statusDiv.innerHTML = `<div class="error">Hata: ${err.message}</div>`;
-                console.error("Detaylı Hata:", err);
+                document.getElementById('durum').innerText = "Hata: " + err.message;
+                console.error(err);
             }
         }
-        start();
+        test();
     </script>
 </body>
 </html>
