@@ -51,18 +51,20 @@
         const _supabase = supabase.createClient(
             'https://toomlocgdhkwrypuveof.supabase.co', 
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvb21sb2NnZGhrd3J5cHV2ZW9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2Njg0ODQsImV4cCI6MjA4ODI0NDQ4NH0.kkiwKTsfYOCII_dfuJpaElyJqxThrkGnKiK7-RjOsqI',
-            { db: { schema: 'halk' } }
+            { 
+                db: { schema: 'halk' },
+                global: { headers: { 'Accept-Profile': 'halk' } } 
+            }
         );
 
         let articlesData = [];
 
-        // VERİLERİ ÇEK
         async function loadJournal() {
             const { data, error } = await _supabase.from('makaleler').select('*');
             
             if (error) {
-                console.error("Supabase Hatası:", error);
-                document.getElementById('main-grid').innerHTML = `<p style="text-align:center; grid-column:1/-1;">Bağlantı Hatası: ${error.message}</p>`;
+                console.error("Hata:", error);
+                document.getElementById('main-grid').innerHTML = `<p style="text-align:center; grid-column:1/-1;">Veriler yüklenemedi: ${error.message}</p>`;
                 return;
             }
 
@@ -70,7 +72,6 @@
             renderArticles(data);
         }
 
-        // EKRANA YAZDIR
         function renderArticles(items) {
             const grid = document.getElementById('main-grid');
             if (items.length === 0) {
@@ -95,7 +96,6 @@
             `).join('');
         }
 
-        // MAKALE AÇ
         function openReader(slug) {
             const art = articlesData.find(a => a.salyangoz === slug);
             if(!art) return;
@@ -108,7 +108,7 @@
                     <h2 style="font-family:'Bodoni Moda', serif; font-weight:400; opacity:0.6; margin-bottom:40px;">${art.pt}</h2>
                 </div>
                 <div class="reader-grid">
-                    <div style="text-align:justify;">${art.metin_tr || 'İçerik hazırlanıyor...'}</div>
+                    <div style="text-align:justify;">${art.metin_tr || 'İçerik bulunamadı.'}</div>
                     <div style="text-align:justify; color:#666; border-left: 1px solid rgba(0,0,0,0.05); padding-left:40px;">${art.metin_pt || ''}</div>
                 </div>
             `;
