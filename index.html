@@ -3,132 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proje Eksik Kalmasın | Ahmet Çınarbaş Analizleri</title>
+    <title>Proje Eksik Kalmasın | Analiz ve Kıyaslama</title>
     <style>
-        /* TEMEL YAPI - Mevcut arayüze sadık, estetik dokunuşlu */
-        body { 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            line-height: 1.7; 
-            color: #1a1a1a; 
-            margin: 0; 
-            padding: 0; 
-            background-color: #f0f2f5; 
-        }
+        /* SIFIRLAMA VE MODERN DOĞRU TASARIM */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; color: #333; line-height: 1.8; }
 
-        /* YENİLENMİŞ BANNER */
-        header { 
-            background: linear-gradient(rgba(26, 42, 108, 0.8), rgba(178, 31, 31, 0.8)), 
-                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #ffffff; 
-            padding: 120px 20px; 
-            text-align: center; 
+        /* YENİ BANNER - DAHA PRESTİJLİ */
+        .main-banner {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 8px solid #e67e22;
         }
-        header h1 { font-size: 3.5rem; margin: 0; text-transform: uppercase; letter-spacing: 4px; font-weight: 800; }
-        header p { font-size: 1.5rem; opacity: 0.9; font-weight: 300; margin-top: 10px; }
+        .main-banner h1 { font-size: 3.5rem; margin-bottom: 15px; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .main-banner p { font-size: 1.4rem; font-weight: 300; max-width: 800px; opacity: 0.9; }
 
-        /* İÇERİK KONTEYNERI */
-        .container { 
-            max-width: 1200px; 
-            margin: -60px auto 60px; 
-            padding: 40px; 
-            background: #fff; 
-            border-radius: 20px; 
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); 
-        }
-
-        /* ANALİZ BÖLÜMLERİ (DİVLER) */
-        .section { 
-            display: flex; 
-            align-items: center; 
-            gap: 40px; 
-            margin-bottom: 80px; 
-            padding-bottom: 40px; 
-            border-bottom: 1px solid #eee; 
-        }
-        .section:nth-child(even) { flex-direction: row-reverse; } /* Bir sağda bir solda görsel */
-
-        .section-image { flex: 1; }
-        .section-image img { 
-            width: 100%; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+        /* İÇERİK ALANI */
+        .wrapper { max-width: 1200px; margin: -50px auto 50px; padding: 20px; }
+        
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 60px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
             transition: transform 0.3s ease;
         }
-        .section-image img:hover { transform: scale(1.02); }
+        .content-card:hover { transform: translateY(-5px); }
 
-        .section-content { flex: 1.2; }
-        h2 { color: #b21f1f; font-size: 2rem; margin-top: 0; }
-        p { font-size: 1.15rem; color: #4a4a4a; text-align: justify; }
+        /* FOTOĞRAF ALANI */
+        .image-box { flex: 1; min-width: 400px; min-height: 400px; }
+        .image-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* METİN ALANI */
+        .text-box { flex: 1; min-width: 400px; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
+        .text-box h2 { color: #1e3c72; font-size: 2rem; margin-bottom: 20px; position: relative; }
+        .text-box h2::after { content: ''; display: block; width: 50px; height: 4px; background: #e67e22; margin-top: 10px; }
+        .text-box p { font-size: 1.1rem; color: #555; text-align: justify; margin-bottom: 25px; }
 
         /* AHMET ÇINARBAŞ İMZASI */
-        .signature { 
-            display: block; 
-            margin-top: 25px; 
-            padding: 15px; 
-            background: #f8f9fa; 
-            border-left: 5px solid #1a2a6c; 
-            font-style: italic; 
-            color: #2c3e50; 
-            font-weight: 700;
+        .footer-signature {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            font-weight: bold;
+            color: #7f8c8d;
+            font-style: italic;
+            text-align: right;
             font-size: 0.95rem;
         }
 
-        /* MOBİL UYUMLULUK */
-        @media (max-width: 768px) {
-            .section, .section:nth-child(even) { flex-direction: column; }
-            header h1 { font-size: 2rem; }
-            .container { margin-top: 20px; padding: 20px; }
+        /* MOBİL AYAR */
+        @media (max-width: 850px) {
+            .image-box, .text-box { min-width: 100%; }
+            .main-banner h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>PRESTİJ VE ANALİZ</h1>
-    <p>Kaliteli Araştırma, Stratejik Kıyaslama ve Kusursuz Uygulama</p>
-</header>
+<section class="main-banner">
+    <h1>VİZYONER ARAŞTIRMA MERKEZİ</h1>
+    <p>Kaliteli Bir Siteye, Derinlemesine Analiz ve Profesyonel Kıyaslama Yakışır</p>
+</section>
 
-<div class="container">
+<div class="wrapper">
 
-    <div class="section">
-        <div class="section-image">
-            <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" alt="Pazar Araştırması">
+    <div class="content-card">
+        <div class="image-box">
+            <img src="https://images.unsplash.com/photo-1454165833767-027ffea9e77b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Araştırma">
         </div>
-        <div class="section-content">
-            <h2>01. Stratejik Pazar Konumlandırması</h2>
+        <div class="text-box">
+            <h2>Kıyaslamalı Pazar Metotları</h2>
             <p>
-                Bir projenin başarısı, sadece kod satırlarında değil, pazarın derinliklerinde gizlidir. Global ölçekteki rakiplerin zayıf ve güçlü yönlerini kıyaslayarak, sektördeki "boşlukları" tespit ediyoruz. Kaliteli bir araştırma, veriyi sadece toplamaz; onu işlenebilir bir stratejiye dönüştürür. Biz bu aşamada, markanızın rakiplerinden hangi noktada ayrışacağını ve hangi inovasyonlarla öne geçeceğini bilimsel verilerle modelliyoruz.
+                Analiz süreçlerimizde yüzeysel verilerle yetinmiyoruz. Sektörel dinamikleri, rakip stratejilerini ve kullanıcı eğilimlerini çapraz sorgulama yöntemleriyle ele alıyoruz. Kaliteli bir araştırma, görünmeyeni görünür kılar. Bu noktada sunduğumuz her kıyaslama, projenin eksik parçalarını tamamlamak üzere matematiksel bir kesinlikle kurgulanmıştır.
             </p>
-            <span class="signature">— Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</span>
+            <div class="footer-signature">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</div>
         </div>
     </div>
 
-    <div class="section">
-        <div class="section-image">
-            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" alt="Teknoloji">
+    <div class="content-card" style="flex-direction: row-reverse;">
+        <div class="image-box">
+            <img src="https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Tasarım">
         </div>
-        <div class="section-content">
-            <h2>02. Teknolojik Kıyaslama ve Entegrasyon</h2>
+        <div class="text-box">
+            <h2>Estetik ve İşlevsel Kıyaslama</h2>
             <p>
-                Teknoloji dünyası, sürekli değişen bir labirent gibidir. Bu analizde, projenizin ihtiyaç duyduğu altyapıyı mevcut en iyi çözümlerle kıyaslıyoruz. Hangi framework daha hızlı? Hangi sunucu mimarisi daha güvenli? Tüm bu soruların cevabını, maliyet ve performans dengesini gözeterek veriyoruz. Kaliteli bir siteye yakışan, her zaman en güncel ve en sağlam temeller üzerine inşa edilmiş bir yapıdır.
+                Kullanıcı deneyimi (UX), sadece güzel görünmek değil, okuyucuya zevk veren bir akış sunmaktır. En iyi projeleri dünya standartlarındaki örneklerle kıyaslıyor; tipografi, renk teorisi ve erişilebilirlik kriterlerini en üst seviyeye taşıyoruz. Tasarımdaki her detay, projenin prestijini yansıtan birer yapı taşıdır.
             </p>
-            <span class="signature">— Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</span>
+            <div class="footer-signature">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</div>
         </div>
     </div>
 
-    <div class="section">
-        <div class="section-image">
-            <img src="https://images.unsplash.com/photo-1581291518655-9523bb995717?auto=format&fit=crop&w=800&q=80" alt="Kullanıcı Deneyimi">
+    <div class="content-card">
+        <div class="image-box">
+            <img src="https://images.unsplash.com/photo-1551288049-bbbda540d3b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Teknoloji">
         </div>
-        <div class="section-content">
-            <h2>03. Okuyucu Deneyimi ve Estetik Analiz</h2>
+        <div class="text-box">
+            <h2>Geleceğin Teknolojik Altyapısı</h2>
             <p>
-                Bir web sitesinin kalitesi, kullanıcının o sayfada geçirdiği sürenin keyfiyle ölçülür. Okuyucuya zevk verecek tipografi seçimlerinden, gözü yormayan renk paletlerine kadar her detayı inceliyoruz. Kıyaslamalarımız gösteriyor ki; sade ama etkili tasarımlar, karmaşık ve gürültülü yapılardan her zaman daha yüksek geri dönüş oranına sahiptir. Estetik bir duruş, profesyonelliğin imzasıdır.
+                Teknolojik analizlerimiz, sürdürülebilirlik ve performans odaklıdır. Mevcut sistemleri modern framework’lerle kıyaslayarak en optimize çözümü üretiyoruz. Verimlilik artışı ve veri güvenliği, araştırmalarımızın temel direklerini oluşturur. Kalite tesadüf değildir; doğru analiz ve doğru kıyaslamanın bir sonucudur.
             </p>
-            <span class="signature">— Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</span>
+            <div class="footer-signature">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</div>
         </div>
     </div>
 
