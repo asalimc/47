@@ -22,7 +22,7 @@
         body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.6; }
 
         header {
-            padding: 30px 6%; display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 6%; display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.95); backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
@@ -33,80 +33,61 @@
         #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 10001; display: none; }
         #progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s; }
 
-        /* BANNER / HERO SECTION */
-        .hero-journal {
-            padding: 80px 6% 40px; text-align: center; max-width: 900px; margin: 0 auto;
-        }
-        .hero-journal h4 { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; font-weight: 800; }
-        .hero-journal h1 { font-family: 'Bodoni Moda', serif; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1; margin-bottom: 25px; font-weight: 900; }
-        .hero-journal p { font-size: 1.1rem; opacity: 0.7; font-weight: 300; line-height: 1.8; }
-
-        .container { max-width: 1300px; margin: 0 auto; padding: 20px 6% 80px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px 6% 80px; }
         
-        /* BENTO GRID */
         .bento { 
             display: grid; 
             grid-template-columns: 1fr; 
             gap: 25px; 
         }
         @media (min-width: 768px) { 
-            .bento { grid-template-columns: repeat(3, 1fr); }
+            .bento { grid-template-columns: repeat(2, 1fr); }
             .card-wide { grid-column: span 2; }
-            .card-tall { grid-row: span 2; }
-            .card-full { grid-column: span 3; }
         }
 
         .card {
-            background: var(--white); border-radius: 40px; padding: 40px;
+            background: var(--white); border-radius: 35px; padding: 40px;
             transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease); 
             cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
             display: flex; flex-direction: column; justify-content: flex-end; 
-            min-height: 450px; position: relative; overflow: hidden;
+            min-height: 400px; position: relative; overflow: hidden;
         }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.12); }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
 
         .card-bg {
             position: absolute; inset: 0; width: 100%; height: 100%;
             background-size: cover; background-position: center;
-            z-index: 0; transition: transform 1.5s var(--ease);
+            z-index: 0; transition: transform 1.2s var(--ease);
         }
-        .card:hover .card-bg { transform: scale(1.1); }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 100%); z-index: 1; }
+        .card:hover .card-bg { transform: scale(1.08); }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); z-index: 1; }
         .card-content { position: relative; z-index: 2; color: white; }
 
-        /* AUTHOR CARD */
-        .card-author { 
-            background: var(--white); justify-content: center; align-items: center; text-align: center;
-        }
-        .author-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 5px solid var(--bg); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .card-author { background: var(--white); justify-content: center; align-items: center; text-align: center; min-height: 300px; }
+        .author-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid var(--bg); }
         .card-author .card-content { color: var(--ink); }
 
-        /* TYPOGRAPHY */
-        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; line-height: 1.1; margin-bottom: 8px; font-weight: 700; }
-        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 1.3rem; line-height: 1.1; font-weight: 400; opacity: 0.8; }
-        .tag-dual { font-size: 0.65rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
-        .entry-no { font-size: 0.6rem; font-weight: 700; opacity: 0.5; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px; width: fit-content; }
+        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; line-height: 1.1; margin-bottom: 5px; font-weight: 700; }
+        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 1.4rem; line-height: 1.1; font-weight: 400; opacity: 0.8; }
+        .tag-dual { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 15px; display: block; }
+        .entry-no { font-size: 0.6rem; font-weight: 700; opacity: 0.5; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; width: fit-content; }
 
-        /* MODAL */
         #reader-modal { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
-        .modal-hero { width: 100%; height: 60vh; position: relative; overflow: hidden; }
+        .modal-hero { width: 100%; height: 55vh; position: relative; }
         .modal-hero img { width: 100%; height: 100%; object-fit: cover; }
-        .modal-body { max-width: 1000px; margin: -100px auto 0; position: relative; background: var(--bg); border-radius: 50px 50px 0 0; padding: 80px 10% 120px; box-shadow: 0 -20px 60px rgba(0,0,0,0.05); }
-        .close-btn { position: fixed; top: 30px; right: 30px; background: var(--ink); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; z-index: 10000; transition: transform 0.3s; }
-        .close-btn:hover { transform: rotate(90deg); }
+        .modal-body { max-width: 1100px; margin: -80px auto 0; position: relative; background: var(--bg); border-radius: 40px 40px 0 0; padding: 60px 8% 100px; }
+        .close-btn { position: fixed; top: 25px; right: 25px; background: var(--ink); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; z-index: 10000; }
 
-        .reader-grid { display: grid; grid-template-columns: 1fr; gap: 50px; margin-top: 50px; }
-        @media (min-width: 800px) { .reader-grid { grid-template-columns: 1fr 1fr; gap: 80px; } }
+        .reader-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-top: 40px; }
+        @media (min-width: 900px) { .reader-grid { grid-template-columns: 1fr 1fr; gap: 60px; } }
         
-        .text-tr { font-size: 1.15rem; line-height: 1.9; color: var(--ink); text-align: justify; }
-        .text-pt { font-size: 1.1rem; line-height: 1.9; color: #555; font-style: italic; border-left: 4px solid var(--accent); padding-left: 25px; }
+        .text-tr, .text-pt { font-size: 1.05rem; line-height: 1.8; color: var(--ink); text-align: justify; }
+        .text-pt { color: #555; font-style: italic; border-left: 3px solid var(--accent); padding-left: 20px; }
+        
+        .long-para { margin-bottom: 25px; }
+        .signature-line { font-weight: 800; color: var(--accent); margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; display: block; font-size: 0.9rem; }
 
-        .signature-block {
-            margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(0,0,0,0.1);
-            font-size: 0.85rem; font-weight: 700; color: var(--accent); letter-spacing: 1px;
-        }
-
-        footer { padding: 60px 6%; text-align: center; opacity: 0.4; font-size: 0.7rem; letter-spacing: 3px; border-top: 1px solid rgba(0,0,0,0.05); }
+        footer { padding: 40px 6%; text-align: center; opacity: 0.5; font-size: 0.7rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -117,43 +98,37 @@
         <a href="#" class="logo-box"><div class="logo-m">MB</div><div class="logo-text">MARDIN<br>BRAZIL</div></a>
     </header>
 
-    <section class="hero-journal">
-        <h4>A Research & Comparison Journal</h4>
-        <h1>Mezopotamya'dan Amazon'a Kültürel Kıyaslamalar</h1>
-        <p>Kaliteli bir araştırmaya, derinlemesine bir bakış ve estetik bir kıyaslama yakışır. Mardin'in taş sokaklarından Brezilya'nın ritmine uzanan, Ahmet Çınarbaş imzalı bir belgesel niteliğinde arşivleme projesi.</p>
-    </section>
-
     <main class="container">
         <div class="bento">
             
-            <div class="card card-author card-full" onclick="openReader('author')">
+            <div class="card card-author card-wide" onclick="openReader('author')">
                 <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-img">
                 <div class="card-content">
-                    <span class="tag-dual">KÜLTÜR ARŞİVCİSİ ● PESQUISADOR</span>
+                    <span class="tag-dual">MANIFESTO ● ANALİZ</span>
                     <h2 class="tr-line">Ahmet Çınarbaş</h2>
-                    <h3 class="pt-line">Kültürel Köprülerin Mimarı</h3>
-                    <div class="entry-no" style="border-color: rgba(0,0,0,0.1);">MANİFESTO #000</div>
+                    <h3 class="pt-line">Kültürel Arşivcilik Vizyonu</h3>
+                    <div class="entry-no" style="border-color: rgba(0,0,0,0.1);">MANIFES #000</div>
                 </div>
             </div>
 
-            <div class="card card-wide" onclick="openReader('carnaval')">
+            <div class="card" onclick="openReader('carnaval')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual" style="color: white;">MAGAZİN ● CELEBRIDADE</span>
-                    <h2 class="tr-line">Rio Karnavalı'nda Mardin Rüzgarı</h2>
-                    <h3 class="pt-line">Vento de Mardin no Rio</h3>
+                    <span class="tag-dual" style="color: white;">MAGAZİN ● RİO</span>
+                    <h2 class="tr-line">Rio Karnavalı ve Mardin</h2>
+                    <h3 class="pt-line">O Carnaval e Mardin</h3>
                     <div class="entry-no">ENTRY #001</div>
                 </div>
             </div>
 
-            <div class="card card-tall" onclick="openReader('craft')">
+            <div class="card" onclick="openReader('craft')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual" style="color: white;">ZANAAT ● ARTESANATO</span>
-                    <h2 class="tr-line">Gümüşün Sabrı</h2>
-                    <h3 class="pt-line">Paciência da Prata</h3>
+                    <span class="tag-dual" style="color: white;">ZANAAT ● TELKARİ</span>
+                    <h2 class="tr-line">Gümüşün İnce Sabrı</h2>
+                    <h3 class="pt-line">A Paciência da Prata</h3>
                     <div class="entry-no">ENTRY #002</div>
                 </div>
             </div>
@@ -162,32 +137,32 @@
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual" style="color: white;">GASTRONOMİ ● SABOR</span>
-                    <h2 class="tr-line">Kıyaslamalı Gastronomi: İçli Köfte & Quibe</h2>
-                    <h3 class="pt-line">Encontro de Paladares</h3>
+                    <span class="tag-dual" style="color: white;">GASTRONOMİ ● LEZZET</span>
+                    <h2 class="tr-line">İçli Köfte ve Quibe Kıyaslaması</h2>
+                    <h3 class="pt-line">O Encontro do Quibe</h3>
                     <div class="entry-no">ENTRY #003</div>
                 </div>
             </div>
 
-            <div class="card" onclick="openReader('sinop')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200')"></div>
+            <div class="card" onclick="openReader('football')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1517603951035-17dafa910fc2?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual" style="color: white;">COĞRAFİ KADER ● DESTINO</span>
-                    <h2 class="tr-line">2 Kıta, 2 Şehir: Sinop Analizi</h2>
-                    <h3 class="pt-line">Duas Sinops</h3>
-                    <div class="entry-no">ENTRY #004</div>
+                    <span class="tag-dual" style="color: white;">FUTBOL ● TUTKU</span>
+                    <h2 class="tr-line">Sokak Arası Maracanã</h2>
+                    <h3 class="pt-line">Paixão nas Ruas</h3>
+                    <div class="entry-no">ENTRY #006</div>
                 </div>
             </div>
 
-            <div class="card card-wide" onclick="openReader('society')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200')"></div>
+            <div class="card" onclick="openReader('migration')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual" style="color: white;">TOPLUM ● SOCIEDADE</span>
-                    <h2 class="tr-line">Ortak Ruh: Cordialidade Kıyaslaması</h2>
-                    <h3 class="pt-line">Almas Gêmeas</h3>
-                    <div class="entry-no">ENTRY #005</div>
+                    <span class="tag-dual" style="color: white;">GÖÇ ● HÜZÜN</span>
+                    <h2 class="tr-line">Bavullardaki Hikayeler</h2>
+                    <h3 class="pt-line">Vidas em Malas</h3>
+                    <div class="entry-no">ENTRY #007</div>
                 </div>
             </div>
 
@@ -201,30 +176,30 @@
 
     <footer>AHMET ÇINARBAŞ JOURNAL © 2026 ● MARDIN TO BRAZIL</footer>
 
-   <script>
+    <script>
         const contentData = {
             author: { 
-                tag: "MANIFESTO", tr: "Ahmet Çınarbaş: Bir Kültür Arşivcisinin Notları", pt: "Ahmet Çınarbaş: Notas de um Arquivista Cultural",
+                tag: "MANIFESTO", tr: "Ahmet Çınarbaş: Bir Kültürel Köprü İnşası", pt: "Ahmet Çınarbaş: Construindo uma Ponte Cultural",
                 img: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1200", 
                 textTr: `
-                    <p class="long-para">Kaliteli bir araştırma, sadece verileri yan yana dizmek değil, iki farklı dünyanın ruhunu aynı potada eritebilmektir. Ben Ahmet Çınarbaş; Mezopotamya’nın sarı taşlarından Brezilya’nın tropikal yeşiline uzanan bu yolculukta, her detayı titizlikle arşivleyen bir gözlemciyim. Bu projenin temelinde, Mardin’in kadim bilgeliği ile Brezilya’nın tükenmek bilmeyen yaşam enerjisi arasındaki gizli bağları ortaya çıkarmak yatıyor.</p>
+                    <p class="long-para">Kaliteli bir araştırma, sadece verileri yan yana dizmek değil, iki farklı coğrafyanın ruhunu aynı potada eritebilmektir. Ben Ahmet Çınarbaş; Mezopotamya’nın sarı taşlarından Brezilya’nın tropikal yeşiline uzanan bu yolculukta, her detayı titizlikle arşivleyen bir gözlemciyim. Bu projenin temelinde, Mardin’in kadim bilgeliği ile Brezilya’nın tükenmek bilmeyen yaşam enerjisi arasındaki gizli bağları ortaya çıkarmak yatıyor.</p>
                     <p class="long-para">Mizahı, en ağır hüzünlerin bile üzerine örtülen ipek bir şal olarak görüyorum. Mardin fıkralarındaki o ince zeka, Brezilya favelalarındaki yaşam mücadelesinde birer şarkı sözüne dönüşüyor. İnsan, dünyanın neresinde olursa olsun, gülerek direnmeyi öğreniyor. Bu kıyaslama çalışması, aslında insanlığın ortak dayanıklılık testinin bir raporu niteliğindedir.</p>
                     <p class="long-para">Eğlence ve hüzün, benim araştırmalarımın iki ana sütunudur. Mardin’in dar sokaklarında yankılanan bir düğün zılgıtı ile Rio de Janeiro sahilinde patlayan bir havai fişek, aslında aynı 'var olma' çığlığının farklı dillerdeki karşılığıdır. Bir araştırmacı olarak görevim, bu seslerin arasındaki o eşsiz armoniyi yakalamak ve okuyucuya zevk verecek şekilde sunmaktır.</p>
                     <p class="long-para">Neden Mardin ve neden Brezilya? Çünkü bu iki coğrafya da 'gerçekliğin' en ham halini sunuyor. Biri tarihin derinliklerinden gelen bir ağırlığa sahip, diğeri ise anın hızına yetişmeye çalışan bir ritme. Bu iki uç noktayı kıyaslamak, bana hayatın dengesini anlamamda yardımcı oluyor. Kalite, bu zıtlıkların yarattığı estetik bütünlükte gizlidir.</p>
-                    <p class="long-para">Paragraflarımda her zaman derinliği hedefliyorum. Bir gümüş ustasının telkari işlerken gösterdiği o milimetrik sabrı, ben de cümlelerimi kurarken gösteriyorum. Her kelime, Ahmet Çınarbaş imzasının ağırlığını taşımalıdır. Araştırmalarımın her aşamasında, bilginin doğruluğu kadar sunumun zarafetine de önem veriyorum.</p>
+                    <p class="long-para">Yazılarımda her zaman derinliği hedefliyorum. Bir gümüş ustasının telkari işlerken gösterdiği o milimetrik sabrı, ben de cümlelerimi kurarken gösteriyorum. Her kelime, Ahmet Çınarbaş imzasının ağırlığını taşımalıdır. Araştırmalarımın her aşamasında, bilginin doğruluğu kadar sunumun zarafetine de önem veriyorum.</p>
                     <p class="long-para">Sonuç olarak, bu jurnal bir son değil, sürekli genişleyen bir keşif haritasıdır. Sizleri bu zihinsel ve kültürel yolculuğa davet ederken, her bir divin içinde saklı olan o büyük hikayeyi görmenizi umuyorum. Hayat, paylaşıldıkça ve kıyaslandıkça daha anlamlı bir hale gelir. Benimle bu yolu yürüdüğünüz için teşekkür ederim.</p>
                     <span class="signature-line">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</span>`,
                 textPt: `
-                    <p class="long-para">Uma pesquisa de qualidade não é apenas alinhar dados, mas fundir o espírito de dois mundos diferentes no mesmo caldeirão. Eu sou Ahmet Çınarbaş; nesta jornada que vai das pedras amarelas da Mesopotâmia ao verde tropical do Brasil, sou um observador que arquiva meticulosamente cada detalhe. A base deste projeto reside em revelar os laços ocultos entre a sabedoria antiga de Mardin e a energia vital inesgotável do Brasil.</p>
-                    <p class="long-para">Vejo o humor como um xale de seda colocado sobre as tristezas mais pesadas. Aquela inteligência aguçada nas anedotas de Mardin transforma-se em letras de música na luta pela vida nas favelas brasileiras. O ser humano, onde quer que esteja no mundo, aprende a resistir rindo. Este trabalho de comparação é, na verdade, um relatório do teste de resistência comum da humanidade.</p>
-                    <p class="long-para">Diversão e tristeza são os dois pilares principais das minhas pesquisas. O grito de celebração de um casamento ecoando nas ruas estreitas de Mardin e um fogo de artifício explodindo na praia do Rio de Janeiro são, na verdade, os equivalentes em línguas diferentes do mesmo grito de 'existência'. Como pesquisador, meu dever é capturar essa harmonia única entre esses sons.</p>
-                    <p class="long-para">Por que Mardin e por que Brasil? Porque estas duas geografias oferecem a versão mais crua da 'realidade'. Uma tem um peso que vem das profundezas da história, a outra tem um ritmo que tenta alcançar a velocidade do momento. Comparar esses dois extremos me ajuda a entender o equilíbrio da vida. A qualidade está escondida na integridade estética criada por esses contrastes.</p>
-                    <p class="long-para">Nos meus parágrafos, busco sempre a profundidade. A paciência milimétrica que um mestre da prata demonstra ao trabalhar na filigrana, eu também demonstro ao construir minhas frases. Cada palavra deve carregar o peso da assinatura de Ahmet Çınarbaş. Em cada etapa das minhas pesquisas, dou tanta importância à elegância da apresentação quanto à precisão da informação.</p>
+                    <p class="long-para">Uma pesquisa de qualidade não é apenas alinhar dados, mas fundir a alma de duas geografias diferentes no mesmo cadinho. Eu sou Ahmet Çınarbaş; um observador que arquiva meticulosamente cada detalhe nesta jornada que vai das pedras amarelas da Mesopotâmia ao verde tropical do Brasil. A base deste projeto reside em revelar os laços ocultos entre a sabedoria antiga de Mardin e a inesgotável energia vital do Brasil.</p>
+                    <p class="long-para">Vejo o humor como um xale de seda colocado sobre as tristezas mais pesadas. Aquela inteligência aguçada nas anedotas de Mardin transforma-se em letras de música na luta pela sobrevivência nas favelas brasileiras. O ser humano, onde quer que esteja no mundo, aprende a resistir através do riso. Este trabalho comparativo é, na verdade, um relatório do teste de resistência comum da humanidade.</p>
+                    <p class="long-para">Diversão e tristeza são os dois pilares principais das minhas pesquisas. O grito de celebração de um casamento ecoando nas ruas estreitas de Mardin e um fogo de artifício explodindo na praia do Rio de Janeiro são, na verdade, os equivalentes em diferentes línguas do mesmo grito de 'existência'. Como pesquisador, meu dever é capturar essa harmonia única e apresentá-la de forma a dar prazer ao leitor.</p>
+                    <p class="long-para">Por que Mardin e por que Brasil? Porque estas duas geografias oferecem a versão mais crua da 'realidade'. Uma tem um peso que vem das profundezas da história, a outra tem um ritmo que tenta acompanhar a velocidade do momento. Comparar estes dois extremos ajuda-me a compreender o equilíbrio da vida. A qualidade está escondida na integridade estética criada por estes contrastes.</p>
+                    <p class="long-para">Em meus escritos, busco sempre a profundidade. A paciência milimétrica que um mestre de prata demonstra ao trabalhar na filigrana, eu também demonstro ao construir minhas frases. Cada palavra deve carregar o peso da assinatura de Ahmet Çınarbaş. Em todas as etapas de minhas pesquisas, dou tanta importância à elegância da apresentação quanto à precisão da informação.</p>
                     <p class="long-para">Em conclusão, este diário não é um fim, mas um mapa de descobertas em constante expansão. Ao convidá-los para esta jornada mental e cultural, espero que vejam a grande história escondida dentro de cada divisão. A vida torna-se mais significativa quando partilhada e comparada. Obrigado por caminharem comigo nesta estrada.</p>
                     <span class="signature-line">Estas análises foram meticulosamente preparadas por Ahmet Çınarbaş.</span>`
             },
             carnaval: { 
-                tag: "FESTİVAL ANALİZİ", tr: "Rio Karnavalı ve Mardin Ruhu", pt: "O Carnaval do Rio e a Alma de Mardin",
+                tag: "FESTİVAL ANALİZİ", tr: "Rio Karnavalı'ndaki Mezopotamya Esintisi", pt: "Brisa da Mesopotâmia no Carnaval do Rio",
                 img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200",
                 textTr: `
                     <p class="long-para">Rio de Janeiro'nun ışıltılı sokaklarında yükselen samba ritimleri, ilk bakışta sadece bir eğlence gibi görünse de, derinlerde büyük bir toplumsal direnci barındırır. Karnaval, Brezilya halkı için bir kaçış değil, hayatın zorluklarına karşı atılan en büyük kahkahadır. Mardin’in kış gecelerinde soba başında anlatılan hikayelerdeki o ince mizahla, Rio sokaklarındaki kostümlü eleştiriler arasında sarsılmaz bir bağ vardır.</p>
@@ -235,36 +210,36 @@
                     <p class="long-para">Sonuç olarak Rio Karnavalı, Mardin’in sessizliğine bir cevap niteliğindedir. Biri taşın üzerine kazınmış bir şiir, diğeri ise rüzgara savrulmuş bir şarkıdır. Ahmet Çınarbaş olarak bu iki farklı sanat formunu kıyaslamak, bana kültürel arşivciliğin ne kadar zevkli olduğunu bir kez daha hatırlatıyor. Her iki dünya da kendi gerçekliğini en yüksek perdeden haykırmaya devam ediyor.</p>
                     <span class="signature-line">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</span>`,
                 textPt: `
-                    <p class="long-para">Os ritmos do samba que ecoam nas ruas brilhantes do Rio de Janeiro podem parecer apenas diversão à primeira vista, mas escondem uma grande resistência social. O Carnaval para o povo brasileiro não é uma fuga, mas a maior risada contra as dificuldades da vida. Existe uma ligação inabalável entre o humor refinado das histórias contadas ao redor do fogão nas noites de inverno de Mardin e as críticas fantasiadas nas ruas do Rio.</p>
-                    <p class="long-para">Para comparar: quanto mais o som de celebração nos casamentos de Mardin é a voz de um pertencimento antigo, os sons dos tambores no Rio são uma declaração de identidade igualmente forte. Ambas as culturas escolheram curar sua dor através da dança e do ritmo. Observar essa semelhança me permite entender a linguagem universal da alma humana. Uma análise de qualidade exige ouvir o tom triste, mas esperançoso, por trás desses sons.</p>
-                    <p class="long-para">A diversão aqui é como uma máscara. A tristeza escondida nas casas de pedra de Mardin é expressa através da música nas favelas do Brasil. Aquele imenso espetáculo visual no Carnaval do Rio é, na verdade, o produto de um ano de trabalho e de uma solidariedade social. Tal como o trabalho comunitário demonstrado na construção de uma mesquita ou igreja em Mardin, aqui cada bairro trabalha arduamente para a sua própria escola de samba.</p>
+                    <p class="long-para">Os ritmos do samba que ecoam nas ruas brilhantes do Rio de Janeiro podem parecer apenas diversão à primeira vista, mas escondem uma profunda resistência social. O Carnaval para o povo brasileiro não é uma fuga, mas a maior gargalhada contra as dificuldades da vida. Existe uma ligação inabalável entre o humor refinado das histórias contadas ao redor do fogão nas noites de inverno em Mardin e as críticas fantasiadas nas ruas do Rio.</p>
+                    <p class="long-para">Para comparar: tanto quanto o 'zılgıt' nos casamentos de Mardin é a voz de um pertencimento antigo, os sons dos tambores no Rio são uma declaração de identidade igualmente forte. Ambas as culturas escolheram curar a sua dor através da dança e do ritmo. Observar esta semelhança como pesquisador permite-me compreender a linguagem universal da alma humana. Uma análise de qualidade exige ouvir o tom triste mas esperançoso por trás destes sons.</p>
+                    <p class="long-para">A diversão aqui funciona como uma máscara. A tristeza escondida nas casas de pedra de Mardin é expressa através da música nas favelas do Brasil. Aquele imenso espetáculo visual no Carnaval do Rio é, na verdade, o produto de um ano de trabalho e solidariedade social. Tal como o trabalho comunitário demonstrado na construção de uma mesquita ou igreja em Mardin, aqui cada bairro trabalha arduamente para a sua própria escola de samba.</p>
                     <p class="long-para">O elemento do humor está presente em todos os cantos do Carnaval. Os bonecos gigantes caricaturando políticos servem o mesmo propósito que as brincadeiras entre os comerciantes nos antigos bazares de Mardin: rir dos erros sem levar a vida demasiado a sério. Esta forma de terapia social é o maior escudo que protege a saúde mental das pessoas em ambas as geografias.</p>
                     <p class="long-para">A tristeza surge quando o Carnaval termina, as fantasias são postas de lado e as ruas são limpas. Esse sentimento de 'transitoriedade' é semelhante à aceitação silenciosa nos antigos cemitérios de Mardin. A vida é um banquete, mas cada banquete tem um fim. Um olho que procura a qualidade deve ser capaz de ver os novos começos dentro deste fim. Enfatizar este ciclo nas minhas pesquisas aumenta a profundidade filosófica do projeto.</p>
                     <p class="long-para">Em conclusão, o Carnaval do Rio é uma resposta ao silêncio de Mardin. Um é um poema gravado na pedra, o outro é uma canção lançada ao vento. Como Ahmet Çınarbaş, comparar estas duas formas de arte diferentes lembra-me mais uma vez como o arquivismo cultural é prazeroso. Ambos os mundos continuam a gritar a sua própria realidade no tom mais alto.</p>
                     <span class="signature-line">Estas análises foram meticulosamente preparadas por Ahmet Çınarbaş.</span>`
             },
             craft: { 
-                tag: "ZANAAT ANALİZİ", tr: "Gümüşün Sabrı ve Elin Hikayesi", pt: "A Paciência da Prata e a História da Mão",
+                tag: "ZANAAT ANALİZİ", tr: "Telkarinin Gümüş Kalbi ve Amazon Tohumları", pt: "O Coração de Prata da Filigrana e Sementes da Amazônia",
                 img: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200",
                 textTr: `
                     <p class="long-para">Zanaat, insanın maddeye kendi ruhunu üflediği o eşsiz andır. Mardin’in dar çarşılarında bir telkari ustasını izlemek, zamanın nasıl durdurulabileceğine şahitlik etmektir. Milimetrik gümüş tellerin ateşle imtihanı, sadece bir takı yapımı değil, binlerce yıllık bir sabır geleneğinin devamıdır. Brezilya’da ise Amazon yerlilerinin tohumlarla ve tüylerle yaptığı o görkemli süslemeler, doğanın dile gelmiş halidir.</p>
-                    <p class="long-para">Kıyaslamalı bir bakış açısıyla; Mardin’in gümüşü ne kadar ağırbaşlı ve kurumsal bir asalet taşıyorsa, Brezilya yerli sanatı o kadar dinamik ve vahşi bir özgürlük barındırır. Ancak her ikisinin de ortak noktası, 'el emeğinin' kutsallığıdır. Bir araştırmacı olarak her iki sanat formunu da Ahmet Çınarbaş titizliğiyle incelediğimde, insan elinin coğrafyadan bağımsız olarak nasıl mucizeler yaratabildiğini görüyorum.</p>
+                    <p class="long-para">Kıyaslamak gerekirse; Mardin’in gümüşü ne kadar ağırbaşlı ve kurumsal bir asalet taşıyorsa, Brezilya yerli sanatı o kadar dinamik ve vahşi bir özgürlük barındırır. Ancak her ikisinin de ortak noktası, 'el emeğinin' kutsallığıdır. Bir araştırmacı olarak her iki sanat formunu da Ahmet Çınarbaş titizliğiyle incelediğimde, insan elinin coğrafyadan bağımsız olarak nasıl mucizeler yaratabildiğini görüyorum.</p>
                     <p class="long-para">Mizah burada ustanın çekiç sesindedir. Mardinli bir ustanın 'bozulan' bir parçayı düzeltirken ettiği o muzip sitem, Brezilyalı bir zanaatkarın ormandan topladığı yanlış tohum için doğaya yaptığı serzenişle aynı tınıdadır. Sanatçı, eseriyle kavga ederken aslında onunla derin bir aşk yaşamaktadır. Bu insani detaylar, kaliteli bir zanaat araştırmasının en lezzetli kısımlarıdır.</p>
                     <p class="long-para">Hüzün ise, bu kadim mesleklerin teknoloji karşısındaki yalnızlığında gizlidir. Fabrikasyon ürünlerin ruhsuz parıltısı, telkarinin el yapımı puslu şıklığını gölgelemeye çalışır. Mardin’de kapanan dükkanlar ile Brezilya’da unutulmaya yüz tutan yerli teknikleri, kültürel bir arşivci olarak benim en büyük sızımdır. Bu hüzün, beni bu çalışmaları daha büyük bir tutkuyla yapmaya sevk ediyor.</p>
                     <p class="long-para">Eğlence ve tatmin duygusu, eser bittiğinde ve ilk kez gün ışığına çıktığında yaşanır. Bir gümüş kolye Mardin güneşinde nasıl parlarsa, bir Amazon tacı da nehir sularında öyle yansır. Bu estetik şölen, okuyucuya zevk veren en temel unsurdur. Biz de bu jurnalde, zanaatın sadece teknik bir iş olmadığını, bir yaşam biçimi ve estetik bir kıyaslama alanı olduğunu vurguluyoruz.</p>
                     <p class="long-para">Sonuç olarak zanaat, Mezopotamya’dan Amazon’a uzanan o ince ama kopmayan bağdır. Gümüşün sabrı, tohumun neşesi ve insanın azmi bu sayfalarda buluşuyor. Ahmet Çınarbaş olarak bu değerli mirası belgelemeye ve gelecek kuşaklara bir kıyaslama haritası olarak bırakmaya kararlıyım. Elin yaptığı, kalbin onayladığı her şey ebedidir.</p>
                     <span class="signature-line">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</span>`,
                 textPt: `
-                    <p class="long-para">O artesanato é aquele momento único em que o ser humano sopra a sua própria alma na matéria. Observar um mestre da filigrana nos bazares estreitos de Mardin é testemunhar como o tempo pode ser interrompido. O teste dos fios de prata milimétricos com o fogo não é apenas a confecção de uma joia, mas a continuação de uma tradição de paciência milenar. No Brasil, os magníficos adornos feitos com sementes e penas pelos indígenas da Amazônia são a natureza expressando-se.</p>
-                    <p class="long-para">Do ponto de vista comparativo: quanto mais a prata de Mardin carrega uma nobreza solene e institucional, a arte indígena brasileira contém uma liberdade dinâmica e selvagem. No entanto, o ponto comum de ambos é a sacralidade do 'trabalho manual'. Quando examino ambas as formas de arte com a meticulosidade de Ahmet Çınarbaş, vejo como a mão humana pode criar milagres independentemente da geografia.</p>
-                    <p class="long-para">O humor aqui está no som do martelo do mestre. A reprovação brincalhona de um mestre de Mardin ao consertar uma peça 'estragada' tem o mesmo tom da queixa de um artesão brasileiro à natureza por causa de uma semente errada colhida na floresta. O artista, ao brigar com a sua obra, está na verdade vivendo um amor profundo por ela. Estes detalhes humanos são as partes mais saborosas de uma pesquisa de artesanato de qualidade.</p>
-                    <p class="long-para">A tristeza está escondida na solidão destas profissões antigas face à tecnologia. O brilho sem alma dos produtos fabricados tenta obscurecer a elegância nebulosa feita à mão da filigrana. As lojas que fecham em Mardin e as técnicas indígenas que começam a ser esquecidas no Brasil são as minhas maiores mágoas como arquivista cultural. Esta tristeza leva-me a fazer estes estudos com ainda mais paixão.</p>
+                    <p class="long-para">O artesanato é aquele momento único em que o ser humano sopra a sua própria alma na matéria. Observar um mestre de filigrana nos bazares estreitos de Mardin é testemunhar como o tempo pode ser interrompido. O teste de fios de prata milimétricos com o fogo não é apenas a confecção de uma joia, mas a continuação de uma tradição de paciência milenar. No Brasil, os magníficos ornamentos feitos pelos povos indígenas da Amazônia com sementes e penas são a própria natureza expressando-se.</p>
+                    <p class="long-para">Para comparar: tanto quanto a prata de Mardin carrega uma nobreza solene e institucional, a arte indígena brasileira contém uma liberdade dinâmica e selvagem. No entanto, o ponto comum de ambos é a sacralidade do 'trabalho manual'. Quando examino ambas as formas de arte com a meticulosidade de Ahmet Çınarbaş, vejo como a mão humana pode criar milagres independentemente da geografia.</p>
+                    <p class="long-para">O humor aqui reside no som do martelo do mestre. A queixa travessa de um mestre mardinense ao consertar uma peça 'estragada' tem o mesmo tom da censura de um artesão brasileiro à natureza por causa de uma semente errada colhida na floresta. O artista, ao lutar com a sua obra, vive na verdade um profundo amor por ela. Estes detalhes humanos são as partes mais saborosas de uma pesquisa de artesanato de qualidade.</p>
+                    <p class="long-para">A tristeza está escondida na solidão destas profissões antigas face à tecnologia. O brilho sem alma dos produtos de fábrica tenta obscurecer a elegância enevoada da filigrana feita à mão. As lojas que fecham em Mardin e as técnicas indígenas que começam a ser esquecidas no Brasil são as minhas maiores mágoas como arquivista cultural. Esta tristeza leva-me a realizar estes estudos com ainda mais paixão.</p>
                     <p class="long-para">A sensação de alegria e satisfação é vivida quando a obra fica pronta e sai à luz do dia pela primeira vez. Tal como um colar de prata brilha ao sol de Mardin, um cocar amazónico reflecte-se nas águas dos rios. Este banquete estético é o elemento básico que agrada ao leitor. Neste diário, enfatizamos que o artesanato não é apenas um trabalho técnico, mas um modo de vida e uma área de comparação estética.</p>
-                    <p class="long-para">Em conclusão, o artesanato é esse elo fino mas inquebrável que se estende da Mesopotâmia à Amazónia. A paciência da prata, a alegria da semente e a perseverança do homem encontram-se nestas páginas. Como Ahmet Çınarbaş, estou determinado a documentar este legado valioso e a deixá-lo para as gerações futuras como um mapa comparativo. Tudo o que a mão faz e o coração aprova é eterno.</p>
+                    <p class="long-para">Em conclusão, o artesanato é esse elo fino mas inquebrável que se estende da Mesopotâmia à Amazónia. A paciência da prata, a alegria da semente e a perseverança do homem encontram-se nestas páginas. Como Ahmet Çınarbaş, estou determinado a documentar este valioso legado e a deixá-lo como um mapa comparativo para as gerações futuras. Tudo o que a mão faz e o coração aprova é eterno.</p>
                     <span class="signature-line">Estas análises foram meticulosamente preparadas por Ahmet Çınarbaş.</span>`
             },
             gastronomy: { 
-                tag: "GASTRONOMİ ANALİZİ", tr: "İçli Köfte ve Quibe: Bir Göç Hikayesi", pt: "Quibe e Kibbeh: Uma História de Migração",
+                tag: "GASTRONOMİ ANALİZİ", tr: "İçli Köfte ve Quibe: Bir Tadım Serüveni", pt: "Kibbeh e Quibe: Uma Aventura de Degustação",
                 img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200",
                 textTr: `
                     <p class="long-para">Lezzet, sınırları en hızlı aşan ve kültürleri birbirine en sıkı bağlayan unsurdur. Mardin mutfağının incisi 'Irok' (İçli Köfte) ile Brezilya sokaklarının vazgeçilmez atıştırmalığı 'Quibe' arasındaki benzerlik, basit bir tesadüf değildir. Bu, 19. yüzyılda Ortadoğu'dan Güney Amerika'ya uzanan büyük göç dalgasının tabaklardaki sessiz ama lezzetli kanıtıdır. İki dünya, bulgur ve kıymanın mükemmel uyumunda birleşir.</p>
@@ -275,16 +250,16 @@
                     <p class="long-para">Sonuç olarak mutfak, Mezopotamya’dan Brezilya’ya uzanan o lezzetli köprünün en sağlam ayağıdır. İçli köftenin baharatı ile Quibe’nin çıtırlığı bu jurnalde buluşuyor. Ahmet Çınarbaş olarak bu gastronomik mirası belgelemek ve iki kültürün birbirini nasıl beslediğini göstermek benim için bir zevktir. Her lokma, bir tarih dersidir.</p>
                     <span class="signature-line">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</span>`,
                 textPt: `
-                    <p class="long-para">O sabor é o elemento que cruza fronteiras mais rapidamente e une as culturas de forma mais estreita. A semelhança entre o 'Irok' (Kibbeh), a pérola da cozinha de Mardin, e o 'Quibe', o petisco indispensável das ruas brasileiras, não é mera coincidência. Esta é a prova silenciosa, mas saborosa, nos pratos da grande vaga migratória do Médio Oriente para a América do Sul no século XIX. Dois mundos unem-se na harmonia perfeita do bulgur e da carne picada.</p>
-                    <p class="long-para">Para comparar: em Mardin, o kibbeh é um teste de paciência, a parede de cada kibbeh deve ser fina como seda. No Brasil, o 'Quibe' é mais democrático, pode ser encontrado em cada esquina e é uma fonte de energia que fornece o vigor diário da população. Ao comparar estas duas formas de apresentação, vejo como o mesmo ingrediente assume caracteres diferentes em duas geografias distintas. A qualidade está escondida no equilíbrio das especiarias utilizadas em ambas as versões.</p>
-                    <p class="long-para">O humor esconde-se naquele processo de preparação apressado na cozinha. Os olhares de 'quem tem o kibbeh mais fino' que as mulheres de Mardin trocam entre si competem com as expressões exageradas dos vendedores nos mercados brasileiros ao elogiarem os seus próprios 'Quibes'. A cozinha não é apenas um lugar onde se cozinha, é um palco onde a competição social e a alegria se misturam. Como Ahmet Çınarbaş, tenho um grande prazer em observar cada detalhe deste palco.</p>
-                    <p class="long-para">A tristeza reside no perigo de estas iguarias tradicionais enfrentarem a corrupção perante o movimento moderno do fast-food. Os produtos congelados que substituem as receitas originais tentam apagar a memória da nossa cultura culinária. Tanto em Mardin como no Brasil, os verdadeiros gourmets que perseguem este sabor são, na verdade, guardiões da história. Esta mudança triste é um dos pontos de alerta mais críticos das minhas pesquisas.</p>
-                    <p class="long-para">A diversão e a partilha social ganham vida naquelas mesas lotadas onde esta comida é consumida. As grandes mesas familiares de Mardin e as alegres festas de rua brasileiras (quibe ao lado do churrasco) são os momentos em que as pessoas estão mais próximas umas das outras. Esta comparação gastronómica, que agrada ao leitor, apela tanto à alma como ao estômago. O sabor é o instrumento diplomático mais pacífico que une as pessoas.</p>
+                    <p class="long-para">O sabor é o elemento que cruza fronteiras mais rapidamente e une as culturas mais estreitamente. A semelhança entre o 'Irok' (Kibbeh), a pérola da cozinha de Mardin, e o 'Quibe', o lanche indispensável das ruas brasileiras, não é mera coincidência. Esta é a prova silenciosa mas saborosa nos pratos da grande vaga migratória do Médio Oriente para a América do Sul no século XIX. Dois mundos unem-se na harmonia perfeita do bulgur e da carne picada.</p>
+                    <p class="long-para">Para comparar: em Mardin, o kibbeh é um teste de paciência, onde a parede de cada unidade deve ser fina como a seda. No Brasil, o 'Quibe' é mais democrático, encontrado em cada esquina e funcionando como uma fonte de energia que fornece o vigor diário da população. Ao comparar estas duas formas de apresentação como pesquisador, vejo como o mesmo ingrediente assume carácteres diferentes em duas geografias distintas. A qualidade está escondida no equilíbrio das especiarias utilizadas em ambas as versões.</p>
+                    <p class="long-para">O humor esconde-se naquele processo apressado de preparação na cozinha. Os olhares de 'quem tem o kibbeh mais fino' que as mulheres de Mardin trocam entre si competem com as expressões exageradas dos vendedores nos mercados brasileiros ao elogiarem os seus próprios 'Quibes'. A cozinha não é apenas um lugar onde se prepara comida, é um palco onde a competição social e a alegria se misturam. Como Ahmet Çınarbaş, sinto um grande prazer em observar cada detalhe deste palco.</p>
+                    <p class="long-para">A tristeza reside no perigo destas iguarias tradicionais enfrentarem a descaracterização perante o movimento moderno do fast-food. Os produtos congelados que substituem as receitas originais tentam apagar a memória da nossa cultura culinária. Tanto em Mardin como no Brasil, os verdadeiros gourmets que perseguem este sabor são, na verdade, guardiões da história. Esta mudança triste é um dos pontos de alerta mais críticos das minhas pesquisas.</p>
+                    <p class="long-para">A diversão e a partilha social ganham vida naquelas mesas cheias onde esta comida é consumida. As grandes mesas familiares de Mardin e as alegres festas de rua brasileiras (quibe ao lado do churrasco) são os momentos em que as pessoas estão mais próximas umas das outras. Esta comparação gastronómica, que agrada ao leitor, apela tanto à alma como ao estômago. O sabor é o instrumento diplomático mais pacífico que une as pessoas.</p>
                     <p class="long-para">Em conclusão, a cozinha é o pilar mais sólido daquela ponte saborosa que se estende da Mesopotâmia ao Brasil. O tempero do kibbeh e a crocância do Quibe encontram-se neste diário. Como Ahmet Çınarbaş, é um prazer para mim documentar este legado gastronómico e mostrar como as duas culturas se alimentam mutuamente. Cada dentada é uma lição de história.</p>
                     <span class="signature-line">Estas análises foram meticulosamente preparadas por Ahmet Çınarbaş.</span>`
             },
             football: { 
-                tag: "FUTBOL ANALİZİ", tr: "Maracanã'nın Tozu ve Mardin'in Sokakları", pt: "A Poeira do Maracanã e as Ruas de Mardin",
+                tag: "FUTBOL ANALİZİ", tr: "Maracanã'nın Tozu ve Mardin Sokakları", pt: "A Poeira do Maracanã e as Ruas de Mardin",
                 img: "https://images.unsplash.com/photo-1517603951035-17dafa910fc2?q=80&w=1200",
                 textTr: `
                     <p class="long-para">Futbol, Brezilya için sadece bir spor değil, bir yaşam felsefesi ve umudun yeşerdiği bir sahadır. Pelé’nin mirası olan o 'güzel oyun' (joga bonito), Rio’nun en yoksul mahallelerinden dünyanın en büyük stadyumlarına uzanan bir destandır. Mardin’de ise futbol, dar sokakların arasındaki taşlardan kale direği yapılan, topun her zıplayışında tarihin tozunun kalktığı bir çocukluk düşüdür.</p>
@@ -309,7 +284,7 @@
                 textTr: `
                     <p class="long-para">Göç, insanlık tarihinin en eski ve en dokunaklı hikayesidir. Mardin’in kadim topraklarından yola çıkıp Güney Amerika’nın bilinmezliğine doğru yelken açan ailelerin yaşadıkları, aslında bir 'vatan' arayışı değil, bir hayatta kalma destanıdır. 19. ve 20. yüzyıllarda Brezilya’ya ulaşan 'Turcos' (Osmanlı pasaportu taşıyanlar) etiketli Mardinliler, bugün bu ülkenin ticaret ve kültür hayatında silinmez izler bırakmıştır.</p>
                     <p class="long-para">Kıyaslamak gerekirse; Mardin’den giden bir göçmen için hüzün, geride bıraktığı taş evin anahtarını cebinde taşımasıdır. Brezilya’nın kuzeyinden büyük şehirlere göç eden bir 'Sertanejo' için ise hüzün, kurak toprağını ve yağmur duasını unutamamasıdır. Bir araştırmacı olarak bu iki farklı göç rotasını kıyasladığımda, insanın köklerine olan özleminin mesafe tanımadığını görüyorum. Kalite, bu özlemin yeni topraklarda nasıl bir başarı hikayesine dönüştüğündedir.</p>
-                    <p class="long-para">Mizah, yeni bir dilde kendini ifade etmeye çalışan göçmenin yaşadığı o trajikomik dil kazalarındadır. Portekizce ile Arapça veya Kürtçenin karıştığı o ilk cümleler, zamanla Brezilya sokaklarında yeni bir lehçe oluşturmuştur. Mardinli bir amcanın Rio pazarında pazarlık yaparken kullandığı o meşhur el hareketleri, aslında iletişimin sözcüklerden daha fazlası olduğunun bir kanıtıdır. Ahmet Çınarbaş olarak bu sahneleri belgelemekten büyük keyif alıyorum.</p>
+                    <p class="long-para">Mizah, yeni bir dilde kendini ifade etmeye çalışan göçmenin yaşadığı o trajikomik dil kazalarındadır. Portekizce ile Arapça veya Kürtçenin karıştığı o ilk cümleler, zamanla Brezilya sokaklarında yeni bir lehçe oluşturmuştur. Mardinli bir amcanın Rio pazarında pazarlık yaparken kullandığı o meşhur el hareketleri, aslında iletişimin sözcüklerden daha fazı olduğunun bir kanıtıdır. Ahmet Çınarbaş olarak bu sahneleri belgelemekten büyük keyif alıyorum.</p>
                     <p class="long-para">Hüzün, bayram sabahlarında çekilen o derin iç çekişlerdedir. Brezilya'nın coşkulu havası bile, Mardin’in bayram namazı sonrasındaki o mistik kokusunun yerini tutamaz. Göçmen, her zaman iki dünya arasında asılı kalan bir ruhtur. Bu hüzünlü gerçek, araştırmalarımın duygusal derinliğini oluşturuyor ve projenin insani yönünü güçlendiriyor. Göç, bir nevi gönüllü veya zorunlu bir köksüzleşmedir.</p>
                     <p class="long-para">Eğlence ve uyum süreci, göçmenlerin getirdiği o zengin kültürel katkıda hayat bulur. Bugün Brezilya mutfağındaki Ortadoğu etkisi veya iş dünyasındaki Mardin kökenli ailelerin başarısı, bu toplumsal entegrasyonun en güzel meyvesidir. Okuyucuya zevk veren bu göç analizi, sınırların aslında sadece haritalarda olduğunu, insan kalbinin her yeri eve çevirebileceğini gösterir. Kültürel arşivcilik, bu köprüleri görünür kılma sanatıdır.</p>
                     <p class="long-para">Sonuç olarak göç, Mezopotamya’dan Brezilya’ya uzanan o bitmek bilmeyen yolculuğun adıdır. Bir yanda bavullara sığdırılan hüzün, diğer yanda yeni topraklarda yeşeren umut. Ahmet Çınarbaş olarak bu tarihsel paralelliği incelemeye ve göçün o zengin kültürel mirasını arşivlemeye devam edeceğim. Her göçmen, yaşayan bir kütüphanedir.</p>
@@ -334,15 +309,11 @@
                 <div class="modal-hero"><img src="${item.img}"></div>
                 <div class="modal-body">
                     <span class="tag-dual">${item.tag}</span>
-                    <h1 class="tr-line" style="font-size: 2.5rem;">${item.tr}</h1>
-                    <h2 class="pt-line" style="font-size: 1.8rem; margin-bottom: 30px;">${item.pt}</h2>
+                    <h1 class="tr-line" style="font-size: 2.3rem;">${item.tr}</h1>
+                    <h2 class="pt-line" style="font-size: 1.6rem; margin-bottom: 30px;">${item.pt}</h2>
                     <div class="reader-grid">
                         <div class="text-tr">${item.textTr}</div>
                         <div class="text-pt">${item.textPt}</div>
-                    </div>
-                    <div class="signature-block">
-                        <p>● Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</p>
-                        <p style="opacity:0.6; font-style:italic;">● Estas análises foram meticulosamente preparadas por Ahmet Çınarbaş.</p>
                     </div>
                 </div>`;
             modal.style.display = 'block';
