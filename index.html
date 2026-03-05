@@ -6,31 +6,27 @@
     <title>MB | Mardin Brazil Journal</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #F8F6F2; font-family: sans-serif; margin: 0; padding: 20px; color: #1A1A1A; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: white; border-radius: 25px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; }
-        .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; }
-        .status { text-align: center; padding: 50px; }
-    </script>
+        body { background: #F8F6F2; font-family: sans-serif; margin: 0; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
+        .card img { width: 100%; border-radius: 15px; height: 200px; object-fit: cover; }
+    </style>
 </head>
 <body>
-    <h1 style="text-align:center;">MARDIN BRAZIL</h1>
-    <div id="status" class="status">Veriler yükleniyor...</div>
+    <h1 style="text-align:center">MARDIN BRAZIL</h1>
+    <div id="status" style="text-align:center; padding:20px;">Bağlantı kontrol ediliyor...</div>
     <div class="grid" id="main-grid"></div>
 
     <script>
         const _u = "https://toomlocgdhkwrypuveof.supabase.co";
         const _m = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
         const key = atob(_m.replace(/[^A-Za-z0-9+/=]/g, ""));
-
-        // CORS sorunlarını önlemek için sade client
+        
         const client = supabase.createClient(_u, key);
 
         async function init() {
             try {
-                // Tablo adı: articles
                 const { data, error } = await client.from('articles').select('*');
-                
                 if (error) throw error;
 
                 document.getElementById('status').style.display = 'none';
@@ -38,17 +34,11 @@
                     <div class="card">
                         <img src="${item.img}">
                         <h2>${item.tr}</h2>
-                        <p style="opacity:0.6">${item.tag}</p>
+                        <p style="opacity:0.7">${item.tag}</p>
                     </div>
                 `).join('');
-
             } catch (err) {
-                document.getElementById('status').innerHTML = `
-                    <div style="color:red;">
-                        <h3>Bağlantı Kurulamadı</h3>
-                        <p>${err.message}</p>
-                        <p>Lütfen Wi-Fi yerine Mobil Veri ile (veya tersi) deneyin.</p>
-                    </div>`;
+                document.getElementById('status').innerHTML = `<div style="color:red">Bağlantı Başarısız: ${err.message}</div>`;
             }
         }
         init();
