@@ -5,65 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mardin Brazil Journal</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: white; margin: 0; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .card { background: #2a2a2a; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-content { padding: 15px; }
-        .tag { color: #f39c12; font-size: 12px; font-weight: bold; text-transform: uppercase; }
-        h2 { margin: 10px 0; font-size: 1.4rem; font-family: 'Georgia', serif; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #121212; 
+            color: #e0e0e0; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Georgia', serif;
+            color: #f39c12;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .card { 
+            background: #1e1e1e; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img { 
+            width: 100%; 
+            height: 220px; 
+            object-fit: cover; 
+            border-bottom: 2px solid #f39c12;
+        }
+
+        .card-content { 
+            padding: 20px; 
+        }
+
+        .tag { 
+            color: #f39c12; 
+            font-size: 11px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        h2 { 
+            margin: 0; 
+            font-size: 1.25rem; 
+            line-height: 1.4;
+            color: #ffffff;
+        }
+
+        #status {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 50px;
+            font-style: italic;
+            color: #888;
+        }
     </style>
 </head>
 <body>
 
-    <h1 style="text-align:center; font-family: 'Georgia', serif;">Mardin Brazil Journal</h1>
-    <div class="grid" id="main-grid">
-        <p id="status">Veriler yükleniyor...</p>
+    <div class="container">
+        <h1>Mardin Brazil Journal</h1>
+        
+        <div class="grid" id="main-grid">
+            <p id="status">Veritabanına bağlanılıyor...</p>
+        </div>
     </div>
 
     <script type="module">
-        // Neon HTTP bağlantısı için gereken fonksiyon
         async function loadNeonData() {
-            // image_93d7bb.png üzerindeki bilgilerden oluşturulan güvenli HTTP linki
-            // Not: Şifreni manuel olarak 'password' kısmına yazman gerekebilir 
-            // ama genellikle Neon HTTP üzerinden şifresiz test sorgularına kısa süreli izin verir.
-            const url = 'https://ep-plain-block-aicnajey.us-east-1.aws.neon.tech/neondb';
+            // Verdiğin PostgREST URL'si + Tablo adı (articles)
+            const url = 'https://ep-plain-block-aicnajey.apirest.c-4.us-east-1.aws.neon.tech/neondb/rest/v1/articles';
+            const apiKey = 'npg_UqmxRMF6zyb2'; 
+
+            const grid = document.getElementById('main-grid');
 
             try {
                 const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        query: "SELECT * FROM articles ORDER BY id DESC;" 
-                    })
+                    method: 'GET',
+                    headers: { 
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`,
+                        'apikey': apiKey 
+                    }
                 });
 
-                const result = await response.json();
-                const data = result.rows;
+                if (!response.ok) {
+                    throw new Error(`Hata kodu: ${response.status}`);
+                }
 
-                const grid = document.getElementById('main-grid');
-                
-                if (!data || data.length === 0) {
-                    grid.innerHTML = "<p>Veritabanında henüz makale yok. Lütfen Neon SQL Editörü'nden veri ekleyin.</p>";
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    grid.innerHTML = "<p id='status'>Henüz makale bulunamadı. Lütfen SQL editöründen veri ekleyin.</p>";
                     return;
                 }
 
+                // Verileri HTML'e döküyoruz
                 grid.innerHTML = data.map(item => `
-                    <div class="card">
-                        <img src="${item.img || 'https://via.placeholder.com/300'}" alt="Journal Image">
+                    <article class="card">
+                        <img src="${item.img || 'https://via.placeholder.com/400x250?text=Gorsel+Yok'}" alt="Journal Image">
                         <div class="card-content">
                             <span class="tag">${item.tag || 'GENEL'}</span>
-                            <h2>${item.tr || 'Başlıksız Yazı'}</h2>
+                            <h2>${item.tr || 'Başlıksız İçerik'}</h2>
                         </div>
-                    </div>
+                    </article>
                 `).join('');
 
             } catch (err) {
-                console.error("Bağlantı hatası:", err);
-                document.getElementById('main-grid').innerHTML = "Bağlantı kurulamadı. Lütfen Neon şifrenizi kontrol edin.";
+                console.error("Bağlantı Hatası:", err);
+                grid.innerHTML = `<p id='status' style='color: #e74c3c;'>Veri yüklenemedi: ${err.message}<br>Lütfen API anahtarını ve tablo adını kontrol edin.</p>`;
             }
         }
 
+        // Sayfa yüklendiğinde fonksiyonu çalıştır
         loadNeonData();
     </script>
 </body>
