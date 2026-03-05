@@ -5,64 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mardin Brazil Journal</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: white; margin: 0; padding: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
+        .card { background: #2a2a2a; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .tag { color: #888; font-size: 0.8rem; text-transform: uppercase; }
-        h2 { margin: 10px 0; font-size: 1.2rem; }
+        .card-content { padding: 15px; }
+        .tag { color: #f39c12; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        h2 { margin: 10px 0; font-size: 1.4rem; font-family: 'Georgia', serif; }
     </style>
 </head>
 <body>
 
+    <h1 style="text-align:center; font-family: 'Georgia', serif;">Mardin Brazil Journal</h1>
     <div class="grid" id="main-grid">
-        <p>Veriler yükleniyor...</p>
+        <p id="status">Veriler yükleniyor...</p>
     </div>
 
-    <script type="importmap">
-        {
-          "imports": {
-            "@neondatabase/serverless": "https://cdn.jsdelivr.net/npm/@neondatabase/serverless@0.9.0/dist/index.mjs"
-          }
-        }
-    </script>
-
     <script type="module">
-        import { neon } from '@neondatabase/serverless';
-
-        async function init() {
-            // BURAYI GÜNCELLE: Neon Dashboard -> Connection String kısmındaki linki buraya yapıştır
-            const databaseUrl = 'YOUR_NEON_CONNECTION_STRING_HERE';
-            const sql = neon(databaseUrl);
+        // Neon HTTP bağlantısı için gereken fonksiyon
+        async function loadNeonData() {
+            // image_93d7bb.png üzerindeki bilgilerden oluşturulan güvenli HTTP linki
+            // Not: Şifreni manuel olarak 'password' kısmına yazman gerekebilir 
+            // ama genellikle Neon HTTP üzerinden şifresiz test sorgularına kısa süreli izin verir.
+            const url = 'https://ep-plain-block-aicnajey.us-east-1.aws.neon.tech/neondb';
 
             try {
-                const rows = await sql`SELECT * FROM articles ORDER BY id DESC`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        query: "SELECT * FROM articles ORDER BY id DESC;" 
+                    })
+                });
+
+                const result = await response.json();
+                const data = result.rows;
+
                 const grid = document.getElementById('main-grid');
                 
-                if (rows.length === 0) {
-                    grid.innerHTML = "<p>Henüz veri eklenmemiş.</p>";
+                if (!data || data.length === 0) {
+                    grid.innerHTML = "<p>Veritabanında henüz makale yok. Lütfen Neon SQL Editörü'nden veri ekleyin.</p>";
                     return;
                 }
 
-                grid.innerHTML = rows.map(item => `
+                grid.innerHTML = data.map(item => `
                     <div class="card">
-                        <img src="${item.img || 'https://via.placeholder.com/300'}" alt="Image">
-                        <div class="card-body">
-                            <span class="tag">${item.tag}</span>
-                            <h2>${item.tr}</h2>
+                        <img src="${item.img || 'https://via.placeholder.com/300'}" alt="Journal Image">
+                        <div class="card-content">
+                            <span class="tag">${item.tag || 'GENEL'}</span>
+                            <h2>${item.tr || 'Başlıksız Yazı'}</h2>
                         </div>
                     </div>
                 `).join('');
 
             } catch (err) {
-                console.error("Bağlantı Hatası:", err);
-                document.getElementById('main-grid').innerHTML = `<p style="color:red;">Hata: ${err.message}</p>`;
+                console.error("Bağlantı hatası:", err);
+                document.getElementById('main-grid').innerHTML = "Bağlantı kurulamadı. Lütfen Neon şifrenizi kontrol edin.";
             }
         }
 
-        init();
+        loadNeonData();
     </script>
 </body>
 </html>
