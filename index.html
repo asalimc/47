@@ -10,76 +10,75 @@
         .container { max-width: 1100px; margin: auto; }
         header { text-align: center; padding: 40px 0; border-bottom: 1px solid #333; margin-bottom: 40px; }
         h1 { font-family: 'Georgia', serif; color: var(--primary); font-size: 2.8rem; margin: 0; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
-        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 1px solid #2a2a2a; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #2a2a2a; }
         .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-content { padding: 20px; }
-        .tag { color: var(--primary); font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; }
-        h2 { margin: 0; font-size: 1.4rem; color: #fff; }
-        .error-msg { background: #2c1a1a; color: #ff6b6b; padding: 20px; border-radius: 8px; text-align: center; }
+        .card-content { padding: 15px; }
+        .tag { color: var(--primary); font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        h2 { margin: 10px 0 0; font-size: 1.3rem; color: #fff; }
+        .error-msg { color: #ff6b6b; text-align: center; padding: 20px; background: #2c1a1a; border-radius: 8px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header>
-            <h1>Mardin Brazil Journal</h1>
-        </header>
+        <header><h1>Mardin Brazil Journal</h1></header>
         <div id="main-grid" class="grid">
-            <p id="loader" style="text-align:center; width:100%;">Veriler yükleniyor...</p>
+            <p id="loader">Veritabanına bağlanılıyor...</p>
         </div>
     </div>
 
     <script>
-        async function fetchArticles() {
+        async function loadData() {
             const grid = document.getElementById('main-grid');
             
-            // HTTP SQL API URL (Senin projenin ana URL'si)
-            const API_URL = 'https://ep-plain-block-aicnajey.us-east-1.aws.neon.tech/neondb';
-            const TOKEN = 'npg_UqmxRMF6zyb2'; // Veritabanı şifren
+            // DİKKAT: URL'nin sonundaki /neondb kısmını ve parametreleri kontrol et
+            const url = 'https://ep-plain-block-aicnajey.us-east-1.aws.neon.tech/v1/sql';
+            const token = 'npg_UqmxRMF6zyb2';
 
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${TOKEN}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        // SQL Sorgusu: Tablo adının 'articles' olduğundan emin ol
-                        query: "SELECT * FROM articles ORDER BY id DESC;"
+                        // SQL sorgusunu bu şekilde gönderiyoruz
+                        sql: "SELECT * FROM articles ORDER BY id DESC;"
                     })
                 });
 
-                const result = await response.json();
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Bağlantı hatası');
+                }
 
-                // Neon SQL API 'rows' içinde verileri döndürür
-                if (!result.rows || result.rows.length === 0) {
-                    grid.innerHTML = "<p>Veritabanında henüz makale yok.</p>";
+                const data = await response.json();
+                
+                // Neon v1/sql API'si sonucu 'rows' içinde döndürür
+                if (!data.rows || data.rows.length === 0) {
+                    grid.innerHTML = "<p>Henüz veri eklenmemiş.</p>";
                     return;
                 }
 
-                grid.innerHTML = result.rows.map(article => `
-                    <article class="card">
-                        <img src="${article.img || 'https://via.placeholder.com/400x200'}" alt="Haber">
+                grid.innerHTML = data.rows.map(item => `
+                    <div class="card">
+                        <img src="${item.img || 'https://via.placeholder.com/300'}" alt="Görsel">
                         <div class="card-content">
-                            <span class="tag">${article.tag || 'BÜLTEN'}</span>
-                            <h2>${article.tr || 'Başlıksız Yazı'}</h2>
+                            <span class="tag">${item.tag || 'HABER'}</span>
+                            <h2>${item.tr || 'Başlık Yok'}</h2>
                         </div>
-                    </article>
+                    </div>
                 `).join('');
 
             } catch (err) {
-                console.error("Hata Detayı:", err);
-                grid.innerHTML = `
-                    <div class="error-msg">
-                        <h3>Bağlantı Hatası</h3>
-                        <p>${err.message}</p>
-                    </div>`;
+                console.error("Hata ayrıntısı:", err);
+                grid.innerHTML = `<div class="error-msg">Bağlantı Hatası: ${err.message}</div>`;
             }
         }
 
-        fetchArticles();
+        loadData();
     </script>
 </body>
 </html>
