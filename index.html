@@ -63,14 +63,25 @@
 
         .tr-line { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; line-height: 1.1; margin-bottom: 5px; font-weight: 700; }
         .pt-line { font-family: 'Bodoni Moda', serif; font-size: 1.4rem; line-height: 1.1; font-weight: 400; opacity: 0.8; }
-        .tag-dual { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 15px; display: block; }
+        
+        .tag-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .tag-dual { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); display: block; }
+        .view-count { font-size: 0.65rem; font-weight: 600; opacity: 0.7; letter-spacing: 1px; }
 
         .reader-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-top: 40px; }
         @media (min-width: 800px) { .reader-grid { grid-template-columns: 1fr 1fr; gap: 60px; } }
-        .text-tr { font-size: 1.15rem; line-height: 1.9; color: var(--ink); text-align: justify; }
-        .text-pt { font-size: 1.1rem; line-height: 1.9; color: #555; font-style: italic; border-left: 3px solid var(--accent); padding-left: 20px; }
+        
+        /* Metinlerin tam ve kesintisiz görünmesi için düzenleme */
+        .text-tr, .text-pt { 
+            font-size: 1.15rem; 
+            line-height: 1.9; 
+            color: var(--ink); 
+            text-align: justify;
+            height: auto;
+            overflow: visible;
+        }
+        .text-pt { color: #555; font-style: italic; border-left: 3px solid var(--accent); padding-left: 20px; }
 
-        /* SHARE BAR */
         .share-bar { margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: center; }
         .wa-button { 
             display: flex; align-items: center; gap: 10px; background: #25D366; color: white; 
@@ -91,23 +102,28 @@
     </header>
 
     <main class="container">
-        <div class="bento">
-            
+        <div class="bento" id="bento-grid">
             <div class="card card-wide" onclick="openReader('author')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual">KÜLTÜR ARŞİVCİSİ ● ARQUIVISTA</span>
+                    <div class="tag-wrapper">
+                        <span class="tag-dual">MANIFESTO</span>
+                        <span class="view-count" id="view-author">0 VIEWS</span>
+                    </div>
                     <h2 class="tr-line">Ahmet Çınarbaş</h2>
                     <h3 class="pt-line">Arquiteto das Almas</h3>
                 </div>
             </div>
-
+            
             <div class="card card-wide" onclick="openReader('architecture')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual">MİMARİ ● ARQUITETURA</span>
+                    <div class="tag-wrapper">
+                        <span class="tag-dual">MİMARİ ● ARQUITETURA</span>
+                        <span class="view-count" id="view-architecture">0 VIEWS</span>
+                    </div>
                     <h2 class="tr-line">Mimarinin Hafızası</h2>
                     <h3 class="pt-line">Taş Evler & Favelalar</h3>
                 </div>
@@ -117,7 +133,10 @@
                 <div class="card-bg" style="background-image: url('https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual">SPOR ● ESPORTE</span>
+                    <div class="tag-wrapper">
+                        <span class="tag-dual">SPOR ● ESPORTE</span>
+                        <span class="view-count" id="view-sports">0 VIEWS</span>
+                    </div>
                     <h2 class="tr-line">Tozun Kardeşliği</h2>
                     <h3 class="pt-line">Mardin 1969 & Maracanã</h3>
                 </div>
@@ -127,12 +146,14 @@
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag-dual">İNANÇ ● FÉ</span>
+                    <div class="tag-wrapper">
+                        <span class="tag-dual">İNANÇ ● FÉ</span>
+                        <span class="view-count" id="view-faith">0 VIEWS</span>
+                    </div>
                     <h2 class="tr-line">İnanç ve Ritüel</h2>
                     <h3 class="pt-line">Kırklar & Cristo</h3>
                 </div>
             </div>
-
         </div>
     </main>
 
@@ -145,48 +166,52 @@
 
     <script>
         const contentData = {
-            author: { 
-                tag: "MANIFESTO", tr: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", pt: "O Arquivista das Almas",
-                img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg", 
-                textTr: "Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğasıyla harmanlayan bir estetik küratörü. Mardin'in sessizliğini Rio'nun ritmiyle bağlayan bir anlatıcı.",
-                textPt: "Um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem do Brasil."
+            author: { views: 124, tag: "MANIFESTO", tr: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", pt: "O Arquivista das Almas", img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg", 
+                textTr: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğası ve kaotik ama bir o kadar büyüleyici şehir yapısıyla harmanlayan bir estetik küratörüdür. Onun için Mardin'in sessizliği Rio'nun ritmiyle, telkâri işçiliği ise favelaların renkli karmaşasıyla bir bütündür.", 
+                textPt: "Um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem e a estrutura urbana caótica mas fascinante do Brasil." 
             },
-            architecture: { 
-                tag: "MİMARİ ANALİZ", tr: "Mimarinin Hafızası: Taş Evler & Favelalar", pt: "A Memória da Arquitetura",
-                img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200",
-                textTr: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı. Mardin’de evler birbirinin güneşini kesmez, bu bir 'saygı' mimarisidir. Favelalarda ise evler birbirinin omuzlarına tırmanır; şehre tutunmak için. Mardin’de sevinç avludaki reyhan kokusuyken, Rio’da pencerelerden taşan samba ritmidir.",
-                textPt: "As casas de pedra de Mardin são a moral da arquitetura; as favelas do Rio são o grito de sobrevivência. Em Mardin, as casas não cortam o sol umas das outras. Na favela, a arquitetura baseia-se no 'inacabado'; cada tijolo é uma esperança."
+            architecture: { views: 342, tag: "MİMARİ ANALİZ", tr: "Mimarinin Hafızası: Taş Evler & Favelalar", pt: "A Memória da Arquitetura", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200", 
+                textTr: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı. Mardin’de evler birbirinin güneşini kesmez, bu bir 'saygı' mimarisidir. Favelalarda ise evler birbirinin omuzlarına tırmanır; şehre tutunmak için. Her iki coğrafyada da taş ve tuğla, insan ruhunun sığınacak bir liman arayışını temsil eder.", 
+                textPt: "As casas de pedra de Mardin são a moral da arquitetura; as favelas do Rio são o grito de sobrevivência. Em Mardin, as casas não cortam o sol umas das outras. Na favela, cada tijolo é uma esperança." 
             },
-            sports: { 
-                tag: "SPOR ANALİZ", tr: "Tozun ve Terin Kardeşliği", pt: "O Ritual do Suor",
-                img: "https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg",
-                textTr: "Mardinspor için futbol bir varoluş mücadelesidir. Maç başlamadan tellere yapışan o ateşli taraftar, 'Burası Mardin, Buradan Çıkış Yok!' diye haykırırken aslında kaderini savunur. Beleş Tepe’deki o hüzünlü bekleyiş ile Rio’daki 'Favela Venceu!' (Favela Kazandı) neşesi aynı tozlu toprağın ürünüdür.",
-                textPt: "Para o Mardinspor, o futebol é uma luta pela existência. O fervor dos adeptos que se agarram aos arames é o mesmo espírito da 'Torcida' brasileira. O orgulho no 'Beleş Tepe' é irmão da alegria carioca." 
+            sports: { views: 567, tag: "SPOR ANALİZ", tr: "Tozun ve Terin Kardeşliği", pt: "O Ritual do Suor", img: "https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg", 
+                textTr: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir. Maç başlamadan saatler önce stadyumun tellerine yapışan ateşli taraftar, 'Burası Mardin, Buradan Çıkış Yok!' sloganıyla kendi kaderini savunur. Bu tutku, Rio’daki favela sahalarında 'Favela Venceu!' haykırışıyla kardeştir. Tozun ve terin birleştiği bu hikayede neşe ve keder bir madalyonun iki yüzüdür.", 
+                textPt: "Para o Mardinspor, o futebol não é apenas um jogo, é uma luta pela existência. O fervor dos adeptos que se agarram aos arames é o mesmo espírito da 'Torcida' brasileira nas favelas." 
             },
-            faith: { 
-                tag: "İNANÇ ANALİZ", tr: "İnanç ve Ritüel: Kırklar & Cristo", pt: "Fé e Ritual",
-                img: "https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200",
-                textTr: "Mardin ve Rio, 'Kutsalın Estetiği' noktasında ikizdir. Mardin’de bir Şeyh veya Metropolit neyse, Rio’da bir 'Pai de Santo' odur. Mardin’de inanç muhafaza (korumak), Brezilya’da ise senkretizm (karıştırmak) üzerine kuruludur. Ölüm Mardin’de siyah bir ağıt, Rio’da ışığa giden bir yolculuktur.",
-                textPt: "Mardin e Rio são gêmeas na 'Estética do Sagrado'. Em Mardin, a fé é conservação; no Brasil, é sincretismo. A morte em Mardin é um lamento negro, no Rio é uma jornada para a luz."
+            faith: { views: 289, tag: "İNANÇ ANALİZ", tr: "İnanç ve Ritüel: Kırklar & Cristo", pt: "Fé e Ritual", img: "https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200", 
+                textTr: "Mardin ve Rio, 'Kutsalın Estetiği' noktasında ikizdir. Kırklar Kilisesi’nin tütsü kokusuyla Cristo Redentor’un spiritüel gölgesi aynı göğe bakar. Mardin’de inanç muhafaza (korumak), Brezilya’da ise senkretizm (karıştırmak) üzerine kuruludur. Düğünlerde yükselen erbane sesiyle, Rio sokaklarında yankılanan ilahi ritimler aynı evrensel sızının ve umudun sesidir.", 
+                textPt: "Mardin e Rio são gêmeas na 'Estética do Sagrado'. O perfume de incenso da Igreja dos Quarenta e a sombra espiritual do Cristo Redentor olham para o mesmo céu." 
             }
         };
+
+        function initViews() {
+            for (let key in contentData) {
+                const el = document.getElementById(`view-${key}`);
+                if (el) el.innerText = `${contentData[key].views} VIEWS`;
+            }
+        }
 
         function openReader(key) {
             const item = contentData[key];
             if(!item) return;
 
+            item.views++;
+            const viewEl = document.getElementById(`view-${key}`);
+            if(viewEl) viewEl.innerText = `${item.views} VIEWS`;
+
             const modal = document.getElementById('reader-modal');
             const content = document.getElementById('reader-content');
             
-            // Dinamik Paylaşım Linki
             const shareUrl = window.location.origin + window.location.pathname + '?entry=' + key;
-            const shareText = encodeURIComponent(`Ahmet Çınarbaş Journal | ${item.tr}\n\nOkumak için: `);
-            const waLink = `https://wa.me/?text=${shareText}${shareUrl}`;
+            const waLink = `https://wa.me/?text=${encodeURIComponent(item.tr + ' - ' + shareUrl)}`;
 
             content.innerHTML = `
                 <div class="modal-hero"><img src="${item.img}"></div>
                 <div class="modal-body">
-                    <span class="tag-dual">${item.tag}</span>
+                    <div class="tag-wrapper">
+                        <span class="tag-dual">${item.tag}</span>
+                        <span class="view-count" style="color:var(--ink)">${item.views} VIEWS</span>
+                    </div>
                     <h1 class="tr-line" style="font-size: 2.5rem;">${item.tr}</h1>
                     <h2 class="pt-line" style="font-size: 1.8rem; margin-bottom: 30px;">${item.pt}</h2>
                     <div class="reader-grid">
@@ -194,9 +219,7 @@
                         <div class="text-pt">${item.textPt}</div>
                     </div>
                     <div class="share-bar">
-                        <a href="${waLink}" target="_blank" class="wa-button">
-                             WhatsApp ile Paylaş
-                        </a>
+                        <a href="${waLink}" target="_blank" class="wa-button">WhatsApp ile Paylaş</a>
                     </div>
                 </div>`;
             
@@ -216,11 +239,12 @@
         function updateProgress() {
             const modal = document.getElementById('reader-modal');
             const scrolled = (modal.scrollTop / (modal.scrollHeight - modal.clientHeight)) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
+            const bar = document.getElementById("progress-bar");
+            if(bar) bar.style.width = scrolled + "%";
         }
 
-        // URL Kontrolü (Link paylaşımı için)
         window.onload = function() {
+            initViews();
             const params = new URLSearchParams(window.location.search);
             const entry = params.get('entry');
             if(entry && contentData[entry]) openReader(entry);
