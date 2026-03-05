@@ -3,82 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mardin Brazil Journal</title>
+    <title>HaberAkış | Ahmet Çınarbaş Journal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --primary: #f39c12; --bg: #121212; --card-bg: #1e1e1e; --text: #e0e0e0; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        .container { max-width: 1100px; margin: auto; }
-        header { text-align: center; padding: 40px 0; border-bottom: 1px solid #333; margin-bottom: 40px; }
-        h1 { font-family: 'Georgia', serif; color: var(--primary); font-size: 2.8rem; margin: 0; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #2a2a2a; }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-content { padding: 15px; }
-        .tag { color: var(--primary); font-size: 11px; font-weight: bold; text-transform: uppercase; }
-        h2 { margin: 10px 0 0; font-size: 1.3rem; color: #fff; }
-        .error-msg { color: #ff6b6b; text-align: center; padding: 20px; background: #2c1a1a; border-radius: 8px; }
+        :root {
+            --bg: #FFFFFF;
+            --secondary-bg: #F9FAFB;
+            --accent: #E11D48; /* Görseldeki kırmızı vurgu rengi */
+            --ink: #111827;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.5; }
+
+        /* HEADER - Görseldeki gibi temiz */
+        header {
+            padding: 15px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; background: white; z-index: 100;
+        }
+        .logo { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.5rem; display: flex; align-items: center; gap: 5px; text-decoration: none; color: var(--ink); }
+        .logo span { background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 1.2rem; }
+
+        .nav-links { display: none; gap: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
+        @media (min-width: 1024px) { .nav-links { display: flex; } }
+
+        /* BENTO GRID - Görsel 1 yapısı */
+        .container { max-width: 1300px; margin: 0 auto; padding: 40px 6%; }
+        
+        .section-title { 
+            font-size: 0.8rem; font-weight: 900; color: white; background: var(--accent); 
+            padding: 4px 12px; width: fit-content; margin-bottom: 20px; border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        @media (min-width: 1024px) {
+            .main-grid { grid-template-columns: 2fr 1fr; }
+        }
+
+        /* ÖNE ÇIKAN HABER (Büyük Kart) */
+        .featured-card {
+            position: relative;
+            height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .featured-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .featured-card:hover img { transform: scale(1.05); }
+        .card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; color: white;
+        }
+        .featured-card h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin: 15px 0; line-height: 1.1; }
+
+        /* YAN LİSTE - Trend Haberler */
+        .side-news { display: flex; flex-direction: column; gap: 20px; }
+        .side-item { display: flex; gap: 15px; cursor: pointer; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .side-item img { width: 100px; height: 100px; border-radius: 8px; object-fit: cover; }
+        .side-item h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; line-height: 1.3; }
+
+        /* DETAY SAYFASI (Modal) - Görsel 2 yapısı */
+        #reader-modal {
+            position: fixed; inset: 0; background: white; z-index: 200;
+            display: none; overflow-y: auto;
+        }
+        .hero-section { width: 100%; height: 60vh; position: relative; }
+        .hero-section img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-content {
+            max-width: 900px; margin: -100px auto 0; position: relative;
+            background: white; padding: 50px; border-radius: 12px 12px 0 0;
+            box-shadow: 0 -20px 40px rgba(0,0,0,0.1);
+        }
+        .hero-content h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 20px; }
+        
+        .meta-info { 
+            display: flex; align-items: center; gap: 15px; 
+            padding-bottom: 30px; margin-bottom: 40px; border-bottom: 1px solid var(--border);
+            font-size: 0.9rem; color: var(--text-muted);
+        }
+        .author-avatar { width: 45px; height: 45px; border-radius: 50%; }
+
+        .dual-text-container {
+            display: grid; grid-template-columns: 1fr; gap: 40px;
+            max-width: 1100px; margin: 0 auto; padding: 0 50px 100px;
+        }
+        @media (min-width: 768px) { .dual-text-container { grid-template-columns: 1fr 1fr; } }
+        
+        .text-block { font-size: 1.15rem; line-height: 1.8; color: #333; text-align: justify; }
+        .text-block.pt { color: var(--text-muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 20px; }
+
+        .close-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: var(--accent); color: white; border: none;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header><h1>Mardin Brazil Journal</h1></header>
-        <div id="main-grid" class="grid">
-            <p id="loader">Veritabanına bağlanılıyor...</p>
+    <header>
+        <a href="#" class="logo">Haber<span>Akış</span></a>
+        <div class="nav-links">
+            <span>Gündem</span><span>Ekonomi</span><span>Spor</span><span>Teknoloji</span><span>Dünya</span>
         </div>
+        <button style="padding: 8px 20px; border-radius: 50px; border: 1px solid var(--border); background: none; font-weight: 600;">Giriş Yap</button>
+    </header>
+
+    <main class="container">
+        <div class="section-title">Son Dakika</div>
+        
+        <div class="main-grid">
+            <div class="featured-card" onclick="openArticle('carnaval')">
+                <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200" alt="Rio">
+                <div class="card-overlay">
+                    <span style="background: var(--accent); padding: 2px 10px; border-radius: 4px; font-size: 0.8rem; width: fit-content;">DÜNYA</span>
+                    <h2>Rio Karnavalı'nda Mardin Rüzgarı: Telkari Podyumlarda</h2>
+                    <p style="opacity: 0.8;">Ahmet Çınarbaş ● 5 Mart 2026</p>
+                </div>
+            </div>
+
+            <div class="side-news">
+                <div class="section-title" style="background: var(--ink);">Trend Haberler</div>
+                <div class="side-item" onclick="openArticle('gastronomy')">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=400">
+                    <div>
+                        <span style="color: var(--accent); font-size: 0.7rem; font-weight: 800;">GASTRONOMİ</span>
+                        <h4>İçli Köfte ve Quibe: İki Kıta Tek Lezzet</h4>
+                    </div>
+                </div>
+                <div class="side-item" onclick="openArticle('sinop')">
+                    <img src="https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=400">
+                    <div>
+                        <span style="color: var(--accent); font-size: 0.7rem; font-weight: 800;">COĞRAFİ KADER</span>
+                        <h4>Sinop'tan Sinop'a: İsimlerin Gizemli Yolculuğu</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="reader-modal">
+        <button class="close-btn" onclick="closeArticle()">✕</button>
+        <div id="article-content">
+            </div>
     </div>
 
     <script>
-        async function loadData() {
-            const grid = document.getElementById('main-grid');
-            
-            // DİKKAT: URL'nin sonundaki /neondb kısmını ve parametreleri kontrol et
-            const url = 'https://ep-plain-block-aicnajey.us-east-1.aws.neon.tech/v1/sql';
-            const token = 'npg_UqmxRMF6zyb2';
+        const newsData = {
+            carnaval: {
+                title: "Rio Karnavalı'nda Mardin Rüzgarı",
+                ptTitle: "Vento de Mardin no Rio",
+                img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200",
+                author: "Ahmet Çınarbaş",
+                date: "5 Mart 2026",
+                tr: "Mardin'in binlerce yıllık telkari sanatının geometrik formları, Brezilya'nın dünyaca ünlü Rio Karnavalı'nda podyumlara taşındı. Kostüm tasarımlarında Mezopotamya'nın gümüş işçiliği büyük ilgi topladı.",
+                pt: "As formas geométricas da arte milenar da filigrana de Mardin foram levadas às passarelas do mundialmente famoso Carnaval do Rio, no Brasil. O trabalho em prata da Mesopotâmia atraiu grande atenção nos designs de figurinos."
+            },
+            gastronomy: {
+                title: "İçli Köfte & Quibe Karşılaştırması",
+                ptTitle: "Encontro de Paladares: Kibbeh vs Quibe",
+                img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200",
+                author: "Ahmet Çınarbaş",
+                date: "4 Mart 2026",
+                tr: "Mardin'in baharatlı 'Irok'u ile Brezilya'nın her köşesinde bulabileceğiniz 'Quibe'si arasındaki benzerlik tesadüf değildir. Göç yollarıyla taşınan bu lezzet iki kültürü birleştiriyor.",
+                pt: "A semelhança entre o 'Irok' de Mardin e o 'Quibe' brasileiro, encontrado em todos os cantos, não é coincidência. Este sabor, transportado pelas rotas migratórias, une as duas culturas."
+            }
+        };
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        // SQL sorgusunu bu şekilde gönderiyoruz
-                        sql: "SELECT * FROM articles ORDER BY id DESC;"
-                    })
-                });
+        function openArticle(id) {
+            const data = newsData[id];
+            const modal = document.getElementById('reader-modal');
+            const content = document.getElementById('article-content');
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Bağlantı hatası');
-                }
-
-                const data = await response.json();
-                
-                // Neon v1/sql API'si sonucu 'rows' içinde döndürür
-                if (!data.rows || data.rows.length === 0) {
-                    grid.innerHTML = "<p>Henüz veri eklenmemiş.</p>";
-                    return;
-                }
-
-                grid.innerHTML = data.rows.map(item => `
-                    <div class="card">
-                        <img src="${item.img || 'https://via.placeholder.com/300'}" alt="Görsel">
-                        <div class="card-content">
-                            <span class="tag">${item.tag || 'HABER'}</span>
-                            <h2>${item.tr || 'Başlık Yok'}</h2>
+            content.innerHTML = `
+                <div class="hero-section">
+                    <img src="${data.img}" alt="Hero">
+                </div>
+                <div class="hero-content">
+                    <span style="color: var(--accent); font-weight: 800; text-transform: uppercase;">Dünya / Arşiv</span>
+                    <h1>${data.title}</h1>
+                    <div class="meta-info">
+                        <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-avatar">
+                        <div>
+                            <strong>${data.author}</strong><br>
+                            <span>${data.date} ● 4 dk okuma</span>
                         </div>
                     </div>
-                `).join('');
-
-            } catch (err) {
-                console.error("Hata ayrıntısı:", err);
-                grid.innerHTML = `<div class="error-msg">Bağlantı Hatası: ${err.message}</div>`;
-            }
+                </div>
+                <div class="dual-text-container">
+                    <div class="text-block">
+                        <p>${data.tr}</p>
+                    </div>
+                    <div class="text-block pt">
+                        <p><strong>${data.ptTitle}</strong><br><br>${data.pt}</p>
+                    </div>
+                </div>
+            `;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        loadData();
+        function closeArticle() {
+            document.getElementById('reader-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     </script>
 </body>
 </html>
