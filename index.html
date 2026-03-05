@@ -3,191 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Ahmet Çınarbaş Journal - Mardin & Brazil</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-    
+    <title>MB | Ahmet Çınarbaş Journal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF;
-            --ease: cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.6; }
-
-        header {
-            padding: 20px 6%; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.95); backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); }
-        .logo-m { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-weight: 900; background: var(--ink); color: var(--bg); padding: 0 10px; border-radius: 8px; margin-right: 12px; }
-        .logo-text { font-family: 'Bodoni Moda', serif; font-size: 0.9rem; font-weight: 900; line-height: 1; letter-spacing: 1px; }
-
-        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 10001; display: none; }
-        #progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s; }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px 6% 80px; }
-        .bento { display: flex; flex-direction: column; gap: 30px; }
-
-        .card {
-            background: var(--white); border-radius: 35px; padding: 45px;
-            transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease); 
-            cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
-            display: flex; flex-direction: column; justify-content: space-between; 
-            min-height: 520px; width: 100%; position: relative; overflow: hidden;
-        }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.12); }
-
-        .card-bg {
-            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
-            background-size: cover; background-position: center;
-            z-index: 0; transition: transform 0.2s ease-out;
-        }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.85)); z-index: 1; }
-        .card-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between; flex: 1; }
-
-        .card-author { align-items: center; text-align: center; justify-content: center; background: var(--white); }
-        .author-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 6px solid var(--bg); position: relative; z-index: 2; }
-
-        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.6rem; line-height: 1.1; margin-bottom: 8px; display: block; font-weight: 700; letter-spacing: -1px; }
-        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; display: block; font-weight: 400; letter-spacing: -1px; opacity: 0.7; }
-        .tag-dual { font-size: 0.75rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
-        .entry-no { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; opacity: 0.5; margin-top: 25px; text-transform: uppercase; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; width: fit-content; }
-
-        /* MODAL */
-        #reader-modal { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; padding: 100px 6% 60px; }
-        .reader-header { text-align: center; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .reader-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 50px; position: relative; }
-        
-        .reader-text { font-size: 1.25rem; line-height: 1.9; color: #2D2D2D; text-align: justify; }
-        .reader-text::first-letter { float: left; font-family: 'Bodoni Moda', serif; font-size: 4.5rem; line-height: 1; font-weight: 900; padding-right: 12px; color: var(--accent); }
-        
-        .divider { width: 100%; height: 1px; background: rgba(176,141,87,0.2); margin: 20px 0; }
-        .close-btn { position: fixed; top: 30px; right: 6%; background: var(--ink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 10000; transition: 0.3s; }
-        
-        footer { padding: 80px 6%; text-align: center; border-top: 1px solid rgba(0,0,0,0.05); background: var(--white); }
-        .footer-bottom { font-size: 0.75rem; font-weight: 800; opacity: 0.5; letter-spacing: 3px; }
-
-        @media (min-width: 768px) { .reader-grid { grid-template-columns: 1fr 1px 1fr; gap: 60px; } .divider { width: 1px; height: auto; margin: 0; } }
+        :root { --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
+        header { padding: 20px 6%; display: flex; justify-content: space-between; align-items: center; background: rgba(248, 246, 242, 0.95); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(10px); }
+        .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); font-family: 'Bodoni Moda', serif; font-weight: 900; }
+        .logo-m { background: var(--ink); color: var(--bg); padding: 0 10px; border-radius: 8px; margin-right: 12px; font-size: 1.8rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
+        .bento { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: var(--white); border-radius: 35px; padding: 40px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); position: relative; overflow: hidden; min-height: 450px; display: flex; flex-direction: column; justify-content: flex-end; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; transition: 0.5s; }
+        .card:hover .card-bg { transform: scale(1.05); }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.85)); z-index: 1; }
+        .card-content { position: relative; z-index: 2; color: white; }
+        .author-card { background: white; color: var(--ink); justify-content: center; align-items: center; text-align: center; }
+        .author-img { width: 140px; height: 140px; border-radius: 70px; margin-bottom: 25px; object-fit: cover; border: 5px solid var(--bg); position: relative; z-index: 2; }
+        .tag { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 15px; display: block; }
+        #reader { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: none; overflow-y: auto; padding: 80px 6% 40px; }
+        .close-btn { position: fixed; top: 25px; right: 6%; background: var(--ink); color: white; border: none; padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: 700; z-index: 1001; }
+        .reader-grid { max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: 1fr; gap: 40px; line-height: 1.8; font-size: 1.15rem; }
+        @media (min-width: 768px) { .reader-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
 
-    <div id="progress-container"><div id="progress-bar"></div></div>
-
     <header>
-        <a href="#" class="logo-box"><div class="logo-m">MB</div><div class="logo-text">MARDIN<br>BRAZIL</div></a>
+        <a href="#" class="logo-box"><div class="logo-m">MB</div><div>MARDIN<br>BRAZIL</div></a>
     </header>
 
     <main class="container">
         <div class="bento" id="main-grid">
-            <p style="text-align:center; padding: 50px;">Arşiv yükleniyor...</p>
+            <p style="text-align:center; grid-column: 1/-1; padding: 50px;">Arşiv yükleniyor...</p>
         </div>
     </main>
 
-    <div id="reader-modal" onscroll="updateProgress()">
+    <div id="reader">
         <button class="close-btn" onclick="closeReader()">KAPAT ● FECHAR</button>
         <div id="reader-content"></div>
     </div>
 
-    <footer><div class="footer-bottom">AHMET ÇINARBAŞ JOURNAL © 2026 ● MARDIN TO BRAZIL</div></footer>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
-        // --- 1. AYARLAR ---
-        const SUPABASE_URL = 'https://toomlocgdhkwrypuveof.supabase.co';
-        const SUPABASE_KEY = 'BURAYA_ANON_KEY_YAZIN'; 
-        
-        // ÖNEMLİ: Tablon 'halk' şemasında olduğu için db şemasını belirtiyoruz
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-            db: { schema: 'halk' }
-        });
+        // SUPABASE BAĞLANTISI
+        const _supabase = supabase.createClient(
+            'https://toomlocgdhkwrypuveof.supabase.co', 
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvb21sb2NnZGhrd3J5cHV2ZW9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2Njg0ODQsImV4cCI6MjA4ODI0NDQ4NH0.kkiwKTsfYOCII_dfuJpaElyJqxThrkGnKiK7-RjOsqI',
+            { db: { schema: 'halk' } }
+        );
 
-        let databaseItems = [];
+        let articlesData = [];
 
-        // --- 2. VERİ ÇEKME ---
+        // VERİLERİ ÇEK
         async function loadJournal() {
-            const { data, error } = await _supabase
-                .from('makaleler') // Tablonun adı
-                .select('*');
-
+            const { data, error } = await _supabase.from('makaleler').select('*');
+            
             if (error) {
-                console.error("Hata:", error);
-                document.getElementById('main-grid').innerHTML = `<p style="text-align:center;">Veriler yüklenemedi: ${error.message}</p>`;
+                console.error("Supabase Hatası:", error);
+                document.getElementById('main-grid').innerHTML = `<p style="text-align:center; grid-column:1/-1;">Bağlantı Hatası: ${error.message}</p>`;
                 return;
             }
 
-            databaseItems = data;
+            articlesData = data;
             renderArticles(data);
         }
 
-        // --- 3. EKRANA BASMA ---
+        // EKRANA YAZDIR
         function renderArticles(items) {
-            const container = document.getElementById('main-grid');
-            container.innerHTML = items.map(item => `
-                <div class="card ${item.tip === 'yazar' ? 'card-author' : ''}" onclick="openReader('${item.salyangoz}')">
-                    ${item.tip === 'standart' ? `
-                        <div class="card-bg" style="background-image: url('${item.im}')"></div>
+            const grid = document.getElementById('main-grid');
+            if (items.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Henüz içerik bulunamadı.</p>';
+                return;
+            }
+
+            grid.innerHTML = items.map(item => `
+                <div class="card ${item.tip === 'yazar' ? 'author-card' : ''}" onclick="openReader('${item.salyangoz}')">
+                    ${item.tip !== 'yazar' ? `
+                        <div class="card-bg" style="background-image:url('${item.im}')"></div>
                         <div class="card-overlay"></div>
-                    ` : ''}
-                    ${item.tip === 'yazar' ? `<img src="${item.im}" class="author-img">` : ''}
-                    <div class="card-content" style="${item.tip === 'standart' ? 'color: white;' : ''}">
-                        <div>
-                            <span class="tag-dual" style="${item.tip === 'standart' ? 'color: white;' : ''}">${item.etiket}</span>
-                            <span class="tr-line">${item.tr}</span>
-                            <span class="pt-line">${item.pt}</span>
-                        </div>
-                        <div class="entry-no" style="${item.tip === 'standart' ? 'color: white; border-top-color: rgba(255,255,255,0.2);' : ''}">JOURNAL ENTRY #${item.giriş}</div>
+                    ` : `
+                        <img src="${item.im}" class="author-img">
+                    `}
+                    <div class="card-content" style="${item.tip === 'yazar' ? 'color:var(--ink)' : ''}">
+                        <span class="tag">${item.etiket}</span>
+                        <h2 style="margin:0; font-family:'Bodoni Moda', serif; font-size:1.8rem;">${item.tr}</h2>
+                        <p style="opacity:0.7; font-style:italic; margin:5px 0 0 0;">${item.pt}</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        // --- 4. MODAL ---
+        // MAKALE AÇ
         function openReader(slug) {
-            const item = databaseItems.find(a => a.salyangoz === slug);
-            if(!item) return;
+            const art = articlesData.find(a => a.salyangoz === slug);
+            if(!art) return;
 
-            const modal = document.getElementById('reader-modal');
+            const reader = document.getElementById('reader');
             document.getElementById('reader-content').innerHTML = `
-                <div class="reader-header">
-                    <span class="tag-dual">${item.etiket}</span>
-                    <h1 class="tr-line">${item.tr}</h1>
-                    <h2 class="pt-line">${item.pt}</h2>
+                <div style="text-align:center; max-width:800px; margin:0 auto;">
+                    <span class="tag">${art.etiket}</span>
+                    <h1 style="font-family:'Bodoni Moda', serif; font-size:3rem; margin:10px 0;">${art.tr}</h1>
+                    <h2 style="font-family:'Bodoni Moda', serif; font-weight:400; opacity:0.6; margin-bottom:40px;">${art.pt}</h2>
                 </div>
                 <div class="reader-grid">
-                    <div class="reader-text text-tr">${item.metin_tr}</div>
-                    <div class="divider"></div>
-                    <div class="reader-text text-pt">${item.metin_pt}</div>
-                </div>`;
-            
-            modal.style.display = 'block'; 
-            document.getElementById('progress-container').style.display = 'block';
-            document.body.style.overflow = 'hidden'; 
-            modal.scrollTop = 0;
+                    <div style="text-align:justify;">${art.metin_tr || 'İçerik hazırlanıyor...'}</div>
+                    <div style="text-align:justify; color:#666; border-left: 1px solid rgba(0,0,0,0.05); padding-left:40px;">${art.metin_pt || ''}</div>
+                </div>
+            `;
+            reader.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeReader() { 
-            document.getElementById('reader-modal').style.display = 'none'; 
-            document.getElementById('progress-container').style.display = 'none'; 
-            document.body.style.overflow = 'auto'; 
+        function closeReader() {
+            document.getElementById('reader').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
-        function updateProgress() {
-            const modal = document.getElementById('reader-modal');
-            const scrolled = (modal.scrollTop / (modal.scrollHeight - modal.clientHeight)) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        }
-
-        // Başlat
         loadJournal();
     </script>
 </body>
