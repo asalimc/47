@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Ahmet Çınarbaş Journal - Symmetry Edition</title>
+    <title>MB | Ahmet Çınarbaş Journal - Final Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
     
@@ -15,12 +15,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body { 
-            background: var(--bg); color: var(--ink); 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            transition: background 1.2s var(--ease);
-            overflow-x: hidden;
-        }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; transition: background 1.2s var(--ease); overflow-x: hidden; }
 
         header {
             padding: 40px 6%; display: flex; justify-content: space-between; align-items: center;
@@ -37,7 +32,6 @@
             position: relative; overflow: hidden; cursor: pointer;
             transition: all 0.8s var(--ease); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px;
         }
-        
         .bento:has(.card:hover) .card:not(:hover) { opacity: 0.3; filter: grayscale(0.6); transform: scale(0.98); }
         .card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
         
@@ -46,12 +40,7 @@
         .card-medium { grid-column: span 3; }
         .card-small { grid-column: span 2; }
 
-        .card-bg {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            background-size: cover; background-position: center;
-            z-index: 0; transition: transform 0.6s var(--ease);
-        }
-        .card:hover .card-bg { transform: scale(1.08); }
+        .card-bg { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: 0; transition: transform 0.6s var(--ease); }
         .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 75%); z-index: 1; }
         
         .card-content { position: relative; z-index: 2; color: white; }
@@ -59,152 +48,158 @@
         .title-tr { font-family: 'Bodoni Moda', serif; font-size: 2.8rem; line-height: 1.1; margin-bottom: 10px; font-weight: 900; }
         .title-pt { font-family: 'Bodoni Moda', serif; font-size: 1.6rem; font-weight: 300; opacity: 0.8; font-style: italic; }
 
-        /* MODAL */
         #reader { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: none; overflow-y: auto; }
-        .hero-banner { width: 100%; height: 75vh; position: relative; overflow: hidden; }
-        .hero-banner img { width: 100%; height: 100%; object-fit: cover; animation: slowZoom 40s infinite alternate; }
-        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.2); } }
-
         .modal-body { max-width: 1200px; margin: 0 auto; padding: 80px 6% 150px; }
-        .reader-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 60px; }
         
-        /* Simetrik bitiş için Flexbox */
-        .text-tr, .text-pt { font-size: 1.35rem; line-height: 2.2; font-weight: 300; color: var(--ink); text-align: justify; }
-        .text-pt { font-style: italic; color: #555; border-left: 1px solid rgba(0,0,0,0.1); padding-left: 60px; }
-
-        .seal-container { display: flex; flex-direction: column; align-items: center; margin-top: 100px; padding-top: 50px; border-top: 1px dashed var(--accent); }
-        .seal {
-            width: 140px; height: 140px; border: 1px solid var(--accent); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Bodoni Moda', serif; color: var(--accent);
-            font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
-            animation: rotateSeal 25s linear infinite; position: relative;
+        /* SİMETRİ SİHRİ: Metinleri yan yana ve aynı boyda tutan yapı */
+        .reader-grid { 
+            display: flex; 
+            gap: 80px; 
+            margin-top: 60px;
+            align-items: stretch; /* İki sütunu aynı boya çeker */
         }
+        .text-tr, .text-pt { 
+            flex: 1; 
+            font-size: 1.3rem; 
+            line-height: 2.1; 
+            text-align: justify; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .text-pt { border-left: 1px solid rgba(0,0,0,0.1); padding-left: 60px; font-style: italic; color: #555; }
+
+        .close-btn { position: fixed; top: 40px; right: 40px; background: var(--ink); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; z-index: 100000; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .close-btn:hover { background: var(--accent); transform: rotate(90deg); }
+
+        .seal { width: 140px; height: 140px; border: 1px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; animation: rotateSeal 25s linear infinite; margin: 80px auto 0; }
         @keyframes rotateSeal { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .seal-text { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-transform: uppercase; text-align: center; }
-
-        .close-btn { position: fixed; top: 40px; right: 40px; background: var(--ink); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; z-index: 100000; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-        footer { padding: 80px 6%; text-align: center; opacity: 0.4; letter-spacing: 12px; font-size: 0.65rem; }
     </style>
 </head>
 <body id="mainBody">
 
     <header>
         <div class="logo">MB</div>
-        <div style="font-weight: 600; letter-spacing: 3px; font-size: 0.6rem;">JOURNAL • AHMET ÇINARBAŞ</div>
+        <div style="font-weight: 600; letter-spacing: 3px; font-size: 0.6rem;">ASC • JOURNAL • 2026</div>
     </header>
 
     <main class="container">
         <div class="bento">
-            
-            <div class="card card-full" onclick="openReader('author')" onmouseenter="changeBg('#EAE7E0')" onmouseleave="resetBg()">
+            <div class="card card-full" onclick="openReader('author')" onmouseenter="changeBg('#EAE7E0')">
                 <div class="card-content" style="color: var(--ink); text-align: center;">
-                    <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; margin-bottom: 30px; border: 8px solid var(--white); box-shadow: 0 15px 30px rgba(0,0,0,0.1);">
-                    <span class="tag">CURATORIAL MANIFESTO</span>
-                    <h2 class="title-tr" style="font-size: 4rem;">Ahmet Çınarbaş</h2>
-                    <h3 class="title-pt">Manifesto Cultural: Mardin & Brasil</h3>
+                    <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 20px;">
+                    <span class="tag">KÜRATÖR</span>
+                    <h2 class="title-tr">Ahmet Çınarbaş</h2>
+                    <h3 class="title-pt">O Olhar por Trás das Fronteiras</h3>
                 </div>
             </div>
 
-            <div class="card card-wide" onclick="openReader('sports')" onmouseenter="changeBg('#DDE8DD')" onmouseleave="resetBg()">
-                <div class="card-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Torcida_Sampaio_Correa.jpg')"></div>
+            <div class="card card-wide" onclick="openReader('sports')" onmouseenter="changeBg('#DDE8DD')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1518604666860-9ed391f76460?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">STADIUM PASSION</span>
-                    <h2 class="title-tr">Tribünlerin Ortak Dili</h2>
-                    <h3 class="title-pt">A Paixão das Arquibancadas</h3>
+                    <span class="tag">FUTBOL & RUH</span>
+                    <h2 class="title-tr">Kırmızı-Lacivert Sevdası</h2>
+                    <h3 class="title-pt">Sangue Vermelho e Azul</h3>
                 </div>
             </div>
 
-            <div class="card card-small" onclick="openReader('craft')" onmouseenter="changeBg('#D9D9D9')" onmouseleave="resetBg()">
+            <div class="card card-small" onclick="openReader('craft')" onmouseenter="changeBg('#D9D9D9')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">CRAFT & SOUL</span>
+                    <span class="tag">ZANAAT</span>
                     <h2 class="title-tr">Gümüşün Sabrı</h2>
-                    <h3 class="title-pt">Essência do Ofício</h3>
+                    <h3 class="title-pt">A Paciência da Prata</h3>
                 </div>
             </div>
 
-            <div class="card card-medium" onclick="openReader('gastronomy')" onmouseenter="changeBg('#E8DCC4')" onmouseleave="resetBg()">
+            <div class="card card-medium" onclick="openReader('gastronomy')" onmouseenter="changeBg('#E8DCC4')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">TASTE LEGACY</span>
+                    <span class="tag">MUTFAK</span>
                     <h2 class="title-tr">Lezzet Köprüleri</h2>
-                    <h3 class="title-pt">Mesa Cultural</h3>
+                    <h3 class="title-pt">Pontes de Sabor</h3>
                 </div>
             </div>
 
-            <div class="card card-medium" onclick="openReader('sinop')" onmouseenter="changeBg('#D2E2F2')" onmouseleave="resetBg()">
+            <div class="card card-medium" onclick="openReader('sinop')" onmouseenter="changeBg('#D2E2F2')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">MIRROR CITIES</span>
+                    <span class="tag">COĞRAFYA</span>
                     <h2 class="title-tr">İki Sinop Öyküsü</h2>
-                    <h3 class="title-pt">Relatos de Duas Sinops</h3>
+                    <h3 class="title-pt">Contos de Duas Sinops</h3>
                 </div>
             </div>
-
         </div>
     </main>
 
     <div id="reader">
         <button class="close-btn" onclick="closeReader()">✕</button>
-        <div id="reader-content" onscroll="updateProgress()"></div>
+        <div id="reader-content"></div>
     </div>
 
-    <footer>ASC • MB JOURNAL 2026</footer>
-
     <script>
-        const body = document.getElementById('mainBody');
-        function changeBg(color) { body.style.background = color; }
-        function resetBg() { body.style.background = "#F8F6F2"; }
-
         const contentData = {
+            author: {
+                tr: "Sınırların Ötesindeki Göz: Ahmet Çınarbaş",
+                pt: "O Olhar Além das Fronteiras: Ahmet Çınarbaş",
+                img: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600",
+                textTr: "Ahmet Çınarbaş, Mezopotamya'nın kadim taşlarından Amazon'un yeşil derinliklerine uzanan bir kültürel köprü inşa ediyor. Bu journal, sadece bir gezi notu değil; insan ruhunun her coğrafyada aynı temel duygularla—sabır, tutku ve aidiyet—nasıl şekillendiğinin bir analizidir. Mardin'in dar sokaklarında bir gümüş ustasının çekicinden çıkan ses ile Rio'nun favelalarında bir topun duvara çarpma sesi, Çınarbaş'ın perspektifinde aynı evrensel melodinin parçalarıdır. Sanatçının amacı, 'uzak' kavramını ortadan kaldırarak insanlığın ortak mirasını vurgulamaktır.",
+                textPt: "Ahmet Çınarbaş constrói uma ponte cultural que se estende das pedras ancestrais da Mesopotâmia às profundezas verdes da Amazônia. Este jornal não é apenas uma nota de viagem; é uma análise de como a alma humana é moldada pelos mesmos sentimentos básicos — paciência, paixão e pertencimento — em todas as geografias. O som do martelo de um mestre de prata nas ruas estreitas de Mardin e o som de uma bola batendo na parede nas favelas do Rio são partes da mesma melodia universal na perspectiva de Çınarbaş. O objetivo do artista é enfatizar a herança comum da humanidade ao eliminar o conceito de 'distante'."
+            },
             sports: { 
-                tr: "Mardinspor'dan Brezilya Sokaklarına: Bir Tutku Analizi", 
-                pt: "De Mardinspor às Ruas do Brasil: Uma Análise de Paixão",
-                img: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Estadio_Castelao_Sampaio.jpg",
-                textTr: `Mardinspor’un 3. Lig seviyesindeki mücadelesi, Brezilya'nın <b>Série D</b> takımları olan Sampaio Corrêa gibi kulüplerin hikayesiyle örtüşür. Mardin 21 Kasım Stadı'ndaki kavurucu sıcak ve taşa vuran güneş, Brezilya'nın kuzeydoğusundaki eyalet liglerinin atmosferiyle aynı genetiği taşır. Her iki yerde de taraftar, takımı sanki bir savaşa gidiyormuşçasına uğurlar. Mardin'deki 'Sadıklar' grubu ile Brezilya'nın 'Torcidas' kültürü arasındaki benzerlik sadece sadakat değil, aynı zamanda yerel bir direnç sembolü olmalarıdır. Top, her iki dilde de aynı tutkuyla konuşur; sokak aralarında yetişen yetenekler, her iki coğrafyanın da en gerçek sanatçılarıdır.`,
-                textPt: `A luta do Mardinspor no nível da 3ª divisão coincide com a história de clubes como o Sampaio Corrêa na <b>Série D</b> do Brasil. O calor escaldante no Estádio de Mardin e o sol batendo na pedra carregam a mesma genética da atmosfera das ligas estaduais no Nordeste do Brasil. Em ambos os lugares, os torcedores acompanham o time como se estivessem indo para uma batalha. A semelhança entre os 'Sadıklar' em Mardin e a cultura das 'Torcidas' no Brasil não é apenas lealdade, mas também o fato de serem símbolos de resistência local. A bola fala com a mesma paixão em ambas as línguas; os talentos que crescem nas ruas são os artistas mais autênticos de ambas as geografias.`
+                tr: "Mardinspor ve Rio Sokakları: Beleş Tepe’den Favelalara", 
+                pt: "Mardinspor e as Ruas do Rio: Da Colina às Favelas",
+                img: "https://images.unsplash.com/photo-1529900948632-5a334a1057ec?q=80&w=1600",
+                textTr: "Mardinspor'un 'Kırmızı-Lacivert' sevdası, 21 Kasım Stadı'nın duvarlarını aşan bir tutkudur. Özellikle stadın dışındaki 'Beleş Tepe' kültürü, futbolun sadece biletli bir gösteri değil, halkın ortak bir direnişi olduğunu kanıtlar. Bu ruh, Rio de Janeiro'nun favelalarında, imkansızlıklar içinde betonda top koşturan çocukların tutkusuyla ikizdir. Mardin 1969 Spor'un 2. Lig yolundaki mücadelesi, Brezilya'nın Serie D takımlarının mahalle bağlılığıyla aynı genetiği taşır. Her iki yerde de taraftar, takımı bir kulüpten ziyade, şehrin onuru ve sokaktaki sesi olarak görür. Kırmızı ve lacivert, Mezopotamya'nın gökyüzü ve toprağı gibi burada birleşir.",
+                textPt: "A paixão 'Vermelho e Azul' do Mardinspor é uma devoção que ultrapassa os muros do Estádio 21 de Novembro. Especialmente a cultura da 'Colina Grátis' (Beleş Tepe) prova que o futebol não é apenas um espetáculo pago, mas uma resistência comum do povo. Esse espírito é gêmeo da paixão das crianças que jogam bola no concreto das favelas do Rio de Janeiro, em meio a impossibilidades. A luta do Mardin 1969 Spor rumo à 2ª Liga carrega a mesma genética da lealdade aos times de bairro da Série D brasileira. Em ambos os lugares, os torcedores veem o time mais como a honra da cidade e a voz das ruas do que apenas um clube. O vermelho e o azul se unem aqui como o céu e a terra da Mesopotâmia."
             },
             craft: { 
-                tr: "Gümüşün Ateşle İmtihanı ve Sabrın Hikayesi", pt: "O Teste da Prata com o Fogo e a História da Paciência",
+                tr: "Gümüşün Sabrı ve Doğanın Takısı", pt: "A Paciência da Prata e a Joia da Natureza",
                 img: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1600",
-                textTr: "Mardin Telkarisi, gümüşün ateşle imtihanıdır ve binlerce yıllık bir sabrın ürünüdür. Her bir tel, ustanın ruhundan bir parça taşır ve tarihin derinliklerinden süzülüp gelir. Amazon'un kalbinde ise yerli halklar tohumları ve tüyleri işleyerek doğayla olan bağlarını takıya dönüştürürler. Bu iki zanaat dalı, modern dünyanın hızına karşı el emeğinin ve kutsal sabrın birer kalesidir. Materyaller farklı olsa da, yaratma eylemindeki o meditatif huzur ve doğaya duyulan derin saygı, Mezopotamya'dan Güney Amerika'ya uzanan görünmez bir sanat köprüsü kurar.",
-                textPt: "A Filigrana de Mardin é o teste da prata com o fogo e o produto de uma paciência milenar. Cada fio carrega uma parte da alma do mestre e vem das profundezas da história. No coração da Amazônia, os povos indígenas transformam sementes e penas em adornos, conectando-se com a natureza. Esses dois ramos do artesanato são fortalezas do trabalho manual contra a velocidade do mundo moderno. Embora os materiais sejam diferentes, a paz meditativa no ato de criação e o respeito pela natureza constroem uma ponte artística invisível da Mesopotâmia até a América do Sul."
+                textTr: "Mardin Telkarisi gümüşün ateşle imtihanıdır. Ustanın elinde incecik tellere dönüşen gümüş, sabrın fiziksel formudur. Amazon'un kalbinde ise yerli halklar tohumları ve tüyleri işleyerek doğayla olan bağlarını takıya dönüştürürler. Bu iki zanaat, modern dünyanın hızına karşı el emeğinin kutsallığını korur. Mezopotamya’da metalin sertliği sabırla bükülürken, Amazon’da doğanın yumuşaklığı aynı titizlikle bir sanat eserine dönüştürülür. Her iki sanat dalı da usta-çırak ilişkisiyle nesiller boyu aktarılan, coğrafyanın ruhunu taşıyan sessiz birer manifestodur.",
+                textPt: "A Filigrana de Mardin é o teste da prata com o fogo. A prata, transformada em fios finíssimos pelas mãos do mestre, é a forma física da paciência. No coração da Amazônia, os povos indígenas transformam sementes e penas em adornos, conectando-se com a natureza. Esses dois ofícios preservam a santidade do trabalho manual contra a velocidade do mundo moderno. Enquanto na Mesopotâmia a dureza do metal é dobrada com paciência, na Amazônia a suavidade da natureza é transformada em obra de arte com o mesmo rigor. Ambos são manifestos silenciosos que carregam a alma da geografia."
+            },
+            gastronomy: { 
+                tr: "İçli Köfte'den Quibe'ye: Lezzet Göçü", pt: "Do Irok ao Quibe: Migração de Sabor",
+                img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1600",
+                textTr: "Mutfak, bir toplumun en korunaklı hafızasıdır. Mardin’in 'Irok'u (içli köfte), 19. yüzyılda başlayan göçlerle okyanusu aşarak Brezilya’da 'Quibe' adını almıştır. Bugün Brezilya sokaklarında bir 'salgado' dükkanında kokladığınız o baharatlı harç, aslında Mezopotamya'nın binlerce yıllık mutfak bilgisidir. Lezzetler isim değiştirse de, o yemeği yaparken kullanılan teknik ve paylaşılan sofra samimiyeti aynı kalır. Bu göç hikayesi, yemeklerin pasaportlara ihtiyacı olmadığını ve kültürlerin birbirini en güzel mutfakta beslediğini gösterir.",
+                textPt: "A cozinha é a memória mais protegida de uma sociedade. O 'Irok' de Mardin cruzou o oceano com as migrações do século XIX e recebeu o nome de 'Quibe' no Brasil. O recheio temperado que você cheira hoje em uma loja de salgados no Brasil é, na verdade, o conhecimento culinário milenar da Mesopotâmia. Embora os sabores mudem de nome, a técnica usada e a sinceridade da mesa compartilhada permanecem as mesmas. Esta história de migração mostra que a comida não precisa de passaportes e que as culturas se alimentam mutuamente da melhor forma na cozinha."
+            },
+            sinop: { 
+                tr: "Paralel Kaderler: Karadeniz ve Mato Grosso", pt: "Destinos Paralelos: Mar Negro e Mato Grosso",
+                img: "https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1600",
+                textTr: "Türkiye’nin kuzey ucundaki Sinop ile Brezilya’nın merkezindeki Sinop şehri arasındaki bağ, bir isim benzerliğinden çok daha fazlasıdır. Karadeniz’in hırçın mavisiyle Amazon’un sonsuz yeşili arasında kurulan bu dijital köprü, uzaklığın sadece bir rakam olduğunu kanıtlar. İki şehir de kendi bölgelerinin direnç noktalarıdır; biri antik limanıyla tarih yazar, diğeri tarımsal gücüyle geleceği inşa eder. Bu bölüm, dünyayı haritadaki yerlerine göre değil, birbirlerine fısıldadıkları hikayelere göre okumanızı sağlar. Paralel evrenlerde yaşayan iki kardeş şehrin sessiz diyaloğu.",
+                textPt: "O vínculo entre Sinop, no extremo norte da Turquia, e a cidade de Sinop, no centro do Brasil, é muito mais do que uma semelhança de nome. Esta ponte digital estabelecida entre o azul feroz do Mar Negro e o verde infinito da Amazônia prova que a distância é apenas um número. Ambas as cidades são pontos de resistência em suas regiões; uma escreve história com seu porto antigo, a outra constrói o futuro com sua força agrícola. Esta seção permite que você leia o mundo não de acordo com seus lugares no mapa, mas de acordo com as histórias que eles sussurram uns aos outros. O diálogo silencioso de duas cidades irmãs em universos paralelos."
             }
-            // Diğer veriler benzer şekilde simetrik olarak eklenebilir...
         };
 
         function openReader(key) {
-            const item = contentData[key] || {tr: "İçerik Hazırlanıyor", pt: "Conteúdo em Preparação", img: "", textTr: "Analiz yakında...", textPt: "Análise em breve..."};
+            const item = contentData[key];
             const modal = document.getElementById('reader');
             const content = document.getElementById('reader-content');
             
             content.innerHTML = `
-                <div class="hero-banner"><img src="${item.img}"></div>
+                <div style="width:100%; height:70vh; overflow:hidden;"><img src="${item.img}" style="width:100%; height:100%; object-fit:cover;"></div>
                 <div class="modal-body">
-                    <h1 class="title-tr" style="font-size: 3.2rem; color:var(--accent); text-align:center;">${item.tr}</h1>
-                    <h2 class="title-pt" style="font-size: 1.8rem; margin-bottom: 60px; color:var(--ink); text-align:center;">${item.pt}</h2>
+                    <h1 class="title-tr" style="font-size: 3.5rem; color:var(--accent); text-align:center;">${item.tr}</h1>
+                    <h2 class="title-pt" style="font-size: 2rem; margin-bottom: 80px; text-align:center;">${item.pt}</h2>
                     <div class="reader-grid">
                         <div class="text-tr">${item.textTr}</div>
                         <div class="text-pt">${item.textPt}</div>
                     </div>
-                    <div class="seal-container">
-                        <div class="seal"><div class="seal-text">ASC • 2026 • MB JOURNAL</div></div>
-                    </div>
+                    <div class="seal">ASC • 2026 • MB JOURNAL</div>
                 </div>`;
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
-        function closeReader() {
-            document.getElementById('reader').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
+        function closeReader() { document.getElementById('reader').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function changeBg(color) { document.getElementById('mainBody').style.background = color; }
+        function resetBg() { document.getElementById('mainBody').style.background = "#F8F6F2"; }
     </script>
 </body>
 </html>
