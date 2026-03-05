@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASC 2026 | The Global Living Archive</title>
+    <title>MB | Ahmet Çınarbaş - The Grand Archive 2026</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,400&family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
     
@@ -47,7 +47,6 @@
         .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 10%, transparent 70%); z-index: 1; }
         .card-content { position: relative; z-index: 2; color: white; }
 
-        .art-title-wrap { position: relative; text-align: center; }
         .art-main { font-family: 'Bodoni Moda', serif; font-size: 3rem; font-weight: 900; color: var(--ink); }
         .art-sub { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-style: italic; color: var(--accent); opacity: 0.5; margin-top: -10px; display: block; }
 
@@ -57,14 +56,17 @@
         .hero-section img { width: 100%; height: 100%; object-fit: cover; }
         .hero-mask { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--bg)); }
         
-        .modal-body { max-width: 900px; margin: -80px auto 0; position: relative; z-index: 10; padding: 0 5% 100px; }
+        .modal-body { max-width: 1200px; margin: -80px auto 0; position: relative; z-index: 10; padding: 0 5% 100px; }
         
-        /* Metin Hapsi ve Scroll */
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        @media (max-width: 768px) { .comparison-grid { grid-template-columns: 1fr; } }
+
         .text-box { 
-            background: white; padding: 50px; border-radius: 40px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-            line-height: 2.2; font-size: 1.2rem; text-align: justify;
+            background: white; padding: 40px; border-radius: 30px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            line-height: 2; font-size: 1.15rem; text-align: justify;
         }
+        .text-box h3 { margin-bottom: 15px; font-size: 0.9rem; letter-spacing: 2px; color: var(--accent); border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
         .close-btn { position: fixed; top: 25px; right: 25px; background: var(--ink); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; z-index: 100000; cursor: pointer; font-size: 1.5rem; }
 
@@ -77,7 +79,7 @@
 
     <header>
         <div style="font-family: 'Bodoni Moda', serif; font-size: 1.5rem; font-weight: 900;">MB</div>
-        <div id="locale-tag" style="font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; color: var(--accent);">DETECTION...</div>
+        <div id="locale-tag" style="font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; color: var(--accent);">STATION: ONLINE</div>
     </header>
 
     <main class="container">
@@ -92,11 +94,19 @@
             </div>
 
             <div class="card card-wide" onclick="openReader('sports')">
-                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200')"></div>
+                <div class="card-bg" style="background-image: url('https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h2 style="font-family: 'Bodoni Moda'; font-size: 2rem;">Tozun ve Terin Kardeşliği</h2>
-                    <p style="font-style: italic; opacity: 0.8;">Mardin 1969 & Maracanã Spirits</p>
+                    <p>Mardin 1969 & Maracanã Spirits</p>
+                </div>
+            </div>
+
+            <div class="card card-small" onclick="openReader('silver')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1610555356070-d0efb6505f81?q=80&w=800')"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 1.5rem;">Gümüşün Sabrı</h2>
                 </div>
             </div>
 
@@ -105,7 +115,6 @@
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h2 style="font-family: 'Bodoni Moda'; font-size: 1.8rem;">Sessizliğin Sineması</h2>
-                    <p style="font-style: italic; opacity: 0.8;">O Cinema do Silêncio</p>
                 </div>
             </div>
 
@@ -114,7 +123,6 @@
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h2 style="font-family: 'Bodoni Moda'; font-size: 1.8rem;">İnanç ve Ritüel</h2>
-                    <p style="font-style: italic; opacity: 0.8;">Fé e Ritual</p>
                 </div>
             </div>
 
@@ -123,15 +131,22 @@
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h2 style="font-family: 'Bodoni Moda'; font-size: 2rem;">Mimarinin Hafızası</h2>
-                    <p style="font-style: italic; opacity: 0.8;">A Memória da Arquitetura</p>
                 </div>
             </div>
 
-            <div class="card card-small" onclick="openReader('carnival')">
+             <div class="card card-medium" onclick="openReader('food')">
+                <div class="card-bg" style="background-image: url('https://www.receitasdemae.com.br/wp-content/uploads/2008/07/Quibe-frito.jpg')"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 1.8rem;">İrok'tan Quibe'ye</h2>
+                </div>
+            </div>
+
+            <div class="card card-medium" onclick="openReader('carnival')">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1596707447291-38e9c4d92b8d?q=80&w=800')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <h2 style="font-family: 'Bodoni Moda'; font-size: 1.5rem;">Rio Karnavalı</h2>
+                    <h2 style="font-family: 'Bodoni Moda'; font-size: 1.8rem;">Rio'da Mardin Rüzgarı</h2>
                 </div>
             </div>
 
@@ -146,50 +161,85 @@
     <script>
         const archive = {
             author: {
-                tr: "Ahmet Çınarbaş, Mardin’in <b>bin yıllık sessizliğini</b> Brezilya’nın okyanus sesine bağlayan bir anlatıcıdır. Mezopotamya’da bir 'abbara' altında soluklanırken hissettiği o tarihsel ağırlığı, Amazon’un devasa yaprakları altındaki hiçlik duygusuyla kıyaslar. Onun kütüphanesinde her kelime bir göç, her cümle bir yuvadır.",
-                pt: "Ahmet Çınarbaş é um narrador que liga o <b>silêncio milenar</b> de Mardin ao som do oceano brasileiro. Ele compara o peso histórico sentido sob uma 'abbara' na Mesopotâmia com a sensação de nulidade sob as folhas gigantes da Amazônia. Em sua biblioteca, cada palavra é uma migração."
+                title: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde",
+                tr: `Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğasıyla harmanlayan bir <b>estetik küratördür</b>. Onun gözünde Mardin'in bir 'abbara'sı, Rio de Janeiro'nun bir 'beco'su ile aynı sırları fısıldar. Yazıları; hüzün, keder ve bitmek bilmeyen bir umudun manifestosudur.`,
+                pt: `Ahmet Çınarbaş é um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem do Brasil. Para ele, uma 'abbara' de Mardin sussurra os mesmos segredos que um 'beco' do Rio de Janeiro.`
             },
             sports: {
-                tr: "<b>Mart 2026 Verisi:</b> Mardin 1969 Spor, 55 puanla zirveyi zorlarken, 21 Kasım Stadı’nın o kavurucu sıcağında 'Beleş Tepe'den yükselen dualar Rio’nun arka sokaklarındaki umutla birdir. Adanaspor karşısındaki 5-0’lık tarihi galibiyet, aslında bir futbol başarısı değil, bir direniş senfonisidir. Rio’daki Maracanã’nın görkemi neyse, Mardin’in tozlu sahalarındaki o ter kokusu da odur; ikisi de yoksulluğun içinden fışkıran birer asalettir.",
-                pt: "<b>Dados de Março de 2026:</b> Enquanto o Mardin 1969 Spor desafia o topo com 55 pontos, as orações que sobem da 'Beleş Tepe' sob o calor escaldante de Mardin são as mesmas esperanças das ruas do Rio. A vitória histórica de 5 a 0 sobre o Adanaspor não é apenas um sucesso futebolístico, mas uma sinfonia de resistência. A glória do Maracanã é o cheiro de suor nos campos de Mardin."
+                title: "Tozun ve Terin Kardeşliği: Mardin 1969 & Rio",
+                tr: `Mart 2026: Mardin 1969 Spor, 55 puanla zirve mücadelesinde! 5-0'lık Adanaspor galibiyeti sonrası 'Beleş Tepe' amcaları ile Rio favela çocukları aynı ruhla top koşturuyor. Bu, yoksulluğun içinden fışkıran bir asalet hikayesidir.`,
+                pt: `Março de 2026: Mardin 1969 Spor luta pelo topo com 55 pontos! Após a vitória de 5 a 0 sobre o Adanaspor, os anciãos de Mardin e as crianças das favelas do Rio jogam com a mesma alma.`
+            },
+            silver: {
+                title: "Gümüşün Sabrı: Telkari & Amazonia",
+                tr: `Mardin’in Telkarisi, gümüş teli bir dantel gibi işleyen bin yıllık sabırdır. Amazon ormanlarında tohumları ipe dizen yerli kadınlarla aynı kutsal dikkati paylaşırlar.`,
+                pt: `A Filigrana de Mardin é a paciência milenar que trabalha o fio de prata como renda. Compartilham a mesma atenção sagrada que as mulheres indígenas da Amazônia.`
             },
             cinema: {
-                tr: "Mardin'in taş sokakları doğal bir film platosu gibidir; sessizdir, epiktir ve her karesinde bin yıllık bir keder vardır. Brezilya sinemasının (Cidade de Deus ruhu) o yüksek tansiyonlu, gürültülü ama trajik gerçekçiliğiyle kıyaslandığında; Mardin 'Sessiz Sinema' ise Rio 'Avangart' bir yapımdır. İkisinde de yönetmen kaderdir, oyuncular ise gerçek hayatın kendisidir.",
-                pt: "As ruas de pedra de Mardin são como um set de filmagem natural; silenciosas, épicas e cheiras de melancolia. Comparado ao realismo trágico e barulhento do cinema brasileiro (espírito Cidade de Deus); se Mardin é 'Cinema Mudo', o Rio é uma produção 'Vanguardista'. Em ambos, o diretor é o destino."
+                title: "Sessizliğin Sineması: Mardin & Rio",
+                tr: `Mardin bir 'Sessiz Sinema' setidir; her taşı bir karedir. Rio ise 'Cidade de Deus' ruhuyla aksiyon dolu bir avangart yapımdır. İkisinde de yönetmen kaderdir.`,
+                pt: `Mardin é um set de 'Cinema Mudo'; cada pedra é um frame. O Rio, com o espírito de 'Cidade de Deus', é uma produção de vanguarda cheia de ação.`
             },
             faith: {
-                tr: "Mardin’deki Kırklar Kilisesi’nden yükselen kadim Süryani duaları, Rio’daki Kurtarıcı İsa (Cristo Redentor) heykelinin kollarını açtığı o spiritüel boşlukta yankılanır. Dinlerin ve dillerin ötesinde, insanın 'yüce olanla' kurduğu bağın coğrafyası yoktur. Mardin’de mırra tadındaki bir dua, Rio’da deniz tuzuna karışan bir umuda dönüşür.",
-                pt: "As antigas orações siríacas da Igreja dos Quarenta em Mardin ecoam no vácuo espiritual onde o Cristo Redentor abre seus braços no Rio. Além das religiões, não há geografia para o vínculo que o ser humano estabelece com o divino. Uma oração com sabor de mırra em Mardin torna-se esperança misturada ao sal marinho no Rio."
+                title: "İnanç ve Ritüel: Kırklar & Cristo Redentor",
+                tr: `Kırklar Kilisesi’nden yükselen Süryani duaları, Rio’daki Kurtarıcı İsa heykelinin açtığı kollarda yankılanır. İnancın coğrafyası yoktur, sadece ritmi vardır.`,
+                pt: `As orações siríacas da Igreja dos Quarenta ecoam nos braços abertos do Cristo Redentor. A fé não tem geografia, apenas ritmo.`
             },
             architecture: {
-                tr: "Mardin’in birbirinin güneşini kesmeyen, birbirine saygılı taş evleri; mimarinin ahlakıdır. Rio’nun üst üste binmiş, dikey ama birbirine kenetlenmiş Favela yapıları ise mimarinin hayatta kalma çığlığıdır. Mardin’de mimari bir sükunetken, Rio’da bir kaostur; fakat her iki yapıda da taş ve tuğla, içinde yaşayan insanların ortak kederini koruyan birer kabuktur.",
-                pt: "As casas de pedra respeitosas de Mardin são a moral da arquitetura. As estruturas das Favelas do Rio, sobrepostas e verticais, são o grito de sobrevivência da arquitetura. Em Mardin, a arquitetura é calma, no Rio é caos; mas em ambas, a pedra e o tijolo são cascas que protegem a dor comum de quem nelas vive."
+                title: "Mimarinin Hafızası: Taş Evler & Favelalar",
+                tr: `Mardin’in saygılı taş evleri mimarinin ahlakıdır; Rio’nun kenetlenmiş favelaları ise hayatta kalma çığlığıdır. İkisi de insan kederini koruyan bir kabuktur.`,
+                pt: `As casas de pedra de Mardin são a moral da arquitetura; as favelas do Rio são o grito de sobrevivência. Ambas são cascas que protegem a dor humana.`
+            },
+            food: {
+                title: "Gastronomi: İrok'tan Quibe'ye",
+                tr: `Mardin’in İrok'u (İçli Köfte), okyanusu aşıp Brezilya plajlarında 'Quibe' olmuştur. Lezzetlerin pasaporta ihtiyacı yoktur.`,
+                pt: `O Irok de Mardin cruzou o oceano e tornou-se o 'Quibe' nas praias brasileiras. Sabores não precisam de passaporte.`
             },
             carnival: {
-                tr: "Rio Karnavalı’nın o patlayıcı renkleri, Mardin’in 'Gece Gerdanlık' (gece ışıklandırması) görüntüsüyle mistik bir bağ kurar. Rio’da davullar çalmaya başladığında, Mardin’in dar sokaklarındaki bir düğün alayının ritmiyle aynı kalp atışını duyarız. Biri bir patlama, diğeri bin yıllık bir yankıdır.",
-                pt: "As cores explosivas do Carnaval do Rio ligam-se misticamente ao visual 'Colar de Noite' de Mardin. Quando os tambores começam a tocar no Rio, ouvimos o mesmo batimento cardíaco do ritmo de um cortejo de casamento em Mardin."
+                title: "Rio'da Mardin Rüzgarı",
+                tr: `Rio Karnavalı'nın surdo davulları ile Mardin düğünlerindeki erbane sesleri aynı kalp atışıdır. Biri patlama, diğeri bin yıllık yankıdır.`,
+                pt: `Os tambores surdo do Carnaval do Rio e os sons de erbane nos casamentos de Mardin são o mesmo batimento cardíaco.`
             }
         };
 
         function openReader(key) {
             const data = archive[key];
             const modal = document.getElementById('modal-content');
-            
-            // DİL TESPİTİ: Portekizce veya başka bir yer ise PT, Türkiye ise TR.
+            const isMobile = window.innerWidth <= 768;
             const userLang = navigator.language.startsWith('tr') ? 'tr' : 'pt';
-            const content = data[userLang];
-            const title = document.querySelector(`[onclick="openReader('${key}')"] h2`).innerText;
+
+            let bodyHtml = "";
+
+            if (isMobile) {
+                // MOBİLDE SADECE TEK DİL
+                bodyHtml = `
+                    <div class="text-box">
+                        <h3>${userLang === 'tr' ? 'ANALİZ // TR' : 'ANÁLISE // PT'}</h3>
+                        <p>${data[userLang]}</p>
+                    </div>`;
+            } else {
+                // PC VE TABLETTE İKİ DİL YAN YANA
+                bodyHtml = `
+                    <div class="comparison-grid">
+                        <div class="text-box">
+                            <h3>ANALİZ // TÜRKÇE</h3>
+                            <p>${data.tr}</p>
+                        </div>
+                        <div class="text-box" style="border-left: 4px solid var(--accent);">
+                            <h3>ANÁLISE // PORTUGUÊS</h3>
+                            <p>${data.pt}</p>
+                        </div>
+                    </div>`;
+            }
 
             modal.innerHTML = `
                 <div class="hero-section">
-                    <img src="${document.querySelector(`[onclick="openReader('${key}')"] .card-bg`).style.backgroundImage.slice(5, -2)}">
+                    <img src="${document.querySelector(`[onclick="openReader('${key}')"] .card-bg`)?.style.backgroundImage.slice(5, -2) || 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1600'}">
                     <div class="hero-mask"></div>
                 </div>
                 <div class="modal-body">
-                    <div class="text-box">
-                        <h1 style="font-family:'Bodoni Moda'; margin-bottom:20px; font-size:2.5rem; color:var(--accent);">${title}</h1>
-                        <p>${content}</p>
-                    </div>
+                    <h1 style="font-family:'Bodoni Moda'; font-size:3rem; margin-bottom:30px; color:var(--ink); text-align:center;">${data.title}</h1>
+                    ${bodyHtml}
                     <div class="footer-seal">ASC 2026</div>
                 </div>
             `;
@@ -200,11 +250,6 @@
         function closeReader() {
             document.getElementById('reader').style.display = 'none';
             document.body.style.overflow = 'auto';
-        }
-
-        window.onload = () => {
-            const isTr = navigator.language.startsWith('tr');
-            document.getElementById('locale-tag').innerText = isTr ? "LOCALE: MARDIN / TR" : "LOCALE: GLOBAL / INT";
         }
     </script>
 </body>
