@@ -5,88 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mardin Brazil Journal</title>
     <style>
-        :root {
-            --primary: #f39c12;
-            --bg: #121212;
-            --card-bg: #1e1e1e;
-            --text: #e0e0e0;
-        }
-
-        body { 
-            font-family: 'Segoe UI', system-ui, sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            margin: 0; 
-            padding: 20px; 
-        }
-        
+        :root { --primary: #f39c12; --bg: #121212; --card-bg: #1e1e1e; --text: #e0e0e0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
         .container { max-width: 1100px; margin: auto; }
-
-        header {
-            text-align: center;
-            padding: 40px 0;
-            border-bottom: 1px solid #333;
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            font-family: 'Georgia', serif;
-            color: var(--primary);
-            font-size: 2.8rem;
-            margin: 0;
-        }
-
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 30px; 
-        }
-
-        .card { 
-            background: var(--card-bg); 
-            border-radius: 12px; 
-            overflow: hidden; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            transition: 0.3s;
-            border: 1px solid #2a2a2a;
-        }
-
-        .card:hover { transform: translateY(-8px); border-color: var(--primary); }
-
-        .card img { 
-            width: 100%; 
-            height: 200px; 
-            object-fit: cover; 
-        }
-
+        header { text-align: center; padding: 40px 0; border-bottom: 1px solid #333; margin-bottom: 40px; }
+        h1 { font-family: 'Georgia', serif; color: var(--primary); font-size: 2.8rem; margin: 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 1px solid #2a2a2a; }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
         .card-content { padding: 20px; }
-
-        .tag { 
-            color: var(--primary); 
-            font-size: 12px; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-
-        h2 { 
-            margin: 0; 
-            font-size: 1.4rem; 
-            color: #fff; 
-            line-height: 1.3;
-        }
-
-        .error-msg {
-            background: #2c1a1a;
-            color: #ff6b6b;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #5c2b2b;
-        }
-
-        #loader { text-align: center; font-style: italic; color: #888; }
+        .tag { color: var(--primary); font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        h2 { margin: 0; font-size: 1.4rem; color: #fff; }
+        .error-msg { background: #2c1a1a; color: #ff6b6b; padding: 20px; border-radius: 8px; text-align: center; }
     </style>
 </head>
 <body>
@@ -95,9 +25,8 @@
         <header>
             <h1>Mardin Brazil Journal</h1>
         </header>
-        
         <div id="main-grid" class="grid">
-            <p id="loader">Veriler yükleniyor...</p>
+            <p id="loader" style="text-align:center; width:100%;">Veriler yükleniyor...</p>
         </div>
     </div>
 
@@ -105,36 +34,34 @@
         async function fetchArticles() {
             const grid = document.getElementById('main-grid');
             
-            // Ayarlar
-            const API_URL = 'https://ep-plain-block-aicnajey.apirest.c-4.us-east-1.aws.neon.tech/neondb/rest/v1/articles';
-            const API_KEY = 'npg_UqmxRMF6zyb2';
+            // HTTP SQL API URL (Senin projenin ana URL'si)
+            const API_URL = 'https://ep-plain-block-aicnajey.us-east-1.aws.neon.tech/neondb';
+            const TOKEN = 'npg_UqmxRMF6zyb2'; // Veritabanı şifren
 
             try {
                 const response = await fetch(API_URL, {
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${API_KEY}`,
-                        'apikey': API_KEY,
+                        'Authorization': `Bearer ${TOKEN}`,
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    body: JSON.stringify({
+                        // SQL Sorgusu: Tablo adının 'articles' olduğundan emin ol
+                        query: "SELECT * FROM articles ORDER BY id DESC;"
+                    })
                 });
 
-                if (!response.ok) {
-                    const errorDetail = await response.text();
-                    throw new Error(`HTTP ${response.status}: ${errorDetail}`);
-                }
+                const result = await response.json();
 
-                const data = await response.json();
-
-                if (!data || data.length === 0) {
-                    grid.innerHTML = "<p>Tablo bulundu ancak içinde veri yok.</p>";
+                // Neon SQL API 'rows' içinde verileri döndürür
+                if (!result.rows || result.rows.length === 0) {
+                    grid.innerHTML = "<p>Veritabanında henüz makale yok.</p>";
                     return;
                 }
 
-                // Grid'i temizle ve verileri bas
-                grid.innerHTML = data.map(article => `
+                grid.innerHTML = result.rows.map(article => `
                     <article class="card">
-                        <img src="${article.img || 'https://via.placeholder.com/400x200?text=Mardin+Brazil'}" alt="Haber">
+                        <img src="${article.img || 'https://via.placeholder.com/400x200'}" alt="Haber">
                         <div class="card-content">
                             <span class="tag">${article.tag || 'BÜLTEN'}</span>
                             <h2>${article.tr || 'Başlıksız Yazı'}</h2>
@@ -143,17 +70,15 @@
                 `).join('');
 
             } catch (err) {
-                console.error("Detaylı Hata:", err);
+                console.error("Hata Detayı:", err);
                 grid.innerHTML = `
                     <div class="error-msg">
                         <h3>Bağlantı Hatası</h3>
                         <p>${err.message}</p>
-                        <small>İpucu: Neon Panel'den 'articles' tablosunun adını ve sütun isimlerini (img, tag, tr) kontrol edin.</small>
                     </div>`;
             }
         }
 
-        // Başlat
         fetchArticles();
     </script>
 </body>
