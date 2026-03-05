@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Mardin Brazil</title>
+    <title>MB | Mardin Brazil Journal</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -13,7 +13,7 @@
         .logo-m { background: var(--ink); color: var(--bg); padding: 0 8px; border-radius: 6px; margin-right: 10px; font-family: 'Bodoni Moda'; font-weight: 900; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
         .bento { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .card { background: var(--white); border-radius: 30px; padding: 30px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; min-height: 400px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; transition: 0.3s; }
+        .card { background: var(--white); border-radius: 30px; padding: 30px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; min-height: 400px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; transition: 0.3s ease; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         .card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; }
         .card-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); z-index: 1; }
@@ -23,37 +23,58 @@
     </style>
 </head>
 <body>
-    <header><div class="logo-m">MB</div><strong style="font-family:'Bodoni Moda'">MARDIN BRAZIL</strong></header>
-    <div class="container"><div class="bento" id="main-grid">Arşiv yükleniyor...</div></div>
+    <header>
+        <div class="logo-m">MB</div>
+        <strong style="font-family:'Bodoni Moda'">MARDIN BRAZIL</strong>
+    </header>
+
+    <div class="container">
+        <div class="bento" id="main-grid">Veriler yükleniyor...</div>
+    </div>
 
     <script>
+        // Supabase Bağlantı Bilgileri
         const _u = "https://toomlocgdhkwrypuveof.supabase.co";
-        // Maskelenmiş API Anahtarınız
         const _m = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
         
-        const client = supabase.createClient(_u, atob(_m.replace(/[^A-Za-z0-9+/=]/g, "")));
+        // API Key temizleme ve oluşturma
+        const key = atob(_m.replace(/[^A-Za-z0-9+/=]/g, ""));
+        const client = supabase.createClient(_u, key);
 
         async function init() {
-            // Tabloyu 'articles' olarak çekiyoruz
-            const { data, error } = await client.from('articles').select('*');
-            
-            if (error) {
-                document.getElementById('main-grid').innerHTML = "Bağlantı Hatası: " + error.message;
-                console.error(error);
-                return;
-            }
+            try {
+                // 'articles' tablosundan verileri çek
+                const { data, error } = await client.from('articles').select('*');
+                
+                if (error) throw error;
 
-            if (data) {
-                document.getElementById('main-grid').innerHTML = data.map(i => `
-                    <div class="card ${i.type === 'author' ? 'author-card' : ''}">
-                        ${i.type !== 'author' ? `<div class="card-bg" style="background-image:url('${i.img}')"></div><div class="card-overlay"></div>` : `<img src="${i.img}" class="author-img">`}
-                        <div class="card-content" style="${i.type === 'author' ? 'color:black' : ''}">
-                            <h2 style="margin:0; font-family:'Bodoni Moda'">${i.tr}</h2>
-                            <p style="opacity:0.8; font-size:0.9rem;">${i.tag}</p>
+                if (!data || data.length === 0) {
+                    document.getElementById('main-grid').innerHTML = "Henüz veri bulunamadı.";
+                    return;
+                }
+
+                // Bento Grid Oluşturma
+                document.getElementById('main-grid').innerHTML = data.map(item => `
+                    <div class="card ${item.type === 'author' ? 'author-card' : ''}">
+                        ${item.type !== 'author' ? `
+                            <div class="card-bg" style="background-image:url('${item.img}')"></div>
+                            <div class="card-overlay"></div>
+                        ` : `
+                            <img src="${item.img}" class="author-img">
+                        `}
+                        <div class="card-content" style="${item.type === 'author' ? 'color:black' : ''}">
+                            <h2 style="margin:0; font-family:'Bodoni Moda'">${item.tr}</h2>
+                            <p style="opacity:0.8; font-size:0.9rem;">${item.tag}</p>
                         </div>
-                    </div>`).join('');
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                console.error("Detaylı Hata:", err);
+                document.getElementById('main-grid').innerHTML = "Bağlantı Hatası: " + err.message;
             }
         }
+
         init();
     </script>
 </body>
