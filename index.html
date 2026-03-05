@@ -16,102 +16,58 @@
         .card { background: var(--white); border-radius: 35px; padding: 40px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1); position: relative; overflow: hidden; min-height: 450px; display: flex; flex-direction: column; justify-content: flex-end; }
         .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
         .card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; transition: 0.5s; }
-        .card:hover .card-bg { transform: scale(1.05); }
         .card-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.85)); z-index: 1; }
         .card-content { position: relative; z-index: 2; color: white; }
         .author-card { background: white; color: var(--ink); justify-content: center; align-items: center; text-align: center; }
         .author-img { width: 140px; height: 140px; border-radius: 70px; margin-bottom: 25px; object-fit: cover; border: 5px solid var(--bg); position: relative; z-index: 2; }
-        .tag { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 15px; display: block; }
         #reader { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: none; overflow-y: auto; padding: 80px 6% 40px; }
         .close-btn { position: fixed; top: 25px; right: 6%; background: var(--ink); color: white; border: none; padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: 700; z-index: 1001; }
-        .reader-grid { max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: 1fr; gap: 40px; line-height: 1.8; font-size: 1.15rem; }
-        @media (min-width: 768px) { .reader-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
-
-    <header>
-        <a href="#" class="logo-box"><div class="logo-m">MB</div><div>MARDIN<br>BRAZIL</div></a>
-    </header>
-
-    <main class="container">
-        <div class="bento" id="main-grid">
-            <p style="text-align:center; grid-column: 1/-1; padding: 50px;">Arşiv yükleniyor...</p>
-        </div>
-    </main>
-
-    <div id="reader">
-        <button class="close-btn" onclick="closeReader()">KAPAT</button>
-        <div id="reader-content"></div>
-    </div>
+    <header><a href="#" class="logo-box"><div class="logo-m">MB</div><div>MARDIN<br>BRAZIL</div></a></header>
+    <main class="container"><div class="bento" id="main-grid">Arşiv yükleniyor...</div></main>
+    <div id="reader"><button class="close-btn" onclick="closeReader()">KAPAT</button><div id="reader-content"></div></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // API Anahtarını maskelemek için Base64 kullanıldı
+        // API Anahtarı maskelenmiş (gizlenmiş) halde
         const _m = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
+        const _u = "https://toomlocgdhkwrypuveof.supabase.co";
         
-        // Maskeyi çözen ve bağlanan fonksiyon
-        const _s = () => {
-            try {
-                return supabase.createClient(
-                    'https://toomlocgdhkwrypuveof.supabase.co', 
-                    atob(_m.replace(/[^A-Za-z0-9+/=]/g, "")) 
-                );
-            } catch (e) { console.error("Bağlantı kurulumu başarısız."); }
-        };
+        const client = supabase.createClient(_u, atob(_m.replace(/[^A-Za-z0-9+/=]/g, "")));
+        let artData = [];
 
-        const client = _s();
-        let articlesData = [];
-
-        async function loadJournal() {
-            // Veriler artık doğrudan 'public' şemasından çekiliyor
+        async function load() {
+            // public şemasına taşıdığımız tabloyu çekiyoruz
             const { data, error } = await client.from('makaleler').select('*');
-            
             if (error) {
-                document.getElementById('main-grid').innerHTML = `<p style="text-align:center; grid-column:1/-1;">Bağlantı Hatası: ${error.message}</p>`;
+                document.getElementById('main-grid').innerHTML = "Bağlantı Hatası: " + error.message;
                 return;
             }
-
-            articlesData = data;
-            renderArticles(data);
-        }
-
-        function renderArticles(items) {
-            const grid = document.getElementById('main-grid');
-            grid.innerHTML = items.map(item => `
-                <div class="card ${item.tip === 'yazar' ? 'author-card' : ''}" onclick="openReader('${item.salyangoz}')">
-                    ${item.tip !== 'yazar' ? `
-                        <div class="card-bg" style="background-image:url('${item.im}')"></div>
-                        <div class="card-overlay"></div>
-                    ` : `
-                        <img src="${item.im}" class="author-img">
-                    `}
-                    <div class="card-content" style="${item.tip === 'yazar' ? 'color:var(--ink)' : ''}">
-                        <span class="tag">${item.etiket}</span>
-                        <h2 style="margin:0; font-family:'Bodoni Moda', serif; font-size:1.8rem;">${item.tr}</h2>
-                        <p style="opacity:0.7; font-style:italic; margin:5px 0 0 0;">${item.pt}</p>
+            artData = data;
+            document.getElementById('main-grid').innerHTML = data.map(i => `
+                <div class="card ${i.tip === 'yazar' ? 'author-card' : ''}" onclick="openR('${i.salyangoz}')">
+                    ${i.tip !== 'yazar' ? `<div class="card-bg" style="background-image:url('${i.im}')"></div><div class="card-overlay"></div>` : `<img src="${i.im}" class="author-img">`}
+                    <div class="card-content" style="${i.tip === 'yazar' ? 'color:var(--ink)' : ''}">
+                        <h2 style="margin:0; font-family:'Bodoni Moda', serif; font-size:1.8rem;">${i.tr}</h2>
+                        <p style="opacity:0.7; font-style:italic;">${i.pt}</p>
                     </div>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
-        function openReader(slug) {
-            const art = articlesData.find(a => a.salyangoz === slug);
-            if(!art) return;
-
-            const reader = document.getElementById('reader');
+        function openR(slug) {
+            const a = artData.find(x => x.salyangoz === slug);
+            if(!a) return;
             document.getElementById('reader-content').innerHTML = `
                 <div style="text-align:center; max-width:800px; margin:0 auto;">
-                    <span class="tag">${art.etiket}</span>
-                    <h1 style="font-family:'Bodoni Moda', serif; font-size:3rem; margin:10px 0;">${art.tr}</h1>
-                    <h2 style="font-family:'Bodoni Moda', serif; font-weight:400; opacity:0.6; margin-bottom:40px;">${art.pt}</h2>
-                </div>
-                <div class="reader-grid">
-                    <div style="text-align:justify;">${art.metin_tr || 'İçerik yüklenemedi.'}</div>
-                    <div style="text-align:justify; color:#666; border-left: 1px solid rgba(0,0,0,0.05); padding-left:40px;">${art.metin_pt || ''}</div>
-                </div>
-            `;
-            reader.style.display = 'block';
+                    <h1 style="font-family:'Bodoni Moda', serif; font-size:3rem;">${a.tr}</h1>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px; text-align:justify; margin-top:40px;">
+                        <div>${a.metin_tr || ''}</div>
+                        <div style="color:#666">${a.metin_pt || ''}</div>
+                    </div>
+                </div>`;
+            document.getElementById('reader').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
@@ -120,7 +76,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        loadJournal();
+        load();
     </script>
 </body>
 </html>
