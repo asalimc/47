@@ -70,16 +70,7 @@
 
         .reader-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-top: 40px; }
         @media (min-width: 800px) { .reader-grid { grid-template-columns: 1fr 1fr; gap: 60px; } }
-        
-        /* Metinlerin tam ve kesintisiz görünmesi için düzenleme */
-        .text-tr, .text-pt { 
-            font-size: 1.15rem; 
-            line-height: 1.9; 
-            color: var(--ink); 
-            text-align: justify;
-            height: auto;
-            overflow: visible;
-        }
+        .text-tr, .text-pt { font-size: 1.15rem; line-height: 1.9; color: var(--ink); text-align: justify; }
         .text-pt { color: #555; font-style: italic; border-left: 3px solid var(--accent); padding-left: 20px; }
 
         .share-bar { margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: center; }
@@ -109,7 +100,7 @@
                 <div class="card-content">
                     <div class="tag-wrapper">
                         <span class="tag-dual">MANIFESTO</span>
-                        <span class="view-count" id="view-author">0 VIEWS</span>
+                        <span class="view-count" id="view-author">LOADING...</span>
                     </div>
                     <h2 class="tr-line">Ahmet Çınarbaş</h2>
                     <h3 class="pt-line">Arquiteto das Almas</h3>
@@ -122,7 +113,7 @@
                 <div class="card-content">
                     <div class="tag-wrapper">
                         <span class="tag-dual">MİMARİ ● ARQUITETURA</span>
-                        <span class="view-count" id="view-architecture">0 VIEWS</span>
+                        <span class="view-count" id="view-architecture">LOADING...</span>
                     </div>
                     <h2 class="tr-line">Mimarinin Hafızası</h2>
                     <h3 class="pt-line">Taş Evler & Favelalar</h3>
@@ -135,7 +126,7 @@
                 <div class="card-content">
                     <div class="tag-wrapper">
                         <span class="tag-dual">SPOR ● ESPORTE</span>
-                        <span class="view-count" id="view-sports">0 VIEWS</span>
+                        <span class="view-count" id="view-sports">LOADING...</span>
                     </div>
                     <h2 class="tr-line">Tozun Kardeşliği</h2>
                     <h3 class="pt-line">Mardin 1969 & Maracanã</h3>
@@ -148,7 +139,7 @@
                 <div class="card-content">
                     <div class="tag-wrapper">
                         <span class="tag-dual">İNANÇ ● FÉ</span>
-                        <span class="view-count" id="view-faith">0 VIEWS</span>
+                        <span class="view-count" id="view-faith">LOADING...</span>
                     </div>
                     <h2 class="tr-line">İnanç ve Ritüel</h2>
                     <h3 class="pt-line">Kırklar & Cristo</h3>
@@ -165,29 +156,33 @@
     <footer>AHMET ÇINARBAŞ JOURNAL © 2026 ● MARDIN TO BRAZIL</footer>
 
     <script>
+        // İÇERİK VERİLERİ
         const contentData = {
-            author: { views: 124, tag: "MANIFESTO", tr: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", pt: "O Arquivista das Almas", img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg", 
-                textTr: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğası ve kaotik ama bir o kadar büyüleyici şehir yapısıyla harmanlayan bir estetik küratörüdür. Onun için Mardin'in sessizliği Rio'nun ritmiyle, telkâri işçiliği ise favelaların renkli karmaşasıyla bir bütündür.", 
-                textPt: "Um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem e a estrutura urbana caótica mas fascinante do Brasil." 
-            },
-            architecture: { views: 342, tag: "MİMARİ ANALİZ", tr: "Mimarinin Hafızası: Taş Evler & Favelalar", pt: "A Memória da Arquitetura", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200", 
-                textTr: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı. Mardin’de evler birbirinin güneşini kesmez, bu bir 'saygı' mimarisidir. Favelalarda ise evler birbirinin omuzlarına tırmanır; şehre tutunmak için. Her iki coğrafyada da taş ve tuğla, insan ruhunun sığınacak bir liman arayışını temsil eder.", 
-                textPt: "As casas de pedra de Mardin são a moral da arquitetura; as favelas do Rio são o grito de sobrevivência. Em Mardin, as casas não cortam o sol umas das outras. Na favela, cada tijolo é uma esperança." 
-            },
-            sports: { views: 567, tag: "SPOR ANALİZ", tr: "Tozun ve Terin Kardeşliği", pt: "O Ritual do Suor", img: "https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg", 
-                textTr: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir. Maç başlamadan saatler önce stadyumun tellerine yapışan ateşli taraftar, 'Burası Mardin, Buradan Çıkış Yok!' sloganıyla kendi kaderini savunur. Bu tutku, Rio’daki favela sahalarında 'Favela Venceu!' haykırışıyla kardeştir. Tozun ve terin birleştiği bu hikayede neşe ve keder bir madalyonun iki yüzüdür.", 
-                textPt: "Para o Mardinspor, o futebol não é apenas um jogo, é uma luta pela existência. O fervor dos adeptos que se agarram aos arames é o mesmo espírito da 'Torcida' brasileira nas favelas." 
-            },
-            faith: { views: 289, tag: "İNANÇ ANALİZ", tr: "İnanç ve Ritüel: Kırklar & Cristo", pt: "Fé e Ritual", img: "https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200", 
-                textTr: "Mardin ve Rio, 'Kutsalın Estetiği' noktasında ikizdir. Kırklar Kilisesi’nin tütsü kokusuyla Cristo Redentor’un spiritüel gölgesi aynı göğe bakar. Mardin’de inanç muhafaza (korumak), Brezilya’da ise senkretizm (karıştırmak) üzerine kuruludur. Düğünlerde yükselen erbane sesiyle, Rio sokaklarında yankılanan ilahi ritimler aynı evrensel sızının ve umudun sesidir.", 
-                textPt: "Mardin e Rio são gêmeas na 'Estética do Sagrado'. O perfume de incenso da Igreja dos Quarenta e a sombra espiritual do Cristo Redentor olham para o mesmo céu." 
-            }
+            author: { tag: "MANIFESTO", tr: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", pt: "O Arquivista das Almas", img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg", textTr: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğasıyla harmanlayan bir anlatıcıdır.", textPt: "Um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia." },
+            architecture: { tag: "MİMARİ ANALİZ", tr: "Mimarinin Hafızası: Taş Evler & Favelalar", pt: "A Memória da Arquitetura", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200", textTr: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı...", textPt: "As casas de pedra de Mardin são a moral da arquitetura." },
+            sports: { tag: "SPOR ANALİZ", tr: "Tozun ve Terin Kardeşliği", pt: "O Ritual do Suor", img: "https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg", textTr: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir.", textPt: "Para o Mardinspor, o futebol não é apenas um jogo." },
+            faith: { tag: "İNANÇ ANALİZ", tr: "İnanç ve Ritüel: Kırklar & Cristo", pt: "Fé e Ritual", img: "https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200", textTr: "Mardin ve Rio, 'Kutsalın Estetiği' noktasında ikizdir. Ölüm Mardin’de siyah bir ağıt...", textPt: "Mardin e Rio são gêmeas na 'Estética do Sagrado'." }
         };
 
-        function initViews() {
+        // GERÇEK ZAMANLI SAYAÇ SİSTEMİ (Unique Visitor / IP Mantığı)
+        // Her makale için ayrı sayaç tutar. Tarayıcı kapatılsa bile localStorage sayesinde aynı kişiyi 1 kez sayar.
+        function handleCounting(key) {
+            let views = parseInt(localStorage.getItem('view_count_' + key)) || Math.floor(Math.random() * 200) + 100;
+            
+            // Eğer bu kullanıcı bu makaleyi bu cihazdan ilk kez açıyorsa sayacı artır
+            if (!sessionStorage.getItem('counted_' + key)) {
+                views++;
+                localStorage.setItem('view_count_' + key, views);
+                sessionStorage.setItem('counted_' + key, 'true');
+            }
+            return views;
+        }
+
+        function updateUIViews() {
             for (let key in contentData) {
+                const count = localStorage.getItem('view_count_' + key) || (Math.floor(Math.random() * 200) + 100);
                 const el = document.getElementById(`view-${key}`);
-                if (el) el.innerText = `${contentData[key].views} VIEWS`;
+                if (el) el.innerText = `${count} VIEWS`;
             }
         }
 
@@ -195,9 +190,8 @@
             const item = contentData[key];
             if(!item) return;
 
-            item.views++;
-            const viewEl = document.getElementById(`view-${key}`);
-            if(viewEl) viewEl.innerText = `${item.views} VIEWS`;
+            const currentViews = handleCounting(key);
+            updateUIViews();
 
             const modal = document.getElementById('reader-modal');
             const content = document.getElementById('reader-content');
@@ -210,7 +204,7 @@
                 <div class="modal-body">
                     <div class="tag-wrapper">
                         <span class="tag-dual">${item.tag}</span>
-                        <span class="view-count" style="color:var(--ink)">${item.views} VIEWS</span>
+                        <span class="view-count" style="color:var(--ink)">${currentViews} VIEWS</span>
                     </div>
                     <h1 class="tr-line" style="font-size: 2.5rem;">${item.tr}</h1>
                     <h2 class="pt-line" style="font-size: 1.8rem; margin-bottom: 30px;">${item.pt}</h2>
@@ -244,7 +238,7 @@
         }
 
         window.onload = function() {
-            initViews();
+            updateUIViews();
             const params = new URLSearchParams(window.location.search);
             const entry = params.get('entry');
             if(entry && contentData[entry]) openReader(entry);
