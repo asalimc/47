@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MB | Ahmet Çınarbaş Journal - Mardin & Brazil</title>
     
-    <meta name="description" content="Ahmet Çınarbaş Journal - Mardin'in taşlarından Brezilya'nın favelalarına uzanan estetik bir yolculuk.">
+    <meta name="description" content="Ahmet Çınarbaş Journal - Mardin'den Brezilya'ya uzanan estetik bir köprü.">
     <meta property="og:title" content="MB | Ahmet Çınarbaş Journal">
     <meta property="og:image" content="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg">
-    <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     
@@ -20,7 +19,7 @@
             --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* 1. HAFİF GRAIN (KAĞIT DOKUSU) FİLTRESİ */
+        /* GRAIN (KAĞIT DOKUSU) */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://grainy-gradients.vercel.app/noise.svg');
@@ -35,14 +34,13 @@
             position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.92); backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.03);
         }
-        .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); }
+        .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); cursor: pointer; }
         .logo-m { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-weight: 900; background: var(--ink); color: var(--bg); padding: 0 12px; border-radius: 6px; margin-right: 12px; }
         .logo-text { font-family: 'Bodoni Moda', serif; font-size: 0.85rem; font-weight: 900; line-height: 1.1; letter-spacing: 1.5px; }
 
         #progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--accent); z-index: 10001; transition: width 0.1s; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 6% 100px; }
-        
         .bento { display: grid; grid-template-columns: 1fr; gap: 30px; }
         @media (min-width: 768px) { 
             .bento { grid-template-columns: repeat(2, 1fr); }
@@ -58,19 +56,18 @@
         }
         .card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
 
-        /* PARALLAX DERİNLİK ETKİSİ */
         .card-bg { 
             position: absolute; inset: -15%; width: 130%; height: 130%; 
             background-size: cover; background-position: center; 
-            z-index: 0; transition: transform 0.1s ease-out; 
+            z-index: 0; transition: transform 0.2s ease-out; 
         }
         .card-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.85) 100%); z-index: 1; }
-        .card-content { position: relative; z-index: 2; color: white; }
+        .card-content { position: relative; z-index: 2; color: white; pointer-events: none; }
 
         .tag-dual { font-size: 0.6rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
         .tr-line { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; line-height: 1.1; font-weight: 700; margin-bottom: 5px; }
 
-        /* OKUYUCU MODALI */
+        /* MODAL */
         #reader-modal { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
         .modal-body { max-width: 850px; margin: 0 auto; padding: 80px 8% 120px; position: relative; }
         .close-btn { position: fixed; top: 30px; right: 30px; background: var(--ink); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; z-index: 10000; }
@@ -85,7 +82,6 @@
         }
         .wa-btn { background: #25D366; color: white; }
         .pdf-btn { background: var(--ink); color: white; }
-        .btn-action:hover { transform: translateY(-3px); opacity: 0.9; }
 
         footer { padding: 60px 6%; text-align: center; opacity: 0.4; font-size: 0.65rem; letter-spacing: 3px; }
     </style>
@@ -95,7 +91,7 @@
     <div id="progress-bar"></div>
 
     <header>
-        <div class="logo-box">
+        <div class="logo-box" onclick="window.scrollTo({top:0, behavior:'smooth'})">
             <div class="logo-m">MB</div>
             <div class="logo-text">MARDIN<br>BRAZIL</div>
         </div>
@@ -116,30 +112,41 @@
     <script>
         const isPT = (navigator.language || navigator.userLanguage).startsWith('pt');
 
+        // TÜM DİVLER VE ZENGİN İÇERİKLER (GERİ GETİRİLDİ VE ARTIRILDI)
         const contentData = {
             author: {
-                tr: { tag: "MANIFESTO", title: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", time: "2 DK OKUMA", text: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğası ve kaotik ama büyüleyici şehir yapısıyla harmanlayan bir estetik küratörüdür. Onun için Mardin'in sessizliği Rio'nun ritmiyle, telkâri işçiliği ise favelaların renkli karmaşasıyla bir bütündür. Bu journal, iki farklı kıtanın ama aynı ortak ruhun bir izdüşümüdür." },
+                tr: { tag: "MANIFESTO", title: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", time: "2 DK OKUMA", text: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğası ve kaotik ama büyüleyici şehir yapısıyla harmanlayan bir estetik küratörüdür. Onun vizyonunda Mardin'in sessizliği Rio'nun ritmiyle, telkâri işçiliği ise favelaların renkli karmaşasıyla bir bütündür. Bu journal, iki farklı kıtanın ama aynı ortak ruhun bir izdüşümüdür. Her yazı, taşın ve insanın hafızasına bir saygı duruşudur." },
                 pt: { tag: "MANIFESTO", title: "Ahmet Çınarbaş: Entre Dois Mundos", time: "2 MIN DE LEITURA", text: "Ahmet Çınarbaş é um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem e a estrutura urbana fascinante do Brasil. Para ele, o silêncio de Mardin funde-se com o ritmo do Rio." },
                 img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg", wide: true
             },
             architecture: {
-                tr: { tag: "MİMARİ", title: "Mimarinin Hafızası: Taş ve Ruh", time: "3 DK OKUMA", text: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı. Mardin’de evler birbirinin güneşini kesmez, bu bir 'saygı' mimarisidir. Favelalarda ise evler birbirinin omuzlarına tırmanır; şehre tutunmak için. Her iki coğrafyada da taş ve tuğla, insan ruhunun sığınacak bir liman arayışını temsil eder." },
+                tr: { tag: "MİMARİ", title: "Mimarinin Hafızası: Taş ve Ruh", time: "3 DK OKUMA", text: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı. Mardin’de evler birbirinin güneşini kesmez, bu bir 'saygı' mimarisidir. Favelalarda ise evler birbirinin omuzlarına tırmanır; şehre tutunmak için. Her iki coğrafyada da taş ve tuğla, insan ruhunun sığınacak bir liman arayışını temsil eder. Modernizmin öldüremediği bu yapılar, insanlığın ortak mirasıdır." },
                 pt: { tag: "ARQUITETURA", title: "Memória da Arquitetura: Pedra e Alma", time: "3 MIN DE LEITURA", text: "As casas de pedra de Mardin são a moral da arquitetura; as favelas do Rio são o grito de sobrevivência. Em Mardin, as casas não cortam o sol umas das outras." },
                 img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200", wide: true
             },
             gastronomy: {
-                tr: { tag: "GASTRONOMİ", title: "Baharatın ve Ateşin Rotası", time: "4 DK OKUMA", text: "Mardin mutfağındaki kimyon kokusu, Rio sokaklarındaki 'Feijoada' buharına karışıyor. Mardin'in dar sokaklarındaki mahalle fırınlarından yükselen taze ekmek kokusu, Brezilya'nın sahil kasabalarındaki deniz ürünleri şöleniyle kardeştir. Her iki kültürde de sofra, sadece bir yemek alanı değil; hikayelerin paylaşıldığı, aile bağlarının taşla mühürlendiği bir kutsal alandır." },
-                pt: { tag: "GASTRONOMIA", title: "A Rota das Especiarias e do Fogo", time: "4 MIN DE LEITURA", text: "O cheiro de cominho na cozinha de Mardin mistura-se com o vapor da Feijoada nas ruas do Rio. Em ambas as culturas, a mesa não é apenas um lugar para comer; é um espaço sagrado." },
+                tr: { tag: "GASTRONOMİ", title: "Baharatın ve Ateşin Rotası", time: "4 DK OKUMA", text: "Mardin mutfağındaki kimyon kokusu, Rio sokaklarındaki Feijoada buharına karışıyor. Mardin'in dar sokaklarındaki mahalle fırınlarından yükselen taze ekmek kokusu, Brezilya'nın sahil kasabalarındaki deniz ürünleri şöleniyle kardeştir. Her iki kültürde de sofra, sadece bir yemek alanı değil; hikayelerin paylaşıldığı, aile bağlarının mühürlendiği bir kutsal alandır." },
+                pt: { tag: "GASTRONOMIA", title: "A Rota das Especiarias e do Fogo", time: "4 MIN DE LEITURA", text: "O cheiro de cominho na cozinha de Mardin mistura-se com o vapor da Feijoada nas ruas do Rio. A mesa é um espaço sagrado de partilha e amor." },
                 img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200", wide: false
             },
             sports: {
-                tr: { tag: "KÜLTÜR", title: "Tozun Kardeşliği", time: "2 DK OKUMA", text: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir. Bu tutku, Rio’daki favela sahalarında çıplak ayakla top koşturan çocukların 'Favela Venceu!' haykırışıyla kardeştir. Tozun ve terin birleştiği bu hikayede neşe ve keder birdir." },
-                pt: { tag: "CULTURA", title: "Irmandade de Poeira", time: "2 MIN DE LEITURA", text: "Para o Mardinspor, o futebol não é apenas um jogo, é uma luta pela existência. Esta paixão é irmã do grito 'Favela Venceu!' no Rio." },
+                tr: { tag: "KÜLTÜR & SPOR", title: "Tozun Kardeşliği: Mardinspor & Favela", time: "2 DK OKUMA", text: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir. Bu tutku, Rio’daki favela sahalarında çıplak ayakla top koşturan çocukların 'Favela Venceu!' haykırışıyla kardeştir. Tozun ve terin birleştiği bu hikayede neşe ve keder birdir. Stadyumun tellerindeki heyecan, her iki coğrafyada da aynı lisanı konuşur." },
+                pt: { tag: "CULTURA E ESPORTE", title: "Irmandade de Poeira", time: "2 MIN DE LEITURA", text: "Para o Mardinspor, o futebol não é apenas um jogo, é uma luta pela existência. Esta paixão é irmã do grito 'Favela Venceu!' no Rio de Janeiro." },
                 img: "https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg", wide: false
             },
+            faith: {
+                tr: { tag: "İNANÇ & RİTÜEL", title: "Kutsalın Estetiği: Kırklar & Cristo", time: "3 DK OKUMA", text: "Mardin'in kadim kilise çanları ve cami ezanları arasındaki o ince denge, Rio'nun tepesindeki Cristo Redentor heykelinin kucaklayıcı gölgesiyle buluşuyor. İnanç, bu iki coğrafyada da sadece bir ibadet değil, bir aidiyet biçimidir. Ritüeller farklı olsa da, huzur arayışı aynı gökyüzüne bakmaktadır." },
+                pt: { tag: "FÉ E RITUAL", title: "Estética do Sagrado", time: "3 MIN DE LEITURA", text: "O equilíbrio entre os sinos das igrejas de Mardin e a sombra do Cristo Redentor no Rio. A fé é uma forma de pertença em ambas as geografias." },
+                img: "https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200", wide: false
+            },
+            carpet: {
+                tr: { tag: "EL SANATLARI", title: "İlmek İlmek Mezopotamya", time: "4 DK OKUMA", text: "Mardin halılarındaki geometrik desenler, aslında birer gizli dildir. Her düğüm bir duayı, her renk bir mevsimi temsil eder. Brezilya'nın yerel dokumalarındaki canlı renk kullanımıyla bu halılar arasındaki benzerlik, insanın doğayı taklit etme arzusunun evrensel kanıtıdır. Sanat, topraktan başlar ve ruhun derinliklerine iner." },
+                pt: { tag: "ARTESANATO", title: "Mesopotâmia Ponto a Ponto", time: "4 MIN DE LEITURA", text: "Os padrões geométricos nos tapetes de Mardin são uma linguagem secreta. Cada nó representa uma oração, cada cor uma estação." },
+                img: "https://images.unsplash.com/photo-1575306095254-69025e6e3005?q=80&w=1200", wide: false
+            },
             spirit: {
-                tr: { tag: "ZAMANIN RUHU", title: "Melankoli ve Karnaval", time: "3 DK OKUMA", text: "Mardin’in 'hüzünlü' akşamüstleri ile Rio’nun 'coşkulu' karnaval sabahları aslında aynı madalyonun iki yüzüdür. Bir tarafta asırlık bir sükunet, diğer tarafta hayatın geçiciliğine atılan renkli bir kahkaha. Ahmet Çınarbaş’ın objektifinden bu iki uç nokta, 'insan olmanın estetiği' paydasında buluşuyor." },
-                pt: { tag: "ESPÍRITO", title: "Melancolia e Carnaval", time: "3 MIN DE LEITURA", text: "As tardes melancólicas de Mardin e as manhãs vibrantes de carnaval do Rio são dois lados da mesma moeda." },
+                tr: { tag: "ZAMANIN RUHU", title: "Melankoli ve Karnaval", time: "3 DK OKUMA", text: "Mardin’in hüzünlü akşamüstleri ile Rio’nun coşkulu karnaval sabahları aslında aynı madalyonun iki yüzüdür. Bir tarafta asırlık bir sükunet, diğer tarafta hayatın geçiciliğine atılan renkli bir kahkaha. Ahmet Çınarbaş’ın objektifinden bu iki uç nokta, insan olmanın estetiği paydasında buluşuyor. Zaman burada hem durur hem de sonsuzluğa akar." },
+                pt: { tag: "ESPÍRITO DO TEMPO", title: "Melancolia e Carnaval", time: "3 MIN DE LEITURA", text: "As tardes melancólicas de Mardin e as manhãs vibrantes de carnaval do Rio são dois lados da mesma moeda." },
                 img: "https://images.unsplash.com/photo-1564399033405-645300096660?q=80&w=1200", wide: true
             }
         };
@@ -150,51 +157,62 @@
             Object.keys(contentData).forEach(key => {
                 const item = contentData[key];
                 const lang = isPT ? item.pt : item.tr;
-                const v = parseInt(localStorage.getItem('v_'+key)) || Math.floor(Math.random()*200)+300;
+                const views = getStoredViews(key);
                 grid.innerHTML += `
                     <div class="card ${item.wide ? 'card-wide' : ''}" onclick="openReader('${key}')" onmousemove="handleParallax(event, this)">
                         <div class="card-bg" style="background-image: url('${item.img}')"></div>
                         <div class="card-overlay"></div>
                         <div class="card-content">
-                            <span class="tag-dual">${lang.tag} • ${v} VIEWS</span>
+                            <span class="tag-dual">${lang.tag} • ${views} VIEWS</span>
                             <h2 class="tr-line">${lang.title}</h2>
                         </div>
                     </div>`;
             });
         }
 
-        // PARALLAX DERİNLİK FONKSİYONU
+        function getStoredViews(key) {
+            let v = parseInt(localStorage.getItem('v_' + key)) || Math.floor(Math.random() * 200) + 500;
+            if (!sessionStorage.getItem('s_' + key)) {
+                v++; localStorage.setItem('v_' + key, v); sessionStorage.setItem('s_' + key, '1');
+            }
+            return v;
+        }
+
         function handleParallax(e, card) {
             const bg = card.querySelector('.card-bg');
             const rect = card.getBoundingClientRect();
             const x = (e.clientX - rect.left) / card.offsetWidth - 0.5;
             const y = (e.clientY - rect.top) / card.offsetHeight - 0.5;
-            bg.style.transform = `scale(1.15) translate(${x * 40}px, ${y * 40}px)`;
+            bg.style.transform = `scale(1.15) translate(${x * 35}px, ${y * 35}px)`;
         }
 
         function openReader(key) {
             const item = contentData[key];
             const lang = isPT ? item.pt : item.tr;
+            const views = getStoredViews(key);
             const modal = document.getElementById('reader-modal');
             const content = document.getElementById('reader-content');
             
-            let v = parseInt(localStorage.getItem('v_'+key)) || 300;
-            if(!sessionStorage.getItem('s_'+key)) { v++; localStorage.setItem('v_'+key, v); sessionStorage.setItem('s_'+key, '1'); }
-
             content.innerHTML = `
-                <div id="pdf-area" class="modal-body">
-                    <span class="read-time-badge">${lang.time} • ${v} GÖRÜNTÜLENME</span>
+                <div id="pdf-content" class="modal-body">
+                    <span class="read-time-badge">${lang.time} • ${views} GÖRÜNTÜLENME</span>
                     <h1 class="tr-line" style="font-size: 3rem; color:var(--ink);">${lang.title}</h1>
-                    <img src="${item.img}" style="width:100%; border-radius:30px; margin: 40px 0;">
-                    <div class="text-content">${lang.text} ${lang.text}</div>
+                    <img src="${item.img}" style="width:100%; border-radius:30px; margin: 40px 0; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                    <div class="text-content">
+                        ${lang.text}<br><br>
+                        Gelenek ve modernite arasındaki bu ince çizgi, Ahmet Çınarbaş Journal'ın temelini oluşturur. 
+                        Her bir kare, anlatılmamış bir hikayenin kapısını aralar. Okuduğunuz bu analiz, kültürel 
+                        mirasın korunması ve gelecek nesillere aktarılması amacıyla kaleme alınmıştır.
+                    </div>
                     <div class="action-bar">
                         <a href="https://wa.me/?text=${encodeURIComponent(lang.title)}" target="_blank" class="btn-action wa-btn">WhatsApp Paylaş</a>
-                        <button onclick="downloadPDF()" class="btn-action pdf-btn">PDF Olarak İndir</button>
+                        <button onclick="downloadAsPDF()" class="btn-action pdf-btn">PDF Arşivle</button>
                     </div>
                 </div>`;
             
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
+            modal.scrollTop = 0;
         }
 
         function closeReader() {
@@ -208,12 +226,10 @@
             document.getElementById("progress-bar").style.width = p + "%";
         }
 
-        // 5. PDF OLARAK İNDİR / ARŞİVLE
-        function downloadPDF() {
-            const element = document.getElementById('pdf-area');
+        function downloadAsPDF() {
+            const element = document.getElementById('pdf-content');
             const opt = {
-                margin: 10,
-                filename: 'Ahmet-Cinarbas-Journal.pdf',
+                margin: 10, filename: 'Ahmet-Cinarbas-Journal.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
