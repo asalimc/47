@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MB | Ahmet Çınarbaş Journal - Mardin & Brazil</title>
     
-    <meta name="description" content="Ahmet Çınarbaş Journal - Mardin'den Brezilya'ya estetik bir köprü.">
+    <meta name="description" content="Ahmet Çınarbaş Journal - Mardin'den Brezilya'ya estetik bir yolculuk.">
     <meta property="og:title" content="MB | Ahmet Çınarbaş Journal">
     <meta property="og:image" content="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg">
 
@@ -19,7 +19,7 @@
             --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* GRAIN (KAĞIT DOKUSU) */
+        /* GRAIN FİLTRESİ */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://grainy-gradients.vercel.app/noise.svg');
@@ -82,7 +82,6 @@
         }
         .wa-btn { background: #25D366; color: white; box-shadow: 0 15px 30px rgba(37, 211, 102, 0.2); }
         .pdf-btn { background: var(--ink); color: white; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .btn-action:hover { transform: translateY(-5px); opacity: 0.9; }
 
         footer { padding: 100px 6% 60px; text-align: center; opacity: 0.5; font-size: 0.7rem; letter-spacing: 5px; font-weight: 600; }
     </style>
@@ -99,8 +98,7 @@
     </header>
 
     <main class="container">
-        <div class="bento" id="bento-grid">
-            </div>
+        <div class="bento" id="bento-grid"></div>
     </main>
 
     <div id="reader-modal" onscroll="updateProgress()">
@@ -113,26 +111,26 @@
     <script>
         const isPT = (navigator.language || navigator.userLanguage).startsWith('pt');
 
-        // 10 TAM KATEGORİ - EKSİKSİZ VE UZUN İÇERİKLER
+        // TÜM 10 DIV / KATEGORİ - DERİNLEMESİNE İÇERİKLER
         const contentData = {
             author: {
-                tr: { tag: "MANIFESTO", title: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", time: "3 DK OKUMA", text: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğası ve kaotik ama büyüleyici şehir yapısıyla harmanlayan bir estetik küratörüdür. Onun vizyonunda Mardin'in sessizliği Rio'nun ritmiyle, telkâri işçiliği ise favelaların renkli karmaşasıyla bir bütündür. Bu journal, iki farklı kıtanın ama aynı ortak ruhun bir izdüşümüdür. Her yazı, taşın ve insanın hafızasına bir saygı duruşudur. Geçmişin izlerini bugünün diliyle yeniden yorumlamak, Ahmet Çınarbaş'ın temel sanat felsefesidir." },
-                pt: { tag: "MANIFESTO", title: "Ahmet Çınarbaş: Entre Dois Mundos", time: "3 MIN DE LEITURA", text: "Ahmet Çınarbaş é um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem e a estrutura urbana fascinante do Brasil." },
+                tr: { tag: "MANIFESTO", title: "Ahmet Çınarbaş: İki Dünyanın Eşiğinde", time: "3 DK OKUMA", text: "Ahmet Çınarbaş, Mezopotamya’nın kadim taşlarından aldığı ilhamı Brezilya’nın vahşi doğası ve kaotik ama büyüleyici şehir yapısıyla harmanlayan bir estetik küratörüdür. Onun vizyonunda Mardin'in sessizliği Rio'nun ritmiyle, telkâri işçiliği ise favelaların renkli karmaşasıyla bir bütündür. Bu journal, iki farklı kıtanın ama aynı ortak ruhun bir izdüşümüdür. Her yazı, taşın ve insanın hafızasına bir saygı duruşudur. Sanatçının amacı, yerel olanın evrensel dilini keşfetmektir." },
+                pt: { tag: "MANIFESTO", title: "Ahmet Çınarbaş: Entre Dois Mundos", time: "3 MIN DE LEITURA", text: "Ahmet Çınarbaş é um curador estético que mistura a inspiração das pedras antigas da Mesopotâmia com a natureza selvagem e a estrutura urbana fascinante do Brasil. Para ele, o silêncio de Mardin funde-se com o ritmo do Rio de Janeiro." },
                 img: "https://pbs.twimg.com/media/GifApT2XEAAqees.jpg", wide: true
             },
             architecture: {
-                tr: { tag: "MİMARİ ANALİZ", title: "Mimarinin Hafızası: Taş ve Ruh", time: "4 DK OKUMA", text: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı. Mardin’de evler birbirinin güneşini kesmez, bu bir 'saygı' mimarisidir. Favelalarda ise evler birbirinin omuzlarına tırmanır; şehre tutunmak için. Her iki coğrafyada da taş ve tuğla, insan ruhunun sığınacak bir liman arayışını temsil eder. Modernizmin soğuk betonlarına inat, bu yapılar nefes alan ve hikaye anlatan yaşayan organizmalardır." },
-                pt: { tag: "ARQUITETURA", title: "Memória da Arquitetura: Pedra e Alma", time: "4 MIN DE LEITURA", text: "As casas de pedra de Mardin são a moral da arquitetura; as favelas do Rio são o grito de sobrevivência." },
+                tr: { tag: "MİMARİ", title: "Mimarinin Hafızası: Taş ve Ruh", time: "4 DK OKUMA", text: "Mardin’in taş evleri mimarinin ahlakıdır; Rio’nun favelaları ise hayatta kalma çığlığı. Mardin’de evler birbirinin güneşini kesmez, bu bir 'saygı' mimarisidir. Favelalarda ise evler birbirinin omuzlarına tırmanır; şehre tutunmak için. Her iki coğrafyada da taş ve tuğla, insan ruhunun sığınacak bir liman arayışını temsil eder. Bu yapılar, modernizmin soğukluğuna karşı verilmiş organik birer cevaptır." },
+                pt: { tag: "ARQUITETURA", title: "Memória da Arquitetura: Pedra e Alma", time: "4 MIN DE LEITURA", text: "As casas de pedra de Mardin são a moral da arquitetura; as favelas do Rio são o grito de sobrevivência. Em Mardin, as casas não cortam o sol umas das outras." },
                 img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200", wide: true
             },
             gastronomy: {
-                tr: { tag: "GASTRONOMİ", title: "Baharatın ve Ateşin Rotası", time: "4 DK OKUMA", text: "Mardin mutfağındaki kimyon kokusu, Rio sokaklarındaki Feijoada buharına karışıyor. Mardin'in dar sokaklarındaki mahalle fırınlarından yükselen taze ekmek kokusu, Brezilya'nın sahil kasabalarındaki deniz ürünleri şöleniyle kardeştir. Her iki kültürde de sofra, sadece bir yemek alanı değil; hikayelerin paylaşıldığı, aile bağlarının mühürlendiği bir kutsal alandır. Yemek, bir hayatta kalma aracından öte, kültürel bir kimlik beyanıdır." },
+                tr: { tag: "GASTRONOMİ", title: "Baharatın ve Ateşin Rotası", time: "4 DK OKUMA", text: "Mardin mutfağındaki kimyon kokusu, Rio sokaklarındaki Feijoada buharına karışıyor. Mardin'in dar sokaklarındaki mahalle fırınlarından yükselen taze ekmek kokusu, Brezilya'nın sahil kasabalarındaki deniz ürünleri şöleniyle kardeştir. Her iki kültürde de sofra, sadece bir yemek alanı değil; hikayelerin paylaşıldığı, aile bağlarının mühürlendiği bir kutsal alandır. Lezzet, hafızanın en güçlü taşıyıcısıdır." },
                 pt: { tag: "GASTRONOMIA", title: "A Rota das Especiarias e do Fogo", time: "4 MIN DE LEITURA", text: "O cheiro de cominho na cozinha de Mardin mistura-se com o vapor da Feijoada nas ruas do Rio." },
                 img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200", wide: false
             },
             sports: {
-                tr: { tag: "KÜLTÜR & SPOR", title: "Tozun Kardeşliği: Mardinspor & Favela", time: "3 DK OKUMA", text: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir. Bu tutku, Rio’daki favela sahalarında çıplak ayakla top koşturan çocukların 'Favela Venceu!' haykırışıyla kardeştir. Tozun ve terin birleştiği bu hikayede neşe ve keder birdir. Tribünlerden yükselen o ortak ses, imkansızlıklara karşı verilen estetik bir cevaptır." },
-                pt: { tag: "CULTURA E ESPORTE", title: "Irmandade de Poeira", time: "3 MIN DE LEITURA", text: "Para o Mardinspor, o futebol não é apenas um jogo, é uma luta pela existência." },
+                tr: { tag: "KÜLTÜR & SPOR", title: "Tozun Kardeşliği: Mardinspor & Favela", time: "3 DK OKUMA", text: "Mardinspor için futbol sadece bir oyun değil, 90 dakikalık bir varoluş mücadelesidir. Bu tutku, Rio’daki favela sahalarında çıplak ayakla top koşturan çocukların 'Favela Venceu!' haykırışıyla kardeştir. Tozun ve terin birleştiği bu hikayede neşe ve keder birdir. Stadyumun tellerindeki heyecan, her iki coğrafyada da aynı lisanı konuşur. Futbol, imkansızın içinde bir umut dilidir." },
+                pt: { tag: "CULTURA E ESPORTE", title: "Irmandade de Poeira", time: "3 MIN DE LEITURA", text: "Para o Mardinspor, o futebol não é apenas um jogo, é uma luta pela existência. Esta paixão é irmã do grito 'Favela Venceu!' no Rio." },
                 img: "https://img.r7.com/images/2014/05/13/edn1es433_v9wa0wesj_file.jpg", wide: false
             },
             faith: {
@@ -141,22 +139,22 @@
                 img: "https://images.unsplash.com/photo-1548625361-394ef3226a31?q=80&w=1200", wide: false
             },
             carpet: {
-                tr: { tag: "SANAT", title: "İlmek İlmek Mezopotamya", time: "5 DK OKUMA", text: "Mardin halılarındaki geometrik desenler, aslında birer gizli dildir. Her düğüm bir duayı, her renk bir mevsimi temsil eder. Brezilya'nın yerel dokumalarındaki canlı renk kullanımıyla bu halılar arasındaki benzerlik, insanın doğayı taklit etme arzusunun evrensel kanıtıdır. Bir dokuma tezgahı, aslında bir zaman makinesidir; sizi binlerce yıl öncesinin sembollerine taşır." },
-                pt: { tag: "ARTE", title: "Mesopotâmia Ponto a Ponto", time: "5 MIN DE LEITURA", text: "Os padrões geométricos nos tapetes de Mardin são uma linguagem secreta." },
+                tr: { tag: "ZANAAT", title: "İlmek İlmek Mezopotamya", time: "5 DK OKUMA", text: "Mardin halılarındaki geometrik desenler, aslında birer gizli dildir. Her düğüm bir duayı, her renk bir mevsimi temsil eder. Brezilya'nın yerel dokumalarındaki canlı renk kullanımıyla bu halılar arasındaki benzerlik, insanın doğayı taklit etme arzusunun evrensel kanıtıdır. Bir dokuma tezgahı, aslında bir zaman makinesidir; sizi binlerce yıl öncesinin sembollerine taşır." },
+                pt: { tag: "ARTESANATO", title: "Mesopotâmia Ponto a Ponto", time: "5 MIN DE LEITURA", text: "Os padrões geométricos nos tapetes de Mardin são uma linguagem secreta." },
                 img: "https://images.unsplash.com/photo-1575306095254-69025e6e3005?q=80&w=1200", wide: false
             },
             nature: {
-                tr: { tag: "EKOLOJİ", title: "Mezopotamya Ovasından Amazonlara", time: "5 DK OKUMA", text: "Mardin'in sarı sıcak ovalarının sonsuzluğu ile Amazon'un derin yeşil labirentleri arasındaki kontrast, dünyanın nefes alma biçimidir. Biri toprağın sadeliğini, diğeri yaşamın fışkıran çeşitliliğini anlatır. Ahmet Çınarbaş, bu iki zıt doğa parçasını objektifinde birleştirirken, ekosistemin kırılganlığını ve güzelliğini ön plana çıkarır. Doğa, bizim en büyük öğretmenimizdir." },
-                pt: { tag: "ECOLOGIA", title: "Da Mesopotâmia à Amazônia", time: "5 MIN DE LEITURA", text: "O contraste entre a imensidão das planícies de Mardin e os labirintos verdes da Amazônia." },
+                tr: { tag: "DOĞA", title: "Mezopotamya Ovasından Amazonlara", time: "5 DK OKUMA", text: "Mardin'in sarı sıcak ovalarının sonsuzluğu ile Amazon'un derin yeşil labirentleri arasındaki kontrast, dünyanın nefes alma biçimidir. Biri toprağın sadeliğini, diğeri yaşamın fışkıran çeşitliliğini anlatır. Ahmet Çınarbaş, bu iki zıt doğa parçasını objektifinde birleştirirken, ekosistemin kırılganlığını ve güzelliğini ön plana çıkarır. Doğa, bizim en büyük öğretmenimizdir." },
+                pt: { tag: "NATUREZA", title: "Da Mesopotâmia à Amazônia", time: "5 MIN DE LEITURA", text: "O contraste entre a imensidão das planícies de Mardin e os labirintos verdes da Amazônia." },
                 img: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1200", wide: true
             },
             silver: {
-                tr: { tag: "ZANAAT", title: "Telkâri: Gümüşün Şiiri", time: "3 DK OKUMA", text: "Mardin'in dar sokaklarında çekiç sesleriyle şekillenen gümüş, sadece bir takı değil, bir sabır hikayesidir. Telkâri ustalarının ince işçiliği, Brezilya'nın sahil kasabalarındaki el yapımı aksesuarlarla ruh ikizidir. Metalin ruhu, ustanın parmaklarında hayat bulur ve bir sanat eserine dönüşür." },
-                pt: { tag: "ARTESANATO", title: "Filigrana: A Poesia da Prata", time: "3 MIN DE LEITURA", text: "A prata moldada pelos sons dos martelos em Mardin não é apenas uma joia, é uma história de paciência." },
+                tr: { tag: "GÜMÜŞ İŞLEMECİLİĞİ", title: "Telkâri: Gümüşün Şiiri", time: "3 DK OKUMA", text: "Mardin'in dar sokaklarında çekiç sesleriyle şekillenen gümüş, sadece bir takı değil, bir sabır hikayesidir. Telkâri ustalarının ince işçiliği, Brezilya'nın sahil kasabalarındaki el yapımı aksesuarlarla ruh ikizidir. Metalin ruhu, ustanın parmaklarında hayat bulur ve bir sanat eserine dönüşür. Her bir kıvrım, kuşaktan kuşağa aktarılan bir mirastır." },
+                pt: { tag: "ARTESANATO EM PRATA", title: "Filigrana: A Poesia da Prata", time: "3 MIN DE LEITURA", text: "A prata moldada pelos sons dos martelos em Mardin não é apenas uma joia." },
                 img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1200", wide: false
             },
             music: {
-                tr: { tag: "MÜZİK", title: "Erbane ve Samba Ritminde Buluşma", time: "4 DK OKUMA", text: "Mardin düğünlerinde yükselen erbane sesleri ile Rio sokaklarında yankılanan Samba ritimleri, aslında aynı hayat sevincinin farklı tezahürleridir. Ritim, dili ve dini ne olursa olsun insanları birleştiren tek evrensel güçtür. Davulun her vuruşu, kalbin atışıyla uyum içindedir." },
+                tr: { tag: "MÜZİK", title: "Erbane ve Samba Ritminde Buluşma", time: "4 DK OKUMA", text: "Mardin düğünlerinde yükselen erbane sesleri ile Rio sokaklarında yankılanan Samba ritimleri, aslında aynı hayat sevincinin farklı tezahürleridir. Ritim, dili ve dini ne olursa olsun insanları birleştiren tek evrensel güçtür. Davulun her vuruşu, kalbin atışıyla uyum içindedir. Müzik, iki kıta arasındaki en kısa köprüdür." },
                 pt: { tag: "MÚSICA", title: "Encontro de Ritmos: Erbane e Samba", time: "4 MIN DE LEITURA", text: "O som da erbane em Mardin e o ritmo do samba no Rio são manifestações da mesma alegria." },
                 img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200", wide: false
             },
@@ -202,7 +200,7 @@
             const rect = card.getBoundingClientRect();
             const x = (e.clientX - rect.left) / card.offsetWidth - 0.5;
             const y = (e.clientY - rect.top) / card.offsetHeight - 0.5;
-            bg.style.transform = `scale(1.2) translate(${x * 40}px, ${y * 40}px)`;
+            bg.style.transform = `scale(1.2) translate(${x * 35}px, ${y * 35}px)`;
         }
 
         function openReader(key) {
@@ -215,12 +213,13 @@
             content.innerHTML = `
                 <div id="pdf-content" class="modal-body">
                     <span class="read-time-badge">${lang.time} • ${views} GÖRÜNTÜLENME</span>
-                    <h1 class="tr-line" style="font-size: 3.5rem; color:var(--ink);">${lang.title}</h1>
-                    <img src="${item.img}" style="width:100%; border-radius:30px; margin: 50px 0; box-shadow: 0 30px 60px rgba(0,0,0,0.15);">
+                    <h1 class="tr-line" style="font-size: 3rem; color:var(--ink);">${lang.title}</h1>
+                    <img src="${item.img}" style="width:100%; border-radius:30px; margin: 40px 0; box-shadow: 0 30px 60px rgba(0,0,0,0.15);">
                     <div class="text-content">
                         ${lang.text}<br><br>
                         Bu analiz, Ahmet Çınarbaş Journal koleksiyonunun bir parçasıdır. Geleneksel mirasın modern görsel estetikle harmanlanması, 
-                        toplumsal hafızanın korunması adına büyük önem taşımaktadır. Her kare bir tanıklıktır.
+                        toplumsal hafızanın korunması adına büyük önem taşımaktadır. Her kare bir tanıklıktır. İnsanlık tarihinin bu iki kadim ve 
+                        renkli noktasını birleştiren bu yolculukta bizlere eşlik ettiğiniz için teşekkürler.
                     </div>
                     <div class="action-bar">
                         <a href="https://wa.me/?text=${encodeURIComponent(lang.title)}" target="_blank" class="btn-action wa-btn">WhatsApp Paylaş</a>
@@ -255,7 +254,6 @@
             html2pdf().set(opt).from(element).save();
         }
 
-        // Sayfa yüklendiğinde çalıştır
         document.addEventListener('DOMContentLoaded', renderGrid);
     </script>
 </body>
