@@ -5,39 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MB | Mardin Brazil Journal</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@900&family=Plus+Jakarta+Sans:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #F8F6F2; font-family: sans-serif; margin: 0; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; }
+        :root { --bg: #F8F6F2; --ink: #1A1A1A; --white: #FFFFFF; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
+        header { padding: 20px 6%; display: flex; align-items: center; background: rgba(248, 246, 242, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .logo-m { background: var(--ink); color: var(--bg); padding: 5px 12px; border-radius: 8px; margin-right: 12px; font-family: 'Bodoni Moda'; font-weight: 900; font-size: 1.5rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
+        .bento { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: var(--white); border-radius: 35px; padding: 40px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; transition: 0.4s ease; position: relative; overflow: hidden; min-height: 450px; display: flex; flex-direction: column; justify-content: flex-end; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); z-index: 1; }
+        .card-content { position: relative; z-index: 2; color: white; }
+        .author-card { background: white; color: var(--ink); justify-content: center; align-items: center; text-align: center; }
+        .author-img { width: 140px; height: 140px; border-radius: 70px; margin-bottom: 20px; object-fit: cover; border: 4px solid var(--bg); position: relative; z-index: 2; }
+        .error-msg { grid-column: 1/-1; text-align: center; padding: 50px; color: #d9534f; background: #fff; border-radius: 20px; }
     </style>
 </head>
 <body>
-    <h1 style="text-align:center">MARDIN BRAZIL</h1>
-    <div class="grid" id="content">Yükleniyor...</div>
+    <header>
+        <div class="logo-m">MB</div>
+        <div style="font-family:'Bodoni Moda'; font-weight:900;">MARDIN BRAZIL</div>
+    </header>
+
+    <div class="container">
+        <div class="bento" id="main-grid">
+            <p style="text-align:center; grid-column: 1/-1;">Arşiv yükleniyor...</p>
+        </div>
+    </div>
 
     <script>
         const _u = "https://toomlocgdhkwrypuveof.supabase.co";
         const _m = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
+        
         const key = atob(_m.replace(/[^A-Za-z0-9+/=]/g, ""));
         
-        const client = supabase.createClient(_u, key);
+        // CORS hatalarını minimize etmek için auth desteği olmadan başlatıyoruz
+        const client = supabase.createClient(_u, key, {
+            auth: { persistSession: false }
+        });
 
-        async function load() {
-            const { data, error } = await client.from('articles').select('*');
-            if (error) {
-                document.getElementById('content').innerHTML = "Hata: " + error.message;
-                return;
+        async function init() {
+            try {
+                // Tablo adı 'articles' olarak güncellendi
+                const { data, error } = await client.from('articles').select('*');
+                
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    document.getElementById('main-grid').innerHTML = "<div class='error-msg'>Henüz makale bulunamadı.</div>";
+                    return;
+                }
+
+                document.getElementById('main-grid').innerHTML = data.map(i => `
+                    <div class="card ${i.type === 'author' ? 'author-card' : ''}">
+                        ${i.type !== 'author' ? `
+                            <div class="card-bg" style="background-image:url('${i.img}')"></div>
+                            <div class="card-overlay"></div>
+                        ` : `
+                            <img src="${i.img}" class="author-img">
+                        `}
+                        <div class="card-content" style="${i.type === 'author' ? 'color:var(--ink)' : ''}">
+                            <h2 style="margin:0; font-family:'Bodoni Moda', serif; font-size:1.8rem;">${i.tr}</h2>
+                            <p style="opacity:0.7; font-size:0.9rem; margin-top:10px;">${i.tag}</p>
+                        </div>
+                    </div>`).join('');
+
+            } catch (err) {
+                console.error("Detaylı Hata:", err);
+                document.getElementById('main-grid').innerHTML = `
+                    <div class="error-msg">
+                        <h3>Bağlantı Hatası</h3>
+                        <p>${err.message}</p>
+                        <small>Supabase Dashboard > Settings > Data API > Exposed Schemas kısmında 'public' seçili ve kaydedilmiş mi?</small>
+                    </div>`;
             }
-            document.getElementById('content').innerHTML = data.map(item => `
-                <div class="card">
-                    <img src="${item.img}">
-                    <h2>${item.tr}</h2>
-                    <p>${item.tag}</p>
-                </div>
-            `).join('');
         }
-        load();
+        init();
     </script>
 </body>
 </html>
