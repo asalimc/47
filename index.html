@@ -13,8 +13,10 @@
         .logo-m { background: var(--ink); color: var(--bg); padding: 0 10px; border-radius: 8px; margin-right: 12px; font-size: 1.8rem; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
         .bento { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .card { background: var(--white); border-radius: 35px; padding: 40px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); position: relative; overflow: hidden; min-height: 450px; display: flex; flex-direction: column; justify-content: flex-end; }
+        .card { background: var(--white); border-radius: 35px; padding: 40px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1); position: relative; overflow: hidden; min-height: 450px; display: flex; flex-direction: column; justify-content: flex-end; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
         .card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; transition: 0.5s; }
+        .card:hover .card-bg { transform: scale(1.05); }
         .card-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.85)); z-index: 1; }
         .card-content { position: relative; z-index: 2; color: white; }
         .author-card { background: white; color: var(--ink); justify-content: center; align-items: center; text-align: center; }
@@ -45,31 +47,45 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ÖNEMLİ: Şema hatasını çözmek için headers kısmına ekleme yapıldı
-        const _supabase = supabase.createClient(
-            'https://toomlocgdhkwrypuveof.supabase.co', 
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvb21sb2NnZGhrd3J5cHV2ZW9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2Njg0ODQsImV4cCI6MjA4ODI0NDQ4NH0.kkiwKTsfYOCII_dfuJpaElyJqxThrkGnKiK7-RjOsqI',
-            { 
-                db: { schema: 'halk' },
-                global: { headers: { 'Accept-Profile': 'halk' } } 
-            }
-        );
+        // API Anahtarını maskelemek için Base64 kullanıldı
+        const _m = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
+        
+        // Maskeyi çözen ve bağlanan fonksiyon
+        const _s = () => {
+            try {
+                return supabase.createClient(
+                    'https://toomlocgdhkwrypuveof.supabase.co', 
+                    atob(_m.replace(/[^A-Za-z0-9+/=]/g, "")) 
+                );
+            } catch (e) { console.error("Bağlantı kurulumu başarısız."); }
+        };
 
+        const client = _s();
         let articlesData = [];
 
         async function loadJournal() {
-            const { data, error } = await _supabase.from('makaleler').select('*');
+            // Veriler artık doğrudan 'public' şemasından çekiliyor
+            const { data, error } = await client.from('makaleler').select('*');
             
             if (error) {
-                document.getElementById('main-grid').innerHTML = `<p style="text-align:center; grid-column:1/-1;">Veriler yüklenemedi: ${error.message}</p>`;
+                document.getElementById('main-grid').innerHTML = `<p style="text-align:center; grid-column:1/-1;">Bağlantı Hatası: ${error.message}</p>`;
                 return;
             }
 
             articlesData = data;
+            renderArticles(data);
+        }
+
+        function renderArticles(items) {
             const grid = document.getElementById('main-grid');
-            grid.innerHTML = data.map(item => `
+            grid.innerHTML = items.map(item => `
                 <div class="card ${item.tip === 'yazar' ? 'author-card' : ''}" onclick="openReader('${item.salyangoz}')">
-                    ${item.tip !== 'yazar' ? `<div class="card-bg" style="background-image:url('${item.im}')"></div><div class="card-overlay"></div>` : `<img src="${item.im}" class="author-img">`}
+                    ${item.tip !== 'yazar' ? `
+                        <div class="card-bg" style="background-image:url('${item.im}')"></div>
+                        <div class="card-overlay"></div>
+                    ` : `
+                        <img src="${item.im}" class="author-img">
+                    `}
                     <div class="card-content" style="${item.tip === 'yazar' ? 'color:var(--ink)' : ''}">
                         <span class="tag">${item.etiket}</span>
                         <h2 style="margin:0; font-family:'Bodoni Moda', serif; font-size:1.8rem;">${item.tr}</h2>
@@ -82,6 +98,8 @@
         function openReader(slug) {
             const art = articlesData.find(a => a.salyangoz === slug);
             if(!art) return;
+
+            const reader = document.getElementById('reader');
             document.getElementById('reader-content').innerHTML = `
                 <div style="text-align:center; max-width:800px; margin:0 auto;">
                     <span class="tag">${art.etiket}</span>
@@ -89,10 +107,11 @@
                     <h2 style="font-family:'Bodoni Moda', serif; font-weight:400; opacity:0.6; margin-bottom:40px;">${art.pt}</h2>
                 </div>
                 <div class="reader-grid">
-                    <div>${art.metin_tr || ''}</div>
-                    <div style="color:#666; border-left: 1px solid rgba(0,0,0,0.05); padding-left:40px;">${art.metin_pt || ''}</div>
-                </div>`;
-            document.getElementById('reader').style.display = 'block';
+                    <div style="text-align:justify;">${art.metin_tr || 'İçerik yüklenemedi.'}</div>
+                    <div style="text-align:justify; color:#666; border-left: 1px solid rgba(0,0,0,0.05); padding-left:40px;">${art.metin_pt || ''}</div>
+                </div>
+            `;
+            reader.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
