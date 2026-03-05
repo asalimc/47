@@ -3,45 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Mardin Brazil Journal</title>
+    <title>MB | Test</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #F8F6F2; font-family: sans-serif; margin: 0; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
-        .card img { width: 100%; border-radius: 15px; height: 200px; object-fit: cover; }
+        body { background: #f0f0f0; font-family: sans-serif; padding: 20px; text-align: center; }
+        .card { background: white; padding: 15px; margin: 10px auto; max-width: 400px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        img { width: 100%; border-radius: 8px; }
     </style>
 </head>
 <body>
-    <h1 style="text-align:center">MARDIN BRAZIL</h1>
-    <div id="status" style="text-align:center; padding:20px;">Bağlantı kontrol ediliyor...</div>
-    <div class="grid" id="main-grid"></div>
+    <h1>MARDIN BRAZIL</h1>
+    <div id="durum">Bağlanıyor...</div>
+    <div id="liste"></div>
 
     <script>
-        const _u = "https://toomlocgdhkwrypuveof.supabase.co";
-        const _m = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
-        const key = atob(_m.replace(/[^A-Za-z0-9+/=]/g, ""));
-        
-        const client = supabase.createClient(_u, key);
+        const URL = "https://toomlocgdhkwrypuveof.supabase.co";
+        const M_KEY = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
+        const KEY = atob(M_KEY.replace(/[^A-Za-z0-9+/=]/g, ""));
 
-        async function init() {
+        const supabaseClient = supabase.createClient(URL, KEY);
+
+        async function verileriGetir() {
             try {
-                const { data, error } = await client.from('articles').select('*');
+                // Tablonun adı 'articles'
+                const { data, error } = await supabaseClient.from('articles').select('*');
+                
                 if (error) throw error;
 
-                document.getElementById('status').style.display = 'none';
-                document.getElementById('main-grid').innerHTML = data.map(item => `
+                document.getElementById('durum').style.display = 'none';
+                document.getElementById('liste').innerHTML = data.map(item => `
                     <div class="card">
                         <img src="${item.img}">
-                        <h2>${item.tr}</h2>
-                        <p style="opacity:0.7">${item.tag}</p>
+                        <h3>${item.tr}</h3>
+                        <p>${item.tag}</p>
                     </div>
                 `).join('');
-            } catch (err) {
-                document.getElementById('status').innerHTML = `<div style="color:red">Bağlantı Başarısız: ${err.message}</div>`;
+
+            } catch (hata) {
+                document.getElementById('durum').innerHTML = "Hata Detayı: " + hata.message;
             }
         }
-        init();
+        verileriGetir();
     </script>
 </body>
 </html>
