@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Ahmet Çınarbaş Journal</title>
+    <title>MB | Ahmet Çınarbaş Journal - Final Edition</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700;900&family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700;900&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -13,141 +13,150 @@
             --ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--accent); }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        /* CUSTOM CURSOR */
+        #cursor {
+            position: fixed; width: 15px; height: 15px; background: var(--accent);
+            border-radius: 50%; pointer-events: none; z-index: 99999;
+            transition: width 0.4s var(--ease), height 0.4s var(--ease), background 0.4s;
+            mix-blend-mode: difference; display: flex; align-items: center; justify-content: center;
+            font-size: 0; font-weight: 800; color: white;
+        }
 
-        /* HEADER & NAV */
+        /* HEADER */
         header {
-            padding: 30px 6%; display: flex; justify-content: space-between; align-items: center;
+            padding: 40px 6%; display: flex; justify-content: space-between; align-items: center;
             position: fixed; width: 100%; top: 0; z-index: 1000;
-            background: rgba(248, 246, 242, 0.8); backdrop-filter: blur(20px);
+            background: rgba(248, 246, 242, 0.6); backdrop-filter: blur(30px);
         }
-        .logo-m { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-weight: 900; background: var(--ink); color: var(--bg); padding: 5px 15px; border-radius: 12px; }
+        .logo { font-family: 'Bodoni Moda', serif; font-size: 2.2rem; font-weight: 900; letter-spacing: -2px; }
 
-        /* PROGRESS BAR */
-        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 5px; z-index: 10001; display: none; }
-        #progress-bar { height: 100%; background: var(--accent); width: 0%; }
-
-        /* BENTO GRID FOCUS EFFECT */
-        .container { max-width: 1400px; margin: 120px auto 100px; padding: 0 6%; }
-        .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 30px; }
-
-        /* Bir karta hover yapınca diğerlerini söndür */
+        /* BENTO GRID */
+        .container { max-width: 1400px; margin: 180px auto 100px; padding: 0 6%; }
+        .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 40px; }
+        
         .bento:has(.card:hover) .card:not(:hover) {
-            opacity: 0.25; filter: blur(4px) grayscale(1); transform: scale(0.96);
+            opacity: 0.15; filter: blur(12px); transform: scale(0.94);
         }
 
-        /* CARD CORE */
+        /* CARD STYLE */
         .card {
-            background: var(--white); border-radius: 50px; min-height: 500px;
-            position: relative; overflow: hidden; cursor: pointer;
-            transition: all 0.9s var(--ease); display: flex; flex-direction: column; justify-content: flex-end; padding: 50px;
+            background: var(--white); border-radius: 65px; min-height: 550px;
+            position: relative; overflow: hidden; 
+            transition: all 1s var(--ease); display: flex; flex-direction: column; justify-content: flex-end; padding: 60px;
         }
-        .card:hover { transform: translateY(-20px) scale(1.02); z-index: 10; box-shadow: 0 60px 120px rgba(0,0,0,0.15); }
-
+        .card:hover { transform: translateY(-25px); z-index: 10; box-shadow: 0 70px 140px rgba(0,0,0,0.12); }
+        
         .card-full { grid-column: span 6; }
         .card-wide { grid-column: span 4; }
         .card-medium { grid-column: span 3; }
         .card-small { grid-column: span 2; }
 
         .card-bg {
-            position: absolute; inset: -20%; width: 140%; height: 140%;
+            position: absolute; inset: -10%; width: 120%; height: 120%;
             background-size: cover; background-position: center;
-            z-index: 0; transition: transform 0.1s linear; /* JS Paralaks için */
+            z-index: 0; transition: transform 0.3s ease-out;
         }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, transparent 70%); z-index: 1; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.92) 5%, transparent 65%); z-index: 1; }
         
-        .card-content { position: relative; z-index: 2; color: white; }
-        .tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 4px; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; display: block; }
-        .title-tr { font-family: 'Bodoni Moda', serif; font-size: 2.8rem; line-height: 1; margin-bottom: 10px; }
-        .title-pt { font-family: 'Bodoni Moda', serif; font-size: 1.6rem; font-weight: 300; opacity: 0.6; font-style: italic; }
+        .card-content { position: relative; z-index: 2; color: white; pointer-events: none; }
+        .tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 6px; color: var(--accent); margin-bottom: 25px; display: block; text-transform: uppercase; }
+        .title-tr { font-family: 'Bodoni Moda', serif; font-size: 3.2rem; line-height: 1; margin-bottom: 15px; font-weight: 900; }
+        .title-pt { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-weight: 300; opacity: 0.5; font-style: italic; }
 
-        /* READER MODAL */
-        #reader { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
-        .modal-hero { width: 100%; height: 70vh; overflow: hidden; position: relative; }
-        .modal-hero img { width: 100%; height: 100%; object-fit: cover; }
+        /* MODAL & TEXT STYLE */
+        #reader { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: none; overflow-y: auto; cursor: auto; }
+        .modal-body { max-width: 1200px; margin: 0 auto; padding: 150px 8%; }
         
-        .modal-body { max-width: 1000px; margin: -150px auto 0; background: var(--bg); position: relative; border-radius: 80px 80px 0 0; padding: 100px 10%; }
+        .reader-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 100px; }
         
-        /* Metin Giriş Animasyonu */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s var(--ease); }
-        .active .reveal { opacity: 1; transform: translateY(0); }
+        .text-tr, .text-pt { 
+            font-size: 1.45rem; /* Font büyüklüğü eşitlendi */
+            line-height: 2.1; 
+            font-weight: 300; 
+            color: var(--ink);
+            text-align: justify;
+        }
+        
+        .text-pt { 
+            font-style: italic; /* Sadece Portekizce italik */
+            color: #555;
+            border-left: 1px solid rgba(0,0,0,0.1);
+            padding-left: 60px;
+        }
 
-        .reader-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 80px; margin-top: 60px; }
-        .text-tr { font-size: 1.4rem; line-height: 2.2; text-align: justify; font-weight: 300; }
-        .text-pt { font-size: 1.2rem; line-height: 2; color: #666; font-style: italic; border-left: 6px solid var(--accent); padding-left: 40px; }
+        .close-btn { position: fixed; top: 50px; right: 60px; background: var(--ink); color: white; border: none; width: 85px; height: 85px; border-radius: 50%; font-size: 2.8rem; z-index: 100000; transition: 0.5s var(--ease); display: flex; align-items: center; justify-content: center; }
+        .close-btn:hover { background: var(--accent); transform: scale(1.15) rotate(90deg); }
 
-        .close-btn { position: fixed; top: 40px; right: 50px; background: var(--ink); color: white; border: none; width: 70px; height: 70px; border-radius: 50%; cursor: pointer; z-index: 10000; font-size: 2rem; transition: 0.5s; }
-        .close-btn:hover { background: var(--accent); transform: rotate(90deg); }
+        footer { padding: 150px 6% 80px; text-align: center; opacity: 0.2; font-weight: 800; letter-spacing: 15px; font-size: 0.8rem; }
 
-        @media (max-width: 900px) {
-            .bento { grid-template-columns: 1fr; }
-            .card-full, .card-wide, .card-medium, .card-small { grid-column: span 1; }
-            .reader-grid { grid-template-columns: 1fr; }
+        @media (max-width: 1024px) {
+            .reader-grid { grid-template-columns: 1fr; gap: 60px; }
+            .text-pt { padding-left: 0; border-left: none; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 60px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="progress-container"><div id="progress-bar"></div></div>
+    <div id="cursor"></div>
+    <div id="progress-container" style="position: fixed; top:0; width:100%; height:8px; z-index:100001;"><div id="progress-bar" style="height:100%; background:var(--accent); width:0%;"></div></div>
 
     <header>
-        <div class="logo-m">MB</div>
-        <div style="font-weight: 800; letter-spacing: 5px; font-size: 0.6rem; opacity: 0.5;">ARCHIVE / 2026</div>
+        <div class="logo">MB</div>
+        <div style="font-weight: 600; letter-spacing: 5px; font-size: 0.7rem;">MARDIN • BRAZIL / 2026</div>
     </header>
 
     <main class="container">
         <div class="bento">
             
-            <div class="card card-full" onclick="openReader('author')" style="background: white; justify-content: center; text-align: center;">
+            <div class="card card-full" onclick="openReader('author')" onmouseenter="cursorIn()" onmouseleave="cursorOut()" style="background: white; align-items: center; text-align: center;">
                 <div class="card-content" style="color: var(--ink);">
-                    <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; margin-bottom: 30px; border: 10px solid var(--bg);">
-                    <span class="tag">CURATOR</span>
-                    <h2 class="title-tr" style="font-size: 4rem;">Ahmet Çınarbaş</h2>
-                    <h3 class="title-pt">Pontes entre Memórias</h3>
+                    <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" style="width: 250px; height: 250px; border-radius: 50%; object-fit: cover; margin-bottom: 45px; border: 15px solid var(--bg);">
+                    <span class="tag">CURATORIAL MANIFESTO</span>
+                    <h2 class="title-tr" style="font-size: 5rem;">Ahmet Çınarbaş</h2>
+                    <h3 class="title-pt">Pontes Invisíveis entre Dois Mundos</h3>
                 </div>
             </div>
 
-            <div class="card card-wide" onclick="openReader('carnaval')">
+            <div class="card card-wide" onclick="openReader('carnaval')" onmouseenter="cursorIn()" onmouseleave="cursorOut()">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">CULTURAL BLEND</span>
-                    <h2 class="title-tr">Rio'da Mardin Rüzgarı</h2>
-                    <h3 class="title-pt">Ecos da Mesopotâmia</h3>
+                    <span class="tag">CULTURAL ARCHIVE</span>
+                    <h2 class="title-tr">Rio'da Telkari Estetiği</h2>
+                    <h3 class="title-pt">A Dança da Prata na Sapucaí</h3>
                 </div>
             </div>
 
-            <div class="card card-small" onclick="openReader('craft')">
+            <div class="card card-small" onclick="openReader('craft')" onmouseenter="cursorIn()" onmouseleave="cursorOut()">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">HANDCRAFT</span>
-                    <h2 class="title-tr">Gümüşün Sabrı</h2>
-                    <h3 class="title-pt">Mãos Sagradas</h3>
+                    <span class="tag">MASTER OF SILVER</span>
+                    <h2 class="title-tr">Gümüşün Sessiz Sabrı</h2>
+                    <h3 class="title-pt">O Fio Eterno da Paciência</h3>
                 </div>
             </div>
 
-            <div class="card card-medium" onclick="openReader('gastronomy')">
+            <div class="card card-medium" onclick="openReader('gastronomy')" onmouseenter="cursorIn()" onmouseleave="cursorOut()">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">FLAVOR JOURNEY</span>
-                    <h2 class="title-tr">Irok & Quibe</h2>
-                    <h3 class="title-pt">Sabor de Fronteira</h3>
+                    <span class="tag">GASTRONOMIC HERITAGE</span>
+                    <h2 class="title-tr">İçli Köfte'den Quibe'ye</h2>
+                    <h3 class="title-pt">Sabores que Atravessam o Atlântico</h3>
                 </div>
             </div>
 
-            <div class="card card-medium" onclick="openReader('sinop')">
+            <div class="card card-medium" onclick="openReader('sinop')" onmouseenter="cursorIn()" onmouseleave="cursorOut()">
                 <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200')"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <span class="tag">GEOGRAPHY</span>
-                    <h2 class="title-tr">İki Sinop'un Öyküsü</h2>
-                    <h3 class="title-pt">Paralelos Opostos</h3>
+                    <span class="tag">GEOGRAPHICAL SOUL</span>
+                    <h2 class="title-tr">İki Sinop'un Paralel Kaderi</h2>
+                    <h3 class="title-pt">Um Nome, Duas Realidades Distantes</h3>
                 </div>
             </div>
 
@@ -159,50 +168,58 @@
         <div id="reader-content"></div>
     </div>
 
+    <footer>MB JOURNAL • AHMET ÇINARBAŞ • 2026</footer>
+
     <script>
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        function cursorIn() {
+            cursor.style.width = '120px';
+            cursor.style.height = '120px';
+            cursor.style.fontSize = '0.75rem';
+            cursor.innerText = 'OKU / LER';
+            cursor.style.background = 'white';
+        }
+
+        function cursorOut() {
+            cursor.style.width = '15px';
+            cursor.style.height = '15px';
+            cursor.style.fontSize = '0';
+            cursor.innerText = '';
+            cursor.style.background = 'var(--accent)';
+        }
+
         const contentData = {
             author: { 
-                tag: "MANIFESTO", tr: "İki Kıta, Tek Bir Ruhun Hikayesi", pt: "Dois Continentes, Uma Alma",
-                img: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1200", 
-                textTr: "Mardin’in dar sokaklarında yankılanan çekiç sesleri ile Rio’nun sahillerinde duyulan perküsyon vuruşları aslında aynı şeyi anlatır: Hayatta kalma ve güzellik yaratma arzusu. Ben Ahmet Çınarbaş; bu journal ile bir köprü kuruyorum. Mezopotamya’nın taş sessizliğini Amazon’un gürültülü yeşiliyle tanıştırıyorum. Kültür, sadece geçmişte kalan bir miras değil, bugün her adımda yeniden yazdığımız bir senaryodur. Hoş geldiniz; bu yolculukta zamanın ve sınırların ötesine geçiyoruz.",
-                textPt: "Os sons de martelos ecoando nas ruas estreitas de Mardin e as batidas de percussão nas praias do Rio contam a mesma história: o desejo de sobreviver e criar beleza. Eu, Ahmet Çınarbaş, construo uma ponte com este jornal. Apresento o silêncio de pedra da Mesopotâmia ao verde barulhento da Amazônia. A cultura não é apenas uma herança do passado, mas um roteiro que reescrevemos a cada passo hoje. Bem-vindo; nesta jornada, ultrapassamos o tempo e as fronteiras."
+                tr: "İki Kıta, Tek Bir Ruhun Manifestosu", pt: "Manifesto de Uma Alma, Dois Continentes",
+                textTr: "Mardin’in binlerce yıllık taş evlerinin gölgesinde büyüyen bir hikaye, nasıl olur da Brezilya’nın balta girmemiş yağmur ormanlarında yankı bulur? Bu journal, sadece kişisel bir gezi notu değil; Ahmet Çınarbaş’ın iki dünya arasında kurduğu derin sanatsal ve felsefi bir köprüdür. Mezopotamya’da telkariyi işleyen bir ustanın elindeki o titizlik ile Rio’da samba yapan ayakların ritmi, aslında aynı evrensel dilin farklı lehçeleridir. Bu dijital arşiv, sınırların sadece haritalarda olduğunu, ruhun ise her zaman sınırsız bir coğrafyada gezindiğini kanıtlamak için tasarlandı. Kültürler arası bu yolculukta, taşın sessizliği ile dansın coşkusunu aynı sayfada buluşturuyoruz.",
+                textPt: "Como uma história que cresce à sombra de casas de pedra milenares em Mardin pode ecoar nas florestas tropicais virgens do Brasil? Este jornal não é apenas uma nota pessoal de viagem; é uma ponte artística e filosófica profunda construída por Ahmet Çınarbaş entre dois mundos. A meticulosidade da mão de um mestre que trabalha a filigrana na Mesopotâmia e o ritmo dos pés que dançam samba no Rio são, na verdade, dialetos diferentes da mesma língua universal. Este arquivo digital foi desenhado para provar que as fronteiras existem apenas nos mapas, enquanto a alma navega sempre numa geografia sem limites. Nesta jornada intercultural, unimos o silêncio da pedra com a euforia da dança na mesma página."
             },
             carnaval: { 
-                tag: "KÜLTÜR ARŞİVİ", tr: "Rio Karnavalı'nda Telkari Estetiği", pt: "Estética da Filigrana no Carnaval",
-                img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200",
-                textTr: "Görsel bir devrim olarak nitelendirilen bu yılki Rio Karnavalı'nda, bazı büyük Samba okullarının kostümlerinde Mardin'e özgü telkari motiflerinin geometrik izdüşümleri görüldü. Işığın metal üzerindeki oyunu, Rio'nun güneşli atmosferinde adeta Mezopotamya'nın bin yıllık gümüş sanatını canlandırdı. Bu sadece bir tesadüf değil; Brezilyalı sanatçıların kökleri Ortadoğu'ya dayanan derin bir zarafet arayışının sonucudur. İki uç dünyanın sanatsal dansı, Sambodromo’da tarih yazdı.", 
-                textPt: "No Carnaval do Rio deste ano, descrito como uma revolução visual, projeções geométricas de motivos de filigrana típicos de Mardin foram vistas nos figurinos de algumas grandes escolas de samba. O jogo de luz sobre o metal reviveu a arte milenar da prata da Mesopotâmia na atmosfera ensolarada do Rio. Isso não é apenas coincidência; é o resultado da profunda busca dos artistas brasileiros por uma elegância enraizada no Oriente Médio." 
+                tr: "Rio Karnavalı'nda Mezopotamya İzdüşümleri ve Telkari Sanatı", pt: "Projeções da Mesopotâmia e Arte da Filigrana no Carnaval do Rio",
+                textTr: "Rio Karnavalı denince akla gelen ilk şey kontrolsüz bir enerji olsa da, bu yılki kostüm tasarımlarında Mardin’in kadim telkari desenlerinden ilham alan geometrik bir disiplin göze çarptı. Bazı büyük Samba okullarının aksesuar ve başlık tasarımlarında, gümüş telin zarif kıvrımlarını andıran metalik işlemeler podyumda devleşti. Bu, sadece bir moda akımı değil; Mezopotamya’nın matematiksel zarafetinin, Güney Amerika’nın tropikal ruhuyla girdiği sanatsal bir diyaloğdur. Işığın metal üzerindeki oyunu, Rio’nun güneşli atmosferinde binlerce yıllık bir geleneği yeniden canlandırdı. Sanat, okyanusları aşarak kendine yeni ve coşkulu bir yuva buldu.",
+                textPt: "Embora a primeira coisa que venha à mente quando se fala do Carnaval do Rio seja uma energia descontrolada, uma disciplina geométrica inspirada nos antigos padrões de filigrana de Mardin chamou a atenção nos designs de figurinos deste ano. Nos designs de acessórios e adereços de cabeça de algumas grandes escolas de samba, bordados metálicos que lembram as curvas elegantes do fio de prata tornaram-se gigantes na passarela. Isso não é apenas uma tendência de moda; é um diálogo artístico entre a elegância matemática da Mesopotâmia e a alma tropical da América do Sul. O jogo de luz sobre o metal reviveu uma tradição milenar na atmosfera ensolarada do Rio. A arte cruzou oceanos e encontrou para si um novo e entusiasta lar."
             },
             craft: { 
-                tag: "ZANAATIN RUHU", tr: "Ateşin ve Sabrın Dansı: Gümüş", pt: "A Dança do Fogo e da Paciência",
-                img: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200",
-                textTr: "Telkari, gümüşün ruhuna dokunmaktır. Bir ustanın elinde milimetrik teller, birer şiire dönüşene kadar binlerce kez eğilir, bükülür. Bu sabır, Brezilya'nın yerli halklarının orman meyvelerinden ve tohumlarından takı yaparken gösterdiği kutsal bekleyişle aynıdır. Modern dünyanın 'hız' takıntısına karşı bir başkaldırıdır zanaat. Mardin’de gümüşün ateşteki imtihanı, Amazon’da doğanın sunduğu mucizelere dönüşür. İkisi de insan elinin tanrısal bir dokunuşudur.",
-                textPt: "A filigrana é tocar a alma da prata. Nas mãos de um mestre, fios milimétricos são dobrados milhares de vezes até se tornarem poesia. Essa paciência é a mesma espera sagrada que os povos indígenas do Brasil demonstram ao fazer joias com sementes e frutos da floresta. O artesanato é uma rebelião contra a obsessão do mundo moderno pela 'velocidade'. O teste da prata no fogo em Mardin transforma-se em milagres oferecidos pela natureza na Amazônia."
+                tr: "Gümüşün ve Tohumun Sessiz Ortaklığı: Bir Zanaat Manifestosu", pt: "A Parceria Silenciosa da Prata e da Semente: Um Manifesto do Ofício",
+                textTr: "Bir Mardin telkari ustası ocağın başında zamanı durdurur; her bir gümüş teli ruhuyla büker, sanki geleceğe bir mesaj bırakıyormuş gibi. Amazon ormanlarının derinliklerinde ise bir yerli zanaatkar, ormanın kalbinden topladığı doğal tohumları ve tüyleri benzer bir kutsiyetle işleyerek bedenini süsleyecek birer sanat eserine dönüştürür. İkisi de modern dünyanın seri üretimine, hıza ve geçiciliğine karşı duran sessiz birer başkaldırıdır. Gümüşün ateşteki imtihanı ile Amazon tohumunun eldeki yolculuğu, zanaatın sınır tanımayan evrensel sabrını temsil eder. Elin emeği, hangi kıtada olursa olsun insanın varoluş çabasını en saf haliyle yansıtır.",
+                textPt: "Um mestre de filigrana de Mardin para o tempo diante do forno; dobra cada fio de prata com a sua alma, como se estivesse deixando uma mensagem para o futuro. Nas profundezas da floresta amazônica, um artesão indígena processa sementes naturais e penas coletadas no coração da floresta com uma santidade semelhante, transformando-as em obras de arte para adornar o seu corpo. Ambos são rebeliões silenciosas contra a produção em massa, a velocidade e a transitoriedade do mundo moderno. O teste da prata no fogo e a jornada da semente amazônica na mão representam a paciência universal sem fronteiras do artesanato. O trabalho manual reflete, em sua forma mais pura, o esforço da existência humana, independentemente do continente."
             },
             gastronomy: { 
-                tag: "GASTRONOMİK KÖPRÜ", tr: "Sofraların Ortak Hafızası: Irok ve Quibe", pt: "Memória Comum das Mesas: Quibe",
-                img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200",
-                textTr: "Bir Mardin evinde sofraya gelen sıcak bir içli köfte ile São Paulo’nun bir köşebaşında yediğiniz Quibe arasındaki bağ, sadece bir tarif benzerliği değildir. Bu, 19. yüzyılda gemilerle başlayan büyük göçün, okyanusları aşan lezzet mirasıdır. Mardin’in baharatlı Irok’u, Brezilya mutfağının en sevilen atıştırmalığına dönüşürken, aslında kültürel asimilasyonun değil, kültürel zenginleşmenin simgesi olmuştur. Bir lokmada hem Mezopotamya’yı hem de Brezilya’yı tatmak, tarihin en lezzetli oyunudur.",
-                textPt: "O vínculo entre um 'içli köfte' quente servido numa casa em Mardin e o 'Quibe' que se come numa esquina de São Paulo não é apenas uma semelhança de receita. É o legado de sabor da grande migração que começou com navios no século XIX, atravessando oceanos. Enquanto o Irok temperado de Mardin se tornava o lanche mais amado da culinária brasileira, tornou-se símbolo não de assimilação, mas de enriquecimento cultural."
+                tr: "Okyanusları Aşan Bir Lezzet Hikayesi: Irok'tan Quibe'ye", pt: "Uma História de Sabor Além dos Oceanos: Do Irok ao Quibe",
+                textTr: "Mutfak, bir toplumun en korunaklı hafızasıdır. Mardin’in baharat kokulu dar sokaklarında hazırlanan içli köfte (Irok), 19. yüzyılda gemilerle başlayan büyük Ortadoğu göçüyle birlikte Güney Amerika kıyılarına ulaştı. Brezilya’nın bereketli topraklarında 'Quibe' ismini alarak adeta milli bir sembol haline gelen bu lezzet, aslında göçün ne kadar kalıcı izler bıraktığının en lezzetli kanıtıdır. Bugün São Paulo’nun kalabalık caddelerinde bir kafede otururken duyduğunuz o tanıdık baharat kokusu, sizi bir anda Mezopotamya’nın kadim sofralarına ışınlar. Lezzetler isim değiştirse de, yemeğin paylaşıldığı sofradaki o kadim samimiyet ve ortak insanlık hafızası asla değişmez.",
+                textPt: "A cozinha é a memória mais protegida de uma sociedade. O 'içli köfte' (Irok), preparado nas ruas estreitas e perfumadas de especiarias de Mardin, chegou às costas do continente sul-americano com a grande migração do Oriente Médio que começou em navios no século XIX. Este sabor, que se tornou um símbolo nacional sob o nome de 'Quibe' nas terras férteis do Brasil, é na verdade a prova mais saborosa de quão permanentes são os vestígios deixados pela migração. Hoje, ao sentir aquele cheiro familiar de especiarias enquanto está sentado num café nas ruas movimentadas de São Paulo, você é instantaneamente transportado para as antigas mesas da Mesopotâmia. Embora os sabores mudem de nome, a sinceridade milenar e a memória humana comum na mesa onde a comida é partilhada nunca mudam."
             },
             sinop: { 
-                tag: "COĞRAFİ KADER", tr: "Binlerce Kilometre, Tek Bir İsim", pt: "Milhares de Quilômetros, Um Nome",
-                img: "https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200",
-                textTr: "Türkiye'nin Karadeniz kıyısındaki kadim Sinop ile Brezilya'nın Mato Grosso eyaletindeki modern Sinop şehri arasındaki bağ, haritadaki bir hata değil, bir vizyon birliğidir. Karadeniz'in hırçın dalgalarını kucaklayan liman kenti ile Amazon’un kalbinde bir tarım devine dönüşen şehir... İkisi de bulundukları coğrafyanın direnç noktalarıdır. İsimleri aynı, kaderleri benzer olan bu iki nokta, MB Journal için dünyanın ne kadar küçük ve birbirine ne kadar muhtaç olduğunun en somut kanıtıdır.",
-                textPt: "O vínculo entre a antiga Sinop na costa do Mar Negro na Turquia e a moderna cidade de Sinop no estado de Mato Grosso no Brasil não é um erro no mapa, mas uma união de visões. A cidade portuária que abraça as ondas revoltas do Mar Negro e a cidade que se transformou num gigante agrícola no coração da Amazônia... Ambas são pontos de resistência em suas geografias."
+                tr: "İki Kıta, İki Şehir, Tek Ruh: Sinop'un Paralel Evrenleri", pt: "Dois Continentes, Duas Cidades, Uma Alma: Os Universos Paralelos de Sinop",
+                textTr: "Türkiye’nin en kuzey ucu olan Karadeniz’in incisi Sinop ile Brezilya’nın merkezindeki Mato Grosso eyaletinde yükselen Sinop şehri arasındaki bağ, basit bir isim benzerliğinden çok daha fazlasıdır. İkisi de kendi coğrafyalarının kaderini tayin eden, doğa ile insan arasındaki zorlu ama zarif dengenin en güzel örneklerini sunan şehirlerdir. Biri hırçın Karadeniz’in mavisiyle sarmalanmış kadim bir kale, diğeri ise Amazon’un sonsuz yeşiliyle çevrili modern bir tarım devidir. Bu iki şehri bu journal sayfasında bir araya getiren şey, dünyanın aslında ne kadar küçük olduğunu ve farklı iklimlerde bile insan ruhunun nasıl benzer izler bıraktığını göstermektir. İki Sinop, haritaları aşan gizli bir kardeşliğin adıdır.",
+                textPt: "O vínculo entre Sinop, a pérola do Mar Negro no extremo norte da Turquia, e a cidade de Sinop que se ergue no estado de Mato Grosso, no coração do Brasil, é muito mais do que uma simples semelhança de nome. Ambas são cidades que determinam o destino de suas próprias geografias e oferecem os mais belos exemplos do difícil mas elegante equilíbrio entre a natureza e o ser humano. Uma é uma fortaleza antiga envolta no azul do Mar Negro revoltoso, a outra é um gigante agrícola moderno cercado pelo verde infinito da Amazônia. O que une estas duas cidades nesta página do jornal é mostrar quão pequeno o mundo realmente é e como a alma humana deixa vestígios semelhantes, mesmo em climas diferentes. As duas Sinops são o nome de uma irmandade oculta que ultrapassa os mapas."
             }
         };
-
-        // PARALLAX EFFECT
-        document.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                const bg = card.querySelector('.card-bg');
-                const x = (window.innerWidth - e.pageX * 2) / 100;
-                const y = (window.innerHeight - e.pageY * 2) / 100;
-                if(bg) bg.style.transform = `translateX(${x}px) translateY(${y}px) scale(1.15)`;
-            });
-        });
 
         function openReader(key) {
             const item = contentData[key];
@@ -210,31 +227,24 @@
             const content = document.getElementById('reader-content');
             
             content.innerHTML = `
-                <div class="modal-hero"><img src="${item.img}"></div>
                 <div class="modal-body">
-                    <span class="tag reveal">${item.tag}</span>
-                    <h1 class="title-tr reveal" style="font-size: 4rem;">${item.tr}</h1>
-                    <h2 class="title-pt reveal" style="font-size: 2rem; margin-bottom: 50px;">${item.pt}</h2>
+                    <h1 class="title-tr" style="font-size: 4.5rem; color:var(--accent); text-align:center;">${item.tr}</h1>
+                    <h2 class="title-pt" style="font-size: 2.2rem; margin-bottom: 80px; color:var(--ink); text-align:center;">${item.pt}</h2>
                     <div class="reader-grid">
-                        <div class="text-tr reveal">${item.textTr}</div>
-                        <div class="text-pt reveal">${item.textPt}</div>
+                        <div class="text-tr">${item.textTr}</div>
+                        <div class="text-pt">${item.textPt}</div>
                     </div>
                 </div>`;
             modal.style.display = 'block';
-            document.getElementById('progress-container').style.display = 'block';
             document.body.style.overflow = 'hidden';
-            
-            setTimeout(() => modal.classList.add('active'), 100);
+            modal.scrollTop = 0;
+            document.getElementById('progress-container').style.display = 'block';
         }
 
         function closeReader() {
-            const modal = document.getElementById('reader');
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-                document.getElementById('progress-container').style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }, 500);
+            document.getElementById('reader').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('progress-container').style.display = 'none';
         }
 
         function updateProgress() {
