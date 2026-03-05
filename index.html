@@ -3,179 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB | Mardin Brazil Journal</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@900&family=Plus+Jakarta+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <title>Mardin Brazil Journal</title>
     <style>
-        :root { --bg: #F8F6F2; --ink: #1A1A1A; --white: #FFFFFF; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
-        
-        header { 
-            padding: 20px 6%; 
-            display: flex; 
-            align-items: center; 
-            background: rgba(248, 246, 242, 0.95); 
-            backdrop-filter: blur(10px); 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-            border-bottom: 1px solid rgba(0,0,0,0.05); 
-        }
-
-        .logo-box { 
-            background: var(--ink); 
-            color: var(--bg); 
-            padding: 5px 12px; 
-            border-radius: 8px; 
-            margin-right: 12px; 
-            font-family: 'Bodoni Moda'; 
-            font-weight: 900; 
-            font-size: 1.5rem; 
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
-        
-        .bento-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 25px; 
-        }
-
-        .card { 
-            background: var(--white); 
-            border-radius: 35px; 
-            padding: 35px; 
-            border: 1px solid rgba(0,0,0,0.05); 
-            transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1); 
-            position: relative; 
-            overflow: hidden; 
-            min-height: 400px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: flex-end; 
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-
-        .card-image { 
-            position: absolute; 
-            inset: 0; 
-            background-size: cover; 
-            background-position: center; 
-            z-index: 0; 
-            transition: 0.6s ease;
-        }
-        
-        .card:hover .card-image { scale: 1.05; }
-
-        .card-overlay { 
-            position: absolute; 
-            inset: 0; 
-            background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85) 100%); 
-            z-index: 1; 
-        }
-
-        .card-content { position: relative; z-index: 2; color: white; }
-
-        /* Yazar Kartı Özel Stili */
-        .author-card { background: white; color: var(--ink); justify-content: center; align-items: center; text-align: center; }
-        .author-img { 
-            width: 120px; 
-            height: 120px; 
-            border-radius: 50%; 
-            margin-bottom: 20px; 
-            object-fit: cover; 
-            border: 3px solid var(--bg); 
-            position: relative; 
-            z-index: 2; 
-        }
-
-        .status-msg { grid-column: 1/-1; text-align: center; padding: 100px 20px; font-weight: 600; }
-        .error-box { color: #d9534f; background: #fff0f0; border-radius: 20px; padding: 30px; }
-        
-        button { 
-            background: var(--ink); 
-            color: white; 
-            border: none; 
-            padding: 12px 25px; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            margin-top: 20px;
-            font-family: inherit;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .tag { color: #888; font-size: 0.8rem; text-transform: uppercase; }
+        h2 { margin: 10px 0; font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-box">MB</div>
-        <div style="font-family:'Bodoni Moda'; font-weight:900; letter-spacing:1px; font-size: 1.2rem;">MARDIN BRAZIL</div>
-    </header>
-
-    <div class="container">
-        <div class="bento-grid" id="content-loader">
-            <div class="status-msg">Veriler güvenli şekilde getiriliyor...</div>
-        </div>
+    <div class="grid" id="main-grid">
+        <p>Veriler yükleniyor...</p>
     </div>
 
-    <script>
-        // Supabase Konfigürasyonu
-        const URL = "https://toomlocgdhkwrypuveof.supabase.co";
-        const M_KEY = "ZXlKaGJHY2lPaUpJVXpJMk5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjU01pT2lKemRYQmhiR0Z6WlNJc0luSmxaaUk2SW5SdmIyMXNiMjVuWkdoｃｍQzSjVjSFYyWlc5bklpd2ljbTlzWlNJNkltRnViMjRpTENKcG群众R2NpT2pFM056STJOamcwT0RRc0ltVjRjQ0k2TWpBNE9ESTBORFE0TkgwLmtraXdLVHNmWU9DSUlfZGZ1SnBhRWx5SnF4VGhya0duS2lLNy1Sak9zcUk=";
-        const KEY = atob(M_KEY.replace(/[^A-Za-z0-9+/=]/g, ""));
+    <script type="importmap">
+        {
+          "imports": {
+            "@neondatabase/serverless": "https://cdn.jsdelivr.net/npm/@neondatabase/serverless@0.9.0/dist/index.mjs"
+          }
+        }
+    </script>
 
-        // Client Başlatma
-        const supabaseClient = supabase.createClient(URL, KEY, {
-            auth: { persistSession: false }
-        });
+    <script type="module">
+        import { neon } from '@neondatabase/serverless';
 
-        async function fetchJournal() {
-            const container = document.getElementById('content-loader');
-            
+        async function init() {
+            // BURAYI GÜNCELLE: Neon Dashboard -> Connection String kısmındaki linki buraya yapıştır
+            const databaseUrl = 'YOUR_NEON_CONNECTION_STRING_HERE';
+            const sql = neon(databaseUrl);
+
             try {
-                // Tablo adı: articles
-                const { data, error } = await supabaseClient.from('articles').select('*');
+                const rows = await sql`SELECT * FROM articles ORDER BY id DESC`;
+                const grid = document.getElementById('main-grid');
                 
-                if (error) throw error;
-
-                if (!data || data.length === 0) {
-                    container.innerHTML = "<div class='status-msg'>Henüz yayınlanmış bir içerik yok.</div>";
+                if (rows.length === 0) {
+                    grid.innerHTML = "<p>Henüz veri eklenmemiş.</p>";
                     return;
                 }
 
-                container.innerHTML = data.map(article => `
-                    <div class="card ${article.type === 'author' ? 'author-card' : ''}">
-                        ${article.type !== 'author' ? `
-                            <div class="card-image" style="background-image:url('${article.img}')"></div>
-                            <div class="card-overlay"></div>
-                        ` : `
-                            <img src="${article.img}" class="author-img">
-                        `}
-                        <div class="card-content" style="${article.type === 'author' ? 'color:var(--ink)' : ''}">
-                            <h2 style="margin:0; font-family:'Bodoni Moda', serif; font-size:1.7rem; line-height:1.2;">${article.tr}</h2>
-                            <p style="opacity:0.7; font-size:0.85rem; margin-top:12px; font-weight:300; text-transform: uppercase; letter-spacing: 1px;">${article.tag}</p>
+                grid.innerHTML = rows.map(item => `
+                    <div class="card">
+                        <img src="${item.img || 'https://via.placeholder.com/300'}" alt="Image">
+                        <div class="card-body">
+                            <span class="tag">${item.tag}</span>
+                            <h2>${item.tr}</h2>
                         </div>
                     </div>
                 `).join('');
 
             } catch (err) {
-                console.error("Detaylar:", err);
-                container.innerHTML = `
-                    <div class="status-msg">
-                        <div class="error-box">
-                            <h3>Bağlantı Başarısız (Failed to Fetch)</h3>
-                            <p>İnternet servis sağlayıcınız Supabase'in IPv6 altyapısına erişimi engelliyor olabilir.</p>
-                            <small>Sistem Mesajı: ${err.message}</small><br>
-                            <button onclick="location.reload()">Tekrar Dene</button>
-                            <p style="font-size: 0.8rem; margin-top: 15px; opacity: 0.6;">Çözüm: Lütfen Wi-Fi yerine Mobil Veri ile deneyin veya bir VPN kullanın.</p>
-                        </div>
-                    </div>`;
+                console.error("Bağlantı Hatası:", err);
+                document.getElementById('main-grid').innerHTML = `<p style="color:red;">Hata: ${err.message}</p>`;
             }
         }
 
-        fetchJournal();
+        init();
     </script>
 </body>
 </html>
