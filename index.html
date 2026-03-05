@@ -3,120 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proje Eksik Kalmasın | Analiz ve Kıyaslama</title>
+    <title>MB | Ahmet Çınarbaş Journal - Mardin & Brazil</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* SIFIRLAMA VE MODERN DOĞRU TASARIM */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; color: #333; line-height: 1.8; }
-
-        /* YENİ BANNER - DAHA PRESTİJLİ */
-        .main-banner {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            height: 450px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 8px solid #e67e22;
+        :root {
+            --bg: #F8F6F2; --ink: #1A1A1A; --accent: #B08D57; --white: #FFFFFF;
+            --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
-        .main-banner h1 { font-size: 3.5rem; margin-bottom: 15px; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .main-banner p { font-size: 1.4rem; font-weight: 300; max-width: 800px; opacity: 0.9; }
 
-        /* İÇERİK ALANI */
-        .wrapper { max-width: 1200px; margin: -50px auto 50px; padding: 20px; }
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.6; }
+
+        header {
+            padding: 30px 6%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000; background: rgba(248, 246, 242, 0.95); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--ink); }
+        .logo-m { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; font-weight: 900; background: var(--ink); color: var(--bg); padding: 0 10px; border-radius: 8px; margin-right: 12px; }
+        .logo-text { font-family: 'Bodoni Moda', serif; font-size: 0.9rem; font-weight: 900; line-height: 1; letter-spacing: 1px; }
+
+        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 10001; display: none; }
+        #progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s; }
+
+        /* BANNER / HERO SECTION */
+        .hero-journal {
+            padding: 80px 6% 40px; text-align: center; max-width: 900px; margin: 0 auto;
+        }
+        .hero-journal h4 { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; font-weight: 800; }
+        .hero-journal h1 { font-family: 'Bodoni Moda', serif; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1; margin-bottom: 25px; font-weight: 900; }
+        .hero-journal p { font-size: 1.1rem; opacity: 0.7; font-weight: 300; line-height: 1.8; }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 20px 6% 80px; }
         
-        .content-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 60px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            display: flex;
-            flex-wrap: wrap;
-            transition: transform 0.3s ease;
+        /* BENTO GRID */
+        .bento { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 25px; 
         }
-        .content-card:hover { transform: translateY(-5px); }
-
-        /* FOTOĞRAF ALANI */
-        .image-box { flex: 1; min-width: 400px; min-height: 400px; }
-        .image-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* METİN ALANI */
-        .text-box { flex: 1; min-width: 400px; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
-        .text-box h2 { color: #1e3c72; font-size: 2rem; margin-bottom: 20px; position: relative; }
-        .text-box h2::after { content: ''; display: block; width: 50px; height: 4px; background: #e67e22; margin-top: 10px; }
-        .text-box p { font-size: 1.1rem; color: #555; text-align: justify; margin-bottom: 25px; }
-
-        /* AHMET ÇINARBAŞ İMZASI */
-        .footer-signature {
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-            font-weight: bold;
-            color: #7f8c8d;
-            font-style: italic;
-            text-align: right;
-            font-size: 0.95rem;
+        @media (min-width: 768px) { 
+            .bento { grid-template-columns: repeat(3, 1fr); }
+            .card-wide { grid-column: span 2; }
+            .card-tall { grid-row: span 2; }
+            .card-full { grid-column: span 3; }
         }
 
-        /* MOBİL AYAR */
-        @media (max-width: 850px) {
-            .image-box, .text-box { min-width: 100%; }
-            .main-banner h1 { font-size: 2.2rem; }
+        .card {
+            background: var(--white); border-radius: 40px; padding: 40px;
+            transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease); 
+            cursor: pointer; border: 1px solid rgba(0,0,0,0.03);
+            display: flex; flex-direction: column; justify-content: flex-end; 
+            min-height: 450px; position: relative; overflow: hidden;
         }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.12); }
+
+        .card-bg {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            z-index: 0; transition: transform 1.5s var(--ease);
+        }
+        .card:hover .card-bg { transform: scale(1.1); }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 100%); z-index: 1; }
+        .card-content { position: relative; z-index: 2; color: white; }
+
+        /* AUTHOR CARD */
+        .card-author { 
+            background: var(--white); justify-content: center; align-items: center; text-align: center;
+        }
+        .author-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 5px solid var(--bg); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .card-author .card-content { color: var(--ink); }
+
+        /* TYPOGRAPHY */
+        .tr-line { font-family: 'Bodoni Moda', serif; font-size: 1.8rem; line-height: 1.1; margin-bottom: 8px; font-weight: 700; }
+        .pt-line { font-family: 'Bodoni Moda', serif; font-size: 1.3rem; line-height: 1.1; font-weight: 400; opacity: 0.8; }
+        .tag-dual { font-size: 0.65rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
+        .entry-no { font-size: 0.6rem; font-weight: 700; opacity: 0.5; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px; width: fit-content; }
+
+        /* MODAL */
+        #reader-modal { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; overflow-y: auto; }
+        .modal-hero { width: 100%; height: 60vh; position: relative; overflow: hidden; }
+        .modal-hero img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-body { max-width: 1000px; margin: -100px auto 0; position: relative; background: var(--bg); border-radius: 50px 50px 0 0; padding: 80px 10% 120px; box-shadow: 0 -20px 60px rgba(0,0,0,0.05); }
+        .close-btn { position: fixed; top: 30px; right: 30px; background: var(--ink); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; z-index: 10000; transition: transform 0.3s; }
+        .close-btn:hover { transform: rotate(90deg); }
+
+        .reader-grid { display: grid; grid-template-columns: 1fr; gap: 50px; margin-top: 50px; }
+        @media (min-width: 800px) { .reader-grid { grid-template-columns: 1fr 1fr; gap: 80px; } }
+        
+        .text-tr { font-size: 1.15rem; line-height: 1.9; color: var(--ink); text-align: justify; }
+        .text-pt { font-size: 1.1rem; line-height: 1.9; color: #555; font-style: italic; border-left: 4px solid var(--accent); padding-left: 25px; }
+
+        .signature-block {
+            margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.85rem; font-weight: 700; color: var(--accent); letter-spacing: 1px;
+        }
+
+        footer { padding: 60px 6%; text-align: center; opacity: 0.4; font-size: 0.7rem; letter-spacing: 3px; border-top: 1px solid rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
-<section class="main-banner">
-    <h1>VİZYONER ARAŞTIRMA MERKEZİ</h1>
-    <p>Kaliteli Bir Siteye, Derinlemesine Analiz ve Profesyonel Kıyaslama Yakışır</p>
-</section>
+    <div id="progress-container"><div id="progress-bar"></div></div>
 
-<div class="wrapper">
+    <header>
+        <a href="#" class="logo-box"><div class="logo-m">MB</div><div class="logo-text">MARDIN<br>BRAZIL</div></a>
+    </header>
 
-    <div class="content-card">
-        <div class="image-box">
-            <img src="https://images.unsplash.com/photo-1454165833767-027ffea9e77b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Araştırma">
+    <section class="hero-journal">
+        <h4>A Research & Comparison Journal</h4>
+        <h1>Mezopotamya'dan Amazon'a Kültürel Kıyaslamalar</h1>
+        <p>Kaliteli bir araştırmaya, derinlemesine bir bakış ve estetik bir kıyaslama yakışır. Mardin'in taş sokaklarından Brezilya'nın ritmine uzanan, Ahmet Çınarbaş imzalı bir belgesel niteliğinde arşivleme projesi.</p>
+    </section>
+
+    <main class="container">
+        <div class="bento">
+            
+            <div class="card card-author card-full" onclick="openReader('author')">
+                <img src="https://pbs.twimg.com/media/GifApT2XEAAqees.jpg" class="author-img">
+                <div class="card-content">
+                    <span class="tag-dual">KÜLTÜR ARŞİVCİSİ ● PESQUISADOR</span>
+                    <h2 class="tr-line">Ahmet Çınarbaş</h2>
+                    <h3 class="pt-line">Kültürel Köprülerin Mimarı</h3>
+                    <div class="entry-no" style="border-color: rgba(0,0,0,0.1);">MANİFESTO #000</div>
+                </div>
+            </div>
+
+            <div class="card card-wide" onclick="openReader('carnaval')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200')"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <span class="tag-dual" style="color: white;">MAGAZİN ● CELEBRIDADE</span>
+                    <h2 class="tr-line">Rio Karnavalı'nda Mardin Rüzgarı</h2>
+                    <h3 class="pt-line">Vento de Mardin no Rio</h3>
+                    <div class="entry-no">ENTRY #001</div>
+                </div>
+            </div>
+
+            <div class="card card-tall" onclick="openReader('craft')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200')"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <span class="tag-dual" style="color: white;">ZANAAT ● ARTESANATO</span>
+                    <h2 class="tr-line">Gümüşün Sabrı</h2>
+                    <h3 class="pt-line">Paciência da Prata</h3>
+                    <div class="entry-no">ENTRY #002</div>
+                </div>
+            </div>
+
+            <div class="card card-wide" onclick="openReader('gastronomy')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200')"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <span class="tag-dual" style="color: white;">GASTRONOMİ ● SABOR</span>
+                    <h2 class="tr-line">Kıyaslamalı Gastronomi: İçli Köfte & Quibe</h2>
+                    <h3 class="pt-line">Encontro de Paladares</h3>
+                    <div class="entry-no">ENTRY #003</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="openReader('sinop')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200')"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <span class="tag-dual" style="color: white;">COĞRAFİ KADER ● DESTINO</span>
+                    <h2 class="tr-line">2 Kıta, 2 Şehir: Sinop Analizi</h2>
+                    <h3 class="pt-line">Duas Sinops</h3>
+                    <div class="entry-no">ENTRY #004</div>
+                </div>
+            </div>
+
+            <div class="card card-wide" onclick="openReader('society')">
+                <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200')"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <span class="tag-dual" style="color: white;">TOPLUM ● SOCIEDADE</span>
+                    <h2 class="tr-line">Ortak Ruh: Cordialidade Kıyaslaması</h2>
+                    <h3 class="pt-line">Almas Gêmeas</h3>
+                    <div class="entry-no">ENTRY #005</div>
+                </div>
+            </div>
+
         </div>
-        <div class="text-box">
-            <h2>Kıyaslamalı Pazar Metotları</h2>
-            <p>
-                Analiz süreçlerimizde yüzeysel verilerle yetinmiyoruz. Sektörel dinamikleri, rakip stratejilerini ve kullanıcı eğilimlerini çapraz sorgulama yöntemleriyle ele alıyoruz. Kaliteli bir araştırma, görünmeyeni görünür kılar. Bu noktada sunduğumuz her kıyaslama, projenin eksik parçalarını tamamlamak üzere matematiksel bir kesinlikle kurgulanmıştır.
-            </p>
-            <div class="footer-signature">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</div>
-        </div>
+    </main>
+
+    <div id="reader-modal" onscroll="updateProgress()">
+        <button class="close-btn" onclick="closeReader()">✕</button>
+        <div id="reader-content"></div>
     </div>
 
-    <div class="content-card" style="flex-direction: row-reverse;">
-        <div class="image-box">
-            <img src="https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Tasarım">
-        </div>
-        <div class="text-box">
-            <h2>Estetik ve İşlevsel Kıyaslama</h2>
-            <p>
-                Kullanıcı deneyimi (UX), sadece güzel görünmek değil, okuyucuya zevk veren bir akış sunmaktır. En iyi projeleri dünya standartlarındaki örneklerle kıyaslıyor; tipografi, renk teorisi ve erişilebilirlik kriterlerini en üst seviyeye taşıyoruz. Tasarımdaki her detay, projenin prestijini yansıtan birer yapı taşıdır.
-            </p>
-            <div class="footer-signature">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</div>
-        </div>
-    </div>
+    <footer>AHMET ÇINARBAŞ JOURNAL © 2026 ● MARDIN TO BRAZIL</footer>
 
-    <div class="content-card">
-        <div class="image-box">
-            <img src="https://images.unsplash.com/photo-1551288049-bbbda540d3b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Teknoloji">
-        </div>
-        <div class="text-box">
-            <h2>Geleceğin Teknolojik Altyapısı</h2>
-            <p>
-                Teknolojik analizlerimiz, sürdürülebilirlik ve performans odaklıdır. Mevcut sistemleri modern framework’lerle kıyaslayarak en optimize çözümü üretiyoruz. Verimlilik artışı ve veri güvenliği, araştırmalarımızın temel direklerini oluşturur. Kalite tesadüf değildir; doğru analiz ve doğru kıyaslamanın bir sonucudur.
-            </p>
-            <div class="footer-signature">Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</div>
-        </div>
-    </div>
+    <script>
+        const contentData = {
+            author: { 
+                tag: "MANIFESTO", tr: "Kültürel Arşivcilik ve Karşılaştırmalı Sanat", pt: "Arquivismo Cultural",
+                img: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1200", 
+                textTr: "Ben Ahmet Çınarbaş; Mezopotamya’nın taş sessizliğini Amazon’un tropikal gürültüsüyle kıyaslayan bir arşivciyim. Araştırmalarım, iki uzak coğrafyanın aslında ne kadar benzer bir 'insanlık' özüne sahip olduğunu kanıtlamayı amaçlar. Kaliteli bir araştırma, sadece benzerlikleri değil, o benzerlikleri doğuran tarihsel sancıları da anlamayı gerektirir.",
+                textPt: "Sou Ahmet Çınarbaş; um arquivista que compara o silêncio de pedra da Mesopotâmia com o ruído tropical da Amazônia. Minha pesquisa visa provar o quão semelhante é a essência da 'humanidade' em duas geografias distantes. Uma pesquisa de qualidade requer entender não apenas as semelhanças, mas também as dores históricas que as geraram."
+            },
+            carnaval: { 
+                tag: "MAGAZİN / ANALİZ", tr: "Rio Karnavalı'nda Mezopotamya Estetiği", pt: "Estética da Mesopotâmia no Rio",
+                img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200",
+                textTr: "Dünyanın en büyük gösterisi olan Rio Karnavalı, bu yıl Mardin’in telkari motiflerinden esinlenen kostümlere ev sahipliği yaptı. Bu bir moda tesadüfü değil, küresel estetiğin ortak köklerine dair derin bir kıyaslama fırsatıdır. Mardin’in gümüş telleri, Rio’nun tüyleriyle aynı ritmi tutuyor.", 
+                textPt: "O Carnaval do Rio, o maior espetáculo da terra, acolheu este ano figurinos inspirados nos motivos da filigrana de Mardin. Não se trata de uma coincidência de moda, mas de uma profunda oportunidade de comparação das raízes comuns da estética global." 
+            },
+            craft: { 
+                tag: "ZANAAT KIYASLAMASI", tr: "Telkari ve Amazon Tohum İşçiliği", pt: "Filigrana vs Sementes da Amazônia",
+                img: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200",
+                textTr: "Mardin telkarisi gümüşün ateşle dansıdır, sabır gerektirir. Brezilya Amazon yerlilerinin tohum işçiliği ise doğanın sunduğuyla kurulan manevi bir bağdır. Her ikisi de zanaatın ötesinde, insanın doğayı ve madeni evcilleştirme çabasının sanatsal bir kıyaslamasıdır.",
+                textPt: "A filigrana de Mardin é a dança da prata com o fogo, exige paciência. O artesanato de sementes dos povos indígenas da Amazônia brasileira é uma conexão espiritual com o que a natureza oferece. Ambos são comparações artísticas do esforço humano."
+            },
+            gastronomy: { 
+                tag: "DERİN GASTRONOMİ", tr: "Gastronomik Göç: İçli Köfte ve Quibe", pt: "Migração Gastronômica: Quibe",
+                img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200",
+                textTr: "Mardin sofralarının kralı 'Irok' (İçli Köfte), binlerce kilometre ötede Brezilya'nın en popüler sokak lezzeti 'Quibe'ye dönüşmüştür. Bu sadece bir yemek benzerliği değil, 19. yüzyıldan bu yana süregelen bir göç dalgasının, damak tadı üzerinden yapılan sosyolojik bir kıyaslamasıdır.",
+                textPt: "O rei das mesas de Mardin, o 'Irok' (Kibbeh), tornou-se a comida de rua mais popular do Brasil, o 'Quibe'. Esta não é apenas uma semelhança gastronômica, mas uma comparação sociológica de uma onda migratória que persiste desde o século XIX."
+            },
+            sinop: { 
+                tag: "STRATEJİK COĞRAFYA", tr: "İki Kıta, İki Şehir: Sinop ve Tarihsel Paralellik", pt: "Paralelismo Histórico: Duas Sinops",
+                img: "https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200",
+                textTr: "Karadeniz’in incisi Sinop ile Brezilya Mato Grosso’nun orman şehri Sinop. İsim benzerliğinin ötesinde, her iki şehir de coğrafi izolasyonun getirdiği özgün bir kültürel karakter sergiliyor. Kaliteli bir karşılaştırma, haritadaki isimlerin ötesindeki ruh birliğini görmemizi sağlar.",
+                textPt: "Sinop, a pérola do Mar Negro, e Sinop, a cidade florestal de Mato Grosso, Brasil. Além da semelhança de nomes, ambas as cidades exibem um caráter cultural único trazido pelo isolamento geográfico."
+            },
+            society: { 
+                tag: "TOPLUMSAL ANALİZ", tr: "Misafirperverlik ve Cordialidade Karşılaştırması", pt: "Hospitalidade vs Cordialidade",
+                img: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200",
+                textTr: "Mardin’de kapısı açık bırakılan evler ile Brezilya’nın 'O Homem Cordial' (İçten İnsan) kavramı, toplumsal sıcaklığın iki farklı kıtadaki yansımasıdır. Bu analizde, insan ilişkilerindeki samimiyetin coğrafya tanımazlığını kıyaslayarak ortaya koyuyoruz.",
+                textPt: "As casas de portas abertas em Mardin e o conceito brasileiro de 'O Homem Cordial' são reflexos do calor social em dois continentes diferentes. Nesta análise, comparamos a sinceridade nas relações humanas."
+            }
+        };
 
-</div>
+        function openReader(key) {
+            const item = contentData[key]; if(!item) return;
+            const modal = document.getElementById('reader-modal');
+            const content = document.getElementById('reader-content');
+            
+            content.innerHTML = `
+                <div class="modal-hero"><img src="${item.img}"></div>
+                <div class="modal-body">
+                    <span class="tag-dual">${item.tag}</span>
+                    <h1 class="tr-line" style="font-size: 2.5rem;">${item.tr}</h1>
+                    <h2 class="pt-line" style="font-size: 1.8rem; margin-bottom: 30px;">${item.pt}</h2>
+                    <div class="reader-grid">
+                        <div class="text-tr">${item.textTr}</div>
+                        <div class="text-pt">${item.textPt}</div>
+                    </div>
+                    <div class="signature-block">
+                        <p>● Bu analizler Ahmet Çınarbaş tarafından titizlikle hazırlanmıştır.</p>
+                        <p style="opacity:0.6; font-style:italic;">● Estas análises foram meticulosamente preparadas por Ahmet Çınarbaş.</p>
+                    </div>
+                </div>`;
+            modal.style.display = 'block';
+            document.getElementById('progress-container').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
 
+        function closeReader() {
+            document.getElementById('reader-modal').style.display = 'none';
+            document.getElementById('progress-container').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateProgress() {
+            const modal = document.getElementById('reader-modal');
+            const scrolled = (modal.scrollTop / (modal.scrollHeight - modal.clientHeight)) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        }
+    </script>
 </body>
 </html>
