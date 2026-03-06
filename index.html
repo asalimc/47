@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmet Çınarbaş | The Grand 15-Chapter Archive</title>
+    <title>Ahmet Çınarbaş | The Grand Interactive Archive 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
     <style>
         :root {
             --linen: #F8F6F2;
@@ -15,48 +16,54 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--linen); color: var(--stone); font-family: 'Inter', sans-serif; line-height: 1.7; overflow-x: hidden; }
+        body { background-color: var(--linen); color: var(--stone); font-family: 'Inter', sans-serif; line-height: 1.8; transition: background-color 1.5s ease; }
 
         header {
-            height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; background: white; border-bottom: 1px solid var(--clay);
         }
-        .header-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 6rem); font-style: italic; font-weight: 300; }
-        .header-sub { letter-spacing: 8px; text-transform: uppercase; font-size: 0.7rem; color: var(--gold); margin-top: 15px; }
+        .header-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 10vw, 7rem); font-style: italic; font-weight: 300; line-height: 1; }
+        .header-sub { letter-spacing: 10px; text-transform: uppercase; font-size: 0.7rem; color: var(--gold); margin-top: 30px; }
 
-        .container { max-width: 1300px; margin: 0 auto; padding: 60px 20px; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 100px 20px; }
+        .section { margin-bottom: 35vh; position: relative; }
 
-        .section { margin-bottom: 200px; opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
-        .section.active { opacity: 1; transform: translateY(0); }
-
-        .img-frame { width: 100%; height: 60vh; overflow: hidden; border-radius: 4px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .img-frame img { width: 100%; height: 100%; object-fit: cover; transition: 2s; }
+        .img-parallax-wrapper {
+            width: 100%; height: 75vh; overflow: hidden; border-radius: 2px; position: relative;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.04);
+        }
+        .parallax-img {
+            width: 100%; height: 130%; object-fit: cover; position: absolute; top: -15%; will-change: transform;
+            filter: sepia(10%) brightness(0.9); transition: filter 1s ease;
+        }
+        .section:hover .parallax-img { filter: sepia(0%) brightness(1); }
 
         .content-card {
-            width: 92%; margin: -60px auto 0; background: var(--white); padding: 50px;
-            position: relative; z-index: 5; border: 1px solid rgba(0,0,0,0.02);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.03);
+            width: 90%; margin: -120px auto 0; background: var(--white); padding: 80px;
+            position: relative; z-index: 10; border: 1px solid rgba(0,0,0,0.02);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.03);
         }
 
-        .section-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--clay); padding-bottom: 15px; margin-bottom: 35px; }
-        .num { font-family: 'Cormorant Garamond'; font-size: 2.2rem; font-style: italic; color: var(--gold); }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--clay); padding-bottom: 25px; margin-bottom: 45px; }
+        .num { font-family: 'Cormorant Garamond'; font-size: 2.8rem; font-style: italic; color: var(--gold); }
         .title-box { text-align: right; }
-        .title-tr { font-family: 'Cormorant Garamond'; font-size: 2rem; font-weight: 600; display: block; }
-        .title-pt { font-family: 'Cormorant Garamond'; font-size: 1.2rem; font-style: italic; color: var(--gold); display: block; }
+        .title-tr { font-family: 'Cormorant Garamond'; font-size: 2.5rem; font-weight: 600; display: block; line-height: 1; }
+        .title-pt { font-family: 'Cormorant Garamond'; font-size: 1.4rem; font-style: italic; color: var(--gold); display: block; margin-top: 5px; }
 
-        .grid-text { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .lang-col { text-align: justify; hyphens: auto; font-size: 0.92rem; }
-        .pt { color: #777; font-style: italic; border-left: 1px solid var(--clay); padding-left: 25px; }
-        p { margin-bottom: 15px; }
+        .grid-text { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        .lang-col { text-align: justify; font-size: 1rem; color: var(--stone); }
+        .pt { color: #777; font-style: italic; border-left: 1px solid var(--clay); padding-left: 40px; }
+        p { margin-bottom: 25px; }
 
-        .seal-area { margin-top: 35px; display: flex; align-items: center; gap: 12px; border-top: 1px dashed var(--clay); padding-top: 25px; }
-        .s-circle { width: 35px; height: 35px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond'; color: var(--gold); font-size: 0.8rem; font-weight: 600; }
-        .s-text { font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+        .seal { margin-top: 50px; display: flex; align-items: center; gap: 15px; border-top: 1px dashed var(--clay); padding-top: 30px; }
+        .s-circle { width: 45px; height: 45px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond'; color: var(--gold); font-weight: 600; }
+        .s-text { font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); }
 
         @media (max-width: 1024px) {
-            .grid-text { grid-template-columns: 1fr; }
-            .pt { border-left: none; border-top: 1px solid var(--clay); padding-left: 0; padding-top: 25px; }
-            .content-card { padding: 30px; width: 100%; }
+            .grid-text { grid-template-columns: 1fr; gap: 40px; }
+            .pt { border-left: none; border-top: 1px solid var(--clay); padding-left: 0; padding-top: 40px; }
+            .content-card { padding: 40px 25px; width: 95%; margin-top: -60px; }
+            .img-parallax-wrapper { height: 50vh; }
         }
     </style>
 </head>
@@ -64,82 +71,302 @@
 
     <header>
         <div class="header-sub">Küratör: Ahmet Çınarbaş</div>
-        <h1 class="header-title">The Grand Archive 2026</h1>
-        <div class="header-sub">15 Chapters // Complete Edition</div>
+        <h1 class="header-title">The Complete Archive</h1>
+        <div class="header-sub">15 Chapters // Mardin to Brazil // 2026</div>
     </header>
 
-    <div class="container" id="root"></div>
+    <div class="container" id="gallery-root"></div>
 
 <script>
-    const data = [
+    // SMOOTH SCROLL INIT
+    const lenis = new Lenis();
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    // EKSİKSİZ 15 BÖLÜM VERİSİ
+    const fullData = [
         { id: "01", tr_t: "Manifesto", pt_t: "O Manifesto", img: "1490730141103-6cac27aaab94",
-          tr: ["Ben Ahmet Çınarbaş; Mezopotamya’nın kadim sarı taşlarından Brezilya’nın sonsuz yeşil ormanlarına uzanan bir köprü inşa ediyorum.", "Bu arşiv, sadece bir gözlem değil, aynı zamanda ruhun coğrafi sınırları nasıl aştığının bir kanıtı olarak tasarlanmıştır.", "Mizahı, en ağır hüzünlerin üzerine örtülen ipek bir şal gibi görüyorum; bu şal sayesinde hayatın zorlukları estetik bir değere dönüşür.", "Mardin’in sessiz bilgeliği ile Rio’nun gürültülü neşesi, aslında aynı insani arzunun farklı dillerdeki tezahürleridir.", "Kalite, ayrıntılarda gizlenen o küçük sırlar toplamıdır; bu yüzden her paragrafı bir kuyumcu titizliğiyle işliyorum.", "Geleceğe bıraktığım bu miras, unutmaya karşı verilmiş bir savaştır; her kayıt, kolektif hafızanın birer hücresidir."],
-          pt: ["Eu sou Ahmet Çınarbaş; estou construindo uma ponte que vai das pedras amarelas da Mesopotâmia às florestas verdes do Brasil.", "Este arquivo não é apenas uma observação, mas uma prova de como a alma transcende as fronteiras geográficas tradicionais.", "Vejo o humor como um xale de seda sobre as tristezas; através dele, as dificuldades da vida tornam-se valores estéticos.", "A sabedoria silenciosa de Mardin e a alegria barulhenta do Rio são manifestações do mesmo desejo humano em línguas diferentes.", "A qualidade é a soma de pequenos segredos nos detalhes; por isso, escrevo cada parágrafo com a precisão de um joalheiro.", "Este legado que deixo para o futuro é uma guerra contra o esquecimento; cada registro é uma célula da nossa memória."]
+          tr: [
+              "Ben Ahmet Çınarbaş; Mezopotamya’nın kadim sarı taşlarından Brezilya’nın sonsuz yeşil ormanlarına uzanan bir köprü inşa ediyorum.",
+              "Bu arşiv, sadece bir gözlem değil, aynı zamanda ruhun coğrafi sınırları nasıl aştığının bir kanıtı olarak tasarlanmıştır.",
+              "Mizahı, en ağır hüzünlerin üzerine örtülen ipek bir şal gibi görüyorum; bu şal sayesinde hayatın zorlukları estetik bir değere dönüşür.",
+              "Mardin’in sessiz bilgeliği ile Rio’nun gürültülü neşesi, aslında aynı insani arzunun farklı dillerdeki tezahürleridir.",
+              "Kalite, ayrıntılarda gizlenen o küçük sırlar toplamıdır; bu yüzden her paragrafı bir kuyumcu titizliğiyle işliyorum.",
+              "Geleceğe bıraktığım bu miras, unutmaya karşı verilmiş bir savaştır; her kayıt, kolektif hafızanın birer hücresidir."
+          ],
+          pt: [
+              "Eu sou Ahmet Çınarbaş; estou construindo uma ponte que vai das pedras amarelas da Mesopotâmia às florestas verdes do Brasil.",
+              "Este arquivo não é apenas uma observação, mas uma prova de como a alma transcende as fronteiras geográficas tradicionais.",
+              "Vejo o humor como um xale de seda sobre as tristezas; através dele, as dificuldades da vida tornam-se valores estéticos.",
+              "A sabedoria silenciosa de Mardin e a alegria barulhenta do Rio são manifestações do mesmo desejo humano em línguas diferentes.",
+              "A qualidade é a soma de pequenos segredos nos detalhes; por isso, escrevo cada parágrafo com a precisão de um joalheiro.",
+              "Este legado que deixo para o futuro é uma guerra contra o esquecimento; cada registro é uma célula da nossa memória."
+          ]
         },
         { id: "02", tr_t: "Ritüeller", pt_t: "Os Rituais", img: "1516450360452-9312f5e86fc7",
-          tr: ["Samba ritimleri Rio sokaklarında yankılanırken, Mardin’in zılgıtları bin yıllık bir direncin sesini semaya yükseltir.", "Her iki kültür de acıyı dansla ve müzikle sağaltma konusunda doğuştan gelen bir yeteneğe ve derin bir mirasa sahiptir.", "Karnaval, Brezilya için sadece bir eğlence değil; hayata karşı atılmış toplumsal ve kolektif bir kahkahanın kendisidir.", "Mardin’in dar sokaklarında yankılanan Reyhani ezgileri, toprağa duyulan aşkın ve saygının en naif ifadesidir.", "Kostümlerin altındaki her hikaye, aslında bir hayatta kalma mücadelesinin payetlerle süslenmiş birer yansımasıdır.", "Ritim, kelimelerin bittiği yerde başlar ve insanı dilini bilmediği bir yabancıyla aynı duyguda birleştiren tek dildir."],
-          pt: ["Enquanto os ritmos do samba ecoam no Rio, os 'zılgıt' de Mardin elevam a voz de uma resistência milenar aos céus.", "Ambas as culturas possuem um talento inato e uma herança profunda para curar a dor através da dança e da música.", "O Carnaval não é apenas diversão para o Brasil; é o próprio riso social e coletivo lançado contra as dificuldades da vida.", "As melodias Reyhani nas ruas de Mardin são a expressão mais ingênua de amor e respeito pela terra e pelos antepassados.", "Cada história sob os trajes é, na verdade, um reflexo de uma luta pela sobrevivência adornada com lantejoulas brilhantes.", "O ritmo começa onde as palavras terminam; é a única língua que une pessoas de nações diferentes na mesma emoção pura."]
+          tr: [
+              "Samba ritimleri Rio sokaklarında yankılanırken, Mardin’in zılgıtları bin yıllık bir direncin sesini semaya yükseltir.",
+              "Her iki kültür de acıyı dansla ve müzikle sağaltma konusunda doğuştan gelen bir yeteneğe ve derin bir mirasa sahiptir.",
+              "Karnaval, Brezilya için sadece bir eğlence değil; hayata karşı atılmış toplumsal ve kolektif bir kahkahanın kendisidir.",
+              "Mardin’in dar sokaklarında yankılanan Reyhani ezgileri, toprağa duyulan aşkın ve saygının en naif ifadesidir.",
+              "Kostümlerin altındaki her hikaye, aslında bir hayatta kalma mücadelesinin payetlerle süslenmiş birer yansımasıdır.",
+              "Ritim, kelimelerin bittiği yerde başlar ve insanı dilini bilmediği bir yabancıyla aynı duyguda birleştiren tek dildir."
+          ],
+          pt: [
+              "Enquanto os ritmos do samba ecoam no Rio, os 'zılgıt' de Mardin elevam a voz de uma resistência milenar aos céus.",
+              "Ambas as culturas possuem um talento inato e uma herança profunda para curar a dor através da dança e da música.",
+              "O Carnaval não é apenas diversão para o Brasil; é o próprio riso social e coletivo lançado contra as dificuldades da vida.",
+              "As melodias Reyhani nas ruas de Mardin são a expressão mais ingênua de amor e respeito pela terra e pelos antepassados.",
+              "Cada história sob os trajes é, na verdade, um reflexo de uma luta pela sobrevivência adornada com lantejoulas brilhantes.",
+              "O ritmo começa onde as palavras terminam; é a única língua que une pessoas de nações diferentes na mesma emoção pura."
+          ]
         },
-        { id: "03", tr_t: "Telkari Sanatı", pt_t: "Arte em Filigrana", img: "1515562141207-7a18b5ce7142",
-          tr: ["Mardin’in gümüş telkari sanatı, sabrın metalle imtihanıdır; her ince tel, ustanın nefesiyle şekil bulur.", "Amazon yerlilerinin tohum işçiliği ile bu kadim gümüş sanatı, ellerin emeğe duyduğu ortak aşkın kanıtıdır.", "Bir kolyenin kıvrımında bin yıllık bir medeniyetin izlerini bulabilirsiniz; bu sanat, zamanın donmuş halidir.", "Ustalık, sadece teknik bir beceri değil, aynı zamanda nesiller arası aktarılan bir ruhun bedene bürünmesidir.", "Zanaatın estetiği, modern dünyanın seri üretim çarklarına karşı duran en zarif ve en güçlü kale gibidir.", "Ahmet Çınarbaş olarak bu ayrıntıları kaydetmek, kaybolmaya yüz tutan bu zarafete duyduğum bir saygı duruşudur."],
-          pt: ["A arte da filigrana de prata de Mardin é o teste da paciência com o metal; cada fio ganha forma com o mestre.", "O trabalho de sementes dos nativos da Amazônia e esta antiga arte em prata provam o amor comum pelo trabalho manual.", "Nas curvas de um colar, pode-se encontrar vestígios de uma civilização milenar; esta arte é o tempo congelado.", "A maestria não é apenas habilidade técnica, mas a personificação de uma alma transmitida entre gerações.", "A estética do artesanato é como um castelo elegante que resiste às rodas da produção em massa moderna.", "Como Ahmet Çınarbaş, registrar estes detalhes é uma homenagem à elegância que corre o risco de desaparecer."]
+        { id: "03", tr_t: "Gümüşün Ruhu", pt_t: "Espírito da Prata", img: "1515562141207-7a18b5ce7142",
+          tr: [
+              "Mardin’in gümüş telkari sanatı, sabrın metalle imtihanıdır; her ince tel, ustanın nefesiyle hayat bulur.",
+              "Amazon yerlilerinin tohum işçiliği ile bu kadim gümüş sanatı, ellerin emeğe duyduğu ortak aşkın kanıtıdır.",
+              "Bir kolyenin kıvrımında bin yıllık bir medeniyetin izlerini bulabilirsiniz; bu sanat, zamanın donmuş halidir.",
+              "Ustalık, sadece teknik bir beceri değil, aynı zamanda nesiller arası aktarılan bir ruhun bedene bürünmesidir.",
+              "Zanaatın estetiği, modern dünyanın seri üretim çarklarına karşı duran en zarif ve en güçlü kale gibidir.",
+              "Ahmet Çınarbaş olarak bu ayrıntıları kaydetmek, kaybolmaya yüz tutan bu zarafete duyduğum bir saygı duruşudur."
+          ],
+          pt: [
+              "A arte da filigrana de prata de Mardin é o teste da paciência com o metal; cada fio ganha vida com o mestre.",
+              "O trabalho de sementes dos nativos da Amazônia e esta antiga arte em prata provam o amor comum pelo trabalho manual.",
+              "Nas curvas de um colar, pode-se encontrar vestígios de uma civilização milenar; esta arte é o tempo congelado.",
+              "A maestria não é apenas habilidade técnica, mas a personificação de uma alma transmitida entre gerações.",
+              "A estética do artesanato é como um castelo elegante que resiste às rodas da produção em massa moderna.",
+              "Como Ahmet Çınarbaş, registrar estes detalhes é uma homenagem à elegância que corre o risco de desaparecer."
+          ]
         },
-        { id: "04", tr_t: "Mutfak Köprüsü", pt_t: "Ponte Culinária", img: "1541518763669-27fef04b14ea",
-          tr: ["Mardin’in baharat kokulu 'Irok'u ile Brezilya’nın 'Quibe'si, göçün tabaktaki en lezzetli ve en somut kanıtıdır.", "Baharatlar, toprağın hafızasını taşır; kişniş ve yenibahar iki uzak kültürü aynı sofrada kardeşe dönüştürür.", "Bir yemeğin tadında, o yemeği pişiren ellerin geldiği coğrafyanın hüznünü ve sevincini aynı anda hissedersiniz.", "Mutfak, sınırların ortadan kalktığı ve dillerin yerini damak tadına bıraktığı evrensel bir anlaşma zeminidir.", "Mardin'in kurak sıcaklığından Brezilya'nın nemli havasına taşınan tarifler, yeni topraklarda yeni ruhlar bulur.", "Yemek kültürü, bir halkın hayatta kalma ve kendini ifade etme biçiminin en estetik ve en kalıcı yollarından biridir."],
-          pt: ["O 'Irok' temperado de Mardin e o 'Quibe' brasileiro são as provas mais saborosas da migração no prato.", "As especiarias carregam a memória da terra; o coentro e a pimenta-da-jamaica unem culturas distantes à mesa.", "No sabor de um prato, sente-se a tristeza e a alegria da geografia de onde vêm as mãos que o cozinharam.", "A cozinha é um terreno de acordo universal onde as fronteiras desaparecem e as línguas dão lugar ao paladar.", "Receitas trazidas do calor árido de Mardin para o ar úmido do Brasil encontram novas almas em terras novas.", "A cultura alimentar é uma das formas mais estéticas e duradouras de sobrevivência e expressão de um povo."]
+        { id: "04", tr_t: "Mutfak Mirası", pt_t: "Herança Culinária", img: "1541518763669-27fef04b14ea",
+          tr: [
+              "Mardin’in baharat kokulu 'Irok'u ile Brezilya’nın 'Quibe'si, göçün tabaktaki en lezzetli ve en somut kanıtıdır.",
+              "Baharatlar, toprağın hafızasını taşır; kişniş ve yenibahar iki uzak kültürü aynı sofrada kardeşe dönüştürür.",
+              "Bir yemeğin tadında, o yemeği pişiren ellerin geldiği coğrafyanın hüznünü ve sevincini aynı anda hissedersiniz.",
+              "Mutfak, sınırların ortadan kalktığı ve dillerin yerini damak tadına bıraktığı evrensel bir anlaşma zeminidir.",
+              "Mardin'in kurak sıcaklığından Brezilya'nın nemli havasına taşınan tarifler, yeni topraklarda yeni ruhlar bulur.",
+              "Yemek kültürü, bir halkın hayatta kalma ve kendini ifade etme biçiminin en estetik ve en kalıcı yollarından biridir."
+          ],
+          pt: [
+              "O 'Irok' temperado de Mardin e o 'Quibe' brasileiro são as provas mais saborosas da migração no prato.",
+              "As especiarias carregam a memória da terra; o coentro e a pimenta-da-jamaica unem culturas distantes à mesa.",
+              "No sabor de um prato, sente-se a tristeza e a alegria da geografia de onde vêm as mãos que o cozinharam.",
+              "A cozinha é um terreno de acordo universal onde as fronteiras desaparecem e as línguas dão lugar ao paladar.",
+              "Receitas trazidas do calor árido de Mardin para o ar úmido do Brasil encontram novas almas em terras novas.",
+              "A cultura alimentar é uma das formas mais estéticas e duradouras de sobrevivência e expressão de um povo."
+          ]
         },
-        { id: "05", tr_t: "Kahve Kültürü", pt_t: "Cultura do Café", img: "1495474472287-4d71bcdd2085",
-          tr: ["Mardin’in mırrası misafirin baş tacı edildiği anın şahididir; acı tadı, dostluğun tatlı hatırasını mühürler.", "Brezilya’nın uçsuz bucaksız tarlalarından gelen çekirdekler ise modern dünyayı her sabah yeniden uyandırır.", "Bir fincan kahvenin buharında, binlerce kilometrelik yollar ve farklı hayatlar aynı kokuda birleşmeyi başarır.", "Kahve, sadece bir içecek değil, aynı zamanda toplumsal bir ritüel ve sohbetin en samimi başlatıcısıdır.", "Mardin'in bakır cezvelerindeki sabır ile Brezilya'nın hasat neşesi, her yudumda damaklarda birer hikaye bırakır.", "Zaman kahveyle durur; Ahmet Çınarbaş olarak bu anları arşivlemek, insanlığın ortak keyfine bir övgüdür."],
-          pt: ["O 'mırra' de Mardin é a testemunha do momento em que o hóspede é coroado; seu amargor sela a amizade.", "Os grãos das vastas fazendas do Brasil despertam o mundo moderno todas as manhãs com sua energia única.", "No vapor de uma xícara de café, milhares de quilômetros e vidas diferentes conseguem se unir no mesmo aroma.", "O café não é apenas uma bebida, mas um ritual social e o iniciador mais sincero de qualquer conversa profunda.", "A paciência nas cafeteiras de cobre de Mardin e a alegria da colheita brasileira deixam histórias em cada gole.", "O tempo para com o café; como Ahmet Çınarbaş, arquivar esses momentos é um elogio ao prazer comum humano."]
+        { id: "05", tr_t: "Siyahın Tadı", pt_t: "Sabor do Café", img: "1495474472287-4d71bcdd2085",
+          tr: [
+              "Mardin’in mırrası misafirin baş tacı edildiği anın şahididir; acı tadı, dostluğun tatlı hatırasını mühürler.",
+              "Brezilya’nın uçsuz bucaksız tarlalarından gelen çekirdekler ise modern dünyayı her sabah yeniden uyandırır.",
+              "Bir fincan kahvenin buharında, binlerce kilometrelik yollar ve farklı hayatlar aynı kokuda birleşmeyi başarır.",
+              "Kahve, sadece bir içecek değil, aynı zamanda toplumsal bir ritüel ve sohbetin en samimi başlatıcısıdır.",
+              "Mardin'in bakır cezvelerindeki sabır ile Brezilya'nın hasat neşesi, her yudumda damaklarda birer hikaye bırakır.",
+              "Zaman kahveyle durur; Ahmet Çınarbaş olarak bu anları arşivlemek, insanlığın ortak keyfine bir övgüdür."
+          ],
+          pt: [
+              "O 'mırra' de Mardin é a testemunha do momento em que o hóspede é coroado; seu amargor sela a amizade.",
+              "Os grãos das vastas fazendas do Brasil despertam o mundo moderno todas as manhãs com sua energia única.",
+              "No vapor de uma xícara de café, milhares de quilômetros e vidas diferentes conseguem se unir no mesmo aroma.",
+              "O café não é apenas uma bebida, mas um ritual social e o iniciador mais sincero de qualquer conversa profunda.",
+              "A paciência nas cafeteiras de cobre de Mardin e a alegria da colheita brasileira deixam histórias em cada gole.",
+              "O tempo para com o café; como Ahmet Çınarbaş, arquivar esses momentos é um elogio ao prazer comum humano."
+          ]
         },
-        { id: "06", tr_t: "Sokak Futbolu", pt_t: "Futebol de Rua", img: "1526232761682-d26e03ac148e",
-          tr: ["Rio'nun favelalarından Mardin'in dar taş sokaklarına kadar futbol, yoksul çocukların en büyük hayal kapısıdır.", "Bir topun peşinden koşmak, hayatın getirdiği tüm zorlukları ve eşitsizlikleri o an için tamamen unutturmayı başarır.", "Pelé'nin mirası sadece bir spor dalı değil, bir halkın özgüveni ve dünyaya attığı en güçlü sportif imzadır.", "Mardin'in taşlı zeminlerinde yapılan maçlar, çocukluğun en masum zaferlerini ve en samimi arkadaşlıklarını kurar.", "Futbol, hiçbir dil bilmenize gerek kalmadan, tüm dünyayla aynı heyecanı paylaşabildiğiniz devasa bir tiyatrodur.", "Her gol, bir umudun yeşermesidir; bu arşivi futbolla taçlandırmak, insan ruhunun dayanıklılığına selam durmaktır."],
-          pt: ["Das favelas do Rio às ruas estreitas de Mardin, o futebol é o maior portal de sonhos para as crianças humildes.", "Correr atrás de uma bola permite esquecer completamente, por um momento, todas as dificuldades e desigualdades.", "O legado de Pelé não é apenas um desporto, mas a autoconfiança de um povo e sua assinatura desportiva no mundo.", "Os jogos nos solos pedregosos de Mardin constroem as vitórias mais inocentes e as amizades mais sinceras.", "O futebol é um teatro imenso onde se pode partilhar a mesma emoção com o mundo sem precisar de falar nada.", "Cada golo é o florescer de uma esperança; coroar este arquivo com o futebol é saudar a resiliência humana."]
+        { id: "06", tr_t: "Yeşil Saha", pt_t: "Campo Verde", img: "1526232761682-d26e03ac148e",
+          tr: [
+              "Rio'nun favelalarından Mardin'in dar taş sokaklarına kadar futbol, çocukların en büyük hayal kapısıdır.",
+              "Bir topun peşinden koşmak, hayatın getirdiği tüm zorlukları ve eşitsizlikleri o an için tamamen unutturur.",
+              "Pelé'nin mirası sadece bir spor değil, bir halkın özgüveni ve dünyaya attığı en güçlü sportif imzadır.",
+              "Mardin'in taşlı zeminlerinde yapılan maçlar, çocukluğun en masum zaferlerini ve en samimi dostluklarını kurar.",
+              "Futbol, hiçbir dil bilmenize gerek kalmadan, tüm dünyayla aynı heyecanı paylaşabildiğiniz devasa bir tiyatrodur.",
+              "Her gol, bir umudun yeşermesidir; bu arşivi futbolla taçlandırmak, insan ruhunun dayanıklılığına selamdır."
+          ],
+          pt: [
+              "Das favelas do Rio às ruas estreitas de Mardin, o futebol é o maior portal de sonhos para as crianças.",
+              "Correr atrás de uma bola permite esquecer completamente todas as dificuldades e desigualdades do momento.",
+              "O legado de Pelé não é apenas um desporto, mas a autoconfiança de um povo e sua assinatura no mundo.",
+              "Os jogos nos solos pedregosos de Mardin constroem as vitórias mais inocentes e as amizades mais sinceras.",
+              "O futebol é um teatro imenso onde se pode partilhar a mesma emoção sem precisar de falar nada.",
+              "Cada golo é o florescer de uma esperança; coroar este arquivo com o futebol é saudar a resiliência humana."
+          ]
         },
-        { id: "07", tr_t: "Mimari Hafıza", pt_t: "Memória Arquitetônica", img: "1449034446853-66c86144b0ad",
-          tr: ["Mardin'in bin yıllık taş konakları, doğaya hükmetmek yerine onunla uyum içinde yaşamanın en somut dersidir.", "Brezilya'nın modern çizgileri, Niemeyer'in elinde betonun nasıl bir şiire dönüşebileceğinin en büyük örneğidir.", "Mimari, bir toplumun dünyaya bakış açısını yansıtan, taşa ve betona kazınmış kalıcı birer ideoloji ve sanattır.", "Mardin evlerinin avlularındaki serinlik, Ortadoğu bilgeliğinin güneşle olan kadim pazarlığının bir sonucudur.", "Brezilya'nın geniş ve ferah binaları ise geleceğin vizyonunu bugünden inşa eden cesur bir hayal gücünün eseridir.", "Binalar sadece barınak değildir; Ahmet Çınarbaş için onlar, medeniyetlerin ayakta kalan en dürüst şahitleridir."],
-          pt: ["Os casarões de pedra milenares de Mardin são a lição mais concreta de viver em harmonia com a natureza.", "As linhas modernas do Brasil, nas mãos de Niemeyer, mostram como o betão pode ser transformado em poesia.", "A arquitetura é uma ideologia e arte permanente gravada na pedra e no betão, refletindo a visão de mundo.", "O frescor nos pátios das casas de Mardin é o resultado de uma antiga negociação da sabedoria com o sol.", "Os edifícios amplos e arejados do Brasil são obra de uma imaginação audaz que constrói a visão do futuro hoje.", "Edifícios não são apenas abrigos; para Ahmet Çınarbaş, eles são as testemunhas mais honestas das civilizações."]
+        { id: "07", tr_t: "Taş ve Beton", pt_t: "Pedra e Betão", img: "1449034446853-66c86144b0ad",
+          tr: [
+              "Mardin'in bin yıllık taş konakları, doğaya hükmetmek yerine onunla uyum içinde yaşamanın en somut dersidir.",
+              "Brezilya'nın modern çizgileri, Niemeyer'in elinde betonun nasıl bir şiire dönüşebileceğinin en büyük örneğidir.",
+              "Mimari, bir toplumun dünyaya bakış açısını yansıtan, taşa ve betona kazınmış kalıcı birer ideolojidir.",
+              "Mardin evlerinin avlularındaki serinlik, Ortadoğu bilgeliğinin güneşle olan kadim pazarlığının sonucudur.",
+              "Brezilya'nın geniş binaları ise geleceğin vizyonunu bugünden inşa eden cesur bir hayal gücünün eseridir.",
+              "Binalar sadece barınak değildir; Ahmet Çınarbaş için onlar, medeniyetlerin ayakta kalan en dürüst şahitleridir."
+          ],
+          pt: [
+              "Os casarões de pedra de Mardin são a lição mais concreta de viver em harmonia com a natureza pura.",
+              "As linhas modernas do Brasil, nas mãos de Niemeyer, mostram como o betão pode ser transformado em poesia.",
+              "A arquitetura é uma ideologia permanente gravada na pedra e no betão, refletindo a visão de mundo.",
+              "O frescor nos pátios de Mardin é o resultado de uma antiga negociação da sabedoria com o sol ardente.",
+              "Os edifícios amplos do Brasil são obra de uma imaginação audaz que constrói a visão do futuro hoje.",
+              "Edifícios não são apenas abrigos; para Ahmet Çınarbaş, eles são as testemunhas mais honestas da história."
+          ]
         },
-        { id: "08", tr_t: "Ritim Kardeşliği", pt_t: "Irmandade do Ritmo", img: "1514525253361-b83fcd06912c",
-          tr: ["Mezopotamya'nın darbukası ile Brezilya'nın pandeirosu, ritmin kalbinde birleşen iki yakın ve kadim dosttur.", "Müzik, kelimelerin bittiği yerde başlar ve insanı ruhsal bir yolculuğa çıkaran en etkili ve en evrensel araçtır.", "Rio'nun batucada ritimleri ile Mardin'in Reyhani ezgileri arasındaki uyum, insan ruhunun tek bir kaynaktan beslendiğini gösterir.", "Vurmalı çalgıların çıkardığı her ses, kalbin atışına eşlik ederek bizi doğanın ana ritmine geri döndürür.", "Köy meydanlarında ve şehir köşelerinde yükselen bu sesler, toplumsal birliğin ve ortak sevincin en saf halidir.", "Ritim kardeştir; Ahmet Çınarbaş olarak bu seslerin kaydını tutmak, dünya barışına atılmış sessiz bir notadır."],
-          pt: ["O 'darbuka' da Mesopotâmia e o 'pandeiro' do Brasil são dois amigos íntimos que se unem no coração do ritmo.", "A música começa onde as palavras terminam e é a ferramenta mais eficaz para nos levar numa viagem espiritual.", "A harmonia entre os ritmos da batucada e as melodias Reyhani mostra que a alma humana bebe de uma única fonte.", "Cada som dos instrumentos de percussão acompanha o batimento cardíaco, devolvendo-nos ao ritmo da natureza.", "Estes sons que sobem das praças das aldeias e cantos das cidades são a forma mais pura de unidade social.", "O ritmo é irmão; como Ahmet Çınarbaş, manter o registo destes sons é uma nota silenciosa para a paz mundial."]
+        { id: "08", tr_t: "İki Ritim", pt_t: "Dois Ritmos", img: "1514525253361-b83fcd06912c",
+          tr: [
+              "Mezopotamya'nın darbukası ile Brezilya'nın pandeirosu, ritmin kalbinde birleşen iki yakın ve kadim dosttur.",
+              "Müzik, kelimelerin bittiği yerde başlar ve insanı ruhsal bir yolculuğa çıkaran en evrensel araçtır.",
+              "Rio'nun batucada ritimleri ile Mardin'in Reyhani ezgileri, insan ruhunun tek bir kaynaktan beslendiğini gösterir.",
+              "Vurmalı çalgıların çıkardığı her ses, kalbin atışına eşlik ederek bizi doğanın ana ritmine geri döndürür.",
+              "Köy meydanlarında yükselen bu sesler, toplumsal birliğin ve ortak sevincin en saf hali olarak kaydedilmiştir.",
+              "Ritim kardeştir; Ahmet Çınarbaş olarak bu seslerin kaydını tutmak, dünya barışına atılmış sessiz bir notadır."
+          ],
+          pt: [
+              "O 'darbuka' da Mesopotâmia e o 'pandeiro' do Brasil são dois amigos íntimos que se unem no coração do ritmo.",
+              "A música começa onde as palavras terminam e é a ferramenta mais eficaz para nos levar numa viagem espiritual.",
+              "Os ritmos da batucada e as melodias Reyhani mostram que a alma humana bebe de uma única fonte divina.",
+              "Cada som dos instrumentos de percussão acompanha o batimento cardíaco, devolvendo-nos ao ritmo da natureza.",
+              "Estes sons que sobem das praças são a forma mais pura de unidade social e alegria partilhada.",
+              "O ritmo é irmão; como Ahmet Çınarbaş, manter o registo destes sons é uma nota para a paz mundial."
+          ]
         },
-        { id: "09", tr_t: "Melankoli ve Umut", pt_t: "Melancolia e Esperança", img: "1511379938547-c1f69419868d",
-          tr: ["Bossa Nova'nın o hüzünlü melodileri ile Mardin'in yanık hoyratları, insan kalbinin en derin sızılarını anlatır.", "Hüzün, her iki kültürde de bir son değil, aksine sanata ve umuda açılan en geniş ve en verimli kapıdır.", "Acı, melankolik bir estetiğe dönüştüğünde, insanı yıkmak yerine onu daha dayanıklı ve daha bilge bir hale getirir.", "Rio kumsallarındaki gün batımı ile Mardin kalelerindeki akşam serinliği, aynı tatlı melankoliyi ruhlara fısıldar.", "Umut, bu hüznün içinden bir güneş gibi doğar; şarkılar bizi karanlıktan çekip çıkaran en güçlü ve en parlak ellerdir.", "Melankoli, Ahmet Çınarbaş için bir zayıflık değil, hayatın derinliğini kavrayan hassas bir ruhun en asil duruşudur."],
-          pt: ["As melodias tristes da Bossa Nova e os lamentos de Mardin narram as dores mais profundas do coração humano.", "A tristeza, em ambas as culturas, não é um fim, mas a porta mais larga que se abre para a arte e a esperança.", "Quando a dor se transforma numa estética melancólica, torna o ser humano mais resiliente e sábio em vez de o destruir.", "O pôr do sol nas praias do Rio e o frescor da tarde nos castelos de Mardin sussurram a mesma melancolia.", "A esperança nasce como um sol desta tristeza; as canções são as mãos mais fortes que nos tiram da escuridão.", "A melancolia, para Ahmet Çınarbaş, não é fraqueza, mas a postura nobre de uma alma que compreende a vida."]
+        { id: "09", tr_t: "Hüzün Estetiği", pt_t: "Saudade Estética", img: "1511379938547-c1f69419868d",
+          tr: [
+              "Bossa Nova'nın hüzünlü melodileri ile Mardin'in yanık hoyratları, insan kalbinin derin sızılarını anlatır.",
+              "Hüzün, her iki kültürde de bir son değil, aksine sanata ve umuda açılan en geniş ve en verimli kapıdır.",
+              "Acı, melankolik bir estetiğe dönüştüğünde, insanı yıkmak yerine onu daha dayanıklı ve daha bilge bir hale getirir.",
+              "Rio kumsallarındaki gün batımı ile Mardin kalelerindeki akşam serinliği, aynı melankoliyi ruhlara fısıldar.",
+              "Umut, bu hüznün içinden bir güneş gibi doğar; şarkılar bizi karanlıktan çekip çıkaran en parlak ellerdir.",
+              "Melankoli, Ahmet Çınarbaş için bir zayıflık değil, hayatın derinliğini kavrayan hassas bir ruhun duruşudur."
+          ],
+          pt: [
+              "As melodias tristes da Bossa Nova e os lamentos de Mardin narram as dores profundas do coração humano.",
+              "A saudade, em ambas as culturas, não é um fim, mas a porta que se abre para a arte e a esperança.",
+              "Quando a dor se transforma numa estética, torna o ser humano mais resiliente e sábio em vez de o destruir.",
+              "O pôr do sol no Rio e o frescor da tarde em Mardin sussurram a mesma melancolia às nossas almas.",
+              "A esperança nasce desta tristeza; as canções são as mãos mais fortes que nos tiram da escuridão profunda.",
+              "A melancolia, para Ahmet Çınarbaş, não é fraqueza, mas a postura de uma alma que compreende a vida."
+          ]
         },
         { id: "10", tr_t: "İnanç Işığı", pt_t: "Luz da Fé", img: "1519074069444-1ba4fff66d16",
-          tr: ["Mardin'in asırlık manastırları ile Brezilya'nın görkemli katedralleri, insanın sonsuzluk arayışının birer anıtıdır.", "İnanç, taşa işlendiğinde ölümsüzleşir; farklı dillerdeki dualar aynı gökyüzüne ulaşarak bir barış resmi çizer.", "Dinlerin ve kültürlerin iç içe geçtiği bu coğrafyalar, hoşgörünün teoriden pratiğe döküldüğü kutsal alanlardır.", "Tapınakların sessizliğinde, insanın kendi iç dünyasıyla olan en samimi ve en derin hesaplaşmasına şahit olursunuz.", "Mardin'in çan sesleri ile Brezilya'nın ilahileri, farklı yollardan gidilse de varılacak olan noktanın aynı olduğunu hatırlatır.", "İnanç birdir; Ahmet Çınarbaş olarak bu ruhsal mirası arşivlemek, insanlığın ortak maneviyatına bir saygı duruşudur."],
-          pt: ["Os mosteiros seculares de Mardin e as catedrais do Brasil são monumentos da busca humana pela eternidade.", "A fé imortaliza-se quando gravada na pedra; preces em línguas diferentes desenham um quadro de paz no céu.", "Estas geografias onde religiões se entrelaçam são espaços sagrados onde a tolerância passa da teoria à prática.", "No silêncio dos templos, testemunha-se o confronto mais sincero e profundo do ser humano com o seu interior.", "Os sinos de Mardin e os hinos do Brasil lembram que, embora os caminhos sejam diferentes, o destino é o mesmo.", "A fé é uma; como Ahmet Çınarbaş, arquivar esta herança espiritual é uma homenagem à espiritualidade comum."]
+          tr: [
+              "Mardin'in asırlık manastırları ile Brezilya'nın katedralleri, insanın sonsuzluk arayışının birer anıtıdır.",
+              "İnanç, taşa işlendiğinde ölümsüzleşir; farklı dillerdeki dualar aynı gökyüzünde barış resmi çizer.",
+              "Dinlerin iç içe geçtiği bu coğrafyalar, hoşgörünün teoriden pratiğe döküldüğü kutsal ve kadim alanlardır.",
+              "Tapınakların sessizliğinde, insanın kendi iç dünyasıyla olan en samimi ve en derin hesaplaşmasına şahit olursunuz.",
+              "Mardin'in çan sesleri ile Brezilya'nın ilahileri, varılacak olan noktanın aynı olduğunu bizlere hatırlatır.",
+              "İnanç birdir; Ahmet Çınarbaş olarak bu ruhsal mirası arşivlemek, ortak maneviyata bir saygı duruşudur."
+          ],
+          pt: [
+              "Os mosteiros de Mardin e as catedrais do Brasil são monumentos da busca humana pela eternidade infinita.",
+              "A fé imortaliza-se na pedra; preces em línguas diferentes desenham um quadro de paz no mesmo céu.",
+              "Estas geografias onde religiões se entrelaçam são espaços onde a tolerância passa da teoria à prática.",
+              "No silêncio dos templos, testemunha-se o confronto mais sincero do ser humano com o seu próprio interior.",
+              "Os sinos de Mardin e os hinos do Brasil lembram que o destino final é o mesmo para todos os caminhantes.",
+              "A fé é uma; como Ahmet Çınarbaş, arquivar esta herança é uma homenagem à espiritualidade humana."
+          ]
         },
-        { id: "11", tr_t: "Nehirlerin Gücü", pt_t: "Poder dos Rios", img: "1506477331477-33d5d8b3dc85",
-          tr: ["Fırat'ın bereketi ve Amazon'un yeşili, doğanın dünyanın iki farklı ucunda sunduğu en büyük ve en cömert mucizedir.", "Nehirler sadece su taşımazlar; kıyılarında kurulan medeniyetlerin anılarını, acılarını ve umutlarını da geleceğe taşırlar.", "Su, hayatın kaynağı olduğu kadar kültürlerin de birleşme noktasıdır; nehir boyları tarihin en eski kütüphaneleridir.", "Mezopotamya'nın kadim suları ile Brezilya'nın devasa nehir yolları, yeryüzünün damarları gibi hayatı her yere yayar.", "Doğa karşısındaki bu büyüleniş, insanın ne kadar küçük ama aynı zamanda doğanın ne kadar büyük bir parçası olduğunu hatırlatır.", "Ahmet Çınarbaş için nehirler, zamanın akışını temsil eden ve asla durmayan birer canlı tarih anlatıcısıdırlar."],
-          pt: ["A fertilidade do Eufrates e o verde do Amazonas são os maiores milagres da natureza em dois extremos do mundo.", "Os rios não levam apenas água; levam memórias, dores e esperanças das civilizações que floresceram em suas margens.", "A água é a fonte da vida e o ponto de união das culturas; as margens dos rios são bibliotecas antigas da história.", "As águas da Mesopotâmia e os caminhos fluviais do Brasil espalham a vida como se fossem as veias da terra.", "Este fascínio pela natureza lembra quão pequenos somos, mas ao mesmo tempo quão parte importante dela somos.", "Para Ahmet Çınarbaş, os rios são narradores de história viva que representam o fluxo do tempo e nunca param."]
+        { id: "11", tr_t: "Nehirler", pt_t: "Os Rios", img: "1506477331477-33d5d8b3dc85",
+          tr: [
+              "Fırat'ın bereketi ve Amazon'un yeşili, doğanın dünyanın iki ucunda sunduğu en büyük ve cömert mucizedir.",
+              "Nehirler sadece su taşımazlar; kıyılarında kurulan medeniyetlerin anılarını da geleceğe sürüklerler.",
+              "Su, hayatın kaynağı olduğu kadar kültürlerin de birleşme noktasıdır; nehir boyları tarihin kütüphaneleridir.",
+              "Mezopotamya'nın suları ile Brezilya'nın devasa nehirleri, yeryüzünün damarları gibi hayatı her yere yayar.",
+              "Doğa karşısındaki bu büyüleniş, insanın ne kadar küçük ama aynı zamanda doğanın bir parçası olduğunu hatırlatır.",
+              "Ahmet Çınarbaş için nehirler, zamanın akışını temsil eden ve asla durmayan canlı tarih anlatıcılarıdır."
+          ],
+          pt: [
+              "A fertilidade do Eufrates e o verde do Amazonas são os maiores milagres da natureza em dois extremos.",
+              "Os rios não levam apenas água; levam memórias das civilizações que floresceram em suas margens férteis.",
+              "A água é a fonte da vida e o ponto de união; as margens dos rios são as bibliotecas da história antiga.",
+              "As águas da Mesopotâmia e os rios do Brasil espalham a vida como se fossem as veias pulsantes da terra.",
+              "Este fascínio pela natureza lembra quão pequenos somos, mas quão parte importante dela nos tornamos.",
+              "Para Ahmet Çınarbaş, os rios são narradores de história que representam o fluxo do tempo que nunca para."
+          ]
         },
-        { id: "12", tr_t: "Gökyüzü Elçileri", pt_t: "Embaixadores do Céu", img: "1452570053594-1b985d6ea890",
-          tr: ["Mardin'in taklacı güvercinleri ile Amazon'un renkli papağanları, özgürlüğün gökyüzündeki en renkli ve en neşeli simgesidir.", "Kanat çırpışları, sınırları tanımayan bir dünyanın ve hiçbir engelle kısıtlanamayan bir ruhun en doğal tezahürleridir.", "Gökyüzü her yerde aynıdır ve bu kuşlar, farklı coğrafyaların selamını birbirine taşıyan görünmez ama sadık elçilerdir.", "Mardin damlarındaki ıslık sesleri ile orman derinliklerindeki cıvıltılar, doğanın kendi senfonisini oluşturur.", "Hayvanlara duyulan bu sevgi, insan ruhunun nezaketini ve doğayla kurduğu o kopmaz duygusal bağı simgeler.", "Özgürlük, Ahmet Çınarbaş için kanatlarda saklıdır; bu kuşları arşivlemek, ruhun uçma arzusuna bir selamdır."],
-          pt: ["Os pombos de Mardin e os papagaios coloridos da Amazônia são os símbolos mais alegres da liberdade no céu.", "O bater de asas é a manifestação de um mundo sem fronteiras e de uma alma que não pode ser limitada.", "O céu é o mesmo em todo o lado e estas aves são embaixadores fiéis que levam saudações de geografias diferentes.", "Os assobios nos terraços de Mardin e os gorjeios nas profundezas da floresta formam a própria sinfonia da natureza.", "Este amor pelos animais simboliza a gentileza da alma humana e o vínculo emocional inquebrável com a natureza.", "A liberdade, para Ahmet Çınarbaş, está escondida nas asas; arquivar estas aves é saudar o desejo da alma de voar."]
+        { id: "12", tr_t: "Kanat Sesi", pt_t: "Som das Asas", img: "1452570053594-1b985d6ea890",
+          tr: [
+              "Mardin'in güvercinleri ile Amazon'un renkli papağanları, özgürlüğün gökyüzündeki en neşeli simgesidir.",
+              "Kanat çırpışları, sınırları tanımayan bir dünyanın ve hiçbir engelle kısıtlanamayan bir ruhun tezahürüdür.",
+              "Gökyüzü her yerde aynıdır ve bu kuşlar, farklı coğrafyaların selamını birbirine taşıyan sadık elçilerdir.",
+              "Mardin damlarındaki ıslık sesleri ile orman derinliklerindeki cıvıltılar, doğanın senfonisini oluşturur.",
+              "Hayvanlara duyulan bu sevgi, insan ruhunun nezaketini ve doğayla kurduğu kopmaz duygusal bağı simgeler.",
+              "Özgürlük, Ahmet Çınarbaş için kanatlarda saklıdır; bu kuşları arşivlemek, uçma arzusuna bir selamdır."
+          ],
+          pt: [
+              "Os pombos de Mardin e os papagaios da Amazônia são os símbolos mais alegres da liberdade no vasto céu.",
+              "O bater de asas é a manifestação de um mundo sem fronteiras e de uma alma que não pode ser limitada.",
+              "O céu é o mesmo e estas aves são embaixadores fiéis que levam saudações de geografias muito distantes.",
+              "Os assobios em Mardin e os gorjeios na floresta formam a própria sinfonia da natureza em movimento.",
+              "Este amor pelos animais simboliza a gentileza da alma e o vínculo emocional inquebrável com o mundo natural.",
+              "A liberdade, para Ahmet Çınarbaş, está nas asas; arquivar estas aves é saudar o desejo de voar."
+          ]
         },
-        { id: "13", tr_t: "Göç ve Kimlik", pt_t: "Migração e Identidade", img: "1502422778009-5a71146d6f9a",
-          tr: ["Göç, bir insanın köklerini söküp yeni bir toprağa dikmesidir; bu süreçte kimlik, her iki dünyadan da izler taşır.", "Mardinli bir ailenin Brezilya'daki varlığı, kültürün okyanusları nasıl aşabildiğinin en ilham verici ve en dokunaklı örneğidir.", "Bavulda taşınan sadece eşyalar değildir; asıl yük, gidilen yere götürülen anılar, gelenekler ve o bitmeyen vatan özlemidir.", "Yeni bir ülkede kendini yeniden inşa etmek, insanın uyum yeteneğinin ve içindeki yaşama azminin en büyük zaferidir.", "Kimlik, ne tamamen geride kalır ne de tamamen yeni olur; o, iki farklı dünyanın eşsiz ve melez bir karışımıdır.", "Ahmet Çınarbaş için göç, bir kayıp değil, insan hikayesinin zenginleşmesi ve sınırların ötesine taşan bir destandır."],
-          pt: ["Migrar é arrancar as raízes e plantá-las em nova terra; a identidade passa a carregar marcas de ambos os mundos.", "A presença de uma família de Mardin no Brasil é o exemplo mais inspirador de como a cultura atravessa oceanos.", "Na mala não vão apenas objetos; o verdadeiro peso são as memórias, tradições e a eterna saudade da pátria.", "Reconstruir-se num novo país é a maior vitória da adaptabilidade humana e da vontade interior de viver plenamente.", "A identidade não fica totalmente para trás nem é totalmente nova; é uma mistura única e híbrida de dois mundos.", "Para Ahmet Çınarbaş, a migração não é uma perda, mas o enriquecimento da história humana, um épico transfronteiriço."]
+        { id: "13", tr_t: "Kimlik", pt_t: "Identidade", img: "1502422778009-5a71146d6f9a",
+          tr: [
+              "Göç, bir insanın köklerini söküp yeni bir toprağa dikmesidir; kimlik, her iki dünyadan da izler taşır.",
+              "Mardinli bir ailenin Brezilya'daki varlığı, kültürün okyanusları nasıl aşabildiğinin en dokunaklı örneğidir.",
+              "Bavulda taşınan sadece eşyalar değildir; asıl yük, gidilen yere götürülen anılar ve bitmeyen vatan özlemidir.",
+              "Yeni bir ülkede kendini yeniden inşa etmek, insanın uyum yeteneğinin ve yaşama azminin en büyük zaferidir.",
+              "Kimlik, ne tamamen geride kalır ne de tamamen yeni olur; o, iki dünyanın eşsiz ve melez bir karışımıdır.",
+              "Ahmet Çınarbaş için göç, bir kayıp değil, insan hikayesinin zenginleşmesi ve sınırları aşan bir destandır."
+          ],
+          pt: [
+              "Migrar é arrancar as raízes e plantá-las em nova terra; a identidade carrega marcas de ambos os mundos.",
+              "A presença de uma família de Mardin no Brasil é o exemplo mais tocante de como a cultura atravessa o mar.",
+              "Na mala não vão apenas objetos; o verdadeiro peso são as memórias e a saudade eterna da pátria amada.",
+              "Reconstruir-se num novo país é a maior vitória da adaptabilidade humana e da vontade de viver plenamente.",
+              "A identidade não fica para trás nem é nova; é uma mistura única e híbrida de dois mundos fascinantes.",
+              "Para Ahmet Çınarbaş, a migração não é uma perda, mas o enriquecimento da história humana sem fronteiras."
+          ]
         },
-        { id: "14", tr_t: "Anlatılan Hikaye", pt_t: "A História Contada", img: "1512820790803-83ca734da794",
-          tr: ["Mardin masalları ile Brezilya'nın halk edebiyatı, insanlığın ortak korkularını, aşklarını ve kahramanlıklarını anlatır.", "Sözün gücü, en karanlık zamanlarda bile toplumu bir arada tutan ve onlara yol gösteren en parlak ve en kadim ışıktır.", "Jorge Amado'nun sıcaklığı ile Mezopotamya'nın derin sözlü geleneği arasındaki bağ, anlatılmayan hikayeleri sonsuza dek yaşatır.", "Hikayeler, geçmişten geleceğe kurulan en sağlam köprülerdir; her anlatıcı, zamanın içinden süzülen birer kültür koruyucusudur.", "Bir masalın sonunda ulaşılan ders, dünyanın neresinde olursanız olun insan olmanın getirdiği o ortak hakikate dayanır.", "Ahmet Çınarbaş olarak bu hikayelerin peşine düşmek, insan sesinin zamansızlığına ve evrenselliğine olan inancımdır."],
-          pt: ["Os contos de Mardin e a literatura popular do Brasil narram os medos, amores e heroísmos comuns da humanidade.", "O poder da palavra é a luz mais antiga que mantém a sociedade unida e a guia mesmo nos tempos mais sombrios.", "O elo entre Jorge Amado e a tradição oral da Mesopotâmia mantém vivas para sempre as histórias não contadas.", "As histórias são as pontes mais sólidas entre passado e futuro; cada narrador é um guardião da cultura no tempo.", "A lição de um conto baseia-se na verdade comum de ser humano, independentemente de onde se esteja no mundo.", "Como Ahmet Çınarbaş, seguir estas histórias é a minha crença na intemporalidade e universalidade da voz humana."]
+        { id: "14", tr_t: "Masallar", pt_t: "Os Contos", img: "1512820790803-83ca734da794",
+          tr: [
+              "Mardin masalları ile Brezilya'nın halk edebiyatı, insanlığın ortak korkularını ve aşklarını anlatır.",
+              "Sözün gücü, en karanlık zamanlarda bile toplumu bir arada tutan ve onlara yol gösteren en kadim ışıktır.",
+              "Jorge Amado'nun sıcaklığı ile Mezopotamya'nın derin sözlü geleneği, anlatılmayan hikayeleri yaşatır.",
+              "Hikayeler, geçmişten geleceğe kurulan en sağlam köprülerdir; her anlatıcı birer kültür koruyucusudur.",
+              "Bir masalın sonunda ulaşılan ders, dünyanın neresinde olursanız olun insan olmanın ortak hakikatidir.",
+              "Ahmet Çınarbaş olarak bu hikayelerin peşine düşmek, insan sesinin zamansızlığına olan sarsılmaz inancımdır."
+          ],
+          pt: [
+              "Os contos de Mardin e a literatura do Brasil narram os medos e amores comuns de toda a humanidade.",
+              "O poder da palavra é a luz antiga que mantém a sociedade unida e a guia nos tempos mais sombrios.",
+              "O elo entre Jorge Amado e a tradição oral da Mesopotâmia mantém vivas as histórias não contadas antes.",
+              "As histórias são as pontes sólidas entre passado e futuro; cada narrador é um guardião da cultura viva.",
+              "A lição de um conto baseia-se na verdade comum de ser humano, independentemente de onde se esteja.",
+              "Como Ahmet Çınarbaş, seguir estas histórias é a minha crença na intemporalidade da voz humana."
+          ]
         },
-        { id: "15", tr_t: "Ortak Gelecek", pt_t: "Futuro Comum", img: "1464822759023-fed622ff2c3b",
-          tr: ["Bu 15 duraklık uzun yolculuğun sonuna geldiğimizde, mesafelerin aslında sadece zihinsel birer yanılsama olduğunu görüyoruz.", "Mardin'in sarı taşları ile Rio'nun altın sahillerini aynı tutkuyla kucaklayan bu arşiv, ortak bir geleceğin ilk adımıdır.", "Farklılıklar bizi zayıflatmaz, aksine bu çeşitlilik insanlığın sahip olduğu en büyük ve en değerli hazineyi oluşturur.", "Mizah bizi birleştiren en güçlü tutkaldır; birlikte gülebildiğimiz ve birbirimizi anladığımız sürece biz tek bir aileyiz.", "Kültürel arşivcilik bir görevdir; Ahmet Çınarbaş olarak bu 90 paragraflık mirası, unutmaya karşı bir kalkan olarak sunuyorum.", "Gelecek, geçmişin değerlerini koruyarak ve onları yeni dünyalarla birleştirerek inşa edilecek o büyük ve aydınlık bir odadır."],
-          pt: ["Ao fim desta jornada de 15 etapas, vemos que as distâncias são, na verdade, apenas ilusões mentais passageiras.", "Este arquivo, que abraça as pedras de Mardin e as praias do Rio, é o primeiro passo para um futuro comum e unido.", "As diferenças não nos enfraquecem; pelo contrário, esta diversidade é o maior e mais precioso tesouro da humanidade.", "O humor é a cola que nos une; enquanto pudermos rir juntos e nos compreendermos, seremos uma só família global.", "O arquivamento cultural é um dever; como Ahmet Çınarbaş, ofereço este legado como um escudo contra o esquecimento.", "O futuro é uma sala grande e iluminada a ser construída preservando os valores do passado em novos mundos."]
+        { id: "15", tr_t: "Gelecek", pt_t: "O Futuro", img: "1464822759023-fed622ff2c3b",
+          tr: [
+              "Bu 15 duraklık yolculuğun sonuna geldiğimizde, mesafelerin aslında sadece birer yanılsama olduğunu anlıyoruz.",
+              "Mardin'in sarı taşları ile Rio'nun altın sahillerini aynı tutkuyla kucaklamak, ortak bir geleceğin adımıdır.",
+              "Farklılıklar bizi zayıflatmaz, aksine bu çeşitlilik insanlığın sahip olduğu en değerli hazineyi oluşturur.",
+              "Mizah bizi birleştiren en güçlü tutkaldır; birlikte gülebildiğimiz sürece biz tek bir aileyiz.",
+              "Kültürel arşivcilik bir görevdir; Ahmet Çınarbaş olarak bu mirası, unutmaya karşı bir kalkan olarak sunuyorum.",
+              "Gelecek, geçmişin değerlerini koruyarak ve onları yeni dünyalarla birleştirerek inşa edilecek aydınlık bir odadır."
+          ],
+          pt: [
+              "Ao fim desta jornada de 15 etapas, percebemos que as distâncias são apenas ilusões mentais passageiras.",
+              "Abraçar as pedras de Mardin e as praias do Rio com a mesma paixão é o passo para um futuro comum.",
+              "As diferenças não nos enfraquecem; esta diversidade é o tesouro mais precioso da humanidade inteira.",
+              "O humor é a cola que nos une; enquanto pudermos rir juntos, seremos uma só família global unida.",
+              "O arquivamento cultural é um dever; como Ahmet Çınarbaş, ofereço este legado contra o esquecimento.",
+              "O futuro é uma sala iluminada construída preservando os valores do passado em novos mundos abertos."
+          ]
         }
     ];
 
-    const root = document.getElementById('root');
-    data.forEach(item => {
-        const sec = document.createElement('div');
-        sec.className = 'section';
-        sec.innerHTML = `
-            <div class="img-frame"><img src="https://images.unsplash.com/photo-${item.img}?auto=format&fit=crop&q=80&w=1500" alt=""></div>
+    const root = document.getElementById('gallery-root');
+    const bgColors = ['#F8F6F2', '#F2EFE9', '#EBE7DE', '#E4DFD4', '#DDD7C9'];
+
+    fullData.forEach(item => {
+        const section = document.createElement('div');
+        section.className = 'section';
+        section.innerHTML = `
+            <div class="img-parallax-wrapper">
+                <img src="https://images.unsplash.com/photo-${item.img}?auto=format&fit=crop&q=80&w=1600" class="parallax-img" alt="">
+            </div>
             <div class="content-card">
                 <div class="section-header">
                     <div class="num">${item.id}</div>
@@ -152,20 +379,32 @@
                     <div class="lang-col tr">${item.tr.map(p => `<p>${p}</p>`).join('')}</div>
                     <div class="lang-col pt">${item.pt.map(p => `<p>${p}</p>`).join('')}</div>
                 </div>
-                <div class="seal-area">
+                <div class="seal">
                     <div class="s-circle">AÇ</div>
                     <div class="s-text">Ahmet Çınarbaş // Archive Series // Complete Edition 2026</div>
                 </div>
             </div>
         `;
-        root.appendChild(sec);
+        root.appendChild(section);
     });
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.section').forEach(s => observer.observe(s));
-</script>
+    // SCROLL EVENTS: PARALLAX & BG COLOR
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        
+        // Parallax
+        document.querySelectorAll('.parallax-img').forEach(img => {
+            const rect = img.parentElement.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                img.style.transform = `translateY(${-(rect.top * 0.15)}px)`;
+            }
+        });
 
+        // Dynamic BG
+        const scrollPercent = scrolled / (document.documentElement.scrollHeight - window.innerHeight);
+        const colorIdx = Math.min(bgColors.length - 1, Math.floor(scrollPercent * bgColors.length));
+        document.body.style.backgroundColor = bgColors[colorIdx];
+    });
+</script>
 </body>
 </html>
