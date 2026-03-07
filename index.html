@@ -4,228 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ahmet Çınarbaş | Gazeteci Yazar - Arşiv</title>
+    <title>Ahmet Çınarbaş | Derin Arşiv</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        * { font-style: normal !important; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #f4f7fe; font-family: 'Plus Jakarta Sans', sans-serif; color: #1a1d23; margin: 0; overflow-x: hidden; }
 
-        /* İtalik Kesinlikle Yasak */
-        * { font-style: normal !important; }
+        .main-layout { max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: 1.618fr 1fr; gap: 2.5rem; padding: 3rem; min-height: 85vh; }
+        @media (max-width: 1024px) { .main-layout { grid-template-columns: 1fr; padding: 1.5rem; } }
 
-        body {
-            background-color: #f4f7fe;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #1a1d23;
-            margin: 0;
+        .archive-slider-box { 
+            background: #1a1d23; border-radius: 50px; padding: 5rem; color: white; 
+            box-shadow: 0 50px 100px rgba(0,0,0,0.35); display: flex; flex-direction: column; 
+            justify-content: center; overflow: hidden; position: relative; 
         }
+        @media (max-width: 640px) { .archive-slider-box { padding: 3rem 1.5rem; border-radius: 30px; } }
 
-        /* ALTIN ORAN ANA ŞABLON (1.618:1) */
-        .gold-container {
-            max-width: 1440px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.618fr 1fr;
-            gap: 2.5rem;
-            padding: 3rem;
-            min-height: 85vh;
-            align-items: stretch;
-        }
+        .slider-wrapper { display: flex; overflow-x: hidden; scroll-snap-type: x mandatory; gap: 0; scroll-behavior: smooth; cursor: grab; user-select: none; }
+        .slider-wrapper:active { cursor: grabbing; }
 
-        @media (max-width: 1024px) {
-            .gold-container { grid-template-columns: 1fr; padding: 1.5rem; }
-        }
+        .archive-slide { min-width: 100%; scroll-snap-align: start; position: relative; pointer-events: none; }
+        .audio-controls, .action-btn { pointer-events: auto; }
 
-        /* SOL: YATAY KAYAN BÜYÜK DİV */
-        .main-article-area {
-            background: #1a1d23;
-            border-radius: 40px;
-            padding: 4rem;
-            color: white;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.25);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .article-slider {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 6rem;
-            scroll-behavior: smooth;
-        }
-        .article-slider::-webkit-scrollbar { display: none; }
-
-        .article-slide {
-            min-width: 100%;
-            scroll-snap-align: start;
-        }
-
-        /* SAĞ: YAZAR & SPONSOR (DİKEY ALTIN ORAN) */
-        .side-stack {
-            display: grid;
-            grid-template-rows: 1.618fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .author-card-premium {
-            background: white;
-            border-radius: 40px;
-            padding: 4rem 2rem;
-            text-align: center;
-            border: 1px solid #eef2f6;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.02);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .author-photo {
-            width: 175px;
-            height: 175px;
-            border-radius: 50px;
-            object-fit: cover;
-            margin: 0 auto 2.5rem;
-            border: 8px solid #f8fafc;
-            box-shadow: 0 25px 50px rgba(37, 99, 235, 0.15);
-            transform: rotate(-1.5deg);
-        }
-
-        .sponsor-card-premium {
-            background: #2563eb;
-            color: white;
-            border-radius: 40px;
-            padding: 2.5rem;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* Dinamik Radyo "ON AIR" Efekti */
-        .on-air-tag {
-            position: absolute; top: 40px; right: 40px;
-            display: none; align-items: center; gap: 10px;
-            color: #ef4444; font-weight: 800; font-size: 11px;
-            letter-spacing: 3px;
-        }
-        .dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: blink 1s infinite; }
+        .file-number { position: absolute; top: -40px; right: 0; font-size: 12rem; font-weight: 900; opacity: 0.03; line-height: 1; pointer-events: none; }
+        .on-air-indicator { position: absolute; top: 40px; right: 50px; display: none; align-items: center; gap: 12px; color: #ff4d4d; font-weight: 800; font-size: 12px; letter-spacing: 4px; z-index: 10; }
+        .pulse { width: 10px; height: 10px; background: #ff4d4d; border-radius: 50%; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
+
+        .audio-controls { margin-top: 2rem; display: flex; align-items: center; gap: 1.5rem; background: rgba(255,255,255,0.05); padding: 1rem 2rem; border-radius: 20px; width: fit-content; }
+        .progress-container { width: 150px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; position: relative; cursor: pointer; }
+        .progress-bar { width: 0%; height: 100%; background: #2563eb; border-radius: 3px; }
+
+        .action-btn { background: white; color: black; padding: 1rem 2rem; border-radius: 20px; font-weight: 900; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s; }
+        .sidebar-gold { display: grid; grid-template-rows: auto auto; gap: 1.5rem; }
+        .author-card { background: white; border-radius: 50px; padding: 3rem; text-align: center; border: 1px solid #eef2f6; }
+        .profile-img { width: 150px; height: 150px; border-radius: 50px; object-fit: cover; margin: 0 auto 2rem; border: 8px solid #f8fafc; transform: rotate(-2deg); }
+        .sponsor-card { background: #2563eb; color: white; border-radius: 50px; padding: 2.5rem; text-align: center; }
     </style>
 </head>
 <body>
 
-    <header class="max-w-[1440px] mx-auto px-12 py-10 flex justify-between items-center">
-        <div class="text-3xl font-black tracking-tighter uppercase">AHMET ÇINARBAŞ <span class="text-blue-600">DOSYALARI</span></div>
-        <div class="flex gap-6 font-bold text-[10px] tracking-widest uppercase opacity-60">
-            <button onclick="changeLang('tr')" class="hover:text-blue-600">TR</button>
-            <button onclick="changeLang('pt')" class="hover:text-blue-600">PT</button>
-        </div>
+    <header class="max-w-[1440px] mx-auto px-12 py-12 flex justify-between items-center">
+        <div class="text-2xl font-black tracking-tighter uppercase">AHMET ÇINARBAŞ <span class="text-blue-600">BELLEK</span></div>
+        <div class="hidden md:block text-[10px] font-black tracking-[0.5em] opacity-30 uppercase">ARŞİV KAYIT: 2026/MZP</div>
     </header>
 
-    <div class="gold-container">
-        <main class="main-article-area">
-            <div id="air-indicator" class="on-air-tag"><span class="dot"></span> ON AIR</div>
+    <div class="main-layout">
+        <main class="archive-slider-box">
+            <div id="status-light" class="on-air-indicator"><span class="pulse"></span> RADYO AKTİF</div>
             
-            <div class="article-slider" id="slider">
-                <div class="article-slide">
-                    <span class="text-blue-500 font-black uppercase tracking-[0.6em] text-[10px] mb-8 block">Araştırma // Mezopotamya</span>
-                    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none mb-10">Hınzır Kapısı ve <br>Ahnenerbe Sırrı</h1>
-                    <p class="text-slate-400 font-bold text-lg mb-12 max-w-2xl leading-relaxed">
-                        Mardin'in mühürlü taşlarının altında saklanan, resmi tarihin sustuğu o büyük portalın ve Baron Rudolf'un izini sürüyoruz.
-                    </p>
-                    <button onclick="playRadio('tr')" class="bg-white text-black px-12 py-6 rounded-2xl font-black uppercase text-[11px] tracking-widest hover:bg-blue-600 hover:text-white transition-all shadow-2xl transform hover:-translate-y-1">
-                        Makaleyi Dinle
-                    </button>
+            <div class="slider-wrapper" id="mainSlider">
+                <div class="archive-slide">
+                    <div class="file-number">01</div>
+                    <span class="text-blue-500 font-black uppercase tracking-[0.5em] text-[10px] mb-6 block">Dosya: Hınzır Kapısı</span>
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tighter leading-none mb-8">Gizli Ahnenerbe</h1>
+                    <div class="audio-controls">
+                        <button onclick="toggleAudio('hinzir')" class="action-btn" id="btn-hinzir">Dinle</button>
+                        <div class="progress-container" onclick="seek(event, 'hinzir')"><div id="prog-hinzir" class="progress-bar"></div></div>
+                    </div>
                 </div>
-                <div class="article-slide">
-                    <span class="text-blue-500 font-black uppercase tracking-[0.6em] text-[10px] mb-8 block">Analiz // Strateji</span>
-                    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none mb-10">Zamanın Altındaki <br>Frekanslar</h1>
-                    <p class="text-slate-400 font-bold text-lg mb-12 max-w-2xl leading-relaxed">
-                        Anunnakiler ve modern dünya arasındaki genetik bağlar. Mardin'den Berlin'e uzanan sessiz frekans operasyonu.
-                    </p>
-                    <button onclick="playRadio('tr')" class="bg-white text-black px-12 py-6 rounded-2xl font-black uppercase text-[11px] tracking-widest hover:bg-blue-600 hover:text-white transition-all shadow-2xl">
-                        Makaleyi Dinle
-                    </button>
+
+                <div class="archive-slide">
+                    <div class="file-number">02</div>
+                    <span class="text-blue-500 font-black uppercase tracking-[0.5em] text-[10px] mb-6 block">Dosya: Mardinspor</span>
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tighter leading-none mb-8">Kırmızı Lacivert</h1>
+                    <div class="audio-controls">
+                        <button onclick="toggleAudio('mardinspor')" class="action-btn" id="btn-mardinspor">Dinle</button>
+                        <div class="progress-container" onclick="seek(event, 'mardinspor')"><div id="prog-mardinspor" class="progress-bar"></div></div>
+                    </div>
+                </div>
+
+                <div class="archive-slide">
+                    <div class="file-number">03</div>
+                    <span class="text-blue-500 font-black uppercase tracking-[0.5em] text-[10px] mb-6 block">Dosya: Katmanlar</span>
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tighter leading-none mb-8">Bilinmeyen Tarih</h1>
+                    <div class="audio-controls">
+                        <button onclick="toggleAudio('tarih')" class="action-btn" id="btn-tarih">Dinle</button>
+                        <div class="progress-container" onclick="seek(event, 'tarih')"><div id="prog-tarih" class="progress-bar"></div></div>
+                    </div>
                 </div>
             </div>
 
             <div class="flex gap-4 mt-12">
-                <div class="w-16 h-1 bg-white rounded"></div>
-                <div class="w-4 h-1 bg-white/20 rounded"></div>
+                <div class="w-16 h-1 bg-white rounded" id="dot0"></div>
+                <div class="w-4 h-1 bg-white/10 rounded" id="dot1"></div>
+                <div class="w-4 h-1 bg-white/10 rounded" id="dot2"></div>
             </div>
         </main>
 
-        <aside class="side-stack">
-            <div class="author-card-premium">
-                <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="author-photo">
-                <h2 class="text-4xl font-black tracking-tighter mb-2">Ahmet Çınarbaş</h2>
-                <p class="text-blue-600 font-black uppercase text-[10px] tracking-[0.4em] mb-8">Gazeteci Yazar</p>
-                <div class="w-14 h-1.5 bg-blue-600 mx-auto mb-10"></div>
-                <p class="text-slate-600 font-bold leading-relaxed px-8 text-base">
-                    Mezopotamya'nın susturulmuş tarihini ve mühürlü kodlarını araştırmacı gazetecilik disipliniyle aralayan arşivci.
-                </p>
+        <aside class="sidebar-gold">
+            <div class="author-card">
+                <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="profile-img">
+                <h2 class="text-3xl font-black tracking-tighter mb-1">Ahmet Çınarbaş</h2>
+                <p class="text-blue-600 font-black text-[10px] tracking-[0.3em] mb-4 uppercase">Gazeteci Yazar</p>
+                <p class="text-slate-500 font-bold text-sm leading-relaxed">Mezopotamya'nın mühürlü kodlarını araştıran arşivci.</p>
             </div>
-
-            <div class="sponsor-card-premium">
-                <p class="text-[9px] font-black uppercase tracking-[0.6em] opacity-50 mb-4">Stratejik Partner</p>
-                <h3 class="text-4xl font-black tracking-tighter uppercase">Yaşarbey Kahve</h3>
-                <p class="text-[10px] font-bold mt-2 opacity-80 uppercase tracking-widest">Kültür ve Bellek Sponsoru</p>
+            <div class="sponsor-card">
+                <h3 class="text-3xl font-black tracking-tighter uppercase">Yaşarbey Kahve</h3>
+                <p class="text-[10px] font-bold mt-1 opacity-70 tracking-widest uppercase">Kültür Sponsoru</p>
             </div>
         </aside>
     </div>
 
     <script>
-        let audioCtx, noise;
         const synth = window.speechSynthesis;
+        let utter = null;
+        let isPaused = false;
+        let currentKey = '';
+        let lastCharIndex = 0;
+        let audioCtx, noiseNode, gainNode, currentSlide = 0;
+        const slider = document.getElementById('mainSlider');
 
-        function initBackgroundNoise() {
+        const archiveTexts = {
+            hinzir: `Hınzır Kapısı ve Ahnenerbe detay yazısı. . . Burada dinleyeceğiniz bilgiler tarih kitaplarında yok. . . İnternette parça parça fısıldanmış hâlde bile değil. . . Bunlar ne geçmişte resmiyet kazanmış ne de gelecekte doğrulanacak. Çünkü bazı gerçekler doğrulandığı an sistem çöker. . . 
+            Hınzır Tarikatı: Kapının Koruyucuları mı Yoksa İnsanlık Deneyi mi? Hınzır, eski Sümer tabletlerinde yeraltı kapısı anlamına gelir. . . Ancak bu sadece kelime anlamıyla sınırlı değildir. . . Hınzır, milattan önce 2400'lü yıllarda kurulan ve günümüzde hâlâ sessizce varlığını sürdüren bir tarikattır. . . Bu yapı, görünürde bir ruhsal gelişim okulu gibi dursa da, asıl amacı çok daha karanlıktır: Genetik olarak saf olmayan insanları ruhsal kapının dışında tutmak. . . 
+            Hınzır'ın kurucusu olduğuna inanılan kişi, Sümer dilinde Gizli Gölge anlamına gelen bir varlıktan bahseder: Zun-Na-Ra. . . Bu figür hiçbir heykelde, tablette ya da çizimde yer almaz. . . Çünkü onun görünüşü, görenlerin aklını bozacak kadar kompleks yapılıdır. . . Onun verdiği bilgileri korumakla görevli ilk insanlar zamanla bir tarikat haline dönüşür. . . İşte o tarikat, tarihte ilk kez Mardin bölgesinde fiziksel olarak örgütlenir. . . 
+            Mardin: Taşların Altında Gizlenen Portal. . . Mardin, sadece tarihi taş evleriyle değil, taşların altındaki boşluklar ile de tanınmalıdır. . . 1904 yılında, Fransız Arkeolog Émile de Saurac, Mardin civarındaki Mor Yakup Manastırının alt katmanında tuhaf bir mekanizma buldu. . . Bu, herhangi bir el ile açılmayan, belirli titreşimlerle çalışan ve antik Anunnaki sembolleri taşıyan bir düzeneğe bağlıydı. . . 
+            Bu sistem Görünmeyen Sesler denen bir teknolojiyi açığa çıkarıyordu. . . O günlerde açıklanamayan bu olay, Émilein akıl hastanesine yatırılmasıyla sona erdi. . . Ama notları bir başka el tarafından Almanyaya gönderildi. . . Kimine göre bu kişi, henüz bir öğrenci olan Baron Rudolf von Sebottendorf idi. . . 
+            Baron Rudolf von Sebottendorf: Zamansızlıkla Anlaşma Yapan Adam. . . Baron Rudolf von Sebottendorf, kimliği resmi belgelerde hiç geçmeyen ama birçok okült belgede Kırmızı Gömlekli Adam olarak anılan bir figürdür. . . 1922 de Almanya da spiritüel aristokratlar arasında hızla yükseldi. . . Berlin de kurulan Kara Salı Derneğinin arkasındaki asıl güç olduğu iddia edilir. . . Baronun en büyük sırrı, zamanla yaptığı anlaşmadır. . . O, yalnızca geleceği gören değil, geleceği dizayn eden bir ruhtur. . . Hınzır Tarikatının Avrupalı uzantısı haline gelen Baron, Mardin'deki yapıyı çözmek için Adolf Hitler'e danışır. . . 
+            Hitlerin Anunnaki Takıntısı. . . Adolf Hitler'in okültizme ilgisi tarihsel olarak belgelenmiştir. . . Ancak esas ilgisinin Anunnakilere olduğu çok az kişi tarafından bilinir. . . 1936 yılında, SS subayı Wilhelm Tesch, Mardin'e gizli bir ekip gönderir. . . Amaç, Mor Yakup Manastırı'nın altındaki kapıyı yeniden aktive etmektir. . . Geleneksel ekipmanlar başarısız olur. . . Çünkü bu kapı ancak belirli genetik frekansa sahip bireylerin titreşimi ile açılmaktadır. . . 
+            Mardin'deki taş kapının sırrı çözüldüğünde, onun yalnızca bir geçiş noktası değil, başka bir boyuta açılan bir rezonans köprüsü olduğu anlaşılır. . . Ve bu köprünün diğer ucunda, Anunnakilerin bir alt sınıfı olan Cin-türü Varlıklar ile karşılaşılır. . . 
+            Anunnakiler ve Cinler: Aynı Kaynaktan Gelen Farklı Enerjiler. . . Anunnakiler, çok boyutlu enerji varlıkları olarak bilinir. . . Ancak onların yalnızca yüksek seviyeli olanları değil, arka planda kalan düşük titreşimli türleri de vardır. . . İşte halk arasında cin olarak bilinen varlıklar, bu düşük rezonanslı Anunnaki kırılmalarıdır. . . 
+            Bu varlıklar tamamen bilinçlidir, ancak sadece korku ve sapkınlık frekansına yanıt verirler. . . Hınzır Tarikatı'nın amacı, bu varlıklarla iletişime geçen zihinleri seçmektir. . . Mardin'de açılan kapının ardından ortaya çıkan ilk varlık Azura-Na adında bir cin-entegrasyon varlığıdır. . . 1942 de Baron Rudolf von Sebottendorf bedensel olarak ortadan kaybolur. . . Ancak notlarında şu yazar: Geri döneceğim ama zamanın içinden değil, altından. . . 
+            Zamanın Altında Yaşayanlar. . . Baron un kaybolduğu gün Berlin deki saatler aniden durur. . . Aynı saatlerde Mardin de, bir çobanın kaybolduğu rapor edilir. . . O tarihten sonra Mardin de bazı hayvanların geceleri taşlara doğru uluduğu, sabah uyandıklarında ayaklarında yanık izleri olduğu gözlenmiştir. . . 
+            Gerçekler Neden Hiçbir Zaman Açıklanmadı? . . Çünkü bu gerçek açıklanırsa, dinler, bilim ve tarih aynı anda çökebilir. . . Hınzır Tarikatı'nın halen aktif olduğuna inananlar var. . . Mardin hâlâ sessiz. . . Ama taşlar konuşuyor. . . Dikkatli bakarsan, geceleri bazı taşlar ışık emiyor. . . 
+            Gözünü Kırptığın An Kaçırdığın Gerçek. . . Belki de her şeyin cevabı tek bir taşın altında. . . Belki de Adolf Hitlerin asıl amacı dünya savaşını kazanmak değil, başka bir dünyaya geçmekti. . . Ve belki de Baron hâlâ yaşıyor, ama artık zamanın içinde değil, seni izlediğin saatlerin arasında. . . 
+            HINZIR KAPISI VE ANUNNAKI BAĞLANTISI: Yeraltı Dünyasının Sırları. . . Mezopotamya mitolojisinin derinliklerinde yer alan Hınzır Kapısı, yalnızca ruhların ölüm sonrası yeraltı dünyasına geçişini değil, aynı zamanda gizemli varlıklar olan Anunnaki ile bağlantılı bir sembolü temsil eder. . . Sizce Hınzır, sadece bir efsane mi, yoksa evrenin derinliklerine açılan bir kapı mı?`,
+
+            mardinspor: `Mardinspor Ruhu Dosyası. . . Mardin Sporun Rengi asil Kırmızı laciverttir. . . Şehir stadının o tozlu yollarında Beleş Tepe’ye tırmanan mahzun ama gururlu bakışlar, aslında bir futbol maçından fazlasını izler. . . O tepe, imkansızlıklar içinde imkan yaratanların, futbol aşkı için dağı taşı kendine tribün yapanların kalesidir. . . 
+            Tribünlerde halka tatlı satanların kokusu, buz gibi suyun serinliği ve çekirdek çıtırtıları Mezopotamya rüzgarına karışır. . . Bir yandan kendi takımını izlerken, diğer yandan kulağına dayadığı transistörlü radyodan diğer takım maçlarını takip eden o kadim taraftarlar. . . Onlar hem Mardinlidir hem de futbolun evrensel dilini konuşurlar. . . 
+            Tribünlerden tellere yapışan, sanki sahaya girip o topa kendisi vuracakmış gibi heyecanla bekleyenler. . . Ateşli bir şekilde atletini sallayan, coşkusu stadı aşan o has adamlar. . . Bileti olmayan çocukları, evladıymış gibi koltuğunun, paltosunun altında stada gizlice sokan o kocaman yürekli insanlar. . . 
+            İşte budur Mardinspor Ruhu. . . Paylaşmayı, acıyı, hüznü ve sevinci aynı anda yaşamaktır. . . Gol yediğinde omuzu çöken ama gol attığında omuz omuza halaya duran koca bir şehirdir. . . Kırmızı sevgimiz, Lacivert kaderimizdir.`,
+
+            tarih: `Mardin'in Bilinmeyen Tarihi: Katmanlar Arasındaki Sırlar. . . 
+            Birinci Katman: Mardin, sadece üst üste binmiş taş evlerden ibaret değildir. . . Bu şehrin asıl gövdesi, yerin yedi kat altına uzanan devasa bir mağara sisteminin üzerine inşa edilmiştir. . . Resmi tarih Sümerlerle başlasa da, kaledeki bazı mühürlü kapıların ardında, Buzul Çağı'ndan kalma yıldız haritaları olduğu fısıldanır. . . 
+            İkinci Katman: Mezopotamya ovasına bakan kalenin surları, aslında sadece savunma amaçlı değildir. . . Antik dönemlerde bu surların, ovadan gelen belirli frekansları kıran bir tür akustik ayna görevi gördüğü iddia edilir. . . Şehrin dar sokaklarındaki rüzgarın sesi, bazen bir fısıltıya dönüşür; bu fısıltıların, binlerce yıl önce taşlara hapsedilmiş ritüel sesleri olduğu söylenir. . . 
+            Üçüncü Katman: Mardin'in altında saklı olan Gümüş Şehir efsanesi, sadece bir masal değildir. . . 1800'lerin sonunda bir keşişin tuttuğu notlarda, çarşının altındaki gizli geçitlerin, hiç sönmeyen bir ışık kaynağına sahip metalik bir odaya çıktığından bahsedilir. . . Bu odanın, Anunnaki döneminden kalma bir enerji merkezi olduğu düşünülmektedir. . . 
+            Dördüncü Katman: Şehirdeki eski konakların kapı tokmakları ve işlemeleri, birer sanat eserinden ziyade birer şifre anahtarıdır. . . Her motif, o konakta yaşayan ailenin yer altındaki hangi odaya erişim yetkisi olduğunu simgelerdi. . . Bugün bizlerin estetik bulduğu o desenler, aslında kadim bir bürokrasinin hiyerarşik damgalarıydı. . . 
+            Beşinci Katman: Mardin'in meşhur yılan motifleri ve Şahmeran hikayesi, genetik bir aktarımın sembolüdür. . . Yılanın bilgeliği, yer altındaki o meşhur kapıların koruyuculuğunu üstlenen hibrit bir neslin hatırasını taşır. . . Bu neslin izleri, bugün hala Mardinlilerin o derin ve vakur bakışlarında gizlidir. . . 
+            Altıncı Katman: Sonuç olarak Mardin, zamanın dikey olarak aktığı bir mekandır. . . Burada dün, bugün ve yarın aynı sokağın içinde birbirine çarparak ilerler. . . Taşlar ışığı sadece yansıtmaz, aynı zamanda içindeki binlerce yıllık tanıklığı akşam ezanıyla birlikte ovaya geri verir. . . Dikkatli dinleyenler için Mardin, hala yazılmamış en büyük kitaptır.`
+        };
+
+        function setupRadio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const bufferSize = audioCtx.sampleRate * 2;
-                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
                 const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
-
-                noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                noise.loop = true;
-
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'lowpass'; filter.frequency.value = 850;
-
-                const gain = audioCtx.createGain();
-                gain.gain.value = 0.012; // Derinden gelen hafif radyo sesi
-
-                noise.connect(filter);
-                filter.connect(gain);
-                gain.connect(audioCtx.destination);
-                noise.start();
+                for (let i = 0; i < buffer.length; i++) data[i] = Math.random() * 2 - 1;
+                noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = buffer; noiseNode.loop = true;
+                gainNode = audioCtx.createGain(); gainNode.gain.value = 0.003;
+                noiseNode.connect(gainNode); gainNode.connect(audioCtx.destination);
+                noiseNode.start();
             }
         }
 
-        const makaleMetni = `Bu yazıda okuyacağınız bilgiler tarih kitaplarında yok... Hınzır Kapısı: Kapının Koruyucuları mı? Hınzır, eski Sümer tabletlerinde yeraltı kapısı anlamına gelir. Baron Rudolf von Sebottendorf, Mardin'deki yapıyı çözmek için Adolf Hitler'e danışır. Bu gerçek açıklanırsa dinler, bilim ve tarih aynı anda çökebilir.`;
+        function endRadio() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 1);
+            g.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 1);
+            setTimeout(() => { if(audioCtx) audioCtx.close(); audioCtx = null; }, 1100);
+        }
 
-        function playRadio(l) {
+        function toggleAudio(key) {
+            if (currentKey === key && synth.speaking) {
+                if (isPaused) {
+                    synth.resume();
+                    isPaused = false;
+                    document.getElementById('btn-' + key).innerText = 'Durdur';
+                    if(gainNode) gainNode.gain.value = 0.003;
+                } else {
+                    synth.pause();
+                    isPaused = true;
+                    document.getElementById('btn-' + key).innerText = 'Devam Et';
+                    if(gainNode) gainNode.gain.value = 0;
+                }
+            } else {
+                startSpeaking(key, 0);
+            }
+        }
+
+        function startSpeaking(key, startFrom) {
             synth.cancel();
-            initBackgroundNoise();
+            setupRadio();
+            currentKey = key;
+            isPaused = false;
             
-            const utter = new SpeechSynthesisUtterance(makaleMetni);
-            utter.lang = l === 'tr' ? 'tr-TR' : 'pt-BR';
-            utter.rate = 0.86; // Sakin ve profesyonel tempo
-            utter.pitch = 0.95; // Tok ve güven veren ses tonu
-            
-            utter.onstart = () => document.getElementById('air-indicator').style.display = 'flex';
+            const fullText = archiveTexts[key];
+            const textToSpeak = fullText.substring(startFrom);
+            utter = new SpeechSynthesisUtterance(textToSpeak);
+            utter.lang = 'tr-TR';
+            utter.rate = 0.68; // Çok yavaş ve vurgulu
+            utter.pitch = 0.85;
+
+            utter.onboundary = (e) => {
+                lastCharIndex = startFrom + e.charIndex;
+                const progress = (lastCharIndex / fullText.length) * 100;
+                document.getElementById('prog-' + key).style.width = progress + '%';
+            };
+
+            utter.onstart = () => {
+                document.getElementById('status-light').style.display = 'flex';
+                document.getElementById('btn-' + key).innerText = 'Durdur';
+            };
+
             utter.onend = () => {
-                document.getElementById('air-indicator').style.display = 'none';
-                if (noise) { noise.stop(); audioCtx = null; }
+                if (!isPaused) {
+                    document.getElementById('status-light').style.display = 'none';
+                    document.getElementById('btn-' + key).innerText = 'Dinle';
+                    document.getElementById('prog-' + key).style.width = '0%';
+                    lastCharIndex = 0;
+                    endRadio();
+                }
             };
 
             synth.speak(utter);
         }
 
-        function changeLang(l) { console.log("Dil Değişti:", l); }
+        function seek(event, key) {
+            const container = event.currentTarget;
+            const rect = container.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const percentage = x / rect.width;
+            const startFrom = Math.floor(archiveTexts[key].length * percentage);
+            startSpeaking(key, startFrom);
+        }
+
+        // SLIDER (DRAG + SWIPE)
+        let isDown = false, startX, scrollL;
+        slider.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - slider.offsetLeft; scrollL = slider.scrollLeft; slider.style.scrollBehavior = 'auto'; });
+        slider.addEventListener('mouseup', () => { isDown = false; slider.style.scrollBehavior = 'smooth'; snapSlide(); });
+        slider.addEventListener('mousemove', e => { if(!isDown) return; e.preventDefault(); slider.scrollLeft = scrollL - (e.pageX - slider.offsetLeft - startX) * 1.5; });
+        slider.addEventListener('touchstart', () => { slider.style.scrollBehavior = 'auto'; }, {passive: true});
+        slider.addEventListener('touchend', () => { slider.style.scrollBehavior = 'smooth'; snapSlide(); });
+
+        function snapSlide() {
+            currentSlide = Math.round(slider.scrollLeft / slider.clientWidth);
+            slider.scrollTo({ left: currentSlide * slider.clientWidth });
+            updateDots();
+        }
+
+        function updateDots() {
+            for(let i=0; i<3; i++) {
+                const d = document.getElementById('dot'+i);
+                if(d) {
+                    d.style.width = currentSlide === i ? '64px' : '16px';
+                    d.style.backgroundColor = currentSlide === i ? 'white' : 'rgba(255,255,255,0.1)';
+                }
+            }
+        }
     </script>
 </body>
 </html>
