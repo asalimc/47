@@ -4,239 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title id="site-title">Ahmet ÇINARBAŞ | Derin Bellek Arşivi</title>
+    <title>Ahmet ÇINARBAŞ | Derin Bellek Arşivi</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@900&display=swap');
-        body { transition: background-color 2s ease; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+        body { transition: background-color 2s ease; overflow-x: hidden; font-family: 'Inter', sans-serif; background: #fafafa; }
         .hero-title { font-weight: 900; line-height: 0.85; letter-spacing: -0.05em; text-transform: uppercase; }
-        .article-body { text-align: justify; font-size: 1.25rem; line-height: 2.2; color: #0f172a; transition: opacity 1.5s ease; position: relative; }
-        .reading-mode { opacity: 0.05 !important; } 
-        .drop-cap::first-letter { float: left; font-size: 6rem; line-height: 0.7; font-weight: 900; padding: 0.5rem 1.5rem 0.5rem 0; color: #1e3a8a; font-family: 'Playfair Display', serif; }
+        .article-body { text-align: justify; font-size: 1.35rem; line-height: 2.3; color: #0f172a; position: relative; font-weight: 400; }
         #audio-bar { height: 4px; background: #fbbf24; width: 0%; transition: width 0.1s linear; }
-        .read-badge { display: inline-block; margin-top: 2rem; padding: 1rem 2.5rem; background: #1e3a8a; color: white; font-weight: 900; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; }
-        .stats-tag { font-size: 10px; font-weight: 900; color: #64748b; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
-        .footer-seal-container { border-top: 1px solid #e5e7eb; margin-top: 80px; padding: 60px 20px; text-align: center; width: 100%; }
         .official-stamp { 
             display: inline-block; border: 4px double #b91c1c; color: #b91c1c; padding: 15px 35px; 
-            font-weight: 900; font-size: clamp(14px, 4vw, 18px); text-transform: uppercase; 
-            transform: rotate(-3deg); letter-spacing: 3px; background: rgba(185, 28, 28, 0.02);
+            font-weight: 900; font-size: 18px; text-transform: uppercase; transform: rotate(-3deg); background: rgba(185, 28, 28, 0.02);
         }
-        .seo-shadow { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; opacity: 0; }
+        .archive-card { border-left: 4px solid #1e3a8a; transition: all 0.3s ease; cursor: pointer; background: white; padding: 2rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .archive-card:hover { transform: translateY(-5px); background: #f8fafc; border-left-width: 12px; }
+        .reading-active { background: #f4f1ea !important; }
     </style>
 </head>
-<body class="bg-[#fafafa] text-slate-900 selection:bg-yellow-200 min-h-screen flex flex-col">
+<body class="p-4 md:p-8">
 
-    <div class="seo-shadow">Mardin, Mesopotamia, Ahmet Çınarbaş, Yaşarbey Coffee, Archive.</div>
-
-    <main id="main-content" class="max-w-7xl mx-auto px-6 py-16 flex-grow w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-stretch mb-24">
-            <div class="lg:col-span-8">
-                <div class="mb-8 flex items-center gap-2 text-blue-700 font-bold text-[10px] tracking-widest uppercase">
-                    <span id="ui-archive-no">---</span> <span class="text-slate-300">/</span> <span id="ui-category-label">---</span>
-                </div>
-                <h1 id="ui-main-title" class="hero-title text-5xl md:text-7xl lg:text-[8rem] text-slate-900 mb-4 uppercase leading-none">---</h1>
-                <div onclick="makaleAc('tarih')" class="read-badge" id="ui-read-btn">---</div>
+    <main class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20 items-stretch">
+            <div class="lg:col-span-8 flex flex-col justify-center">
+                <div class="text-blue-700 font-black text-[10px] tracking-widest uppercase mb-4">DOSYA: MEZOPOTAMYA SENTEZİ</div>
+                <h1 class="hero-title text-6xl md:text-8xl lg:text-[7rem] mb-8">DERİN<br>BELLEK</h1>
+                <p class="text-xl text-slate-600 font-light leading-relaxed max-w-2xl">Geçmişin dijital muhafızı Ahmet Çınarbaş'ın analiz odasındasınız.</p>
             </div>
-            <aside class="lg:col-span-4" id="main-author-card"></aside>
+            <aside class="lg:col-span-4">
+                <div class="bg-blue-900 p-8 text-white shadow-2xl text-center h-full flex flex-col justify-center">
+                    <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-blue-400/30 grayscale hover:grayscale-0 transition-all">
+                    <h3 class="text-2xl font-black uppercase tracking-tighter">Ahmet ÇINARBAŞ</h3>
+                    <p class="text-blue-300 text-[10px] font-bold uppercase mb-4 tracking-widest">Stratejik Analist & Bellek Koruyucusu</p>
+                    <p class="text-sm font-light italic mb-8 px-2">"Mezopotamya'nın kayıp tarihini dijital arşivlerle birleştiren bir vizyoner."</p>
+                    <a href="https://x.com/ahmetcinarbas" target="_blank" class="block border border-blue-400 py-3 text-[10px] font-black uppercase hover:bg-white hover:text-blue-900 transition-all">X / RESMİ KANAL</a>
+                </div>
+            </aside>
         </div>
 
-        <section class="mb-12">
-            <h3 id="ui-layers-title" class="font-black text-2xl uppercase mb-8 border-b-2 border-slate-900 pb-2 text-slate-400">---</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div onclick="toggleKategori('spor')" class="category-card bg-white p-8 shadow-lg border-l-4 border-l-blue-900 hover:bg-slate-50 transition-all cursor-pointer">
-                    <h2 class="text-2xl font-black uppercase">SPOR</h2>
-                    <div class="stats-tag">2097 <span class="view-label">---</span></div>
+        <div id="active-article" class="mb-24 hidden border-y-4 border-slate-900 py-16 bg-white px-6 md:px-20 shadow-2xl">
+            <div class="flex flex-wrap items-center justify-between gap-6 mb-16 border-b pb-8">
+                <div class="flex items-center gap-4">
+                    <button onclick="kapatMakale()" class="bg-red-900 text-white px-6 py-3 text-[10px] font-black uppercase tracking-widest">DOSYAYI KAPAT</button>
+                    <button id="play-btn" onclick="sesKontrol()" class="bg-blue-950 text-white px-8 py-3 text-[10px] font-black uppercase tracking-widest">RADYOYU AÇ</button>
                 </div>
-                <div onclick="toggleKategori('tarih')" class="category-card bg-white p-8 shadow-lg border-l-4 border-l-red-900 hover:bg-slate-50 transition-all cursor-pointer">
-                    <h2 class="text-2xl font-black uppercase">TARİH</h2>
-                    <div class="stats-tag">2164 <span class="view-label">---</span></div>
+                <div class="w-full md:w-64 bg-slate-100 h-1 overflow-hidden"><div id="audio-bar" class="h-full bg-yellow-500 w-0"></div></div>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <h2 id="art-title" class="text-5xl md:text-7xl font-black uppercase mb-12 leading-tight tracking-tighter text-slate-900 border-l-8 border-blue-900 pl-6"></h2>
+                <div id="art-content" class="article-body"></div>
+            </div>
+        </div>
+
+        <div id="archive-grid-container">
+            <h3 class="font-black text-2xl uppercase mb-10 border-b-2 border-slate-900 pb-2 text-slate-400">ARŞİV KATMANLARI</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div onclick="makaleAc('spor')" class="archive-card" style="border-left-color: #1e3a8a;">
+                    <span class="text-blue-600 font-black text-[10px] tracking-widest uppercase">ARŞİV NO: SP-1969</span>
+                    <h4 class="text-3xl font-black uppercase mt-2">Mardinspor: Bir Şehrin Onuru</h4>
+                    <p class="text-slate-500 mt-4 leading-relaxed">Tribündeki o sarsılmaz tutku ve Beleştepe'nin ruhu.</p>
                 </div>
-                <div onclick="toggleKategori('kultur')" class="category-card bg-white p-8 shadow-lg border-l-4 border-l-yellow-600 hover:bg-slate-50 transition-all cursor-pointer">
-                    <h2 class="text-2xl font-black uppercase">KÜLTÜR</h2>
-                    <div class="stats-tag">1893 <span class="view-label">---</span></div>
+                <div onclick="makaleAc('tarih')" class="archive-card" style="border-left-color: #b91c1c;">
+                    <span class="text-red-600 font-black text-[10px] tracking-widest uppercase">ARŞİV NO: TR-099</span>
+                    <h4 class="text-3xl font-black uppercase mt-2">Hitler ve Mardin Portal Sırrı</h4>
+                    <p class="text-slate-500 mt-4 leading-relaxed">Ahnenerbe'nin mühürlü kapıları ve boyutsal arayışlar.</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section id="kategori-detay-bolumu" class="mb-32 hidden">
-            <div id="archive-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
-        </section>
+        <footer class="mt-40 mb-20 text-center border-t border-slate-200 pt-20">
+            <div class="official-stamp">Ana Sponsorumuz: Yaşarbey Kahve</div>
+        </footer>
     </main>
 
-    <article id="article-detail" class="max-w-7xl mx-auto px-6 py-12 hidden flex-grow w-full">
-        <button onclick="anaSayfayaDon()" class="mb-12 font-black text-blue-900 text-sm uppercase tracking-widest border-b-2 border-blue-900 pb-1" id="ui-back-btn">---</button>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
-            <div class="lg:col-span-8">
-                <h1 id="detail-title" class="text-5xl md:text-7xl font-black mb-6 leading-tight tracking-tighter uppercase"></h1>
-                <div class="mb-16 border-b border-slate-200 pb-8">
-                    <div class="flex flex-nowrap items-center gap-4 w-full">
-                        <button id="play-btn" onclick="sesKontrol()" class="bg-blue-950 text-white px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] shadow-lg whitespace-nowrap min-w-[150px]">---</button>
-                        <div class="flex-grow bg-slate-100 h-1 overflow-hidden relative">
-                            <div id="audio-bar" class="absolute left-0 top-0 h-full"></div>
-                        </div>
-                        <span id="audio-percent" class="text-[10px] font-black text-blue-900 w-10 text-right">0%</span>
-                    </div>
-                </div>
-                <div id="detail-content" class="article-body"></div>
-            </div>
-            <aside class="lg:col-span-4" id="detail-author-card"></aside>
-        </div>
-    </article>
-
-    <footer class="footer-seal-container">
-        <div class="official-stamp" id="ui-footer-stamp">---</div>
-    </footer>
-
     <script>
-        const sysLang = navigator.language.split('-')[0];
-        const supportedLangs = ['tr', 'en', 'pt'];
-        const currentLang = supportedLangs.includes(sysLang) ? sysLang : 'en';
-
-        const dict = {
-            tr: {
-                title: "HİTLER VE MARDİN", archiveNo: "ARŞİV NO: AR-9921", catLabel: "HINZIR KATMANI", readBtn: "DOSYAYI AÇ", layers: "ARŞİV KATMANLARI", backBtn: "KAYITLARA DÖN", playBtn: "DİNLE", pauseBtn: "DURAKLAT", resumeBtn: "DEVAM ET", views: "GÖRÜNTÜLENME", stamp: "Ana Sponsorumuz: Yaşarbey Kahve", role: "Stratejik Analist & Bellek Koruyucusu", bio: "Mezopotamya'nın kayıp tarihini dijital arşivlerle birleştiren, Mardin ve ötesindeki ezoterik sırları gün yüzüne çıkaran bir vizyoner.", intro: "Yerel saat ", sponsor: "Yaşarbey kahve ile program başlıyor.", archiveRecord: "ARŞİV KAYDI"
+        const data = {
+            spor: { 
+                title: "Mardinspor: Bir Şehrin Onuru", 
+                text: "Mardinspor, 1969 yılında kurulduğunda sadece bir spor kulübü değil, Mezopotamya'nın kalbinde atan bir damardı. Kırmızı ve lacivert renkler, bu kadim şehrin tozlu sokaklarından 21 Kasım Şehir Stadyumu'nun yeşil çimlerine uzanan bir kimlik beyanıdır. Ahmet Çınarbaş'ın analizine göre; Mardinspor sadece futbol oynamaz, bir şehrin direnişini ve ortak belleğini her maçta yeniden inşa eder. Kapıda bitmek bilmeyen bilet kuyrukları, stadın etrafını saran o meşhur ekmek arası lahmacun kokusu ve bilet bulamayanların sığınağı Beleştepe... Maç başladığında tellere yapışan ateşli taraftarın burası mardin burdan çıkış yok diye bağıran taraftarlar, terden sırılsıklam olmuş atletlerini takım için bayrak gibi sallayan fanatikler. hakemin yanlış bir kararında sahaya ineriz tehditleri, ıslıklar ve yuhlamalar eşliğinde oyun sakinleşinceye kadar devam ederdi. Kulüp tarihi boyunca yaşanan her zafer ve her hüzün, Mardin'in taşlarına kazınmış kolektif bir destandır." 
+            },
+            tarih: { 
+                title: "Hitler ve Mardin Portal Sırrı", 
+                text: "Alman Ahnenerbe cemiyetinin Mezopotamya’ya olan ilgisi, sadece basit bir arkeolojik merak değil, ideolojik bir köken arayışının karanlık bir uzantısıydı. Mardin’in binlerce yıllık taş sokaklarında yürütülen gizli operasyonlar, şehrin altındaki devasa tünel şebekelerinin Vril enerjisi ya da kadim bir geçit barındırdığı inancıyla şekillenmişti. Cemiyetin uzmanları, Sümer ve Babil metinlerinde geçen göksel kapıların izini sürerken, Mardin Kalesi'nin stratejik konumunun metafiziksel bir merkez üssü olduğuna inanıyor, yerel halkın dilden dile aktardığı efsaneleri teknik raporlara dönüştürüyorlardı. Eski Mardin evlerinin derinliklerinde, bugün bile pek az kişinin bildiği mühürlü mahzenlerin ve kör kuyuların ardında, Ahnenerbe’nin özel mühürlerle işaretlediği söylenen geçitler yer alıyordu. Bu mühürlü kapıların, dünya dışı varlıklarla iletişim kurduğuna inanılan Anunnaki kültüyle bağlantılı olduğu iddia ediliyordu. Taş işçiliğinin arasına gizlenmiş semboller, güneşin belli açılarla vurduğu gizli nişler ve sessizce yankılanan akustik boşluklar, bu Alman heyeti tarafından frekans ölçümleriyle analiz edilmiş, şehrin adeta devasa bir jeneratör gibi çalıştığı teorisi üzerine yoğunlaşılmıştı. Mardin’in dar labirentlerinde sürdürlen bu portal arayışı, yerel halkın şahmeran ve yer altı muhafızları olarak tanımladığı koruyucu efsanelerle çarpışıyordu. Ahnenerbe operasyonları sırasında bazı kazı alanlarının aniden mühürlenmesi ve personelin bölgeyi apar topar terk etmesi, taş evlerin altındaki o kadim kapıların fiziksel bir eşikten ziyade boyutsal bir kırılma noktası olduğu söylentilerini güçlendirdi. Bugün Mardin’in sarı kalker taşlarından örülü silüetine bakıldığında, bu karanlık tarihin izleri hala sessizce varlığını sürdürmektedir. Birçok eski konakta, hiçbir odaya açılmayan ve duvarla örülmüş kapıların arkasında Ahnenerbe'nin uykuda bıraktığı ya da uyandırmaktan korktuğu o metafiziksel miras saklıdır. Mezopotamya'nın bu en yüksek noktasında, gökyüzü ile yeryüzünün birleştiği o ince çizgide, mühürlü kapılar sadece taşın değil, zamanın ve mekanın ötesindeki bir gerçeğin bekçiliğini yapmaya devam ediyor." 
             }
         };
 
-        const content = {
-            tr: {
-                spor: { title: "Mardinspor ve Şehir Kültürü", text: "Mardinspor'un 1969 yılındaki kuruluşu..." },
-                tarih: { title: "Hitler ve Mardin Portal Sırrı", text: "Bu yazıda okuyacağınız bilgiler tarih kitaplarında yok..." },
-                kultur: { title: "Mırradan Sambaya Kültürel Köprü", text: "Mırradan Sambaya uzanan bu yolculuk..." }
-            }
-        };
-
-        // SES MOTORU - OPTİMİZE EDİLMİŞ
         let synth = window.speechSynthesis;
         let utter = null;
         let audioCtx, noiseNode, gainNode;
-        let voicesLoaded = false;
 
-        // Sesleri önceden yükle (Warm-up)
-        function preloadVoices() {
-            synth.getVoices();
-            if (speechSynthesis.onvoiceschanged !== undefined) {
-                speechSynthesis.onvoiceschanged = () => { voicesLoaded = true; synth.getVoices(); };
-            }
+        function getGreeting() {
+            const h = new Date().getHours();
+            if (h >= 6 && h < 12) return "Günaydın";
+            if (h >= 12 && h < 18) return "İyi günler";
+            if (h >= 18 && h < 22) return "İyi akşamlar";
+            return "İyi geceler";
         }
 
-        function initApp() {
-            preloadVoices();
-            const t = dict[currentLang] || dict.tr;
-            document.getElementById('ui-archive-no').innerText = t.archiveNo;
-            document.getElementById('ui-category-label').innerText = t.catLabel;
-            document.getElementById('ui-main-title').innerText = t.title;
-            document.getElementById('ui-read-btn').innerText = t.readBtn;
-            document.getElementById('ui-layers-title').innerText = t.layers;
-            document.getElementById('ui-footer-stamp').innerText = t.stamp;
-            
-            const authorHTML = `
-                <div class="bg-white border-2 border-slate-900 p-8 shadow-[15px_15px_0px_#1e3a8a] flex flex-col items-center text-center">
-                    <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="w-40 h-40 rounded-full border-4 border-slate-900 mb-6 grayscale hover:grayscale-0 transition-all">
-                    <h3 class="text-2xl font-black uppercase text-slate-900">Ahmet ÇINARBAŞ</h3>
-                    <p class="text-[11px] font-black uppercase text-blue-800 mb-4">${t.role}</p>
-                    <p class="text-xs text-slate-600 mb-8 italic">"${t.bio}"</p>
-                    <a href="https://x.com/ahmetcinarbas" target="_blank" class="w-full bg-slate-900 text-white py-3 text-[10px] font-black uppercase">X PROFILINI GÖR</a>
-                </div>`;
-            document.getElementById('main-author-card').innerHTML = authorHTML;
-            window.yazarKartHTML = authorHTML;
+        function makaleAc(kat) {
+            const item = data[kat];
+            document.getElementById('art-title').innerText = item.title;
+            document.getElementById('art-content').innerText = item.text;
+            document.getElementById('active-article').classList.remove('hidden');
+            document.body.classList.add('reading-active');
+            window.scrollTo({ top: document.getElementById('active-article').offsetTop - 50, behavior: 'smooth' });
+        }
+
+        function kapatMakale() {
+            synth.cancel(); stopNoise();
+            document.getElementById('active-article').classList.add('hidden');
+            document.body.classList.remove('reading-active');
         }
 
         function sesKontrol() {
-            if (synth.speaking && !synth.paused) {
-                synth.pause();
-                if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
-                document.getElementById('play-btn').innerText = dict[currentLang].resumeBtn;
-            } else if (synth.paused) {
-                synth.resume();
-                if (gainNode) gainNode.gain.setTargetAtTime(0.002, audioCtx.currentTime, 0.05);
-                document.getElementById('play-btn').innerText = dict[currentLang].pauseBtn;
-            } else {
-                davudiSeslendir();
+            if (synth.speaking && !synth.paused) { 
+                synth.pause(); 
+                if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.2);
+                document.getElementById('play-btn').innerText = "DEVAM ET"; 
             }
-        }
-
-        function davudiSeslendir() {
-            synth.cancel(); // Önceki tüm işlemleri anında temizle
-            setTimeout(() => {
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                const t = dict[currentLang] || dict.tr;
-                const fullText = `${t.intro} ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}. ${t.sponsor} ${document.getElementById('detail-content').innerText}`;
+            else if (synth.paused) { 
+                synth.resume(); 
+                if (gainNode) gainNode.gain.setTargetAtTime(0.002, audioCtx.currentTime, 0.2);
+                document.getElementById('play-btn').innerText = "DURAKLAT"; 
+            }
+            else {
+                synth.cancel();
+                const greet = getGreeting();
+                const mainText = document.getElementById('art-content').innerText;
+                const intro = `${greet}. Burası Mezopotamya'nın Sesi. Yaşarbey Kahve gururla sunar. Analiz dosyası açılıyor. `;
+                const outro = ` . . . Yaşarbey Kahvenin sponsorluğunda sunulan program sona erdi. Başka bir programda görüşmek üzere, hoşça kalın.`;
                 
-                utter = new SpeechSynthesisUtterance(fullText);
+                utter = new SpeechSynthesisUtterance(intro + mainText + outro);
                 const voices = synth.getVoices();
+                utter.voice = voices.find(v => v.lang.includes('tr') && v.name.includes('Google')) || voices.find(v => v.lang.includes('tr'));
                 
-                // Kaliteli ses seçimi
-                let preferredVoice = voices.find(v => v.lang.startsWith(currentLang) && (v.name.includes('Google') || v.name.includes('Natural')));
-                if (preferredVoice) utter.voice = preferredVoice;
-
-                utter.lang = currentLang === 'tr' ? 'tr-TR' : 'en-US';
+                utter.rate = 0.82;   
+                utter.pitch = 0.45;  
                 
-                // Mobil/PC hız dengesi
-                utter.rate = isMobile ? 0.85 : 0.65; 
-                utter.pitch = 0.5;
-
                 createNoise(0.002);
-                document.getElementById('detail-content').classList.add('reading-mode');
-                
+
                 utter.onboundary = (e) => {
-                    const percent = Math.floor((e.charIndex / utter.text.length) * 100);
-                    document.getElementById('audio-bar').style.width = percent + "%";
-                    document.getElementById('audio-percent').innerText = percent + "%";
+                    document.getElementById('audio-bar').style.width = ((e.charIndex / utter.text.length) * 100) + "%";
                 };
 
-                utter.onend = () => { stopNoise(); resetUI(); anaSayfayaDon(); };
+                utter.onend = () => { 
+                    if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 1.5);
+                    setTimeout(() => { stopNoise(); document.getElementById('play-btn').innerText = "RADYOYU AÇ"; }, 1500);
+                };
 
-                document.getElementById('play-btn').innerText = t.pauseBtn;
+                document.getElementById('play-btn').innerText = "DURAKLAT";
                 synth.speak(utter);
-            }, 50); // 50ms minik bir bekleme tarayıcıyı rahatlatır
+            }
         }
 
         function createNoise(vol) {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (noiseNode) return;
             const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < audioCtx.sampleRate * 2; i++) data[i] = Math.random() * 2 - 1;
+            const d = buffer.getChannelData(0);
+            for (let i = 0; i < audioCtx.sampleRate * 2; i++) d[i] = Math.random() * 2 - 1;
             noiseNode = audioCtx.createBufferSource();
             noiseNode.buffer = buffer; noiseNode.loop = true;
-            gainNode = audioCtx.createGain(); 
-            gainNode.gain.value = vol;
+            gainNode = audioCtx.createGain(); gainNode.gain.value = vol;
             noiseNode.connect(gainNode); gainNode.connect(audioCtx.destination);
             noiseNode.start();
         }
 
         function stopNoise() { if (noiseNode) { try { noiseNode.stop(); } catch(e){} noiseNode = null; } }
-        function resetUI() { document.getElementById('detail-content').classList.remove('reading-mode'); document.getElementById('play-btn').innerText = dict[currentLang].playBtn; }
-        
-        function toggleKategori(kat) {
-            const det = document.getElementById('kategori-detay-bolumu');
-            const grid = document.getElementById('archive-grid');
-            const item = content[currentLang][kat];
-            det.classList.remove('hidden');
-            grid.innerHTML = `<div onclick="makaleAc('${kat}')" class="bg-white p-10 border-2 border-slate-100 cursor-pointer hover:border-blue-900 transition-all">
-                <h4 class="text-2xl font-black uppercase">${item.title}</h4>
-                <p class="text-sm text-slate-500 mt-4">${item.text.substring(0,100)}...</p>
-            </div>`;
-        }
-
-        function makaleAc(kat) {
-            const item = content[currentLang][kat];
-            document.getElementById('detail-title').innerText = item.title;
-            document.getElementById('detail-content').innerHTML = `<p class="drop-cap">${item.text}</p>`;
-            document.getElementById('main-content').classList.add('hidden');
-            document.getElementById('article-detail').classList.remove('hidden');
-            document.getElementById('detail-author-card').innerHTML = window.yazarKartHTML;
-            document.getElementById('play-btn').innerText = dict[currentLang].playBtn;
-            window.scrollTo(0, 0);
-        }
-
-        function anaSayfayaDon() {
-            synth.cancel(); stopNoise();
-            document.getElementById('main-content').classList.remove('hidden');
-            document.getElementById('article-detail').classList.add('hidden');
-        }
-
-        initApp();
+        window.onload = () => { synth.getVoices(); };
     </script>
 </body>
 </html>
