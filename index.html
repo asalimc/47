@@ -6,185 +6,221 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Ahmet ÇINARBAŞ | Derin Bellek Arşivi</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@900&display=swap');
-        body { transition: background-color 2s ease; overflow-x: hidden; font-family: 'Inter', sans-serif; background: #fafafa; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { transition: background-color 2s ease, filter 0.5s ease; overflow-x: hidden; font-family: 'Inter', sans-serif; background: #fafafa; position: relative; }
         .hero-title { font-weight: 900; line-height: 0.85; letter-spacing: -0.05em; text-transform: uppercase; }
-        .article-body { text-align: justify; font-size: 1.35rem; line-height: 2.3; color: #0f172a; position: relative; font-weight: 400; }
-        #audio-bar { height: 4px; background: #fbbf24; width: 0%; transition: width 0.1s linear; }
-        .official-stamp { 
-            display: inline-block; border: 4px double #b91c1c; color: #b91c1c; padding: 15px 35px; 
-            font-weight: 900; font-size: 18px; text-transform: uppercase; transform: rotate(-3deg); background: rgba(185, 28, 28, 0.02);
-        }
-        .archive-card { border-left: 4px solid #1e3a8a; transition: all 0.3s ease; cursor: pointer; background: white; padding: 2rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
-        .archive-card:hover { transform: translateY(-5px); background: #f8fafc; border-left-width: 12px; }
-        .reading-active { background: #f4f1ea !important; }
+        .article-body { text-align: justify; font-size: 1.25rem; line-height: 2; color: #0f172a; }
+        
+        /* Radyo Lambası Efekti */
+        @keyframes pulseGlow { 0% { box-shadow: inset 0 0 50px rgba(251, 191, 36, 0.05); } 50% { box-shadow: inset 0 0 100px rgba(251, 191, 36, 0.15); } 100% { box-shadow: inset 0 0 50px rgba(251, 191, 36, 0.05); } }
+        .radio-active-glow { animation: pulseGlow 4s infinite ease-in-out; background: #fffdf5 !important; }
+
+        /* Dinamik Haber Bandı (Ticker) */
+        .ticker-container { position: fixed; bottom: 0; left: 0; width: 100%; background: #0f172a; color: #fbbf24; padding: 12px 0; z-index: 1000; font-size: 11px; font-weight: 900; text-transform: uppercase; overflow: hidden; border-top: 3px solid #fbbf24; letter-spacing: 1px; }
+        .ticker-text { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; padding-left: 100%; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+        /* Görsel Doku */
+        .radio-filter { filter: contrast(1.05) sepia(0.12); }
+        .radio-filter::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.01) 0px, rgba(0,0,0,0.01) 1px, transparent 2px); pointer-events: none; z-index: 9999; }
+        
+        .archive-card { border-left: 4px solid #1e3a8a; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; background: white; padding: 2.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .archive-card:hover { transform: translateY(-5px); border-left-width: 15px; background: #f8fafc; }
+        .official-stamp { display: inline-block; border: 4px double #b91c1c; color: #b91c1c; padding: 12px 30px; font-weight: 900; text-transform: uppercase; transform: rotate(-2deg); background: rgba(185, 28, 28, 0.02); }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-12 pb-32">
 
     <main class="max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20 items-stretch">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
             <div class="lg:col-span-8 flex flex-col justify-center">
-                <div class="text-blue-700 font-black text-[10px] tracking-widest uppercase mb-4">DOSYA: MEZOPOTAMYA SENTEZİ</div>
-                <h1 class="hero-title text-6xl md:text-8xl lg:text-[7rem] mb-8">DERİN<br>BELLEK</h1>
-                <p class="text-xl text-slate-600 font-light leading-relaxed max-w-2xl">Geçmişin dijital muhafızı Ahmet Çınarbaş'ın analiz odasındasınız.</p>
+                <div id="live-tag" class="text-blue-700 font-black text-[10px] tracking-[0.2em] uppercase mb-4 flex items-center gap-2"></div>
+                <h1 class="hero-title text-5xl md:text-8xl lg:text-[7.5rem] mb-8" id="main-title"></h1>
+                <p class="text-xl text-slate-600 font-light max-w-2xl leading-relaxed" id="main-desc"></p>
             </div>
             <aside class="lg:col-span-4">
-                <div class="bg-blue-900 p-8 text-white shadow-2xl text-center h-full flex flex-col justify-center">
-                    <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-blue-400/30 grayscale hover:grayscale-0 transition-all">
+                <div class="bg-slate-900 p-10 text-white shadow-2xl text-center border-b-8 border-blue-600">
+                    <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="w-36 h-36 rounded-full mx-auto mb-6 border-4 border-blue-500/20 grayscale hover:grayscale-0 transition-all">
                     <h3 class="text-2xl font-black uppercase tracking-tighter">Ahmet ÇINARBAŞ</h3>
-                    <p class="text-blue-300 text-[10px] font-bold uppercase mb-4 tracking-widest">Stratejik Analist & Bellek Koruyucusu</p>
-                    <p class="text-sm font-light italic mb-8 px-2">"Mezopotamya'nın kayıp tarihini dijital arşivlerle birleştiren bir vizyoner."</p>
-                    <a href="https://x.com/ahmetcinarbas" target="_blank" class="block border border-blue-400 py-3 text-[10px] font-black uppercase hover:bg-white hover:text-blue-900 transition-all">X / RESMİ KANAL</a>
+                    <p class="text-blue-400 text-[10px] font-bold uppercase mb-6 tracking-[0.3em]" id="author-role"></p>
+                    <a href="https://x.com/ahmetcinarbas" target="_blank" class="block border border-slate-700 py-3 text-[10px] font-black uppercase hover:bg-white hover:text-slate-900 transition-all">X / ARCHIVE ACCESS</a>
                 </div>
             </aside>
         </div>
 
-        <div id="active-article" class="mb-24 hidden border-y-4 border-slate-900 py-16 bg-white px-6 md:px-20 shadow-2xl">
-            <div class="flex flex-wrap items-center justify-between gap-6 mb-16 border-b pb-8">
-                <div class="flex items-center gap-4">
-                    <button onclick="kapatMakale()" class="bg-red-900 text-white px-6 py-3 text-[10px] font-black uppercase tracking-widest">DOSYAYI KAPAT</button>
-                    <button id="play-btn" onclick="sesKontrol()" class="bg-blue-950 text-white px-8 py-3 text-[10px] font-black uppercase tracking-widest">RADYOYU AÇ</button>
+        <div id="active-article" class="mb-24 hidden border-y-8 border-slate-900 py-16 bg-white px-6 md:px-24 shadow-2xl">
+            <div class="flex flex-wrap items-center justify-between gap-8 mb-16 border-b pb-10">
+                <div class="flex items-center gap-6">
+                    <button onclick="kapatMakale()" id="btn-close" class="bg-red-950 text-white px-8 py-4 text-[10px] font-black uppercase tracking-widest hover:bg-red-800 transition-colors"></button>
+                    <button id="play-btn" onclick="sesKontrol()" class="bg-blue-950 text-white px-10 py-4 text-[10px] font-black uppercase tracking-widest hover:bg-blue-800 transition-colors"></button>
                 </div>
-                <div class="w-full md:w-64 bg-slate-100 h-1 overflow-hidden"><div id="audio-bar" class="h-full bg-yellow-500 w-0"></div></div>
+                <div class="w-full md:w-80 bg-slate-100 h-1.5 rounded-full overflow-hidden"><div id="audio-bar" class="h-full bg-yellow-500 w-0 transition-all duration-300"></div></div>
             </div>
             <div class="max-w-4xl mx-auto">
-                <h2 id="art-title" class="text-5xl md:text-7xl font-black uppercase mb-12 leading-tight tracking-tighter text-slate-900 border-l-8 border-blue-900 pl-6"></h2>
+                <h2 id="art-title" class="text-4xl md:text-7xl font-black uppercase mb-12 border-l-12 border-blue-900 pl-8 leading-none tracking-tighter"></h2>
                 <div id="art-content" class="article-body"></div>
             </div>
         </div>
 
-        <div id="archive-grid-container">
-            <h3 class="font-black text-2xl uppercase mb-10 border-b-2 border-slate-900 pb-2 text-slate-400">ARŞİV KATMANLARI</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div onclick="makaleAc('spor')" class="archive-card" style="border-left-color: #1e3a8a;">
-                    <span class="text-blue-600 font-black text-[10px] tracking-widest uppercase">ARŞİV NO: SP-1969</span>
-                    <h4 class="text-3xl font-black uppercase mt-2">Mardinspor: Bir Şehrin Onuru</h4>
-                    <p class="text-slate-500 mt-4 leading-relaxed">Tribündeki o sarsılmaz tutku ve Beleştepe'nin ruhu.</p>
-                </div>
-                <div onclick="makaleAc('tarih')" class="archive-card" style="border-left-color: #b91c1c;">
-                    <span class="text-red-600 font-black text-[10px] tracking-widest uppercase">ARŞİV NO: TR-099</span>
-                    <h4 class="text-3xl font-black uppercase mt-2">Hitler ve Mardin Portal Sırrı</h4>
-                    <p class="text-slate-500 mt-4 leading-relaxed">Ahnenerbe'nin mühürlü kapıları ve boyutsal arayışlar.</p>
-                </div>
-            </div>
-        </div>
+        <div id="archive-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
 
-        <footer class="mt-40 mb-20 text-center border-t border-slate-200 pt-20">
-            <div class="official-stamp">Ana Sponsorumuz: Yaşarbey Kahve</div>
+        <footer class="mt-40 text-center border-t border-slate-200 pt-16">
+            <div class="official-stamp" id="sponsor-stamp"></div>
         </footer>
     </main>
 
+    <div class="ticker-container"><div class="ticker-text" id="ticker-content"></div></div>
+
     <script>
-        const data = {
-            spor: { title: "Mardinspor: Bir Şehrin Onuru", text: "Mardinspor, 1969 yılında kurulduğunda sadece bir spor kulübü değil, Mezopotamya'nın kalbinde atan bir damardı. Kırmızı ve lacivert renkler, bu kadim şehrin tozlu sokaklarından 21 Kasım Şehir Stadyumu'nun yeşil çimlerine uzanan bir kimlik beyanıdır. Ahmet Çınarbaş'ın analizine göre; Mardinspor sadece futbol oynamaz, bir şehrin direnişini ve ortak belleğini her maçta yeniden inşa eder. Kapıda bitmek bilmeyen bilet kuyrukları, stadın etrafını saran o meşhur ekmek arası lahmacun kokusu ve bilet bulamayanların sığınağı Beleştepe... Maç başladığında tellere yapışan ateşli taraftarın burası mardin burdan çıkış yok diye bağıran taraftarlar, terden sırılsıklam olmuş atletlerini takım için bayrak gibi sallayan fanatikler. hakemin yanlış bir kararında sahaya ineriz tehditleri, ıslıklar ve yuhlamalar eşliğinde oyun sakinleşinceye kadar devam ederdi. Kulüp tarihi boyunca yaşanan her zafer ve her hüzün, Mardin'in taşlarına kazınmış kolektif bir destandır." },
-            tarih: { title: "Hitler ve Mardin Portal Sırrı", text: "Alman Ahnenerbe cemiyetinin Mezopotamya’ya olan ilgisi, sadece basit bir arkeolojik merak değil, ideolojik bir köken arayışının karanlık bir uzantısıydı. Mardin’in binlerce yıllık taş sokaklarında yürütülen gizli operasyonlar, şehrin altındaki devasa tünel şebekelerinin Vril enerjisi ya da kadim bir geçit barındırdığı inancıyla şekillenmişti. Cemiyetin uzmanları, Sümer ve Babil metinlerinde geçen göksel kapıların izini sürerken, Mardin Kalesi'nin stratejik konumunun metafiziksel bir merkez üssü olduğuna inanıyor, yerel halkın dilden dile aktardığı efsaneleri teknik raporlara dönüştürüyorlardı. Eski Mardin evlerinin derinliklerinde, bugün bile pek az kişinin bildiği mühürlü mahzenlerin ve kör kuyuların ardında, Ahnenerbe’nin özel mühürlerle işaretlediği söylenen geçitler yer alıyordu. Bu mühürlü kapıların, dünya dışı varlıklarla iletişim kurduğuna inanılan Anunnaki kültüyle bağlantılı olduğu iddia ediliyordu. Taş işçiliğinin arasına gizlenmiş semboller, güneşin belli açılarla vurduğu gizli nişler ve sessizce yankılanan akustik boşluklar, bu Alman heyeti tarafından frekans ölçümleriyle analiz edilmiş, şehrin adeta devasa bir jeneratör gibi çalıştığı teorisi üzerine yoğunlaşılmıştı. Mardin’in dar labirentlerinde sürdürlen bu portal arayışı, yerel halkın şahmeran ve yer altı muhafızları olarak tanımladığı koruyucu efsanelerle çarpışıyordu. Ahnenerbe operasyonları sırasında bazı kazı alanlarının aniden mühürlenmesi ve personelin bölgeyi apar topar terk etmesi, taş evlerin altındaki o kadim kapıların fiziksel bir eşikten ziyade boyutsal bir kırılma noktası olduğu söylentilerini güçlendirdi. Bugün Mardin’in sarı kalker taşlarından örülü silüetine bakıldığında, bu karanlık tarihin izleri hala sessizce varlığını sürdürmektedir. Birçok eski konakta, hiçbir odaya açılmayan ve duvarla örülmüş kapıların arkasında Ahnenerbe'nin uykuda bıraktığı ya da uyandırmaktan korktuğu o metafiziksel miras saklıdır. Mezopotamya'nın bu en yüksek noktasında, gökyüzü ile yeryüzünün birleştiği o mühürlü kapılar sadece taşın değil, zamanın bekçiliğini yapmaya devam ediyor." }
+        // GLOBAL DİL MOTORU
+        const userLang = (navigator.language || navigator.userLanguage).split('-')[0];
+        const langPack = {
+            tr: {
+                title: "DERİN<br>BELLEK", desc: "Ahmet Çınarbaş'ın analiz odasındasınız. Kadim veriler ve stratejik arşivler sorgulanıyor.", role: "Stratejik Analist & Bellek Koruyucusu", close: "ARŞİVİ KAPAT", play: "RADYOYU AÇ", pause: "DURAKLAT", resume: "DEVAM ET",
+                live: "GÜNCEL ANALİZ AKIŞI", sponsor: "Stratejik Destek: Yaşarbey Kahve", intro: "Burası Mezopotamya'nın Sesi. Yaşarbey Kahve sunar. Saat ",
+                outro: "Yaşarbey Kahve sundu. Arşiv dosyası mühürlendi. Hoşça kalın.", ticker: "+++ MARDİN KALESİ ANALİZLERİ SÜRÜYOR +++ YAŞARBEY KAHVE YENİ HASAT +++ DİJİTAL BELLEK KORUMA ALTINDA +++"
+            },
+            en: {
+                title: "DEEP<br>MEMORY", desc: "You are in Ahmet Çınarbaş's analysis room. Querying ancient data and strategic archives.", role: "Strategic Analyst & Memory Guardian", close: "CLOSE ARCHIVE", play: "OPEN RADIO", pause: "PAUSE", resume: "RESUME",
+                live: "LIVE ANALYSIS STREAM", sponsor: "Strategic Support: Yaşarbey Coffee", intro: "This is Voice of Mesopotamia. Yaşarbey Coffee presents. Current time ",
+                outro: "Presented by Yaşarbey Coffee. Archive file sealed. Goodbye.", ticker: "+++ MARDIN CASTLE ANALYSES CONTINUING +++ NEW HARVEST AT YASARBEY COFFEE +++ DIGITAL MEMORY UNDER PROTECTION +++"
+            }
         };
 
+        const L = langPack[userLang] || langPack.en;
+        const data = {
+            spor: { id: "ARCH-SP1969", title: userLang === 'tr' ? "Mardinspor: Bir Şehrin Onuru" : "Mardinspor: Honor of a City", text: userLang === 'tr' ? "Mardinspor, 1969 yılında kurulduğunda sadece bir spor kulübü değil, Mezopotamya'nın kalbinde atan bir damardı. Kırmızı ve lacivert renkler, bu kadim şehrin tozlu sokaklarından 21 Kasım Şehir Stadyumu'nun yeşil çimlerine uzanan bir kimlik beyanıdır. Beleştepe'nin ruhu, taraftarın sarsılmaz inancıyla birleşerek Mardin'in taşlarına kazınmıştır." : "Mardinspor, founded in 1969, was more than a club; it was a pulse in the heart of Mesopotamia. The red and blue colors are a declaration of identity stretching from dusty streets to the green grass of the stadium." },
+            tarih: { id: "ARCH-TR099", title: userLang === 'tr' ? "Hitler ve Mardin Portal Sırrı" : "Hitler and Mardin Portal Secret", text: userLang === 'tr' ? "Alman Ahnenerbe cemiyetinin Mezopotamya’ya olan ilgisi, sadece arkeolojik merak değil, ideolojik bir köken arayışıydı. Mardin’in binlerce yıllık taş sokaklarında yürütülen gizli operasyonlar, şehrin altındaki devasa tünel şebekelerinin kadim bir geçit barındırdığı inancıyla şekillenmişti. Mühürlü kapılar hala sessizliğini koruyor." : "Ahnenerbe's interest in Mesopotamia was a quest for ideological origins. Secret operations in Mardin's ancient streets were shaped by the belief in ancient portals hidden within massive tunnel networks beneath the city." }
+        };
+
+        // UI YERLEŞTİRME
+        document.getElementById('main-title').innerHTML = L.title;
+        document.getElementById('main-desc').innerText = L.desc;
+        document.getElementById('author-role').innerText = L.role;
+        document.getElementById('btn-close').innerText = L.close;
+        document.getElementById('play-btn').innerText = L.play;
+        document.getElementById('sponsor-stamp').innerText = L.sponsor;
+        document.getElementById('ticker-content').innerText = (L.ticker + " ").repeat(5);
+        document.getElementById('live-tag').innerText = L.live;
+
+        const grid = document.getElementById('archive-grid');
+        Object.keys(data).forEach(key => {
+            grid.innerHTML += `
+                <div onclick="makaleAc('${key}')" class="archive-card">
+                    <span class="text-[10px] font-black text-blue-600 tracking-widest">${data[key].id}</span>
+                    <h4 class="text-3xl font-black uppercase mt-3 leading-tight tracking-tighter">${data[key].title}</h4>
+                </div>`;
+        });
+
+        // SES VE EFEKT MOTORU
         let synth = window.speechSynthesis;
         let utter = null;
-        let audioCtx, noiseNode, gainNode, filterNode;
+        let audioCtx, noiseNode, gainNode, filterNode, vinylNode;
 
-        function getGreeting() {
-            const h = new Date().getHours();
-            if (h >= 6 && h < 12) return "Günaydın";
-            if (h >= 12 && h < 18) return "İyi günler";
-            if (h >= 18 && h < 22) return "İyi akşamlar";
-            return "İyi geceler";
+        function playKilitSesi() {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.type = 'sine'; osc.frequency.setValueAtTime(150, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.15);
+            g.gain.setValueAtTime(0.2, ctx.currentTime);
+            g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
+            osc.connect(g); g.connect(ctx.destination);
+            osc.start(); osc.stop(ctx.currentTime + 0.15);
         }
 
-        function makaleAc(kat) {
-            const item = data[kat];
+        function makaleAc(key) {
+            playKilitSesi();
+            const item = data[key];
             document.getElementById('art-title').innerText = item.title;
             document.getElementById('art-content').innerText = item.text;
             document.getElementById('active-article').classList.remove('hidden');
-            document.body.classList.add('reading-active');
             window.scrollTo({ top: document.getElementById('active-article').offsetTop - 50, behavior: 'smooth' });
         }
 
-        function kapatMakale() {
-            synth.cancel(); stopNoise();
-            document.getElementById('active-article').classList.add('hidden');
-            document.body.classList.remove('reading-active');
-        }
+        function createAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Radyo Noise
+                noiseNode = audioCtx.createBufferSource();
+                const b = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+                const d = b.getChannelData(0);
+                for (let i = 0; i < audioCtx.sampleRate * 2; i++) d[i] = Math.random() * 2 - 1;
+                noiseNode.buffer = b; noiseNode.loop = true;
 
-        function createNoise(vol) {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (noiseNode) return;
-            const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
-            const d = buffer.getChannelData(0);
-            for (let i = 0; i < audioCtx.sampleRate * 2; i++) d[i] = Math.random() * 2 - 1;
-            noiseNode = audioCtx.createBufferSource();
-            noiseNode.buffer = buffer; noiseNode.loop = true;
-            gainNode = audioCtx.createGain(); 
-            filterNode = audioCtx.createBiquadFilter();
-            filterNode.type = 'bandpass';
-            gainNode.gain.value = vol;
-            noiseNode.connect(filterNode); filterNode.connect(gainNode); gainNode.connect(audioCtx.destination);
-            noiseNode.start();
-        }
+                // Plak Çıtırtısı
+                vinylNode = audioCtx.createScriptProcessor(4096, 1, 1);
+                vinylNode.onaudioprocess = (e) => {
+                    const out = e.outputBuffer.getChannelData(0);
+                    for (let i = 0; i < 4096; i++) {
+                        out[i] = Math.random() > 0.9996 ? (Math.random() * 0.08) : 0;
+                    }
+                };
 
-        function stopNoise() { if (noiseNode) { try { noiseNode.stop(); } catch(e){} noiseNode = null; } }
+                filterNode = audioCtx.createBiquadFilter();
+                filterNode.type = 'bandpass'; filterNode.frequency.value = 1500;
+                
+                gainNode = audioCtx.createGain();
+                gainNode.gain.value = 0;
+
+                noiseNode.connect(filterNode); filterNode.connect(gainNode);
+                vinylNode.connect(gainNode); gainNode.connect(audioCtx.destination);
+                noiseNode.start();
+            }
+        }
 
         function sesKontrol() {
+            createAudioContext();
             if (synth.speaking && !synth.paused) { 
                 synth.pause(); 
-                if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.2);
-                document.getElementById('play-btn').innerText = "DEVAM ET"; 
-            }
-            else if (synth.paused) { 
+                gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.2);
+                document.getElementById('play-btn').innerText = L.resume; 
+            } else if (synth.paused) { 
                 synth.resume(); 
-                if (gainNode) gainNode.gain.setTargetAtTime(0.0008, audioCtx.currentTime, 0.5);
-                document.getElementById('play-btn').innerText = "DURAKLAT"; 
-            }
-            else {
+                gainNode.gain.setTargetAtTime(0.0008, audioCtx.currentTime, 0.2);
+                document.getElementById('play-btn').innerText = L.pause; 
+            } else {
                 synth.cancel();
-                createNoise(0.02); // Frekans arama başlangıç volümü
-
-                // NOSTALJİK FREKANS ARAMA (TUNING) SİMÜLASYONU
+                document.body.classList.add('radio-filter', 'radio-active-glow');
+                
+                // FREKANS ARAMA (TUNING) SESİ
                 let now = audioCtx.currentTime;
-                // Kanal ararken sesin yükselip alçalması (sinyal yakalama hissi)
+                gainNode.gain.setValueAtTime(0.02, now);
                 filterNode.frequency.setValueAtTime(200, now);
-                filterNode.frequency.linearRampToValueAtTime(3000, now + 0.6);
-                filterNode.frequency.linearRampToValueAtTime(800, now + 1.2);
-                filterNode.frequency.linearRampToValueAtTime(5000, now + 1.8);
-                filterNode.frequency.exponentialRampToValueAtTime(1500, now + 2.5);
+                filterNode.frequency.exponentialRampToValueAtTime(4000, now + 0.8);
+                filterNode.frequency.exponentialRampToValueAtTime(1200, now + 1.8);
                 
-                // Frekans yakalandığında volümün çok derine düşmesi
-                setTimeout(() => { 
-                    if(gainNode) gainNode.gain.setTargetAtTime(0.0007, audioCtx.currentTime, 1.2); 
-                }, 2500);
+                const time = new Date().toLocaleTimeString(userLang, { hour: '2-digit', minute: '2-digit' });
+                utter = new SpeechSynthesisUtterance(`${L.intro} ${time}. ${document.getElementById('art-content').innerText} ${L.outro}`);
+                utter.lang = userLang === 'tr' ? 'tr-TR' : 'en-US';
+                utter.rate = 0.85; utter.pitch = 0.5;
 
-                const mainText = document.getElementById('art-content').innerText;
-                const intro = `${getGreeting()}. Burası Mezopotamya'nın Sesi. Yaşarbey Kahve gururla sunar. Analiz dosyası açılıyor. `;
-                const outro = ` . . . Yaşarbey Kahvenin sponsorluğunda sunulan program sona erdi. Başka bir programda görüşmek üzere, hoşça kalın.`;
-                
-                utter = new SpeechSynthesisUtterance(intro + mainText + outro);
-                let voices = synth.getVoices();
-                // Duygusal derinliği olan "Natural" veya "Premium" sesleri önceliklendir
-                utter.voice = voices.find(v => v.lang.includes('tr') && (v.name.includes('Natural') || v.name.includes('Premium'))) || 
-                              voices.find(v => v.lang.includes('tr') && v.name.includes('Google')) ||
-                              voices.find(v => v.lang.includes('tr'));
-                
-                utter.rate = 0.82; // Bilge ve vakur hız
-                utter.pitch = 0.45; // Davudi derinlik
-                
                 utter.onboundary = (e) => {
                     document.getElementById('audio-bar').style.width = ((e.charIndex / utter.text.length) * 100) + "%";
                 };
 
-                utter.onend = () => { 
-                    // Program bittiğinde tüm gürültüyü kes
-                    if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 1.5);
-                    setTimeout(() => { stopNoise(); document.getElementById('play-btn').innerText = "RADYOYU AÇ"; }, 1600);
+                utter.onend = () => {
+                    gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 1.5);
+                    document.body.classList.remove('radio-filter', 'radio-active-glow');
+                    document.getElementById('play-btn').innerText = L.play;
+                    document.getElementById('audio-bar').style.width = "0%";
                 };
 
-                document.getElementById('play-btn').innerText = "DURAKLAT";
-                // Tuning bitince konuşma başlar
-                setTimeout(() => { synth.speak(utter); }, 2600);
+                setTimeout(() => { 
+                    gainNode.gain.setTargetAtTime(0.0007, audioCtx.currentTime, 1); 
+                    synth.speak(utter); 
+                }, 2000);
+                document.getElementById('play-btn').innerText = L.pause;
             }
         }
-        window.onload = () => { synth.getVoices(); };
+
+        function kapatMakale() { 
+            synth.cancel(); 
+            if(gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.2);
+            document.getElementById('active-article').classList.add('hidden'); 
+            document.body.classList.remove('radio-filter', 'radio-active-glow'); 
+        }
     </script>
 </body>
 </html>
