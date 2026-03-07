@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ahmet Çınarbaş | Dijital Arşiv</title>
+    <title>Ahmet Çınarbaş | Derin Arşiv</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         * { font-style: normal !important; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -26,18 +26,20 @@
             gap: 0; cursor: grab; scrollbar-width: none; 
         }
         .slider-wrapper::-webkit-scrollbar { display: none; }
-        .archive-slide { min-width: 100%; scroll-snap-align: start; position: relative; padding: 1rem; }
+        .slider-wrapper:active { cursor: grabbing; }
+
+        .archive-slide { min-width: 100%; scroll-snap-align: start; position: relative; padding: 1rem; flex-shrink: 0; }
         
         .file-number { position: absolute; top: -20px; right: 0; font-size: 10rem; font-weight: 900; opacity: 0.05; color: #64748b; pointer-events: none; }
         .on-air-indicator { position: absolute; top: 30px; right: 40px; display: none; align-items: center; gap: 8px; color: #ef4444; font-weight: 800; font-size: 11px; letter-spacing: 2px; }
         .pulse { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        .audio-controls { margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem; background: #f1f5f9; padding: 0.8rem 1.5rem; border-radius: 16px; width: fit-content; }
+        .audio-controls { margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem; background: #f1f5f9; padding: 0.8rem 1.5rem; border-radius: 16px; width: fit-content; position: relative; z-index: 20; }
         .progress-container { width: 120px; height: 6px; background: #e2e8f0; border-radius: 3px; cursor: pointer; position: relative; }
-        .progress-bar { width: 0%; height: 100%; background: #2563eb; border-radius: 3px; transition: width 0.1s linear; }
+        .progress-bar { width: 0%; height: 100%; background: #2563eb; border-radius: 3px; }
 
-        .action-btn { background: #1e293b; color: white; padding: 0.9rem 1.8rem; border-radius: 14px; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; transition: all 0.2s; pointer-events: auto; }
+        .action-btn { background: #1e293b; color: white; padding: 0.9rem 1.8rem; border-radius: 14px; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; transition: all 0.2s; cursor: pointer; }
         
         .sidebar-gold { display: flex; flex-direction: column; gap: 1.5rem; }
         .author-card { background: white; border-radius: 40px; padding: 2.5rem; text-align: center; border: 1px solid #e2e8f0; }
@@ -53,8 +55,8 @@
     </header>
 
     <div class="main-layout">
-        <main class="archive-slider-box">
-            <div id="status-light" class="on-air-indicator"><span class="pulse"></span> YAYINDA</div>
+        <main class="archive-slider-box" id="mainContainer">
+            <div id="status-light" class="on-air-indicator"><span class="pulse"></span> CANLI KAYIT</div>
             
             <div class="slider-wrapper" id="mainSlider">
                 <div class="archive-slide">
@@ -114,12 +116,45 @@
         let utter = null, isPaused = false, currentKey = '', lastCharIndex = 0;
         let audioCtx, noiseNode, gainNode;
         const slider = document.getElementById('mainSlider');
+        let autoPlayInterval;
 
         const texts = {
-            hinzir: `Hınzır Kapısı ve Ahnenerbe. Burada dinleyeceğiniz bilgiler tarih kitaplarında yok. Hınzır, milattan önce 2400'lü yıllarda kurulan bir tarikattır. Mardin'in taşlarının altındaki portal 1904'te Mor Yakup Manastırı'nda bulundu. Baron Rudolf von Sebottendorf bu sırrı Adolf Hitler'e taşıdı. Hitler'in asıl ilgisi Anunnakiler üzerindeydi. Mardin'deki kapı sadece belirli bir genetik frekansla açılır. Baron notunda şöyle der: Geri döneceğim ama zamanın içinden değil, altından.`,
-            mardinspor: `Mardinspor Ruhu. Renkleri asil Kırmızı laciverttir. Beleş Tepe’ye tırmanan mahzun ama gururlu bakışlar bir maçtan fazlasıdır. Tribünde halka tatlı satanların kokusu, kulağına dayadığı radyodan diğer maçları dinleyen o kadim taraftarlar. Tellere yapışan, atletini sallayan ateşli adamlar. Bileti olmayan çocukları paltosunun altında stada sokan koca yürekli insanlar. Paylaşmayı, acıyı ve sevinci aynı anda yaşamaktır Mardinspor.`,
-            tarih: `Mardin'in Bilinmeyen Tarihi. Bir: Şehir yerin yedi kat altına uzanan devasa bir mağara sistemi üzerindedir. İki: Kale surları ovadan gelen frekansları kıran bir akustik aynadır. Üç: Çarşının altında hiç sönmeyen bir enerji merkezi vardır. Dört: Kapı tokmakları aslında yer altına giriş yetkisini gösteren şifre anahtarlarıdır. Beş: Şahmeran hikayesi hibrit bir neslin genetik hatırasıdır. Altı: Mardin zamanın dikey aktığı bir mekandır.`
+            hinzir: `Hınzır Kapısı ve Ahnenerbe. Burada dinleyeceğiniz bilgiler tarih kitaplarında yok. Hınzır, milattan önce 2400'lü yıllarda kurulan ve günümüzde hâlâ sessizce varlığını sürdüren bir tarikattır. Genetik olarak saf olmayan insanları ruhsal kapının dışında tutmak asıl amaçtır. 1904'te Mor Yakup Manastırı'nın alt katmanında tuhaf bir mekanizma bulundu. Bu sistem Görünmeyen Sesler denen bir teknolojiyi açığa çıkarıyordu. Baron Rudolf von Sebottendorf, Mardin'deki yapıyı çözmek için Adolf Hitler'e danıştı. Hitler'in asıl ilgisi Anunnakilereydi. Mardin'deki kapı sadece belirli genetik frekansla açılmaktadır. Kapının ardında Anunnakilerin bir alt sınıfı olan Cin türü varlıklar vardır. Baron 1942'de kaybolurken notuna şöyle yazdı: Geri döneceğim ama zamanın içinden değil, altından. Gerçekler açıklanırsa dinler ve bilim aynı anda çökebilir.`,
+            mardinspor: `Mardinspor Ruhu. Renkleri asil Kırmızı laciverttir. Beleş Tepe’ye tırmanan mahzun ama gururlu bakışlar bir maçtan fazlasıdır. Tribünde halka tatlı satanların kokusu, kulağına dayadığı radyodan diğer maçları dinleyen o kadim taraftarlar. Tellere yapışan, atletini sallayan ateşli adamlar. Bileti olmayan çocukları paltosunun altında stada sokan koca yürekli insanlar. Paylaşmayı, acıyı ve sevinci aynı anda yaşamaktır Mardinspor. Kırmızı sevgimiz, lacivert kaderimizdir.`,
+            tarih: `Mardin'in Bilinmeyen Tarihi. Bir: Şehir yerin yedi kat altına uzanan devasa bir mağara sistemi üzerindedir. İki: Kale surları ovadan gelen frekansları kıran bir akustik aynadır. Üç: Çarşının altında hiç sönmeyen bir enerji merkezi vardır. Dört: Kapı tokmakları yer altına giriş yetkisini gösteren şifre anahtarlarıdır. Beş: Şahmeran hikayesi hibrit bir neslin genetik hatırasıdır. Altı: Mardin zamanın dikey aktığı, taşların ışığı emip ovaya geri verdiği bir mekandır.`
         };
+
+        // OTOMATİK AKIŞ (3 SANİYE)
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => {
+                let next = (Math.round(slider.scrollLeft / slider.clientWidth) + 1) % 3;
+                slider.scrollTo({ left: next * slider.clientWidth, behavior: 'smooth' });
+            }, 3000);
+        }
+        function stopAutoPlay() { clearInterval(autoPlayInterval); }
+        startAutoPlay();
+        
+        // KULLANICI ETKİLEŞİMİNDE OTOMATİĞİ DURDUR
+        slider.addEventListener('touchstart', stopAutoPlay);
+        slider.addEventListener('mousedown', stopAutoPlay);
+
+        // MASAÜSTÜ DRAG (KAYDIRMA) ÇÖZÜMÜ
+        let isDown = false, startX, scrollLeft;
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true; slider.classList.add('active');
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+            slider.style.scrollSnapType = 'none';
+        });
+        slider.addEventListener('mouseleave', () => { isDown = false; slider.style.scrollSnapType = 'x mandatory'; });
+        slider.addEventListener('mouseup', () => { isDown = false; slider.style.scrollSnapType = 'x mandatory'; });
+        slider.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
 
         function initAudio() {
             if (!audioCtx) {
@@ -138,16 +173,11 @@
 
         function toggleAudio(key) {
             initAudio();
+            stopAutoPlay();
             if (currentKey === key && synth.speaking) {
-                if (isPaused) {
-                    synth.resume(); isPaused = false;
-                    document.getElementById('btn-'+key).innerText = 'Durdur';
-                } else {
-                    synth.pause(); isPaused = true;
-                    document.getElementById('btn-'+key).innerText = 'Devam Et';
-                }
+                if (isPaused) { synth.resume(); isPaused = false; document.getElementById('btn-'+key).innerText = 'Durdur'; }
+                else { synth.pause(); isPaused = true; document.getElementById('btn-'+key).innerText = 'Devam Et'; }
             } else {
-                // Mobildeki bekleme süresini azaltmak için önce kuyruğu temizle
                 synth.cancel();
                 setTimeout(() => { startSpeaking(key, 0); }, 50);
             }
@@ -160,14 +190,17 @@
             utter = new SpeechSynthesisUtterance(fullText.substring(startPos));
             utter.lang = 'tr-TR';
             
-            // Hız ayarı: Mobil için hafif hızlandırılmış (0.85), Masaüstü için ağır (0.7)
-            utter.rate = isMobile ? 0.85 : 0.7; 
-            utter.pitch = 0.95;
+            // MOBİL HASSASİYET: Normal hızda ama duygu yüklü (vurgulu)
+            utter.rate = isMobile ? 1.0 : 0.8; 
+            utter.pitch = 0.95; 
 
             utter.onboundary = (e) => {
                 lastCharIndex = startPos + e.charIndex;
                 const progress = (lastCharIndex / fullText.length) * 100;
                 document.getElementById('prog-'+key).style.width = progress + '%';
+                
+                // Noktalama işaretlerinde hafif beklemeler (Vakur esler)
+                if (fullText[lastCharIndex] === '.') { synth.pause(); setTimeout(() => synth.resume(), 300); }
             };
 
             utter.onstart = () => {
