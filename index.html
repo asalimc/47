@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ahmet Çınarbaş | Gazeteci Yazar - Makale Arşivi</title>
+    <title>Ahmet Çınarbaş | Gazeteci Yazar - Arşiv</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
 
@@ -12,165 +12,220 @@
         * { font-style: normal !important; }
 
         body {
-            background-color: #f0f4f8;
+            background-color: #f4f7fe;
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: #1a1d23;
-            overflow-x: hidden;
+            margin: 0;
         }
 
-        .wrapper {
-            max-width: 1400px; margin: 0 auto;
-            display: grid; grid-template-columns: 1.618fr 1fr;
-            gap: 2.5rem; align-items: stretch;
-            min-height: 80vh;
+        /* ALTIN ORAN ANA ŞABLON (1.618:1) */
+        .gold-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.618fr 1fr;
+            gap: 2.5rem;
+            padding: 3rem;
+            min-height: 85vh;
+            align-items: stretch;
         }
 
         @media (max-width: 1024px) {
-            .wrapper { grid-template-columns: 1fr; }
+            .gold-container { grid-template-columns: 1fr; padding: 1.5rem; }
         }
 
-        /* Ana Makale Kartı - Minimalist */
-        .main-card {
-            background: #1a1d23; border-radius: 40px;
-            padding: 5rem 4rem; display: flex; flex-direction: column;
-            justify-content: center; color: white;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+        /* SOL: YATAY KAYAN BÜYÜK DİV */
+        .main-article-area {
+            background: #1a1d23;
+            border-radius: 40px;
+            padding: 4rem;
+            color: white;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
             position: relative;
         }
 
-        /* Başlık Vurgusu */
-        .main-headline {
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            font-weight: 800; line-height: 1.1;
-            letter-spacing: -0.04em;
-            margin-bottom: 2rem;
-            color: #ffffff;
+        .article-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 6rem;
+            scroll-behavior: smooth;
+        }
+        .article-slider::-webkit-scrollbar { display: none; }
+
+        .article-slide {
+            min-width: 100%;
+            scroll-snap-align: start;
         }
 
-        /* Yazar Kartı - Etli Butlu Premium */
-        .author-card {
-            background: white; border-radius: 40px;
-            padding: 5rem 2.5rem; text-align: center;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.05);
-            display: flex; flex-direction: column;
-            justify-content: center; border: 1px solid #e2e8f0;
+        /* SAĞ: YAZAR & SPONSOR (DİKEY ALTIN ORAN) */
+        .side-stack {
+            display: grid;
+            grid-template-rows: 1.618fr 1fr;
+            gap: 1.5rem;
         }
 
-        .author-img {
-            width: 180px; height: 180px;
-            border-radius: 50px; object-fit: cover;
+        .author-card-premium {
+            background: white;
+            border-radius: 40px;
+            padding: 4rem 2rem;
+            text-align: center;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .author-photo {
+            width: 175px;
+            height: 175px;
+            border-radius: 50px;
+            object-fit: cover;
             margin: 0 auto 2.5rem;
-            box-shadow: 0 25px 50px rgba(37, 99, 235, 0.2);
             border: 8px solid #f8fafc;
+            box-shadow: 0 25px 50px rgba(37, 99, 235, 0.15);
             transform: rotate(-1.5deg);
         }
 
-        /* Sponsor Alanı - Altın Oran Hizalaması */
-        .sponsor-card {
-            background: #2563eb; color: white;
-            border-radius: 40px; padding: 3rem;
-            text-align: center; margin-top: 2rem;
+        .sponsor-card-premium {
+            background: #2563eb;
+            color: white;
+            border-radius: 40px;
+            padding: 2.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        /* Seslendirme Efekti */
-        .reading-pulse {
+        /* Dinamik Radyo "ON AIR" Efekti */
+        .on-air-tag {
             position: absolute; top: 40px; right: 40px;
-            width: 12px; height: 12px; background: #2563eb;
-            border-radius: 50%; display: none;
-            box-shadow: 0 0 20px #2563eb;
-            animation: pulse 1.5s infinite;
+            display: none; align-items: center; gap: 10px;
+            color: #ef4444; font-weight: 800; font-size: 11px;
+            letter-spacing: 3px;
         }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
-<body class="p-6 md:p-12 lg:p-20">
+<body>
 
-    <header class="max-w-[1400px] mx-auto flex justify-between items-center mb-16">
-        <div class="text-3xl font-black tracking-tighter uppercase">A. ÇINARBAŞ <span class="text-blue-600">DOSYALARI</span></div>
-        <div class="flex gap-4 font-bold text-xs">
-            <button onclick="setLang('tr')" class="hover:text-blue-600 transition">TR</button>
-            <button onclick="setLang('pt')" class="hover:text-blue-600 transition">PT</button>
+    <header class="max-w-[1440px] mx-auto px-12 py-10 flex justify-between items-center">
+        <div class="text-3xl font-black tracking-tighter uppercase">AHMET ÇINARBAŞ <span class="text-blue-600">DOSYALARI</span></div>
+        <div class="flex gap-6 font-bold text-[10px] tracking-widest uppercase opacity-60">
+            <button onclick="changeLang('tr')" class="hover:text-blue-600">TR</button>
+            <button onclick="changeLang('pt')" class="hover:text-blue-600">PT</button>
         </div>
     </header>
 
-    <div class="wrapper">
-        <main class="main-card">
-            <div id="status-pulse" class="reading-pulse"></div>
-            <div>
-                <span class="text-blue-500 font-black uppercase tracking-[0.5em] text-[11px] mb-6 block">Araştırmacı Gazetecilik // Özel Arşiv</span>
-                <h1 id="headline" class="main-headline"></h1>
-                <p id="sub-info" class="text-slate-500 font-bold uppercase tracking-widest text-xs mt-4">Kırpılmamış Tam Metin Seslendirmesi Hazır</p>
-            </div>
+    <div class="gold-container">
+        <main class="main-article-area">
+            <div id="air-indicator" class="on-air-tag"><span class="dot"></span> ON AIR</div>
             
-            <div class="mt-16">
-                <button id="audio-btn" onclick="playArticle()" class="bg-white text-black px-14 py-6 rounded-3xl font-black uppercase text-xs shadow-2xl hover:bg-blue-600 hover:text-white transition-all transform hover:-translate-y-1">
-                    Makaleyi Dinle
-                </button>
+            <div class="article-slider" id="slider">
+                <div class="article-slide">
+                    <span class="text-blue-500 font-black uppercase tracking-[0.6em] text-[10px] mb-8 block">Araştırma // Mezopotamya</span>
+                    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none mb-10">Hınzır Kapısı ve <br>Ahnenerbe Sırrı</h1>
+                    <p class="text-slate-400 font-bold text-lg mb-12 max-w-2xl leading-relaxed">
+                        Mardin'in mühürlü taşlarının altında saklanan, resmi tarihin sustuğu o büyük portalın ve Baron Rudolf'un izini sürüyoruz.
+                    </p>
+                    <button onclick="playRadio('tr')" class="bg-white text-black px-12 py-6 rounded-2xl font-black uppercase text-[11px] tracking-widest hover:bg-blue-600 hover:text-white transition-all shadow-2xl transform hover:-translate-y-1">
+                        Makaleyi Dinle
+                    </button>
+                </div>
+                <div class="article-slide">
+                    <span class="text-blue-500 font-black uppercase tracking-[0.6em] text-[10px] mb-8 block">Analiz // Strateji</span>
+                    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none mb-10">Zamanın Altındaki <br>Frekanslar</h1>
+                    <p class="text-slate-400 font-bold text-lg mb-12 max-w-2xl leading-relaxed">
+                        Anunnakiler ve modern dünya arasındaki genetik bağlar. Mardin'den Berlin'e uzanan sessiz frekans operasyonu.
+                    </p>
+                    <button onclick="playRadio('tr')" class="bg-white text-black px-12 py-6 rounded-2xl font-black uppercase text-[11px] tracking-widest hover:bg-blue-600 hover:text-white transition-all shadow-2xl">
+                        Makaleyi Dinle
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mt-12">
+                <div class="w-16 h-1 bg-white rounded"></div>
+                <div class="w-4 h-1 bg-white/20 rounded"></div>
             </div>
         </main>
 
-        <aside class="flex flex-col">
-            <div class="author-card">
-                <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="author-img">
-                <h2 class="text-4xl font-black tracking-tighter mb-3">Ahmet Çınarbaş</h2>
-                <p class="text-blue-600 font-black uppercase text-xs tracking-[0.4em] mb-10">Gazeteci Yazar</p>
-                <div class="w-16 h-1.5 bg-blue-600 mx-auto mb-10"></div>
-                <p id="bio" class="text-slate-600 font-bold leading-relaxed px-4 text-lg"></p>
+        <aside class="side-stack">
+            <div class="author-card-premium">
+                <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="author-photo">
+                <h2 class="text-4xl font-black tracking-tighter mb-2">Ahmet Çınarbaş</h2>
+                <p class="text-blue-600 font-black uppercase text-[10px] tracking-[0.4em] mb-8">Gazeteci Yazar</p>
+                <div class="w-14 h-1.5 bg-blue-600 mx-auto mb-10"></div>
+                <p class="text-slate-600 font-bold leading-relaxed px-8 text-base">
+                    Mezopotamya'nın susturulmuş tarihini ve mühürlü kodlarını araştırmacı gazetecilik disipliniyle aralayan arşivci.
+                </p>
             </div>
 
-            <div class="sponsor-card">
-                <h3 class="text-3xl font-black tracking-tighter uppercase mb-1">Yaşarbey Kahve</h3>
-                <p class="text-[10px] font-black opacity-60 tracking-[0.4em] uppercase">Kültür ve Bellek Sponsoru</p>
+            <div class="sponsor-card-premium">
+                <p class="text-[9px] font-black uppercase tracking-[0.6em] opacity-50 mb-4">Stratejik Partner</p>
+                <h3 class="text-4xl font-black tracking-tighter uppercase">Yaşarbey Kahve</h3>
+                <p class="text-[10px] font-bold mt-2 opacity-80 uppercase tracking-widest">Kültür ve Bellek Sponsoru</p>
             </div>
         </aside>
     </div>
 
     <script>
-        let currentLang = 'tr';
+        let audioCtx, noise;
         const synth = window.speechSynthesis;
 
-        const content = {
-            tr: {
-                bio: "Belleğin katmanlarını, Mezopotamya'nın susturulmuş tarihini ve saklı stratejileri kaleme alan araştırmacı yazar.",
-                headline: "Hınzır Kapısı ve Ahnenerbe: Mardin'in Gizli Portalı",
-                fullText: `Bu yazıda okuyacağınız bilgiler tarih kitaplarında yok, internette parça parça fısıldanmış hâlde bile değil. Bunlar ne geçmişte resmiyet kazanmış ne de gelecekte doğrulanacak. Çünkü bazı gerçekler doğrulandığı an sistem çöker. Hınzır Tarikatı: Kapının Koruyucuları mı Yoksa İnsanlık Deneyi Mi? Hınzır, eski Sümer tabletlerinde yeraltı kapısı anlamına gelir. Ancak bu sadece kelime anlamıyla sınırlı değildir. Hınzır, milattan önce 2400'lü yıllarda kurulan ve günümüzde hâlâ sessizce varlığını sürdüren bir tarikattır. Bu yapı, görünürde bir ruhsal gelişim okulu gibi dursa da, asıl amacı çok daha karanlıktır: Genetik olarak saf olmayan insanları ruhsal kapının dışında tutmak. Hınzır'ın kurucusu olduğuna inanılan kişi, Sümer dilinde Gizli Gölge anlamına gelen bir varlıktan bahseder: Zun-Na-Ra. Bu figür hiçbir heykelde, tablette ya da çizimde yer almaz. Çünkü onun görünüşü, görenlerin aklını bozacak kadar kompleks yapılıdır. Onun verdiği bilgileri korumakla görevli ilk insanlar zamanla bir tarikat haline dönüşür. İşte o tarikat, tarihte ilk kez Mardin bölgesinde fiziksel olarak örgütlenir. Mardin: Taşların Altında Gizlenen Portal. Mardin, sadece tarihi taş evleriyle değil, taşların altındaki boşluklar ile de tanınmalıdır. 1904 yılında, Fransız Arkeolog Émile de Saurac, Mardin civarındaki Mor Yakup Manastırının alt katmanında tuhaf bir mekanizma buldu. Bu, herhangi bir el ile açılmayan, belirli titreşimlerle çalışan ve antik Anunnaki sembolleri taşıyan bir düzeneğe bağlıydı. Bu sistem Görünmeyen Sesler denen bir teknolojiyi açığa çıkarıyordu. O günlerde açıklanamayan bu olay, Émilein akıl hastanesine yatırılmasıyla sona erdi. Ama notları bir başka el tarafından Almanyaya gönderildi. Kimine göre bu kişi, henüz bir öğrenci olan Baron Rudolf von Sebottendorf idi. Baron Rudolf von Sebottendorf: Zamansızlıkla Anlaşma Yapan Adam. Baron Rudolf von Sebottendorf, kimliği resmi belgelerde hiç geçmeyen ama birçok o kült belgede Kırmızı Gömlekli Adam olarak anılan bir figürdür. 1922 de Almanya da spiritüel aristokratlar arasında hızla yükseldi. Berlin de kurulan Kara Salı Derneğinin arkasındaki asıl güç olduğu iddia edilir. Baronun en büyük sırrı, zamanla yaptığı anlaşmadır. O, yalnızca geleceği gören değil, geleceği dizayn eden bir ruhtur. Hınzır Tarikatının Avrupalı uzantısı haline gelen Baron, Mardin'deki yapıyı çözmek için Adolf Hitler'e danışır. Bu danışma 1934 te, Berlin in kuzeyindeki Ölüler Günü Oturumu adı verilen özel bir gecede gerçekleşir. Bu oturumda Hitler, ilk defa Mardinin altındaki geometrik kapıya dair detayları öğrenir. Hitlerin Anunnaki Takıntısı. Adolf Hitler'in okültizme ilgisi tarihsel olarak belgelenmiştir. Ancak esas ilgisinin Anunnakilere olduğu çok az kişi tarafından bilinir. 1936 yılında, SS subayı Wilhelm Tesch, Mardin'e gizli bir ekip gönderir. Amaç, Mor Yakup Manastırı'nın altındaki kapıyı yeniden aktive etmektir. Geleneksel ekipmanlar başarısız olur. Çünkü bu kapı ancak belirli genetik frekansa sahip bireylerin titreşimi ile açılmaktadır. İşte bu noktada Hitler, insan genetiğiyle oynamaya başlar. Mardin'deki taş kapının sırrı çözüldüğünde, onun yalnızca bir geçiş noktası değil, başka bir boyuta açılan bir rezonans köprüsü olduğu anlaşılır. Ve bu köprünün diğer ucunda, Anunnakilerin bir alt sınıfı olan Cin-türü Varlıklar ile karşılaşılır. Anunnakiler ve Cinler: Aynı Kaynaktan Gelen Farklı Enerjiler. Anunnakiler, çok boyutlu enerji varlıkları olarak bilinir. Ancak onların yalnızca yüksek seviyeli olanları değil, arka planda kalan düşük titreşimli türleri de vardır. İşte halk arasında cin olarak bilinen varlıklar, bu düşük rezonanslı Anunnaki kırılmalarıdır. Bu varlıklar tamamen bilinçlidir, ancak sadece korku ve sapkınlık frekansına yanıt verirler. Hınzır Tarikatı'nın amacı, bu varlıklarla iletişime geçen zihinleri seçmektir. O yüzden herkese açık değillerdir. Mardin'de açılan kapının ardından ortaya çıkan ilk varlık Azura-Na adında bir cin-entegrasyon varlığıdır. Bu varlıkla yapılan ilk temas, 1942 de Baron un Berlin deki bodrum tapınağında gerçekleştirilir. O gün, Baron Rudolf von Sebottendorf bedensel olarak ortadan kaybolur. Ancak notlarında şu yazar: Geri döneceğim ama zamanın içinden değil, altından. Zamanın Altında Yaşayanlar. Geleneksel zamansal algının dışında, zamanın bir alt tabakası daha olduğu iddia edilir. Tıpkı denizin altındaki akıntılar gibi, zamanın da derinliği vardır. Ve bu derinlikte sıkışmış olan varlıklar, sadece uygun enerji mühürleriyle çağrılabilir. Baron un kaybolduğu gün Berlin deki saatler aniden durur. Aynı saatlerde Mardin de, bir çobanın kaybolduğu rapor edilir. O çobanın adı kayıtlarda geçmez ama köylüler onun gözlerinde ışık yerine boşluk olduğunu söyler. O tarihten sonra Mardin de bazı hayvanların geceleri taşlara doğru uluduğu, sabah uyandıklarında ayaklarında yanık izleri olduğu gözlenmiştir. Gerçekler Neden Hiçbir Zaman Açıklanmadı? Çünkü bu gerçek açıklanırsa, dinler, bilim ve tarih aynı anda çökebilir. Hınzır Tarikatı'nın halen aktif olduğuna inananlar var. Baron Rudolf von Sebottendorf ün bir zaman altı akımında yeniden var olacağına inananlar daha fazla. Mardin hâlâ sessiz. Ama taşlar konuşuyor. Dikkatli bakarsan, geceleri bazı taşlar ışık emiyor. Gözünü Kırptığın An Kaçırdığın Gerçek. Belki de her şeyin cevabı tek bir taşın altında. Belki de Adolf Hitlerin asıl amacı dünya savaşını kazanmak değil, başka bir dünyaya geçmekti. Belki de cinler sadece anlatılan değil, anlatılamayanlardı. Ve belki de Baron hâlâ yaşıyor, ama artık zamanın içinde değil, seni izlediğin saatlerin arasında. HINZIR KAPISI VE ANUNNAKİ BAĞLANTISI: Yeraltı Dünyasının Sırları. Mezopotamya mitolojisinin derinliklerinde yer alan Hınzır Kapısı, yalnızca ruhların ölüm sonrası yeraltı dünyasına geçişini değil, aynı zamanda gizemli varlıklar olan Anunnaki ile bağlantılı bir sembolü temsil eder. Peki, Anunnaki ile Hınzır Kapısı arasındaki ilişki nedir? Hınzır Kapısı Nedir? Hınzır Kapısı, Mezopotamya mitolojisinde, tanrıça Ereshkigal’in yönettiği yeraltı dünyasına giriş kapısıdır. Bu kapı, ruhların fiziksel dünyayı terk ederek, dönüşüm ve arınma sürecine girdiği mistik bir geçit olarak kabul edilir. Ancak bazı eski Sümer metinleri, Hınzır Kapısı’nın sadece ölümlüler için değil, tanrılar ve dünyadışı varlıklar için de bir geçiş noktası olduğunu ima eder. İşte bu noktada, Anunnaki devreye girer. Anunnaki Kimdir? Anunnaki, Sümer mitolojisinde “Gökyüzünden gelenler” olarak bilinen, insanlığın kaderini şekillendirdiği düşünülen tanrılardır. Bazı teorilere göre, bu varlıklar sadece mitolojik tanrılar değil, aynı zamanda dünyayı ziyaret eden ileri teknolojiye sahip dünyadışı varlıklardır. Anunnaki’nin yeraltı dünyasıyla, özellikle de Hınzır Kapısı ile bağlantısı, onların insan ruhlarının geçişini ve dönüşümünü yönettiği fikrini doğurur. Hınzır ve Anunnaki Bağlantısı. Efsaneler, Anunnaki’nin yalnızca göklerde değil, yeraltı dünyasında da etkin olduğunu söyler. Hınzır Kapısı, onların bu dünyaya giriş ve çıkışlarını sağlayan bir geçit olabilir. Bazı modern teorisyenler, Hınzır Kapısı’nın yalnızca mitolojik bir sembol değil, aynı zamanda ileri bir teknolojiyi temsil ettiğini düşünür. Anunnaki’nin, evrenin farklı boyutlarına veya yıldız sistemlerine seyahat etmek için bu tür kapıları kullandığı iddia edilir. İnanna ve Anunnaki Bağlantısı. Tanrıça İnanna’nın Hınzır Kapısı’ndan geçişi, bu kapının yalnızca ölüm sonrası bir diyar değil, aynı zamanda tanrıların veya varlıkların güç kazandığı bir dönüşüm alanı olabileceğini gösterir. İnanna’nın yolculuğu sırasında karşılaştığı sınavlar, Anunnaki’nin yeraltı dünyasındaki rolüyle paralellik taşır. Hınzır Kapısı, ruhsal ve evrensel dönüşümü simgeler. Anunnaki’nin bu kapıyı kullanarak insan ruhlarını eğittiği veya yönlendirdiği düşüncesi, evrensel bilgeliğin bir parçası olabilir. Yeraltı Dünyası ve Uzay Teorileri: Bazı teoriler, Mezopotamya mitolojisindeki yeraltı dünyasının aslında bir yıldız sistemi veya başka bir boyuta açılan bir portal olabileceğini öne sürer. Hınzır Kapısı, Mezopotamya mitolojisinin sadece bir unsuru değil, aynı zamanda evrensel sırların ve insanlığın kökenine dair derin soruların anahtarıdır. Anunnaki ile olan bağlantısı, bu mitolojik kapıyı daha da gizemli kılar. Sizce Hınzır, sadece bir efsane mi, yoksa evrenin derinliklerine açılan bir kapı mı?`
-            },
-            pt: {
-                bio: "Escritor e pesquisador com foco na Mesopotâmia, explorando camadas da memória e estratégias ocultas.",
-                headline: "Portal Hınzır e Ahnenerbe: O Mistério de Mardin",
-                fullText: "A informação que você lerá neste artigo não está nos livros de história... (Texto em Português completo conforme tradução anterior)"
+        function initBackgroundNoise() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const bufferSize = audioCtx.sampleRate * 2;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+
+                noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                noise.loop = true;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass'; filter.frequency.value = 850;
+
+                const gain = audioCtx.createGain();
+                gain.gain.value = 0.012; // Derinden gelen hafif radyo sesi
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start();
             }
-        };
-
-        function setLang(l) { currentLang = l; render(); }
-
-        function render() {
-            const data = content[currentLang];
-            document.getElementById('bio').innerText = data.bio;
-            document.getElementById('headline').innerText = data.headline;
         }
 
-        function playArticle() {
-            synth.cancel();
-            const data = content[currentLang];
-            const utter = new SpeechSynthesisUtterance(data.fullText);
-            utter.lang = currentLang === 'tr' ? 'tr-TR' : 'pt-BR';
-            utter.rate = 0.95;
+        const makaleMetni = `Bu yazıda okuyacağınız bilgiler tarih kitaplarında yok... Hınzır Kapısı: Kapının Koruyucuları mı? Hınzır, eski Sümer tabletlerinde yeraltı kapısı anlamına gelir. Baron Rudolf von Sebottendorf, Mardin'deki yapıyı çözmek için Adolf Hitler'e danışır. Bu gerçek açıklanırsa dinler, bilim ve tarih aynı anda çökebilir.`;
 
-            utter.onstart = () => {
-                document.getElementById('status-pulse').style.display = 'block';
-                document.getElementById('audio-btn').innerText = "Makale Seslendiriliyor...";
-            };
+        function playRadio(l) {
+            synth.cancel();
+            initBackgroundNoise();
             
+            const utter = new SpeechSynthesisUtterance(makaleMetni);
+            utter.lang = l === 'tr' ? 'tr-TR' : 'pt-BR';
+            utter.rate = 0.86; // Sakin ve profesyonel tempo
+            utter.pitch = 0.95; // Tok ve güven veren ses tonu
+            
+            utter.onstart = () => document.getElementById('air-indicator').style.display = 'flex';
             utter.onend = () => {
-                document.getElementById('status-pulse').style.display = 'none';
-                document.getElementById('audio-btn').innerText = "Makaleyi Dinle";
+                document.getElementById('air-indicator').style.display = 'none';
+                if (noise) { noise.stop(); audioCtx = null; }
             };
 
             synth.speak(utter);
         }
 
-        render();
+        function changeLang(l) { console.log("Dil Değişti:", l); }
     </script>
 </body>
 </html>
