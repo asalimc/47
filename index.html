@@ -3,226 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmet ÇINARBAŞ | Mezopotamya'nın Sesi</title>
+    <title>Ahmet ÇINARBAŞ | Bellek Arşivi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --bellek-mavi: #1D4ED8; 
-            --bellek-bg: #F8FAFC;
-            --sari-golge: rgba(245, 158, 11, 0.18);
+            --bellek-mavi: #1D4ED8; --bellek-lacivert: #0F172A; --bellek-bg: #F8FAFC;
+            --hardal-sari: #EAB308; --sari-golge: rgba(234, 179, 8, 0.3);
         }
-        * { font-style: normal !important; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        
-        body { background-color: var(--bellek-bg); font-family: 'Plus Jakarta Sans', sans-serif; color: #1e293b; margin: 0; overflow-x: hidden; }
+        * { font-style: normal !important; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bellek-bg); font-family: 'Plus Jakarta Sans', sans-serif; color: #1e293b; margin: 0; height: 100vh; overflow: hidden; }
 
-        .main-layout { 
-            max-width: 1600px; margin: 0 auto; 
-            display: grid; grid-template-columns: 1.618fr 1fr; 
-            gap: 2rem; padding: 1.5rem; height: 85vh;
-        }
-        @media (max-width: 1024px) { 
-            .main-layout { grid-template-columns: 1fr; height: auto; } 
-        }
+        .main-layout { max-width: 1600px; margin: 0 auto; display: grid; grid-template-columns: 1.618fr 1fr; gap: 1.5rem; padding: 1rem; height: 82vh; }
 
         .glow-card {
             background: #ffffff; border-radius: 40px; 
-            box-shadow: 20px 20px 60px var(--sari-golge), -15px -15px 60px rgba(29, 78, 216, 0.04);
-            border: 1px solid rgba(251, 191, 36, 0.25);
-            position: relative; overflow: hidden; height: 100%;
+            box-shadow: 15px 15px 40px var(--sari-golge);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
         }
 
-        .slider-container { height: 100%; width: 100%; position: relative; }
-        .slider-wrapper { 
-            display: flex; height: 100%; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); 
-        }
-
-        .archive-slide { 
-            min-width: 100%; height: 100%; padding: 4rem; 
-            display: flex; flex-direction: column; justify-content: center; position: relative; 
-        }
-
-        .audio-wave { display: none; align-items: center; gap: 4px; height: 20px; }
-        .audio-playing .audio-wave { display: flex; }
-        .bar { width: 3px; background: white; border-radius: 10px; animation: bounce 1s infinite; }
-        @keyframes bounce { 0%, 100% { height: 6px; } 50% { height: 20px; } }
-
-        .progress-container { width: 100%; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: var(--bellek-mavi); transition: width 0.1s linear; }
-
-        .file-number { position: absolute; top: 10px; right: 40px; font-size: 10rem; font-weight: 900; opacity: 0.03; pointer-events: none; }
+        /* KAYDIRILABİLİR HABER PANELİ */
+        .large-news-panel { background: var(--bellek-lacivert) !important; border: none; cursor: grab; user-select: none; }
+        .large-news-panel:active { cursor: grabbing; }
         
-        .premium-sponsor-text {
-            background: linear-gradient(to right, #ffffff 20%, #fde68a 40%, #fde68a 60%, #ffffff 80%);
-            background-size: 200% auto;
-            color: #fff;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 4s linear infinite;
-            font-weight: 800;
+        .news-slider-container { 
+            height: 100%; width: 100%; display: flex; 
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform;
         }
-        @keyframes shine { to { background-position: 200% center; } }
+        
+        .news-item { min-width: 100%; height: 100%; padding: 5rem; display: flex; flex-direction: column; justify-content: center; pointer-events: none; }
+        .news-item button { pointer-events: auto; }
 
-        .sidebar-grid { display: grid; grid-template-rows: 1.618fr 1fr; gap: 2rem; height: 100%; }
+        .news-badge {
+            display: inline-block; background: var(--hardal-sari); color: var(--bellek-lacivert);
+            padding: 8px 16px; border-radius: 12px; font-size: 11px;
+            font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2rem; width: max-content;
+        }
+
+        .news-main-title {
+            font-size: clamp(1.8rem, 2.8vw, 3rem); font-weight: 800; line-height: 1.2; color: white;
+            letter-spacing: -0.04em; margin-bottom: 2.5rem;
+            background: linear-gradient(to bottom right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .news-action-btn {
+            display: inline-flex; items-center; justify-content: center; gap: 12px; background: white;
+            color: var(--bellek-lacivert); padding: 20px 40px; border-radius: 24px;
+            font-weight: 800; font-size: 12px; text-transform: uppercase;
+            letter-spacing: 0.12em; transition: 0.3s; cursor: pointer; width: 100%; max-width: 280px;
+            border: none; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .news-action-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); background: var(--bellek-lacivert); color: white; }
+
+        /* YAZAR KARTI */
+        .author-card { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; background: var(--hardal-sari) !important; }
+        .author-photo-frame { width: 140px; height: 140px; border-radius: 40px; overflow: hidden; border: 6px solid rgba(255,255,255,0.7); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+        .basyazar-panel { margin-top: 1.5rem; padding: 2rem; background: rgba(255, 255, 255, 0.95); border-radius: 35px; border-bottom: 8px solid var(--bellek-lacivert); width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .basyazar-label { font-size: 10px; font-weight: 900; color: var(--bellek-lacivert); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 12px; opacity: 0.6; }
+        .basyazar-title-text { font-size: 16px; color: #0f172a; line-height: 1.4; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.02em; }
+
+        /* DETAY OVERLAY */
+        #detailsOverlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.98); display: none; justify-content: flex-end; z-index: 1000; backdrop-filter: blur(30px); }
+        .modal-card { background: white; width: 100%; max-width: 750px; height: 100%; padding: 5rem 4rem; border-radius: 70px 0 0 70px; display: flex; flex-direction: column; animation: sideSlide 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes sideSlide { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        .modal-content-area { color: #334155; font-size: 1.1rem; line-height: 1.8; font-weight: 500; overflow-y: auto; padding-right: 25px; margin-bottom: 40px; }
+        .modal-content-area h4 { color: var(--bellek-lacivert); font-weight: 800; margin-top: 2rem; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.05em; border-bottom: 2px solid var(--hardal-sari); width: max-content; }
+
+        @media (max-width: 1024px) { 
+            .main-layout { grid-template-columns: 1fr; height: auto; overflow-y: auto; } 
+            body { overflow: auto; } 
+            .modal-card { max-width: 100%; border-radius: 0; padding: 3rem 1.5rem; }
+            .news-item { padding: 3rem 2rem; }
+        }
     </style>
 </head>
 <body>
 
-    <header class="max-w-[1600px] mx-auto px-6 py-8 flex justify-between items-center text-slate-900 h-[100px]">
-        <div class="text-xl md:text-2xl font-black tracking-tighter uppercase">AHMET ÇINARBAŞ <span class="text-blue-700">BELLEK</span></div>
-        <div class="text-[9px] font-black text-slate-400 tracking-[0.4em] uppercase">ARCHIVE 2026</div>
+    <header class="max-w-[1600px] mx-auto px-8 py-6 flex justify-between items-center h-[80px]">
+        <div class="text-2xl font-black tracking-tighter uppercase">AHMET ÇINARBAŞ <span class="text-blue-700">BELLEK</span></div>
+        <div id="location-tag" class="text-[10px] font-black text-slate-400 tracking-[0.4em] uppercase">MARDİN - BRASÍLIA | 2026</div>
     </header>
 
     <div class="main-layout">
-        <div class="glow-card">
-            <div class="slider-container">
-                <div class="slider-wrapper" id="mainSlider">
-                    <div class="archive-slide">
-                        <div class="file-number">01</div>
-                        <span class="text-amber-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">DOSYA: SÜLEYMAN’IN MÜHRÜ</span>
-                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 leading-[0.85] mb-10">Kayıp<br>Kapılar</h1>
-                        <div class="bg-amber-50/50 p-8 rounded-[2.5rem] border border-amber-100">
-                            <div class="flex items-center gap-6">
-                                <button onclick="handleAudio('muhur')" class="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black text-[11px] tracking-widest uppercase flex items-center gap-4" id="btn-muhur">
-                                    <span id="label-muhur">YAYINI BAŞLAT</span>
-                                    <div class="audio-wave"><div class="bar"></div><div class="bar" style="animation-delay:0.2s"></div><div class="bar" style="animation-delay:0.4s"></div></div>
-                                </button>
-                                <div class="flex-1"><div class="progress-container"><div id="prog-muhur" class="progress-bar"></div></div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="archive-slide">
-                        <div class="file-number">02</div>
-                        <span class="text-blue-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">DOSYA: HINZIR KAPISI</span>
-                        <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-slate-900 leading-[0.85] mb-10">Mühürlü<br>Gerçekler</h1>
-                        <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
-                            <div class="flex items-center gap-6">
-                                <button onclick="handleAudio('hinzir')" class="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black text-[11px] tracking-widest uppercase flex items-center gap-4" id="btn-hinzir">
-                                    <span id="label-hinzir">YAYINI BAŞLAT</span>
-                                    <div class="audio-wave"><div class="bar"></div><div class="bar" style="animation-delay:0.2s"></div><div class="bar" style="animation-delay:0.4s"></div></div>
-                                </button>
-                                <div class="flex-1"><div class="progress-container"><div id="prog-hinzir" class="progress-bar"></div></div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="archive-slide">
-                        <div class="file-number">03</div>
-                        <span class="text-blue-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">DOSYA: MARDİNSPOR</span>
-                        <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-slate-900 leading-[0.85] mb-10">Kırmızı<br>Lacivert</h1>
-                        <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
-                            <div class="flex items-center gap-6">
-                                <button onclick="handleAudio('mardinspor')" class="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black text-[11px] tracking-widest uppercase flex items-center gap-4" id="btn-mardinspor">
-                                    <span id="label-mardinspor">YAYINI BAŞLAT</span>
-                                    <div class="audio-wave"><div class="bar"></div><div class="bar" style="animation-delay:0.2s"></div><div class="bar" style="animation-delay:0.4s"></div></div>
-                                </button>
-                                <div class="flex-1"><div class="progress-container"><div id="prog-mardinspor" class="progress-bar"></div></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="glow-card large-news-panel" id="sliderParent">
+            <div class="news-slider-container" id="newsSlider"></div>
         </div>
 
-        <div class="sidebar-grid">
-            <div class="glow-card p-10 flex flex-col justify-center items-center text-center border-b-[8px] border-amber-500">
-                <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] object-cover mb-6 grayscale shadow-xl">
-                <h2 class="text-2xl font-black text-slate-900 tracking-tighter">Ahmet Çınarbaş</h2>
-                <p class="text-amber-600 font-black text-[10px] tracking-[0.4em] uppercase mb-4">Gazeteci Yazar</p>
-                <div class="p-4 bg-slate-50 rounded-2xl text-[11px] font-bold text-slate-400 border border-slate-100 uppercase tracking-tighter">"Mezopotamya'nın mühürlü kodlarını araştıran kadim arşivci."</div>
+        <div class="flex flex-col gap-6">
+            <div class="glow-card author-card">
+                <div class="author-photo-frame mb-3">
+                    <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" class="w-full h-full object-cover grayscale">
+                </div>
+                <h2 class="text-xl font-black text-slate-900 tracking-tighter uppercase">Ahmet Çınarbaş</h2>
+                <span id="author-role" class="text-slate-800 font-extrabold text-[10px] tracking-[0.3em] uppercase mb-1"></span>
+                
+                <div class="basyazar-panel">
+                    <span id="basyazar-label" class="basyazar-label"></span>
+                    <h3 id="basyazar-title" class="basyazar-title-text"></h3>
+                    <button id="basyazar-btn" onclick="openAuthorArticle()" class="news-action-btn"></button>
+                </div>
             </div>
 
-            <div class="glow-card p-8 text-center bg-slate-900 text-white flex flex-col justify-center items-center">
-                <p class="text-[9px] font-black tracking-[0.4em] uppercase opacity-50 mb-2">Kültür Sponsoru</p>
-                <h3 class="text-4xl font-black tracking-tighter uppercase premium-sponsor-text">Yaşarbey Kahve</h3>
+            <div class="glow-card flex flex-col items-center justify-center h-[110px] bg-slate-900">
+                <p id="sponsor-label" class="text-[8px] font-black text-yellow-500 tracking-[0.4em] uppercase mb-1"></p>
+                <h3 class="text-xl text-white font-black uppercase tracking-tighter">Yaşarbey Kahve</h3>
+                <p id="sponsor-sub" class="text-white/40 text-[8px] font-bold uppercase tracking-[0.2em]"></p>
             </div>
         </div>
     </div>
 
+    <div id="detailsOverlay" onclick="if(event.target == this) closeDetails()">
+        <div class="modal-card">
+            <span id="modalCategory" class="text-yellow-600 font-black text-[11px] tracking-[0.5em] uppercase border-b-2 border-yellow-600 pb-2 mb-8 w-max"></span>
+            <h2 id="modalTitle" class="text-3xl font-black text-slate-900 mb-8 tracking-tighter leading-tight"></h2>
+            <div id="modalContent" class="modal-content-area"></div>
+            <button id="modal-close-btn" onclick="closeDetails()" class="mt-auto bg-slate-900 text-white py-6 rounded-2xl font-black text-xs uppercase tracking-[0.4em] hover:bg-blue-700 transition-all"></button>
+        </div>
+    </div>
+
     <script>
-        const slider = document.getElementById('mainSlider');
-        let currentIdx = 0, isSpeaking = false, isPaused = false;
-        
-        let slideTimer = setInterval(() => {
-            if (!isSpeaking && !isPaused) {
-                currentIdx = (currentIdx + 1) % 3;
-                slider.style.transform = `translateX(-${currentIdx * 100}%)`;
+        const translations = {
+            tr: {
+                role: "Gazeteci & Başyazar", label: "Günün Başyazısı", btn: "MAKALEYİ OKU →", newsBtn: "DETAYI GÖR →",
+                sponsor: "Kültür Sponsoru", sub: "Mezopotamya'dan Brezilya'ya", close: "PANELİ KAPAT ×",
+                cat: "BAŞYAZAR ÖZEL", newsCat: "BELLEK DOSYASI",
+                title: "Mardin ve Ouro Preto – İki Taş Şehrin Hikâyesi",
+                body: `<p>Dünya haritasına baktığınızda birbirinden binlerce kilometre uzakta, farklı kıtalarda yer alan iki şehir dikkatinizi çekebilir: Türkiye’nin doğusunda Mardin ve Brezilya’nın Minas Gerais eyaletinde Ouro Preto.</p>
+                       <h4>Ekonomi: Taşın Üzerine Kurulu Geçim</h4>
+                       <p>Mardin’in ekonomisi uzun yıllar tarım ve küçük ölçekli ticarete dayanmış, son yıllarda ise turizmle yeniden şekillenmiştir. Ouro Preto ise sömürge döneminde altın madenciliğiyle Brezilya’nın kalbi olmuş, bugün ise kültürel turizmle ayakta durmaktadır.</p>
+                       <h4>Siyaset: Merkez ve Çevre</h4>
+                       <p>Mardin, Türkiye’nin merkez-çevre ilişkilerinde “çevre”yi temsil eder. Ouro Preto ise Brezilya’da sömürge döneminde siyasi bir merkezdi; bugün daha çok kültürel miras üzerinden kimlik kazanıyor.</p>
+                       <h4>Kültür: Çok Seslilik ve Barok</h4>
+                       <p>Mardin’in dar sokaklarında cami minaresiyle kilise çanı yan yana yükselir. Ouro Preto’da ise Katolik barok kiliseler şehrin ruhunu belirler.</p>
+                       <p>Belki de bu iki şehir bize şunu hatırlatıyor: Taş, sadece bir yapı malzemesi değil; bir toplumun hafızasıdır.</p>`,
+                news: [
+                    { title: "Dijital Mühürleme: Mardin'den Brezilya'ya", content: "DREX dijital para birimi güvenliğinde Mezopotamya mühür teknikleri inceleniyor." },
+                    { title: "Amazon Havzasında Mardin Su Sistemleri", content: "Bin yıllık kehriz sistemleri Amazon'un korunması için model oluyor." },
+                    { title: "Rio Karnavalı ve Reyhani Ritmi", content: "İki kıtanın ritmik benzerlikleri Ahmet Çınarbaş'ın merceğinde." }
+                ]
+            },
+            pt: {
+                role: "Jornalista & Editorialista", label: "Editorial do Dia", btn: "LER ARTIGO →", newsBtn: "VER DETALHES →",
+                sponsor: "Patrocinador Cultural", sub: "Da Mesopotâmia ao Brasil", close: "FECHAR PAINEL ×",
+                cat: "EDITORIAL ESPECIAL", newsCat: "ARQUIVO DE MEMÓRIA",
+                title: "Mardin e Ouro Preto – A História de Duas Cidades de Pedra",
+                body: `<p>Ao olhar para o mapa múndi, duas cidades situadas a milhares de quilômetros de distância podem chamar sua atenção: Mardin, no leste da Turquia, e Ouro Preto, em Minas Gerais, Brasil.</p>
+                       <h4>Economia: Subsistência Sobre a Pedra</h4>
+                       <p>A economia de Mardin baseou-se na agricultura, remodelando-se através do turismo. Ouro Preto foi o coração do Brasil com a mineração de ouro, hoje sustentando-se pelo turismo cultural.</p>
+                       <h4>Política: Entre o Centro e a Periferia</h4>
+                       <p>Mardin representa a "periferia" na Turquia. Ouro Preto já foi um centro político; hoje ganha identidade através do seu patrimônio.</p>
+                       <h4>Cultura: Polifonia e Barroco</h4>
+                       <p>Nas ruas de Mardin, o minarete e o sino erguem-se lado a lado. Em Ouro Preto, as igrejas barrocas definem a alma da cidade.</p>
+                       <p>Talvez estas duas cidades nos lembrem: a pedra não é apenas construção; é a memória de uma sociedade.</p>`,
+                news: [
+                    { title: "Selagem Digital: De Mardin ao Brasil", content: "Técnicas mesopotâmicas analisadas na segurança da moeda DREX." },
+                    { title: "Sistemas de Água de Mardin na Amazônia", content: "Sistemas milenares de 'kehriz' servem de modelo para a Amazônia." },
+                    { title: "Carnaval do Rio e o Ritmo Reyhani", content: "As semelhanças rítmicas de dois continentes sob a ótica de Ahmet Çınarbaş." }
+                ]
             }
-        }, 3000);
-
-        const synth = window.speechSynthesis;
-        let audioCtx, noiseNode, gainNode;
-
-        const texts = {
-            muhur: `Dünyanın bazı sırları vardır ki, kitaplarda açık açık yazmaz. İşte Süleyman’ın Mührü de böyle bir sırdır. Tarihin bilinen zamanlarında yaşamış büyük krallardan biri olan Hazreti Süleyman, yalnızca bir kral değil; doğanın, görünmeyen alemlerin, yıldızların ve yer altı varlıklarının da dilini bilen bir bilgeler bilgesiydi. Onun elinde taşıdığı mühür, sadece bir sembol değil, adeta evrenin kilitlerini açan bir anahtardı. O mühür altı köşeli bir yıldız biçimindeydi. Bugün ona hexagram diyorlar, kimileri Davud Yıldızı olarak bilir, kimileri ise onu Süleyman’ın kudret nişanesi olarak tanımlar. Ama özünde bu sembol, ruhla maddeyi, yukarıyla aşağıyı, eril ve dişil enerjileri dengeleyen büyük bir bilgelik haritasıdır. Eskiler, bu sembolün sadece taşlara kazınmadığını, zamanın içine gizlendiğini söyler. Süleyman bu mühürle cinlere, rüzgârlara, hayvanlara ve doğanın tüm unsurlarına hükmedebiliyordu. Ancak bu hüküm, bir zorbalıktan değil; bilgelikten, anlayıştan ve İlahi düzenin farkındalığından doğuyordu. Hazreti Süleyman’ın en büyük sırlarından biri de elindeki yüzüktü. Bu yüzük, öyle sıradan bir yüzük değildi. Rivayetlere göre, Tanrı’dan doğrudan gelen bir izinle yapılmıştı ve üzerinde İlahi İsimlerin mühürlenmiş hali vardı. Bu yüzük sayesinde, sadece doğaya değil, cinlere ve görünmeyen varlıklara da hükmedebiliyordu. Cinler, onun emrine boyun eğerdi; kimini saray inşa etmek için görevlendirir, kimini madenlerden cevher çıkarmakla yükümlü kılardı. Bu yüzük, onların üzerinde bir tür ilahi kontrol sistemiydi. Cinlerin gücü bastırılmamış, yönlendirilmişti. Ve bu yönlendirme, evrensel dengenin korunması içindi. Süleyman’ın bu mühürle mühürlediği sırlar arasında öyle bilgiler vardı ki, yeryüzünün kaderini değiştirecek güçteydi. Ve işte tam da bu nedenle, o bilgiler bir yerlere saklandı. Sadece zamanın ruhuna uygun olanlar, bu sırlara ulaşabilecek şekilde ayarlandı. İşte bu noktada devreye çokça konuşulan ama az bilinen bir yer giriyor: Bermuda Üçgeni. Bermuda Üçgeni, Atlantik Okyanusu’nda, Bermuda, Miami ve Porto Riko arasındaki gizemli bölge. Nice uçakların, gemilerin hiçbir iz bırakmadan kaybolduğu bu alan, sadece deniz kazalarının değil, bilinmeyen bir şeyin izlerini taşıyor olabilir mi? Ezoterik gelenekler, bu bölgenin yeryüzündeki enerji kapılarından biri olduğunu söyler. Bazılarına göre burası zamanın eğildiği, boyutların inceldiği, hatta kayıp kıtaların yankılarının hâlâ duyulabildiği bir geçittir. Bu noktada bazı öğreticiler ve ezoterik kaynaklar, Süleyman’ın mühürlediği bilgilerin bir kısmının bu bölgede saklı olduğunu dile getirir. Çünkü mühür sadece hükmetmek için değil, korumak için de kullanılmıştır. Atlantis’in bilgeleri, Lemurya’nın ışık taşıyıcıları ve kadim uygarlıkların son kalıntıları, belki de bu mühürle korunmuştur. Kim bilir, kaybolan gemiler bir felaketin değil, başka bir boyuta açılan kapının içine çekilmiştir. Bu düşünce ilk başta fantastik gibi gelebilir, ama tarihin tozlu sayfaları arasında benzer motiflerin, sembollerin, hikâyelerin izleri bir araya getirildiğinde insan ister istemez durup düşünmeye başlar. Süleyman’ın Mührü bugün hâlâ pek çok gizli toplulukta, inisiyatik öğreti içinde, hatta tasavvufî yorumlarda karşımıza çıkar. Masonik ritüellerde onun tapınağı simgesel bir merkezdir. Kabala’da, Tanrı’nın isminin mühürlendiği semboldür. Sufi gelenekte ise insan kalbinin içinde açılması gereken bir sır kapısıdır. Ve işin ilginci, bu sembolün yüzyıllar boyunca hem batıda hem doğuda aynı biçimde korunmuş olmasıdır. Bu kadar kadim bir sembolün, farklı coğrafyalarda aynı anlama gelmesi gerçekten de düşündürücüdür.`,
-            hinzir: `Burda dinleyeceğiniz tarih kitaplarında yok, internette parça parça fısıldanmış hâlde bile değil. Bunlar ne geçmişte resmiyet kazanmış ne de gelecekte doğrulanacak. Çünkü bazı gerçekler doğrulandığı an sistem çöker. Hınzır Tarikatı: Kapının Koruyucuları mı Yoksa İnsanlık Deneyi mi? Hınzır, eski Sümer tabletlerinde yeraltı kapısı anlamına gelir. Ancak bu sadece kelime anlamıyla sınırlı değildir. Hınzır, milattan önce 2400lü yıllarda kurulan ve günümüzde hâlâ sessizce varlığını sürdüren bir tarikattır. Bu yapı, görünürde bir ruhsal gelişim okulu gibi dursa da, asıl amacı çok daha karanlıktır: Genetik olarak saf olmayan insanları ruhsal kapının dışında tutmak. Hınzırın kurucusu olduğuna inanılan kişi, Sümer dilinde Gizli Gölge anlamına gelen bir varlıktan bahseder: Zun-Na-Ra. Bu figür hiçbir heykelde, tablette ya da çizimde yer almaz. Çünkü onun görünüşü, görenlerin aklını bozacak kadar kompleks yapılıdır. Onun verdiği bilgileri korumakla görevli ilk insanlar zamanla bir tarikat haline dönüşür. İşte o tarikat, tarihte ilk kez Mardin bölgesinde fiziksel olarak örgütlenir. Mardin: Taşların Altında Gizlenen Portal. Mardin, sadece tarihi taş evleriyle değil, taşların altındaki boşluklar ile de tanınmalıdır. 1904 yılında, Fransız Arkeolog Émile de Saurac, Mardin civarındaki Mor Yakup Manastırının alt katmanında tuhaf bir mekanizma buldu. Bu, antik Anunnaki sembolleri taşıyan bir düzeneğe bağlıydı. Baron Rudolf von Sebottendorf: Zamansızlıkla Anlaşma Yapan Adam. Ganzir Tarikatının Avrupalı uzantısı haline gelen Baron, Mardindeki yapıyı çözmek için Adolf Hitlere danışır. Hitler'in Anunnaki Takıntısı. 1936 yılında, SS subayı Wilhelm Tesch, Mardine gizli bir ekip gönderir. Amaç, Mor Yakup Manastırının altındaki kapıyı yeniden aktive etmektir. Mardindeki taş kapının sırrı çözüldüğünde, onun yalnızca bir geçiş noktası değil, başka bir boyuta açılan bir rezonans köprüsü olduğu anlaşılır. Anunnakiler ve Cinler: Aynı Kaynaktan Gelen Farklı Enerjiler. Halk arasında cin olarak bilinen varlıklar, düşük rezonanslı Anunnaki kırılmalarıdır. Mardinde açılan kapının ardından ortaya çıkan ilk varlık Azura-Na adında bir cin-entegrasyon varlığıdır. Zamanın Altında Yaşayanlar. Baronun kaybolduğu gün Berlindeki saatler aniden durur. Aynı saatlerde Mardinde, bir çobanın kaybolduğu rapor edilir. Gerçekler Neden Hiçbir Zaman Açıklanmadı? Çünkü bu gerçek açıklanırsa, dinler, bilim ve tarih aynı anda çökebilir. Hınzır Tarikatı halen aktif. Hınzır Kapısı ve Anunnaki Bağlantısı: Yeraltı Dünyasının Sırları. Hınzır Kapısı, Mezopotamya mitolojisinde, tanrıça Ereshkigalin yönettiği yeraltı dünyasına giriş kapısıdır. Bu kapı evrensel sırların ve insanlığın kökenine dair derin soruların anahtarıdır. Hınzır, sadece bir efsane mi, yoksa evrenin derinliklerine açılan bir kapı mı?`,
-            mardinspor: `Mardinspor Ruhu. Renkleri asil Kırmızı laciverttir. Beleş Tepe’ye tırmanan mahzun ama gururlu bakışlar bir maçtan fazlasıdır. Tribünde halka tatlı satanların kokusu, kulağına dayadığı radyodan diğer maçları dinleyen o kadim taraftarlar. Mardinspor bir sevdadır.`
         };
 
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < buffer.length; i++) data[i] = Math.random() * 2 - 1;
-                noiseNode = audioCtx.createBufferSource();
-                noiseNode.buffer = buffer; noiseNode.loop = true;
-                gainNode = audioCtx.createGain(); gainNode.gain.value = 0;
-                noiseNode.connect(gainNode); gainNode.connect(audioCtx.destination);
-                noiseNode.start();
-            }
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+        const currentLang = navigator.language.startsWith('pt') ? 'pt' : 'tr';
+        const t = translations[currentLang];
+
+        function init() {
+            document.getElementById('author-role').innerText = t.role;
+            document.getElementById('basyazar-label').innerText = t.label;
+            document.getElementById('basyazar-title').innerText = t.title;
+            document.getElementById('basyazar-btn').innerText = t.btn;
+            document.getElementById('sponsor-label').innerText = t.sponsor;
+            document.getElementById('sponsor-sub').innerText = t.sub;
+            document.getElementById('modal-close-btn').innerText = t.close;
+            renderNews();
+            setupInteractions();
         }
 
-        function handleAudio(key) {
-            initAudio();
-            if (isSpeaking && !isPaused) {
-                synth.pause(); isPaused = true;
-                gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.2);
-                document.getElementById('label-'+key).innerText = "DEVAM ET";
-                document.getElementById('btn-'+key).classList.remove('audio-playing');
-            } else if (isPaused) {
-                synth.resume(); isPaused = false;
-                gainNode.gain.setTargetAtTime(0.006, audioCtx.currentTime, 0.2);
-                document.getElementById('label-'+key).innerText = "DURAKLAT";
-                document.getElementById('btn-'+key).classList.add('audio-playing');
-            } else {
-                startProgram(key);
-            }
+        function renderNews() {
+            const container = document.getElementById('newsSlider');
+            container.innerHTML = t.news.map((n, i) => `
+                <div class="news-item">
+                    <span class="news-badge">${t.newsCat}</span>
+                    <h1 class="news-main-title">${n.title}</h1>
+                    <button onclick="openDetails(${i})" class="news-action-btn">${t.newsBtn}</button>
+                </div>`).join('');
         }
 
-        function startProgram(key) {
-            synth.cancel();
-            isSpeaking = true; isPaused = false;
-            
-            const now = new Date();
-            const h = now.getHours();
-            const m = now.getMinutes() < 10 ? "sıfır " + now.getMinutes() : now.getMinutes();
-            const intro = `Saat ${h} ${m}. Burası Mezopotamyanın sesi, Yaşarbey Sponsorluğunda proğram başlıyor. `;
-            
-            const utter = new SpeechSynthesisUtterance(intro + texts[key]);
-            utter.lang = 'tr-TR'; utter.rate = 0.92;
+        // SLIDER ETKİLEŞİM MOTORU (TOUCH & MOUSE)
+        let slideIdx = 0;
+        let startX = 0;
+        let isDragging = false;
+        let autoPlayTimer;
 
-            utter.onstart = () => {
-                document.getElementById('btn-'+key).classList.add('audio-playing');
-                document.getElementById('label-'+key).innerText = "DURAKLAT";
-                gainNode.gain.setTargetAtTime(0.006, audioCtx.currentTime, 0.5);
-            };
+        function setupInteractions() {
+            const parent = document.getElementById('sliderParent');
+            const slider = document.getElementById('newsSlider');
 
-            utter.onend = () => {
-                isSpeaking = false; isPaused = false;
-                gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
-                document.getElementById('btn-'+key).classList.remove('audio-playing');
-                document.getElementById('label-'+key).innerText = "YAYINI BAŞLAT";
-                document.getElementById('prog-'+key).style.width = '0%';
-            };
+            // Mouse Events
+            parent.addEventListener('mousedown', (e) => { isDragging = true; startX = e.pageX; clearInterval(autoPlayTimer); });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+            parent.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const x = e.pageX;
+                const walk = x - startX;
+                if (Math.abs(walk) > 100) {
+                    walk > 0 ? changeSlide(-1) : changeSlide(1);
+                    isDragging = false;
+                }
+            });
 
-            utter.onboundary = (e) => {
-                const totalLen = intro.length + texts[key].length;
-                document.getElementById('prog-'+key).style.width = (e.charIndex / totalLen * 100) + '%';
-            };
-            synth.speak(utter);
+            // Touch Events (Mobile)
+            parent.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; clearInterval(autoPlayTimer); }, {passive: true});
+            parent.addEventListener('touchend', (e) => {
+                const endX = e.changedTouches[0].clientX;
+                const walk = endX - startX;
+                if (Math.abs(walk) > 50) {
+                    walk > 0 ? changeSlide(-1) : changeSlide(1);
+                }
+                startAutoPlay();
+            }, {passive: true});
+
+            startAutoPlay();
         }
+
+        function changeSlide(dir) {
+            slideIdx = (slideIdx + dir + t.news.length) % t.news.length;
+            document.getElementById('newsSlider').style.transform = `translateX(-${slideIdx * 100}%)`;
+        }
+
+        function startAutoPlay() {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = setInterval(() => changeSlide(1), 7000);
+        }
+
+        function openAuthorArticle() {
+            document.getElementById('modalCategory').innerText = t.cat;
+            document.getElementById('modalTitle').innerText = t.title;
+            document.getElementById('modalContent').innerHTML = t.body;
+            document.getElementById('detailsOverlay').style.display = 'flex';
+        }
+
+        function openDetails(i) {
+            document.getElementById('modalCategory').innerText = t.newsCat;
+            document.getElementById('modalTitle').innerText = t.news[i].title;
+            document.getElementById('modalContent').innerHTML = `<p>${t.news[i].content}</p>`;
+            document.getElementById('detailsOverlay').style.display = 'flex';
+        }
+
+        function closeDetails() { document.getElementById('detailsOverlay').style.display = 'none'; }
+
+        init();
     </script>
 </body>
 </html>
