@@ -3,86 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mardin Haber TV // Brasil - Ahmet Çınarbaş</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@400;700;900&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    <title>Mardin Haber TV // Brasil - Ahmet Çınarbaş</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg: #f2f0e9;
-            --ink: #0f0f0f;
+            --ink: #1a1a1a; /* Saf siyah yerine daha yumuşak bir koyu ton */
             --mh-red: #d32f2f;
             --mh-grey: #263238;
-            --border: rgba(0,0,0,0.12);
+            --border: rgba(0,0,0,0.1);
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Mobil Kaymayı Önleyen Temel Ayarlar */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-style: normal !important; }
-        html, body { width: 100%; overflow-x: hidden; position: relative; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; line-height: 1.5; -webkit-text-size-adjust: 100%; }
+        /* Temel Ayarlar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--mh-red); }
+        ::selection { background: var(--mh-red); color: white; }
 
-        /* Navigasyon - Mobil Uyumlu */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-style: normal !important; }
+        body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* Navigasyon */
         nav { 
             padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
             position: fixed; top: 0; width: 100%; z-index: 2000; 
-            border-bottom: 1px solid var(--border); background: rgba(242,240,233,0.9); backdrop-filter: blur(10px); 
+            background: rgba(242,240,233,0.8); backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--border);
         }
-        .nav-logo { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 4vw, 1.5rem); font-weight: 900; }
-        .nav-meta { font-size: 9px; font-weight: 900; color: var(--mh-red); border: 1.5px solid var(--mh-red); padding: 3px 8px; text-transform: uppercase; white-space: nowrap; }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; }
+        .nav-meta { font-size: 9px; font-weight: 900; color: var(--mh-red); border: 1.5px solid var(--mh-red); padding: 3px 8px; text-transform: uppercase; }
 
-        /* Hero Section - Mobil Uyumlu Grid */
-        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 100vh; border-bottom: 1px solid var(--border); padding-top: 60px; }
-        .hero-text { padding: 40px 8%; display: flex; flex-direction: column; justify-content: center; background: #fff; border-right: 1px solid var(--border); }
+        /* Hero & Video (Arayüze Dokunulmadı) */
+        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 100vh; padding-top: 60px; }
+        .hero-text { padding: 40px 8%; display: flex; flex-direction: column; justify-content: center; background: #fff; }
         .hero-visual { background: url('https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg') center/cover; filter: grayscale(1); }
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 10vw, 6rem); line-height: 0.9; margin-bottom: 20px; letter-spacing: -2px; }
-        .hero p { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 4vw, 1.6rem); border-left: 3px solid var(--mh-red); padding-left: 15px; color: #444; max-width: 100%; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 10vw, 6rem); line-height: 0.9; margin-bottom: 20px; }
+        .hero p { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.2rem, 4vw, 1.8rem); border-left: 4px solid var(--mh-red); padding-left: 15px; }
 
-        /* Video Section */
-        .video-wrapper { width: 100%; background: var(--mh-grey); padding: 40px 0; }
-        .video-container { max-width: 900px; margin: 0 auto; padding: 0 5%; }
-        .video-box { position: relative; padding-bottom: 56.25%; height: 0; border: 5px solid #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .video-wrapper { width: 100%; background: var(--mh-grey); padding: 80px 5%; }
+        .video-container { max-width: 1000px; margin: 0 auto; }
+        .video-box { position: relative; padding-bottom: 56.25%; border: 6px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
         .video-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
 
-        /* Gallery Grid - Mobil Kayma Düzeltildi */
-        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); width: 100%; }
+        /* Galeri Grid */
+        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); }
         .gallery-item { 
-            background: #fff; padding: 40px 20px; aspect-ratio: 1/1.1; 
+            background: #fff; padding: 60px 25px; aspect-ratio: 1/1.1; 
             display: flex; flex-direction: column; justify-content: flex-end; 
-            transition: 0.3s; cursor: pointer !important; position: relative;
+            transition: var(--transition); cursor: pointer !important;
         }
-        .gallery-item:active { background: var(--bg); }
-        .gallery-item * { pointer-events: none; }
-        .gallery-item h3 { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 4vw, 1.8rem); margin-bottom: 8px; line-height: 1.1; }
-        .gallery-item span { font-size: 9px; font-weight: 900; color: var(--mh-red); letter-spacing: 1px; text-transform: uppercase; }
+        .gallery-item:hover { background: var(--bg); transform: translateY(-5px); }
+        .gallery-item h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 10px; }
+        .gallery-item span { font-size: 10px; font-weight: 900; color: var(--mh-red); letter-spacing: 2px; }
 
-        /* Portal (Detay) - Mobil Tam Ekran */
+        /* PORTAL: OKUNABİLİRLİK İYİLEŞTİRMELERİ */
         #portal { 
             position: fixed; inset: 0; background: var(--bg); 
-            z-index: 99999; display: none; overflow-y: auto; padding: 80px 6% 40px; 
+            z-index: 99999; display: none; overflow-y: auto; 
+            opacity: 0; transform: translateY(20px); 
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        #portal.active { display: block; opacity: 1; transform: translateY(0); }
+
         .portal-close { 
-            position: fixed; top: 20px; right: 20px; background: var(--mh-red); 
-            color: white; border: none; padding: 10px 20px; font-weight: 900; 
-            cursor: pointer; z-index: 100000; text-transform: uppercase; font-size: 11px;
+            position: fixed; top: 30px; right: 30px; background: var(--ink); 
+            color: white; border: none; padding: 12px 24px; font-size: 10px; 
+            font-weight: 900; cursor: pointer; z-index: 100000; letter-spacing: 2px;
         }
-        .portal-content { max-width: 700px; margin: 0 auto; }
-        .portal-content h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 7vw, 3.5rem); color: var(--mh-red); margin-bottom: 25px; line-height: 1; }
-        .portal-text p { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; margin-bottom: 20px; text-align: justify; color: #222; }
 
-        /* Footer */
-        footer { padding: 30px 6%; display: flex; flex-direction: column; align-items: center; gap: 10px; background: #fff; font-size: 9px; font-weight: 900; text-align: center; }
+        .portal-content { 
+            max-width: 800px; /* Okuma için en ideal genişlik */
+            margin: 120px auto 100px; 
+            padding: 0 40px; 
+        }
 
-        /* Responsive Kırılma Noktaları */
+        .portal-content h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            color: var(--mh-red); 
+            margin-bottom: 50px; 
+            line-height: 1.1;
+            font-weight: 900;
+        }
+
+        .portal-text p { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-size: clamp(1.3rem, 3vw, 1.65rem); /* İdeal okuma boyutu */
+            line-height: 1.7; /* Geniş satır aralığı gözü yormaz */
+            margin-bottom: 35px; 
+            color: #2b2b2b; 
+            text-align: left; /* Okunabilirlik için sola yaslı daha iyidir */
+            letter-spacing: 0.01rem;
+        }
+
+        /* İlk Paragraf Vurgusu (Drop Cap etkisi yerine hafif font ağırlığı) */
+        .portal-text p:first-of-type {
+            font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+            color: var(--ink);
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        footer { padding: 40px 6%; display: flex; justify-content: space-between; background: #fff; font-size: 10px; font-weight: 900; }
+
         @media (max-width: 1024px) {
             .hero { grid-template-columns: 1fr; }
-            .hero-visual { height: 40vh; order: 1; }
-            .hero-text { order: 2; padding: 50px 8%; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .portal-content { padding: 0 25px; margin-top: 100px; }
         }
         @media (max-width: 600px) {
             .gallery-grid { grid-template-columns: 1fr; }
-            .nav-meta { font-size: 8px; padding: 2px 5px; }
-            .hero h1 { font-size: 3rem; }
+            .portal-close { top: 20px; right: 20px; padding: 10px 18px; }
         }
     </style>
 </head>
@@ -134,7 +167,7 @@
 </footer>
 
 <div id="portal">
-    <button class="portal-close" onclick="closePortal()">FECHAR</button>
+    <button class="portal-close" onclick="closePortal()">VOLTAR</button>
     <div class="portal-content">
         <h2 id="p-title"></h2>
         <div class="portal-text" id="p-body"></div>
@@ -145,51 +178,55 @@
     const contentData = [
         {
             title: "Representação no Brasil",
-            body: `<p>A Representação do Mardin Haber TV no Brasil é um marco na comunicação internacional, liderada por Ahmet Çınarbaş. Este escritório atua como o principal ponto de conexão entre as notícias da Mesopotâmia e o vibrante cenário da América Latina.</p>
-                   <p>Localizada em um ponto estratégico, nossa missão é oferecer uma cobertura jornalística que respeite as raízes históricas de Mardin enquanto se adapta à velocidade do mundo digital brasileiro.</p>
-                   <p>Entendemos que o Brasil é um mosaico cultural, e nossa representação busca integrar essas diferentes vozes, proporcionando um espaço de diálogo para a comunidade turca.</p>
-                   <p>O trabalho de Ahmet Çınarbaş foca na transparência e no fortalecimento das relações diplomáticas através da mídia, criando pontes que vão além da notícia.</p>
-                   <p>Investimos em infraestrutura digital para que cada reportagem tenha o impacto visual necessário, capturando a essência de cada evento com clareza técnica.</p>
-                   <p>Nossa visão para o futuro é expandir essa rede de comunicação, transformando a Mardin Haber TV Brasil em uma referência absoluta para o entendimento global.</p>`
+            body: `<p>A Representação do Mardin Haber TV no Brasil, sob a liderança de Ahmet Çınarbaş, serve como um hub estratégico para a disseminação de notícias entre o Oriente Médio e a América Latina. Nosso compromisso é trazer uma perspectiva única e aprofundada sobre os eventos globais.</p>
+                   <p>Com sede em São Paulo, operamos como um canal direto para a diáspora turca e para o público brasileiro interessado na rica tapeçaria cultural e política da Turquia e da Mesopotâmia. Nossa equipe utiliza tecnologia de ponta para garantir que a informação chegue com clareza.</p>
+                   <p>Buscamos integrar as narrativas locais do Brasil com os valores tradicionais de Mardin, criando um diálogo intercultural que transcende as fronteiras geográficas. Cada reportagem é tratada como um documento histórico valioso.</p>
+                   <p>Além do jornalismo factual, promovemos o intercâmbio de ideias em fóruns econômicos e sociais, fortalecendo os laços diplomáticos e comerciais entre as duas nações através da força da mídia digital contemporânea.</p>
+                   <p>Acreditamos que a informação é o alicerce da compreensão mútua. Por isso, investimos em pesquisa de campo e análises exclusivas que trazem a verdade por trás dos grandes acontecimentos mundiais.</p>
+                   <p>Nosso projeto de expansão para 2026 inclui a implementação de estúdios de realidade virtual, permitindo que nossos espectadores brasileiros acompanhem as notícias com imersão total e realismo sem precedentes.</p>`
         },
         {
             title: "Ética Editorial",
-            body: `<p>A ética é a base sobre a qual construímos cada reportagem na Mardin Haber TV. No Brasil, seguimos rigorosamente os princípios da verdade, imparcialidade e responsabilidade social.</p>
-                   <p>Acreditamos que o jornalismo deve ser um serviço público, protegendo os cidadãos da desinformação e oferecendo uma análise crítica e fundamentada.</p>
-                   <p>Nossa equipe é treinada para separar opiniões de fatos, mantendo uma postura neutra que permite ao espectador formar sua própria conclusão.</p>
-                   <p>Respeitamos a privacidade e a dignidade humana em todas as circunstâncias, aplicando um código de conduta rigoroso que impede o sensacionalismo.</p>
-                   <p>A transparência editorial é total; assumimos nossos processos de apuração e estamos sempre abertos ao diálogo com nossa audiência em tempo real.</p>
-                   <p>Sob a gestão de Ahmet Çınarbaş, a ética não é apenas uma regra, mas a cultura que define como queremos ser lembrados no cenário internacional.</p>`
+            body: `<p>A ética jornalística é o coração pulsante de todas as nossas operações no Brasil. No Mardin Haber TV, a verdade não é apenas um objetivo, mas um dever inalienável que orienta cada palavra escrita em nossas plataformas.</p>
+                   <p>Mantemos uma independência editorial rigorosa, garantindo que nossos fatos sejam verificados por múltiplas fontes antes de chegarem ao público. A integridade é a nossa moeda mais valiosa no concorrido mercado global da informação.</p>
+                   <p>Promovemos o respeito à diversidade e aos direitos humanos em todas as nossas coberturas, combatendo a desinformação com jornalismo sério, pautado na lógica, no equilíbrio e em evidências concretas.</p>
+                   <p>Nossos jornalistas são treinados para observar a neutralidade política, oferecendo uma plataforma democrática onde diferentes vozes podem ser ouvidas, respeitando sempre a dignidade humana acima de tudo.</p>
+                   <p>A transparência em nossos processos de apuração é total. Quando cometemos erros, nossa política de correção é rápida, clara e visível, pois entendemos que a confiança do espectador é construída com honestidade diária.</p>
+                   <p>Para Ahmet Çınarbaş, a representação brasileira é o espelho de um novo jornalismo: mais humano, mais técnico e, acima de tudo, mais comprometido com a realidade nua e crua dos fatos transformadores.</p>`
         },
         {
             title: "Acervo Digital",
-            body: `<p>O Acervo Digital da Mardin Haber TV Brasil é uma biblioteca viva da história e cultura de Mardin, agora acessível para todo o público de língua portuguesa.</p>
-                   <p>Digitalizamos milhares de horas de conteúdo histórico, preservando a arquitetura, as tradições e a vida cotidiana da Mesopotâmia para que não se percam.</p>
-                   <p>Este acervo é uma ferramenta essencial para pesquisadores e curiosos que desejam mergulhar nas raízes da civilização antiga.</p>
-                   <p>Implementamos um sistema de busca inteligente que facilita o acesso a informações específicas, tornando a navegação intuitiva em qualquer dispositivo.</p>
-                   <p>A preservação digital é feita com as melhores práticas de segurança, garantindo que este patrimônio esteja disponível para as futuras gerações.</p>
-                   <p>Nossa galeria digital é atualizada constantemente com novas produções, documentando a evolução das relações entre os dois países de forma profunda.</p>`
+            body: `<p>O nosso acervo digital é uma cápsula do tempo que preserva a essência de Mardin, a capital da história. Milhares de horas de filmagem e documentos raros foram digitalizados para garantir que o legado ancestral permaneça eterno.</p>
+                   <p>Este banco de dados serve como uma ferramenta educacional poderosa, acessível a pesquisadores e entusiastas no Brasil que desejam entender as profundas raízes da civilização e da arquitetura milenar da Mesopotâmia.</p>
+                   <p>Utilizamos sistemas de armazenamento em nuvem com criptografia de ponta para proteger a memória coletiva contra perdas, garantindo a perenidade dos registros históricos capturados com exclusividade pela nossa equipe.</p>
+                   <p>Cada frame do nosso arquivo foi curado para refletir não apenas a beleza estética, mas a profundidade antropológica das tradições mardinenses, agora traduzidas e contextualizadas para o idioma português.</p>
+                   <p>O acervo é atualizado diariamente com novas entradas da representação brasileira, documentando a evolução das relações entre Brasil e Turquia em tempo real, formando um mosaico histórico contemporâneo.</p>
+                   <p>Nossa visão é transformar este acervo em uma plataforma de aprendizado aberto, onde a tecnologia digital sirva como o guardião eterno da sabedoria ancestral, unindo o passado ao futuro digital.</p>`
         },
         {
-            title: "Comunicação Eficaz",
-            body: `<p>A comunicação na Mardin Haber TV é pensada para ser interativa e direta. No Brasil, estabelecemos canais abertos que permitem um fluxo de feedback constante.</p>
-                   <p>Utilizamos as redes sociais de forma estratégica, transformando a notícia em um ponto de encontro para debates construtivos sobre a geopolítica atual.</p>
-                   <p>Nossa linguagem é clara, objetiva e adaptada ao contexto local, garantindo que as notícias complexas sejam compreendidas perfeitamente por todos.</p>
-                   <p>Priorizamos o atendimento ao público e a agilidade na resposta, entendendo que no mundo digital, a velocidade é fundamental.</p>
-                   <p>Acreditamos que comunicar é conectar pessoas e ideias. Por isso, organizamos eventos digitais que aproximam Ahmet Çınarbaş da audiência brasileira.</p>
-                   <p>Seja através de redes sociais ou nossa linha direta, a Mardin Haber TV Brasil está sempre disponível para ouvir, informar e evoluir com você.</p>`
+            title: "Comunicação",
+            body: `<p>A comunicação no Mardin Haber TV transcende a simples emissão de sinal. É um processo de conexão emocional e intelectual com nossa audiência, utilizando todas as ferramentas e plataformas digitais modernas disponíveis.</p>
+                   <p>Nossos canais de atendimento no Brasil estão abertos para permitir uma interação direta e constante via redes sociais e e-mail, garantindo que o público participe ativamente da construção da notícia.</p>
+                   <p>Priorizamos uma linguagem clara, acessível e dinâmica, adaptada às nuances do português brasileiro, sem perder a elegância e a precisão técnica exigidas pelo jornalismo de alta classe que nossa marca representa mundialmente.</p>
+                   <p>Através de boletins informativos e notificações em tempo real, mantemos nossos seguidores atualizados sobre eventos críticos, oferecendo análises de especialistas sobre o impacto desses fatos no cotidiano das pessoas.</p>
+                   <p>Acreditamos no poder da rede global. Por isso, incentivamos a partilha de conhecimento e a colaboração com outros criadores de conteúdo que compartilham nossa visão de um mundo mais informado e unido.</p>
+                   <p>Para entrar em contato com a equipe de Ahmet Çınarbaş no Brasil, utilize nossos canais oficiais listados abaixo. Estamos prontos para ouvir, informar e construir o futuro da mídia internacional junto com você.</p>`
         }
     ];
 
     function openPortal(id) {
+        const portal = document.getElementById('portal');
         document.getElementById('p-title').innerText = contentData[id].title;
         document.getElementById('p-body').innerHTML = contentData[id].body;
-        document.getElementById('portal').style.display = 'block';
+        portal.style.display = 'block';
+        setTimeout(() => portal.classList.add('active'), 10);
         document.body.style.overflow = 'hidden';
     }
 
     function closePortal() {
-        document.getElementById('portal').style.display = 'none';
+        const portal = document.getElementById('portal');
+        portal.classList.remove('active');
+        setTimeout(() => portal.style.display = 'none', 500);
         document.body.style.overflow = 'auto';
     }
 </script>
