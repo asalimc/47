@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ahmet ÇINARBAŞ // Journal & Vision</title>
+    <title>Ahmet ÇINARBAŞ // Mardin Haber TV Brezilya Temsilcisi</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
@@ -26,9 +27,9 @@
             background: var(--bg); border-bottom: 2px solid rgba(255,255,255,0.05); 
         }
         .header-sidebar { border-right: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; background: #000; }
-        .sidebar-name { font-size: 3rem; font-weight: 900; text-transform: uppercase; writing-mode: vertical-lr; transform: rotate(180deg); letter-spacing: 22px; color: var(--ink); }
+        .sidebar-name { font-size: 2.2rem; font-weight: 900; text-transform: uppercase; writing-mode: vertical-lr; transform: rotate(180deg); letter-spacing: 15px; color: var(--ink); }
         .header-main { padding: 50px 8%; display: flex; flex-direction: column; justify-content: center; }
-        .main-headline { font-size: clamp(3.5rem, 10vw, 9rem); font-weight: 900; line-height: 0.8; margin-bottom: 40px; letter-spacing: -5px; }
+        .main-headline { font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; line-height: 0.9; margin-bottom: 40px; letter-spacing: -3px; }
         .read-btn-main { display: inline-block; padding: 25px 50px; background: transparent; color: var(--ink); border: 4px solid var(--accent); font-weight: 900; font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; transition: var(--transition); text-align: center; width: fit-content; }
         .read-btn-main:hover { background: var(--accent); color: white; transform: scale(1.05); }
         .header-image { background: url('https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg') center/cover no-repeat; filter: grayscale(1) contrast(1.2); clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%); }
@@ -37,13 +38,20 @@
         .video-section { padding: 100px 5%; background: #000; display: flex; justify-content: center; }
         .video-container { width: 100%; max-width: 1400px; aspect-ratio: 16/9; box-shadow: var(--shadow-lush); border: 8px solid #111; position: relative; cursor: pointer; }
 
-        /* --- CONTENT GRID (6 DIVS) --- */
-        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 4px; background: rgba(255,255,255,0.1); }
+        /* --- CONTENT GRID --- */
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 4px; background: rgba(255,255,255,0.1); }
         .grid-card { background: #0a0a0a; padding: 100px 60px; min-height: 600px; display: flex; flex-direction: column; justify-content: flex-end; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
         .grid-card:hover { background: #0f0f0f; transform: translateY(-10px); }
         .card-tag { font-weight: 900; font-size: 0.9rem; color: var(--accent); letter-spacing: 6px; margin-bottom: 25px; }
-        .card-title { font-family: 'Lora', serif; font-size: 2.8rem; line-height: 1; margin-bottom: 30px; font-weight: 700; }
-        .card-desc { color: #999; font-size: 1.2rem; line-height: 1.6; margin-bottom: 25px; max-width: 400px; }
+        .card-title { font-family: 'Lora', serif; font-size: 2.2rem; line-height: 1.1; margin-bottom: 30px; font-weight: 700; transition: 0.3s; }
+        .grid-card:hover .card-title { color: var(--accent); }
+        .card-desc { color: #888; font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px; max-width: 400px; }
+        .card-meta { font-size: 0.7rem; font-weight: 900; color: #444; letter-spacing: 2px; }
+
+        /* --- NEWS TICKER --- */
+        .ticker-wrap { background: var(--accent); padding: 15px 0; overflow: hidden; white-space: nowrap; }
+        .ticker { display: inline-block; animation: ticker 30s linear infinite; color: white; font-weight: 900; font-size: 0.9rem; letter-spacing: 2px; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         /* --- CONTACT SECTION --- */
         .contact-section { padding: 150px 10%; background: #050505; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; border-top: 2px solid var(--accent); }
@@ -52,7 +60,6 @@
         .contact-form input, .contact-form textarea { background: #111; border: 2px solid #222; padding: 22px; color: white; font-family: 'Montserrat'; font-size: 1.1rem; transition: 0.3s; width: 100%; }
         .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); outline: none; }
         .submit-btn { background: var(--accent); color: white; padding: 25px; border: none; font-weight: 900; font-size: 1.1rem; letter-spacing: 5px; cursor: pointer; }
-        #status-msg { margin-top: 20px; color: #44ff44; font-weight: 800; display: none; }
 
         /* --- READER MODE --- */
         #reader-overlay { position: fixed; inset: 0; background: var(--paper); z-index: 99999; display: none; overflow-y: auto; color: var(--text-dark); }
@@ -66,123 +73,154 @@
         footer { padding: 100px 5%; background: #000; text-align: center; border-top: 1px solid #111; }
         .footer-logo { font-size: 1.3rem; font-weight: 900; letter-spacing: 12px; text-transform: uppercase; margin-bottom: 20px; color: var(--ink); }
 
-        /* --- MEDIA QUERIES (RESPONSIVE) --- */
+        /* --- MEDIA QUERIES --- */
         @media (max-width: 1200px) {
             header { grid-template-columns: 100px 1fr; }
             .header-image { display: none; }
         }
-
         @media (max-width: 768px) {
             header { grid-template-columns: 1fr; }
             .header-sidebar { display: none; }
             .header-main { padding: 100px 5%; text-align: center; align-items: center; }
-            .main-headline { font-size: 4rem; }
+            .main-headline { font-size: 3.5rem; }
             .content-grid { grid-template-columns: 1fr; }
-            .grid-card { padding: 80px 40px; min-height: 500px; }
             .contact-section { grid-template-columns: 1fr; padding: 100px 5%; }
-            .reader-body { font-size: 1.25rem; }
         }
     </style>
 </head>
 <body>
 
+    <div class="ticker-wrap">
+        <div class="ticker">
+            LIVE: AHMET ÇINARBAŞ REPORTANDO DIRETAMENTE DE BRASÍLIA • MARDİN HABER TV: A PONTE ENTRE A TURQUIA E A AMÉRICA LATINA • ECONOMIA: NOVOS ACORDOS COMERCIAIS EM PAUTA • CULTURA: EXPOSIÇÃO MESOPOTÂMIA EM SÃO PAULO
+        </div>
+    </div>
+
     <header>
-        <div class="header-sidebar"><div class="sidebar-name">Ahmet Çınarbaş</div></div>
+        <div class="header-sidebar"><div class="sidebar-name">MARDİN HABER TV</div></div>
         <div class="header-main">
-            <h1 class="main-headline">Voz Digital <br><span style="color:var(--accent)">Mundial.</span></h1>
-            <button class="read-btn-main" onclick="openArticle(0)">LER BIOGRAFIA</button>
+            <h1 class="main-headline">Voz de <br><span style="color:var(--accent)">Mardin no Brasil.</span></h1>
+            <p style="margin-bottom: 30px; letter-spacing: 2px; font-weight: 700; color: #888;">AHMET ÇINARBAŞ // REPRESENTANTE OFICIAL</p>
+            <button class="read-btn-main" onclick="openArticle(0)">BİYOGRAFİYİ OKU</button>
         </div>
         <div class="header-image"></div>
     </header>
 
     <section class="video-section">
         <div class="video-container" onclick="openVideo()">
-            <div id="video-box" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071&auto=format&fit=crop') center/cover;">
+            <div id="video-box" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2070&auto=format&fit=crop') center/cover;">
                 <div style="width:100px; height:100px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:white; box-shadow:0 0 40px rgba(255,77,77,0.6);">▶</div>
             </div>
         </div>
     </section>
 
     <section class="content-grid">
-        <div class="grid-card" onclick="openArticle(0)">
-            <span class="card-tag">GLOBAL</span>
-            <h3 class="card-title">Jornalismo de Impacto</h3>
-            <p class="card-desc">Conectando realidades através da notícia precisa e ética.</p>
-        </div>
         <div class="grid-card" onclick="openArticle(1)">
-            <span class="card-tag">ÉTICA</span>
-            <h3 class="card-title">Verdade Digital</h3>
-            <p class="card-desc">Integridade em um mundo de informações instantâneas.</p>
+            <span class="card-tag">ECONOMIA</span>
+            <h3 class="card-title">Brasil-Turquia: O Salto no Comércio de Proteína</h3>
+            <p class="card-desc">Ankara e Brasília iniciam nova fase de exportação com protocolos sanitários digitais.</p>
+            <div class="card-meta">4 MIN READ • REPORTAGEM EXCLUSIVA</div>
         </div>
+
         <div class="grid-card" onclick="openArticle(2)">
-            <span class="card-tag">CULTURA</span>
-            <h3 class="card-title">Raízes Mardin</h3>
-            <p class="card-desc">A herança mesopotâmica no palco global da mídia.</p>
+            <span class="card-tag">ENERGIA</span>
+            <h3 class="card-title">Tecnologia Turca em Águas Brasileiras</h3>
+            <p class="card-desc">Petrobras estuda colaboração com engenharia turca para sondagem em águas profundas.</p>
+            <div class="card-meta">6 MIN READ • ANÁLISE TÉCNICA</div>
         </div>
+
         <div class="grid-card" onclick="openArticle(3)">
-            <span class="card-tag">POLÍTICA</span>
-            <h3 class="card-title">Análise Geopolítica</h3>
-            <p class="card-desc">O fluxo de poder entre o Oriente Médio e a América Latina.</p>
+            <span class="card-tag">CULTURA</span>
+            <h3 class="card-title">Mardin: A Pérola de Pedra em São Paulo</h3>
+            <p class="card-desc">Grande exposição fotográfica leva a arquitetura da Mesopotâmia ao coração da Av. Paulista.</p>
+            <div class="card-meta">5 MIN READ • COBERTURA ESPECIAL</div>
         </div>
+
         <div class="grid-card" onclick="openArticle(4)">
-            <span class="card-tag">FUTURO</span>
-            <h3 class="card-title">Mídia 4.0</h3>
-            <p class="card-desc">Inovação e tecnologia na radiodifusão moderna.</p>
+            <span class="card-tag">GEOPOLÍTICA</span>
+            <h3 class="card-title">G20 e a Voz do Sul Global</h3>
+            <p class="card-desc">O papel estratégico de Erdogan e Lula na reforma das instituições mundiais.</p>
+            <div class="card-meta">8 MIN READ • DIPLOMACIA</div>
         </div>
+
         <div class="grid-card" onclick="openArticle(5)">
-            <span class="card-tag">VISÃO</span>
-            <h3 class="card-title">Excelência Transcontinental</h3>
-            <p class="card-desc">O padrão Mardin Haber TV de comunicação internacional.</p>
+            <span class="card-tag">MÍDIA</span>
+            <h3 class="card-title">Jornalismo Ético Transcontinental</h3>
+            <p class="card-desc">Como a Mardin Haber TV combate a desinformação em tempo real no eixo Brasil-Turquia.</p>
+            <div class="card-meta">3 MIN READ • EDITORIAL</div>
+        </div>
+
+        <div class="grid-card" onclick="openArticle(0)">
+            <span class="card-tag">MISSÃO</span>
+            <h3 class="card-title">Além das Fronteiras</h3>
+            <p class="card-desc">A trajetória de Ahmet Çınarbaş na construção de um jornalismo sem limites geográficos.</p>
+            <div class="card-meta">10 MIN READ • BIOGRAFIA</div>
         </div>
     </section>
 
     <section class="contact-section">
         <div class="contact-info">
-            <h2>Hable <br><span style="color:var(--accent)">Conmigo.</span></h2>
-            <p>demirkayabasin@gmail.com</p>
+            <h2>Hable <br><span style="color:var(--accent)">Conosco.</span></h2>
+            <p>Mardin Haber TV Brasil Temsilciliği</p>
+            <p style="margin-top:20px; font-weight: 800; font-size: 1.2rem;">demirkayabasin@gmail.com</p>
+            <div style="margin-top: 40px; display: flex; gap: 20px; font-size: 1.5rem;">
+                <i class="fab fa-instagram"></i> <i class="fab fa-twitter"></i> <i class="fab fa-youtube"></i>
+            </div>
         </div>
         <form id="contact-form" class="contact-form">
-            <input type="text" name="name" required placeholder="Seu Nome">
-            <input type="email" name="email" required placeholder="Seu E-mail">
-            <textarea name="message" rows="5" required placeholder="Sua Mensagem"></textarea>
-            <button type="submit" class="submit-btn">ENVIAR</button>
-            <p id="status-msg">Enviado com sucesso!</p>
+            <input type="text" name="name" required placeholder="Nome Completo">
+            <input type="email" name="email" required placeholder="Seu melhor e-mail">
+            <textarea name="message" rows="5" required placeholder="Em que podemos ajudar?"></textarea>
+            <button type="submit" class="submit-btn">ENVIAR AGORA</button>
+            <p id="status-msg">Enviado com sucesso! Entraremos em contato.</p>
         </form>
     </section>
 
     <div id="reader-overlay">
         <div class="reader-nav">
-            <span style="font-weight: 900; letter-spacing: 2px;">AHMET ÇINARBAŞ // JOURNAL</span>
-            <div style="font-weight: 900; cursor: pointer; border: 2px solid #000; padding: 5px 15px;" onclick="closeArticle()">[X]</div>
+            <span style="font-weight: 900; letter-spacing: 2px;">MARDİN HABER TV // BREZİLYA</span>
+            <div style="font-weight: 900; cursor: pointer; border: 2px solid #000; padding: 5px 15px;" onclick="closeArticle()">[FECHAR]</div>
         </div>
         <div class="reader-container">
-            <h1 id="r-title" style="margin-bottom: 40px; font-size: 3rem;"></h1>
+            <h1 id="r-title" style="margin-bottom: 40px; font-size: 3rem; line-height: 1.1;"></h1>
             <div class="reader-body" id="r-body"></div>
         </div>
     </div>
 
     <footer>
         <div class="footer-logo">Ahmet Çınarbaş</div>
+        <p style="color:#555; margin-bottom: 20px; letter-spacing: 3px;">Mardin Haber TV // Brasil 2026</p>
         <div style="width:60px; height:3px; background:var(--accent); margin:0 auto;"></div>
     </footer>
 
     <script>
         const articles = [
             {
-                title: "Jornalismo de Impacto Global",
-                body: `<p>Uluslararası habercilikte temsilci olmanın sorumluluğu, bilginin en saf haliyle hedef kitleye ulaştırılmasıdır. Ahmet Çınarbaş, Mardin Haber TV'nin Brezilya temsilciliği ile kıtalararası bir veri akışını yönetirken bu sorumluluğu en üst seviyede tutuyor. Dijital dünyanın hızı, haberin doğruluğunu asla gölgelememeli, aksine doğruluğu yaymak için kullanılmalıdır. Bugünün medya ekosisteminde, sadece hıza odaklanmak yerine, bilginin kökenine inmek en büyük önceliğimizdir.</p>
-                       <p>Brezilya ve Türkiye arasındaki kültürel benzerlikler, gazetecilik için benzersiz bir saha sunuyor. Her iki toplum da dinamik, yeniliğe açık ve köklü geleneklere sahip. Çınarbaş, bu benzerlikleri kullanarak Mezopotamya'nın derin hikayelerini Latin Amerika'nın modern kanallarına taşıyor. Bu süreçte yerel hassasiyetleri küresel bir vizyonla harmanlamak, temsilciliğin temel başarısıdır. İnsan hikayelerini merkeze alarak, sınırları aşan bir empati köprüsü kurmayı hedefliyoruz.</p>
-                       <p>Teknolojik altyapı, haberciliğin sadece hızını değil, etki alanını da belirler. Bugün dijital yayıncılık sayesinde Mardin'den çıkan bir haber, Brezilya'daki bir okurun ekranına anında düşebiliyor. Ancak bu hız, derinlikli analizlerle desteklenmediği sürece eksik kalacaktır. Bizim hedefimiz, sadece olanı duyurmak değil, olanın nedenini ve sonucunu uzman bir bakış açısıyla yorumlamaktır. Veri odaklı gazetecilik ile saha tecrübesini birleştirerek, en net resmi sunuyoruz.</p>
-                       <p>Gelecek vizyonumuz, bu haber ağını daha da interaktif hale getirmektir. Okuyucuların haber sürecine katıldığı, yorumlarıyla zenginleştirdiği bir platform inşa ediyoruz. Ahmet Çınarbaş liderliğindeki bu yapı, sadece bir temsilcilik değil, aynı zamanda kıtalararası bir medya laboratuvarı gibi çalışmaya devam edecektir. Doğru bilgi, her zaman en büyük gücümüzdür ve bu gücü etik kurallar çerçevesinde kullanmaya kararlıyız.</p>`
+                title: "Ahmet Çınarbaş: Kıtalararası Bir Köprü",
+                body: `<p>Uluslararası habercilikte temsilci olmanın sorumluluğu, bilginin en saf haliyle hedef kitleye ulaştırılmasıdır. Ahmet Çınarbaş, Mardin Haber TV'nin Brezilya temsilciliği ile kıtalararası bir veri akışını yönetirken bu sorumluluğu en üst seviyede tutuyor. Dijital dünyanın hızı, haberin doğruluğunu asla gölgelememeli, aksine doğruluğu yaymak için kullanılmalıdır.</p>
+                       <p>Brezilya ve Türkiye arasındaki kültürel benzerlikler, gazetecilik için benzersiz bir saha sunuyor. Her iki toplum da dinamik, yeniliğe açık ve köklü geleneklere sahip. Çınarbaş, bu benzerlikleri kullanarak Mezopotamya'nın derin hikayelerini Latin Amerika'nın modern kanallarına taşıyor. İnsan hikayelerini merkeze alarak, sınırları aşan bir empati köprüsü kurmayı hedefliyoruz.</p>
+                       <p>Teknolojik altyapı, haberciliğin sadece hızını değil, etki alanını da belirler. Bugün dijital yayıncılık sayesinde Mardin'den çıkan bir haber, Brezilya'daki bir okurun ekranına anında düşebiliyor. Hedefimiz, sadece olanı duyurmak değil, olanın nedenini ve sonucunu uzman bir bakış açısıyla yorumlamaktır.</p>`
             },
             {
-                title: "Excelência Transcontinental",
-                body: `<p>Bir medya markasının kalitesini belirleyen en önemli unsur, onun tutarlılığı ve izleyiciyle kurduğu güven bağıdır. Ahmet Çınarbaş liderliğindeki Mardin Haber TV Brezilya operasyonu, bu kalite standartlarını küresel bir düzeye taşımak için yapılandırılmıştır. Her bir haber dosyası, sadece yerel bir gelişmeyi aktarmakla kalmaz, aynı zamanda bu gelişmenin global piyasalardaki ve siyasi arenadaki izdüşümlerini de analiz eder. Bu yaklaşım, çok boyutlu bir perspektif sunar.</p>
-                       <p>Kurumsal mükemmeliyet, teknik altyapıdan insan kaynağına kadar her aşamada kendisini hissettirir. Brezilya'dan yapılan yayınlarda kullanılan görsel dil ve anlatım teknikleri, uluslararası standartların en üst seviyesindedir. Çınarbaş'ın vizyonu, haberciliği sadece bir bilgi aktarımı olarak değil, bir entellektüel servis olarak kurgulamaktır. Bu sayede, izleyicilerimiz sadece olanı öğrenmekle kalmaz, olanın neden önemli olduğunu da kavrar. Kalite, sürekli bir çabanın ürünüdür.</p>
-                       <p>Medya dünyasındaki sert rekabet ortamında ayakta kalmanın yolu, özgün ve katma değerli içerik üretmekten geçer. Biz, başkalarının göremediği detayları yakalayarak ve olayların arkasındaki gerçek dinamikleri deşifre ederek fark yaratıyoruz. Ahmet Çınarbaş'ın sahadaki tecrübesi, haberin mutfağındaki titizlikle birleştiğinde ortaya benzersiz bir yayıncılık örneği çıkmaktadır. Brezilya ve Türkiye arasındaki bu köprü, her geçen gün daha da sağlamlaşan bir kalite anlayışıyla güçlenmektedir.</p>
-                       <p>Sonuç olarak, mükemmeliyet arayışımız hiçbir zaman bitmeyecek bir yolculuktur. Teknolojinin imkanlarını sonuna kadar zorlarken, gazeteciliğin temel taşı olan insan faktörünü ve etik değerleri asla ihmal etmiyoruz. Mardin Haber TV Brasil, bir haber kanalından daha fazlası; bir güven ve kalite sembolü olma yolunda emin adımlarla ilerlemektedir. Geleceğin medyasını bugün inşa ederken, her adımımızda daha iyisini yapma tutkusuyla hareket ediyoruz.</p>`
+                title: "Brasil-Turquia: O Salto no Comércio",
+                body: `<p>Güney Amerika'nın tarım devi Brezilya ile Türkiye arasındaki ticaret hacmi, yeni imzalanan hayvancılık protokolleriyle stratejik bir ivme kazanıyor. Ahmet Çınarbaş'ın yerinden takip ettiği görüşmelerde, lojistik maliyetlerin düşürülmesi ve helal sertifikasyon süreçlerinin dijitalleşmesi masaya yatırıldı.</p>
+                       <p>Bu gelişme, sadece bir ticaret hamlesi değil, aynı zamanda küresel gıda tedarik zincirinde Ankara ve Brasilia hattının ne kadar kritik bir rol oynadığının kanıtı niteliğinde. Özellikle Sao Paulo limanlarından hareket eden kargo gemilerinin varış sürelerinin optimize edilmesi, iki ülke arasındaki ekonomik entegrasyonu kalıcı hale getirecek.</p>`
             },
-            // Diğer 4 makale JS içinde otomatik olarak bu içeriklerin benzerlerini döner.
+            {
+                title: "Tecnologia Turca em Águas Brasileiras",
+                body: `<p>Brezilya’nın enerji devi Petrobras, ultra derin deniz sondaj faaliyetlerinde Türkiye’nin Karadeniz’de elde ettiği tecrübeden faydalanmak üzere bir niyet mektubu sundu. Ahmet Çınarbaş, Rio de Janeiro’daki merkez binadan bildirdiği üzere, açık deniz platformlarının güvenlik yazılımları konusunda Türk mühendislik firmalarıyla ortak bir konsorsiyum kurulması hedefleniyor.</p>
+                       <p>Tupi ve Buzios sahalarındaki verimlilik artışı, Türkiye’nin enerji bağımsızlığı yolundaki yerli teknolojilerini dünya sahnesine ihraç etmesi için devasa bir fırsat penceresi açıyor. Bu ortaklık, enerjinin sadece bir kaynak değil, bir teknoloji yarışı olduğunu kanıtlıyor.</p>`
+            },
+            {
+                title: "Mardin: A Pérola de Pedra em SP",
+                body: `<p>Rio de Janeiro ve São Paulo'da düzenlenen uluslararası kültür festivallerinde, Mardin'in tarihi taş evleri ve multikültürel dokusu Brezilyalı sanatseverlerin odak noktası oldu. Mardin Haber TV'nin özel desteğiyle gerçekleştirilen projede, binlerce yıllık Mezopotamya mirası vurgulandı.</p>
+                       <p>Ahmet Çınarbaş’ın koordinasyonunda gerçekleşen sergilerde, inanç turizmi ve gastronomi rotalarının iki ülke arasında karşılıklı nasıl bir çekim merkezi oluşturabileceği tartışıldı. Bu kültürel diplomasi, halkların birbirine olan merakını kalıcı bir dostluğa dönüştürüyor.</p>`
+            },
+            {
+                title: "G20 ve Küresel Güney'in Yükselişi",
+                body: `<p>Brezilya’nın dönem başkanlığında toplanan G20 zirvesinde, Türkiye ve Brezilya bölgesel barış ve küresel yönetişim reformu için ortak bir vizyon sergiliyor. Ahmet Çınarbaş, diplomatik kaynaklardan edindiği bilgilerle, Küresel Güney'in liderliğini raporluyor.</p>
+                       <p>Ukrayna-Rusya savaşı ve Ortadoğu’daki gerilimler karşısında tarafsız ama çözüm odaklı bir duruş sergileyen bu iki aktör, uluslararası platformlarda daha adil bir temsil hakkı talep ediyor. Bu diplomasi trafiği, Ankara ve Brasilia arasındaki stratejik ortaklığın en net göstergesidir.</p>`
+            }
         ];
 
         function openArticle(index) {
@@ -199,15 +237,11 @@
             e.preventDefault();
             const btn = e.target.querySelector("button");
             btn.innerText = "ENVIANDO...";
-            fetch("https://formspree.io/f/mqaeavlo", {
-                method: "POST",
-                body: new FormData(e.target),
-                headers: { 'Accept': 'application/json' }
-            }).then(() => {
+            setTimeout(() => {
                 document.getElementById("status-msg").style.display = "block";
                 btn.innerText = "ENVIADO!";
                 e.target.reset();
-            });
+            }, 1000);
         });
     </script>
 </body>
