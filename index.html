@@ -13,7 +13,6 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         body { background-color: var(--bg); font-family: 'Montserrat', sans-serif; color: #111; line-height: 1.4; overflow-x: hidden; }
 
-        /* MEGA TICKER - RESPONSIVE */
         .mega-ticker { 
             background: var(--navy); color: var(--gold); padding: 15px 0; 
             border-bottom: 8px solid var(--gold); overflow: hidden; white-space: nowrap; 
@@ -24,7 +23,6 @@
 
         .wrapper { max-width: 1800px; margin: 0 auto; padding: 20px; }
 
-        /* BRAND HEADER - RESPONSIVE */
         .brand-header { 
             display: flex; justify-content: space-between; align-items: center; 
             border-bottom: var(--kemik); padding: 30px 0; margin-bottom: 40px; 
@@ -38,7 +36,6 @@
         }
         .time-box h2 { font-size: clamp(1.2rem, 4vw, 2.2rem); }
 
-        /* MAIN STAGE - GRID TO STACK */
         .main-stage { display: grid; grid-template-columns: 2.8fr 1fr; gap: 40px; margin-bottom: 60px; }
         .hero-card { 
             background: var(--white); border: var(--kemik); padding: clamp(30px, 5vw, 80px); 
@@ -53,7 +50,6 @@
         }
         .profile-pic { width: 180px; height: 180px; border-radius: 50%; border: 10px solid var(--gold); margin: 0 auto 20px; background: url('indir.jpg') center/cover; }
 
-        /* NEWS MATRIX - RESPONSIVE GRID */
         .section-label { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; color: var(--navy); margin: 40px 0; display: flex; align-items: center; gap: 20px; }
         .section-label::after { content: ""; flex: 1; height: 15px; background: var(--gold); }
 
@@ -63,31 +59,14 @@
         .matrix-body { padding: 25px; }
         .matrix-body h3 { font-family: 'Playfair Display'; font-size: 1.8rem; color: var(--navy); margin-bottom: 15px; }
 
-        /* DEEP VIEW - MOBILE OPTIMIZED */
         .deep-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; overflow-y: auto; }
         .deep-close { position: fixed; top: 20px; right: 20px; background: var(--navy); color: white; padding: 15px 25px; font-weight: 900; cursor: pointer; z-index: 2010; }
         .deep-header-img { width: 100%; height: 50vh; object-fit: cover; border-bottom: 20px solid var(--gold); }
         .deep-container { max-width: 1000px; margin: -100px auto 50px; background: white; padding: clamp(20px, 5vw, 60px); position: relative; border: 10px solid var(--navy); box-shadow: 20px 20px 0px var(--gold); }
         .deep-content { font-family: 'Merriweather', serif; font-size: clamp(1.1rem, 2vw, 1.5rem); line-height: 1.8; }
 
-        /* MEDIA QUERIES - MILIMETRIK AYARLAR */
-        @media (max-width: 1024px) {
-            .main-stage { grid-template-columns: 1fr; }
-            .hero-card { box-shadow: 20px 20px 0px var(--gold); }
-            --kemik: 12px solid var(--navy);
-        }
-        @media (max-width: 768px) {
-            .brand-header { flex-direction: column; text-align: center; }
-            .logo h1 { letter-spacing: -2px; }
-            .dual-time { flex-direction: row; }
-            .wrapper { padding: 15px; }
-            .hero-card { padding: 30px; }
-        }
-        @media (max-width: 480px) {
-            .dual-time { flex-direction: column; }
-            .profile-pic { width: 140px; height: 140px; }
-            .matrix-img { height: 200px; }
-        }
+        @media (max-width: 1024px) { .main-stage { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .brand-header { flex-direction: column; text-align: center; } .dual-time { flex-direction: row; } }
     </style>
 </head>
 <body>
@@ -137,12 +116,22 @@
 
         async function startEngine() {
             try {
+                // Kaynaklar: Hurriyet (TR), Al Jazeera (Global), Reuters Brazil (BR)
                 const trRSS = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.hurriyet.com.tr/rss/gundem';
                 const glRSS = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.com/xml/rss/all.xml';
-                const [tr, gl] = await Promise.all([fetch(trRSS).then(r=>r.json()), fetch(glRSS).then(r=>r.json())]);
+                const brRSS = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.reutersagency.com/feed/?best-topics=brazil&post_type=best';
+                
+                const [tr, gl, br] = await Promise.all([
+                    fetch(trRSS).then(r=>r.json()), 
+                    fetch(glRSS).then(r=>r.json()),
+                    fetch(brRSS).then(r=>r.json())
+                ]);
 
-                newsLibrary = [...tr.items, ...gl.items].map(item => {
-                    const isBr = item.title.toLowerCase().includes('brazil') || item.content.toLowerCase().includes('brazil');
+                const rawItems = [...(br.items || []), ...(tr.items || []), ...(gl.items || [])];
+
+                newsLibrary = rawItems.map(item => {
+                    // Brezilya haberi mi kontrol et (Başlıkta veya linkte Brazil/Brasil geçiyor mu)
+                    const isBr = item.title.toLowerCase().match(/brazil|brasil|rio |sao paulo|brasilia/) || item.link.includes('brazil');
                     return {
                         title: isBr ? "🇧🇷 " + item.title : "🇹🇷 " + item.title,
                         tag: isBr ? "BRASILIA REPORT" : "TURKEY REPORT",
@@ -159,7 +148,6 @@
             if(!newsLibrary.length) return;
             document.getElementById('hero-title').innerText = newsLibrary[0].title;
             document.getElementById('hero-desc').innerText = newsLibrary[0].desc;
-            const matrix = document.getElementById('news-grid'); // Düzeltme yapıldı
             document.getElementById('news-matrix').innerHTML = newsLibrary.slice(1, 13).map((n, i) => `
                 <div class="matrix-card" onclick="showDeep(${i+1})">
                     <img src="${n.img}" class="matrix-img">
@@ -190,12 +178,14 @@
 
         function clocks() {
             const now = new Date();
-            document.getElementById('tr-now').innerText = now.toLocaleTimeString('tr-TR');
-            const br = new Date(now.getTime() - (6 * 60 * 60 * 1000));
-            document.getElementById('br-now').innerText = br.toLocaleTimeString('tr-TR');
+            const brTime = now.toLocaleTimeString('tr-TR', { timeZone: 'America/Sao_Paulo', hour12: false });
+            document.getElementById('br-now').innerText = brTime;
+            const trTime = now.toLocaleTimeString('tr-TR', { timeZone: 'Europe/Istanbul', hour12: false });
+            document.getElementById('tr-now').innerText = trTime;
         }
 
         setInterval(clocks, 1000);
+        clocks();
         startEngine();
     </script>
 </body>
