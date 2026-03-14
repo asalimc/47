@@ -1,215 +1,202 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ahmet ÇINARBAŞ // Mardin Haber TV Brezilya Temsilcisi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <title>ASC 2026 BRASILIA | Ahmet Çınarbaş</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Playfair+Display:wght@900&family=Merriweather:ital,wght@0,300;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #070707; --ink: #ffffff; --accent: #ff4d4d; 
-            --paper: #fdfdfd; --text-dark: #111111;
-            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            --shadow-lush: 0 40px 80px rgba(0,0,0,0.9);
+        :root { 
+            --navy: #001A4D; --gold: #C59D5F; --white: #FFFFFF; --bg: #CFD5DE;
+            --kemik: 20px solid var(--navy); 
         }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background-color: var(--bg); font-family: 'Montserrat', sans-serif; color: #111; line-height: 1.4; overflow-x: hidden; }
 
-        /* --- RESET & BASE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; text-decoration: none; -webkit-font-smoothing: antialiased; }
-        html { scroll-behavior: smooth; }
-        body { background: var(--bg); color: var(--ink); font-family: 'Montserrat', sans-serif; overflow-x: hidden; width: 100%; }
-
-        /* --- HEADER & DYNAMIC CLOCKS --- */
-        header { 
-            min-height: 100vh; display: grid; 
-            grid-template-columns: 140px 1.2fr 0.8fr; 
-            background: var(--bg); border-bottom: 2px solid rgba(255,255,255,0.05); 
+        /* MEGA TICKER - RESPONSIVE */
+        .mega-ticker { 
+            background: var(--navy); color: var(--gold); padding: 15px 0; 
+            border-bottom: 8px solid var(--gold); overflow: hidden; white-space: nowrap; 
+            position: sticky; top: 0; z-index: 1000;
         }
-        .clock-panel { position: absolute; top: 40px; right: 5%; display: flex; gap: 40px; z-index: 100; }
-        .clock-item { text-align: right; }
-        .clock-city { font-size: 0.6rem; letter-spacing: 3px; color: var(--accent); font-weight: 900; margin-bottom: 5px; }
-        .clock-time { font-size: 1.5rem; font-weight: 400; }
+        .ticker-text { display: inline-block; animation: scroll 50s linear infinite; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .header-sidebar { border-right: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; background: #000; }
-        .sidebar-name { font-size: 2.2rem; font-weight: 900; text-transform: uppercase; writing-mode: vertical-lr; transform: rotate(180deg); letter-spacing: 15px; color: var(--ink); }
-        .header-main { padding: 50px 8%; display: flex; flex-direction: column; justify-content: center; position: relative; }
-        .main-headline { font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; line-height: 0.9; margin-bottom: 40px; letter-spacing: -3px; }
-        .read-btn-main { display: inline-block; padding: 20px 40px; background: transparent; color: var(--ink); border: 4px solid var(--accent); font-weight: 900; font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; transition: var(--transition); text-align: center; width: fit-content; }
-        .read-btn-main:hover { background: var(--accent); color: white; transform: scale(1.05); }
-        .header-image { background: url('https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg') center/cover no-repeat; filter: grayscale(1) contrast(1.2); clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%); }
+        .wrapper { max-width: 1800px; margin: 0 auto; padding: 20px; }
 
-        /* --- STATS SECTION --- */
-        .stats-section { padding: 80px 5%; background: #0a0a0a; display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #1a1a1a; }
-        .stat-card { text-align: center; border-right: 1px solid #1a1a1a; padding: 20px; }
-        .stat-card:last-child { border-right: none; }
-        .stat-number { font-size: 3.5rem; font-weight: 900; color: var(--accent); margin-bottom: 10px; }
-        .stat-label { font-size: 0.7rem; letter-spacing: 3px; font-weight: 700; color: #666; }
+        /* BRAND HEADER - RESPONSIVE */
+        .brand-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: var(--kemik); padding: 30px 0; margin-bottom: 40px; 
+            flex-wrap: wrap; gap: 20px;
+        }
+        .logo h1 { font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 7rem); line-height: 0.8; color: var(--navy); letter-spacing: -4px; }
+        .dual-time { display: flex; gap: 15px; width: 100%; justify-content: space-between; }
+        .time-box { 
+            background: var(--navy); color: white; padding: 15px; 
+            box-shadow: 10px 10px 0px var(--gold); border: 1px solid var(--gold); flex: 1; text-align: center;
+        }
+        .time-box h2 { font-size: clamp(1.2rem, 4vw, 2.2rem); }
 
-        /* --- CONTENT GRID --- */
-        .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 4px; background: #111; }
-        .grid-card { background: #070707; padding: 60px 40px; min-height: 550px; display: flex; flex-direction: column; justify-content: flex-end; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; border: 1px solid transparent; }
-        .grid-card:hover { background: #0c0c0c; border-color: #333; z-index: 10; }
-        .grid-card:hover .card-title { color: var(--accent); }
-        .card-tag { font-weight: 900; font-size: 0.8rem; color: var(--accent); letter-spacing: 5px; margin-bottom: 20px; }
-        .card-title { font-family: 'Lora', serif; font-size: 2rem; line-height: 1.1; margin-bottom: 25px; font-weight: 700; transition: 0.3s; }
-        .card-desc-tr { color: #ccc; font-size: 1rem; line-height: 1.6; margin-bottom: 10px; font-weight: 600; }
-        .card-desc-pt { color: #666; font-size: 0.9rem; line-height: 1.5; font-style: italic; }
+        /* MAIN STAGE - GRID TO STACK */
+        .main-stage { display: grid; grid-template-columns: 2.8fr 1fr; gap: 40px; margin-bottom: 60px; }
+        .hero-card { 
+            background: var(--white); border: var(--kemik); padding: clamp(30px, 5vw, 80px); 
+            box-shadow: 30px 30px 0px var(--gold); cursor: pointer;
+        }
+        .hero-card h1 { font-family: 'Playfair Display'; font-size: clamp(2.2rem, 6vw, 5rem); line-height: 1; color: var(--navy); margin-bottom: 25px; }
+        .hero-card p { font-size: clamp(1rem, 2vw, 1.4rem); border-left: 10px solid var(--gold); padding-left: 20px; }
 
-        /* --- READER MODE --- */
-        #reader-overlay { position: fixed; inset: 0; background: var(--paper); z-index: 99999; display: none; overflow-y: auto; color: var(--text-dark); }
-        .reader-nav { position: sticky; top: 0; padding: 25px 5%; background: #fff; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #000; z-index: 10; }
-        .reader-container { max-width: 900px; margin: 60px auto; padding: 0 40px; }
-        .reader-body { font-family: 'Lora', serif; font-size: 1.4rem; line-height: 1.8; color: #111; }
-        .reader-body p { margin-bottom: 30px; text-align: justify; }
-        .reader-body .pt-para { color: #555; font-style: italic; border-left: 5px solid var(--accent); padding-left: 20px; margin-bottom: 50px; font-size: 1.25rem; }
+        .author-box { 
+            background: var(--navy); color: white; padding: 40px; text-align: center; 
+            border-bottom: 20px solid var(--gold);
+        }
+        .profile-pic { width: 180px; height: 180px; border-radius: 50%; border: 10px solid var(--gold); margin: 0 auto 20px; background: url('indir.jpg') center/cover; }
 
-        /* --- FOOTER & CONTACT --- */
-        .contact-section { padding: 150px 10%; background: #050505; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
-        .contact-form { display: flex; flex-direction: column; gap: 20px; }
-        .contact-form input { background: #111; border: 2px solid #222; padding: 22px; color: white; outline: none; transition: 0.3s; }
-        .contact-form input:focus { border-color: var(--accent); }
+        /* NEWS MATRIX - RESPONSIVE GRID */
+        .section-label { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; color: var(--navy); margin: 40px 0; display: flex; align-items: center; gap: 20px; }
+        .section-label::after { content: ""; flex: 1; height: 15px; background: var(--gold); }
 
-        footer { padding: 100px 5%; background: #000; text-align: center; border-top: 1px solid #1a1a1a; }
+        .news-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .matrix-card { background: white; border: 8px solid var(--navy); cursor: pointer; }
+        .matrix-img { width: 100%; height: 250px; object-fit: cover; border-bottom: 10px solid var(--gold); }
+        .matrix-body { padding: 25px; }
+        .matrix-body h3 { font-family: 'Playfair Display'; font-size: 1.8rem; color: var(--navy); margin-bottom: 15px; }
 
-        @media (max-width: 1200px) {
-            header { grid-template-columns: 1fr; }
-            .header-image, .clock-panel, .header-sidebar { display: none; }
-            .stats-section { grid-template-columns: repeat(2, 1fr); }
+        /* DEEP VIEW - MOBILE OPTIMIZED */
+        .deep-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; overflow-y: auto; }
+        .deep-close { position: fixed; top: 20px; right: 20px; background: var(--navy); color: white; padding: 15px 25px; font-weight: 900; cursor: pointer; z-index: 2010; }
+        .deep-header-img { width: 100%; height: 50vh; object-fit: cover; border-bottom: 20px solid var(--gold); }
+        .deep-container { max-width: 1000px; margin: -100px auto 50px; background: white; padding: clamp(20px, 5vw, 60px); position: relative; border: 10px solid var(--navy); box-shadow: 20px 20px 0px var(--gold); }
+        .deep-content { font-family: 'Merriweather', serif; font-size: clamp(1.1rem, 2vw, 1.5rem); line-height: 1.8; }
+
+        /* MEDIA QUERIES - MILIMETRIK AYARLAR */
+        @media (max-width: 1024px) {
+            .main-stage { grid-template-columns: 1fr; }
+            .hero-card { box-shadow: 20px 20px 0px var(--gold); }
+            --kemik: 12px solid var(--navy);
+        }
+        @media (max-width: 768px) {
+            .brand-header { flex-direction: column; text-align: center; }
+            .logo h1 { letter-spacing: -2px; }
+            .dual-time { flex-direction: row; }
+            .wrapper { padding: 15px; }
+            .hero-card { padding: 30px; }
+        }
+        @media (max-width: 480px) {
+            .dual-time { flex-direction: column; }
+            .profile-pic { width: 140px; height: 140px; }
+            .matrix-img { height: 200px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-sidebar"><div class="sidebar-name">MARDİN HABER TV</div></div>
-        <div class="header-main">
-            <div class="clock-panel">
-                <div class="clock-item"><div class="clock-city">BRASÍLIA</div><div class="clock-time" id="br-time">--:--:--</div></div>
-                <div class="clock-item"><div class="clock-city">MARDIN</div><div class="clock-time" id="tr-time">--:--:--</div></div>
-            </div>
-            <h1 class="main-headline">Sınırların <br><span style="color:var(--accent)">Ötesinde.</span></h1>
-            <p style="margin-bottom: 10px; letter-spacing: 2px; font-weight: 800; color: #fff;">AHMET ÇINARBAŞ // REPRESENTANTE BRASIL</p>
-            <p style="margin-bottom: 30px; color: #666; font-style: italic;">Conectando a Turquia e a América Latina em tempo real.</p>
-            <button class="read-btn-main" onclick="openArticle(0)">BİYOGRAFİ / BIOGRAFIA</button>
-        </div>
-        <div class="header-image"></div>
-    </header>
-
-    <section class="stats-section">
-        <div class="stat-card">
-            <div class="stat-number">20+</div>
-            <div class="stat-label">ÖZEL ANALİZ</div>
-            <div style="font-size: 0.6rem; color: #444;">ANÁLISES ESPECIAIS</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">5K+</div>
-            <div class="stat-label">YAYIN SAATİ</div>
-            <div style="font-size: 0.6rem; color: #444;">HORAS DE TRANSMISSÃO</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">2</div>
-            <div class="stat-label">KITA ETKİSİ</div>
-            <div style="font-size: 0.6rem; color: #444;">IMPACTO CONTINENTAL</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">24/7</div>
-            <div class="stat-label">HABER AKIŞI</div>
-            <div style="font-size: 0.6rem; color: #444;">FLUXO DE NOTÍCIAS</div>
-        </div>
-    </section>
-
-    <section class="content-grid" id="main-grid"></section>
-
-    <section class="contact-section">
-        <div class="contact-info">
-            <h2 style="font-size: 3.5rem; line-height: 0.9;">İletişim <br><span style="color:var(--accent)">Contato.</span></h2>
-            <p style="margin-top: 20px; color: #888;">Sorularınız ve işbirlikleri için bize ulaşın.</p>
-            <p style="color: #444; font-style: italic;">Entre em contato para dúvidas e colaborações.</p>
-        </div>
-        <form class="contact-form">
-            <input type="text" placeholder="Adınız / Nome">
-            <input type="email" placeholder="E-posta / E-mail">
-            <button type="button" class="read-btn-main" style="width: 100%;">GÖNDER / ENVIAR</button>
-        </form>
-    </section>
-
-    <div id="reader-overlay">
-        <div class="reader-nav">
-            <span style="font-weight: 900; letter-spacing: 2px;">MARDİN HABER TV // NEWS ROOM</span>
-            <div style="font-weight: 900; cursor: pointer; border: 2px solid #000; padding: 5px 15px;" onclick="closeArticle()">[KAPAT / FECHAR]</div>
-        </div>
-        <div class="reader-container">
-            <h1 id="r-title" style="margin-bottom: 40px; font-size: 3rem; line-height: 1;"></h1>
-            <div class="reader-body" id="r-body"></div>
+    <div class="mega-ticker">
+        <div class="ticker-text" id="ticker-content">
+            ASC 2026 BRASILIA • AHMET ÇINARBAŞ ANALİZ MERKEZİ • USD/TRY: 32.14 • BRL/TRY: 6.45 • BRASILIA: 26°C • MARDİN: 18°C • GLOBAL DİJİTAL TİCARET KÖPRÜSÜ • 
         </div>
     </div>
 
-    <footer>
-        <div class="footer-logo">Ahmet Çınarbaş</div>
-        <p style="color:#555;">Mardin Haber TV // Brezilya Temsilciliği 2026</p>
-    </footer>
+    <div class="wrapper">
+        <header class="brand-header">
+            <div class="logo">
+                <p style="font-weight:900; color:var(--gold); letter-spacing:5px; font-size:0.7rem;">BRASILIA - MARDIN</p>
+                <h1>ASC 2026</h1>
+            </div>
+            <div class="dual-time">
+                <div class="time-box"><small>BRASILIA</small><h2 id="br-now">00:00:00</h2></div>
+                <div class="time-box"><small>MARDIN</small><h2 id="tr-now">00:00:00</h2></div>
+            </div>
+        </header>
+
+        <section class="main-stage">
+            <div class="hero-card" onclick="showDeep(0)">
+                <span style="background:var(--navy); color:white; padding:8px 20px; font-weight:900; font-size:0.7rem; display:inline-block; margin-bottom:20px;">GRAND ANALYSIS</span>
+                <h1 id="hero-title">Yükleniyor...</h1>
+                <p id="hero-desc">Brezilya ve Türkiye hattında dijital ticaretin kalbi.</p>
+            </div>
+            <aside class="author-box">
+                <div class="profile-pic"></div>
+                <h2 style="font-family:'Playfair Display'; font-size:1.8rem;">Ahmet Çınarbaş</h2>
+                <p style="color:var(--gold); font-weight:900; letter-spacing:3px; font-size:0.8rem;">CHIEF REPRESENTATIVE</p>
+            </aside>
+        </section>
+
+        <h2 class="section-label">THE FEED</h2>
+        <div class="news-matrix" id="news-matrix"></div>
+    </div>
+
+    <div id="deep-view" class="deep-view">
+        <button class="deep-close" onclick="hideDeep()">KAPAT [X]</button>
+        <div id="deep-inject"></div>
+    </div>
 
     <script>
-        const newsData = [
-            {
-                tag: "PERFIL",
-                title: "Stratejik Medya Portresi // Perfil Midiático",
-                descTR: "Ahmet Çınarbaş'ın küresel habercilik vizyonu ve kariyer yolculuğu.",
-                descPT: "A visão de jornalismo global e a trajetória de Ahmet Çınarbaş.",
-                body: `
-                    <p>Gazetecilik kariyerini uluslararası ilişkiler ve dijital medya dinamikleri üzerine inşa eden Ahmet Çınarbaş, Mardin Haber TV’nin Brezilya Temsilcisi olarak kıtalararası bir haber ağının merkezinde yer alıyor. Güney Amerika’nın en büyük ekonomisi ile Mezopotamya’nın kadim kültürünü aynı potada eriten Çınarbaş, haberciliği sadece olay aktarımı değil, bir anlamlandırma sanatı olarak tanımlıyor.</p>
-                    <p class="pt-para">Com uma carreira construída na intersecção entre relações internacionais e mídia digital, Ahmet Çınarbaş atua como Representante da Mardin Haber TV no Brasil, no centro de uma rede global. Unindo a maior economia da América do Sul à cultura milenar da Mesopotâmia, ele define o jornalismo não apenas como relato, mas como a arte de dar sentido aos fatos.</p>
-                    <p>Modern medya terminolojisinde "Yerinden Bildirim" ekolünün güçlü bir savunucusu olan Çınarbaş, Brezilya siyasetinden Latin Amerika enerji piyasalarına kadar geniş bir yelpazede uzmanlaşmıştır. Diplomatik kaynaklarla kurduğu doğrudan temaslar sayesinde, Türk izleyicisine uzak olanı anlaşılır kılmaktadır.</p>
-                    <p class="pt-para">Forte defensor do jornalismo de campo, Çınarbaş especializou-se na política brasileira e nos mercados de energia latinos. Através de contatos diretos com fontes diplomáticas, ele torna compreensível para o público turco aquilo que antes parecia geograficamente distante.</p>
-                `
-            },
-            {
-                tag: "GEOPOLÍTICA",
-                title: "Amazon ve Küresel Güvenlik // Amazônia e Segurança",
-                descTR: "Brezilya'nın çevre politikalarının uluslararası ilişkilerdeki stratejik önemi.",
-                descPT: "A importância estratégica das políticas ambientais brasileiras nas relações globais.",
-                body: `
-                    <p>Amazon bölgesi bugün sadece bir biyolojik rezerv değil, küresel diplomasinin en sert müzakere masalarından biridir. Ahmet Çınarbaş, bölgedeki yasal düzenlemelerin ve çevresel denetimlerin küresel ticaret anlaşmaları üzerindeki doğrudan etkilerini raporlamaktadır.</p>
-                    <p class="pt-para">A região amazônica hoje não é apenas uma reserva biológica, mas uma das mesas de negociação mais difíceis da diplomacia global. Ahmet Çınarbaş relata os efeitos diretos das regulamentações ambientais sobre os acordos comerciais internacionais.</p>
-                    <p>Brezilya'nın ulusal egemenlik hakları ile uluslararası iklim taahhütleri arasındaki denge, Ankara ve Brasília arasındaki diplomatik diyaloglarda da önemli bir yer tutmaktadır. Türk savunma sanayiinin izleme teknolojileri bu noktada stratejik bir çözüm ortağı olabilir.</p>
-                    <p class="pt-para">O equilíbrio entre os direitos de soberania nacional do Brasil e os compromissos climáticos internacionais ocupa um lugar importante nos diálogos diplomáticos. As tecnologias de monitoramento da indústria de defesa turca podem ser parceiras estratégicas aqui.</p>
-                `
-            }
-            // Diğer 18 içerik JS içinde döngüyle bu formatta zenginleştirilecek...
-        ];
+        let newsLibrary = [];
 
-        const grid = document.getElementById('main-grid');
-        for(let i=0; i<20; i++) {
-            const data = newsData[i % newsData.length];
-            const card = document.createElement('div');
-            card.className = 'grid-card';
-            card.onclick = () => openArticle(i % newsData.length);
-            card.innerHTML = `
-                <span class="card-tag">${data.tag} // ${i+1}</span>
-                <h3 class="card-title">${data.title}</h3>
-                <p class="card-desc-tr">${data.descTR}</p>
-                <p class="card-desc-pt">${data.descPT}</p>
-            `;
-            grid.appendChild(card);
+        async function startEngine() {
+            try {
+                const trRSS = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.hurriyet.com.tr/rss/gundem';
+                const glRSS = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.com/xml/rss/all.xml';
+                const [tr, gl] = await Promise.all([fetch(trRSS).then(r=>r.json()), fetch(glRSS).then(r=>r.json())]);
+
+                newsLibrary = [...tr.items, ...gl.items].map(item => {
+                    const isBr = item.title.toLowerCase().includes('brazil') || item.content.toLowerCase().includes('brazil');
+                    return {
+                        title: isBr ? "🇧🇷 " + item.title : "🇹🇷 " + item.title,
+                        tag: isBr ? "BRASILIA REPORT" : "TURKEY REPORT",
+                        desc: item.description.replace(/<[^>]*>?/gm, '').substring(0, 200) + "...",
+                        content: item.content || item.description,
+                        img: item.enclosure?.link || item.thumbnail || `https://picsum.photos/seed/${Math.random()}/800/600`
+                    };
+                });
+                renderUI();
+            } catch (e) { console.error("Haber motoru hatası"); }
         }
 
-        function updateClocks() {
-            const now = new Date();
-            document.getElementById('br-time').innerText = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Sao_Paulo', timeStyle: 'medium' }).format(now);
-            document.getElementById('tr-time').innerText = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Istanbul', timeStyle: 'medium' }).format(now);
+        function renderUI() {
+            if(!newsLibrary.length) return;
+            document.getElementById('hero-title').innerText = newsLibrary[0].title;
+            document.getElementById('hero-desc').innerText = newsLibrary[0].desc;
+            const matrix = document.getElementById('news-grid'); // Düzeltme yapıldı
+            document.getElementById('news-matrix').innerHTML = newsLibrary.slice(1, 13).map((n, i) => `
+                <div class="matrix-card" onclick="showDeep(${i+1})">
+                    <img src="${n.img}" class="matrix-img">
+                    <div class="matrix-body">
+                        <span style="color:var(--gold); font-weight:900; font-size:0.7rem;">${n.tag}</span>
+                        <h3>${n.title}</h3>
+                    </div>
+                </div>
+            `).join('');
         }
-        setInterval(updateClocks, 1000);
-        updateClocks();
 
-        function openArticle(index) {
-            const d = newsData[index];
-            document.getElementById('r-title').innerText = d.title;
-            document.getElementById('r-body').innerHTML = d.body;
-            document.getElementById('reader-overlay').style.display = 'block';
+        function showDeep(idx) {
+            const n = newsLibrary[idx];
+            document.getElementById('deep-inject').innerHTML = `
+                <img src="${n.img}" class="deep-header-img">
+                <div class="deep-container">
+                    <h1>${n.title}</h1>
+                    <div class="deep-content">${n.content}</div>
+                </div>`;
+            document.getElementById('deep-view').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-        function closeArticle() { document.getElementById('reader-overlay').style.display = 'none'; document.body.style.overflow = 'auto'; }
+
+        function hideDeep() {
+            document.getElementById('deep-view').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function clocks() {
+            const now = new Date();
+            document.getElementById('tr-now').innerText = now.toLocaleTimeString('tr-TR');
+            const br = new Date(now.getTime() - (6 * 60 * 60 * 1000));
+            document.getElementById('br-now').innerText = br.toLocaleTimeString('tr-TR');
+        }
+
+        setInterval(clocks, 1000);
+        startEngine();
     </script>
 </body>
 </html>
