@@ -19,69 +19,86 @@
         body { 
             margin: 0; padding: 0; background-color: var(--bg-gray); 
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            background-attachment: fixed;
             font-family: 'Lora', serif; color: var(--text-dark); 
-            line-height: 2; -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
+            line-height: 1.8; -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; text-rendering: optimizeLegibility;
+            font-variant-ligatures: common-ligatures; hyphens: auto;
         }
 
-        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: transparent; z-index: 9999; }
-        #progress-bar { height: 100%; background: var(--brand-red); width: 0%; transition: width 0.1s; }
+        /* Fade-in Giriş */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { animation: fadeInUp 1.2s ease-out forwards; }
 
-        header { background-color: var(--brand-red); color: white; text-align: center; padding: 80px 20px; position: relative; z-index: 100; }
+        /* Progress Bar & Sinyal */
+        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 9999; }
+        #progress-bar { height: 100%; background: var(--brand-red); width: 0%; position: relative; transition: width 0.1s; }
+        #progress-bar::after { content: "❦"; position: absolute; right: -8px; top: -8px; color: var(--brand-red); font-size: 1rem; }
+
+        header { background-color: var(--brand-red); color: white; text-align: center; padding: 80px 20px; position: relative; }
         .kufi-box { border: 8px solid white; padding: 15px 30px; font-family: 'Inter', sans-serif; font-weight: 900; font-size: 3.5rem; letter-spacing: -4px; line-height: 0.8; text-transform: uppercase; display: inline-block; margin-bottom: 25px; }
-        .header-info h1 { font-family: 'Inter'; font-size: 1.4rem; letter-spacing: 6px; text-transform: uppercase; margin: 0; font-weight: 400; white-space: nowrap; }
+        .header-info h1 { font-family: 'Inter'; font-size: 1.4rem; letter-spacing: 6px; text-transform: uppercase; margin: 0; font-weight: 400; }
 
-        .main-wrapper { max-width: 1200px; margin: 0 auto; display: flex; gap: 50px; position: relative; padding: 0 20px; }
+        .main-wrapper { max-width: 1200px; margin: 0 auto; display: flex; gap: 50px; padding: 0 20px; }
 
-        .author-sidebar { width: 180px; position: sticky; top: 50px; height: fit-content; padding: 40px 0; text-align: center; margin-top: -30px; }
-        .author-photo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--brand-red); margin: 0 auto 20px; background-color: #fff; overflow: hidden; background-image: url('https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg'); background-size: cover; background-position: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .sidebar-motto { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Inter'; font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase; color: var(--brand-red); font-weight: 700; margin: 25px auto; opacity: 0.6; }
+        /* Sidebar & Köprü */
+        .author-sidebar { width: 180px; position: sticky; top: 50px; height: fit-content; padding: 40px 0; text-align: center; }
+        .author-photo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--brand-red); margin: 0 auto 15px; background-image: url('https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg'); background-size: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .clocks { font-family: 'Inter'; font-size: 0.6rem; letter-spacing: 2px; color: var(--brand-red); font-weight: 600; margin-bottom: 10px; }
+        .geo-bridge { width: 40px; height: 1px; background: var(--brand-red); margin: 10px auto; opacity: 0.3; position: relative; }
+        .geo-bridge::before, .geo-bridge::after { content: "•"; position: absolute; top: -7px; color: var(--brand-red); }
+        .geo-bridge::before { left: -5px; } .geo-bridge::after { right: -5px; }
 
-        .glossary-term { border-bottom: 2px dotted var(--brand-red); cursor: help; position: relative; }
-        .glossary-content { visibility: hidden; width: 220px; background-color: var(--text-dark); color: #fff; text-align: center; border-radius: 6px; padding: 15px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-family: 'Inter'; font-size: 0.75rem; line-height: 1.4; white-space: normal; }
-        .glossary-term:hover .glossary-content { visibility: visible; opacity: 1; }
+        /* Hibrit Metin Bloğu */
+        .container { flex: 1; max-width: 750px; margin: -50px 0 80px 0; background: var(--card-bg); padding: 80px 100px; box-shadow: 0 40px 80px rgba(0,0,0,0.12); border: 1px solid var(--border-color); }
+        h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--brand-red); margin-bottom: 50px; border-bottom: 3px solid var(--brand-red); padding-bottom: 20px; text-transform: uppercase; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .container { flex: 1; max-width: 750px; margin: -50px 0 80px 0; background: var(--card-bg); padding: 80px 100px; box-shadow: 0 40px 80px rgba(0,0,0,0.12); position: relative; z-index: 10; border: 1px solid var(--border-color); }
-        
-        /* Başlık: Tek Satır ve Taşma Yapmaz */
-        h2 { 
-            font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--brand-red); 
-            margin-bottom: 50px; border-bottom: 3px solid var(--brand-red); padding-bottom: 20px; 
-            text-transform: uppercase; font-weight: 900; line-height: 1.2;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        .para-block { margin-bottom: 45px; transition: 0.3s; }
+        .para-tr { font-size: 1.2rem; margin-bottom: 10px; text-align: justify; }
+        .para-pt { font-size: 1.05rem; color: var(--text-light); font-style: italic; border-left: 2px solid var(--border-color); padding-left: 20px; text-align: justify; line-height: 1.6; }
+
+        /* Pull Quote */
+        .pull-quote { 
+            margin: 60px -40px; padding: 30px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);
+            font-family: 'Playfair Display'; font-size: 1.8rem; color: var(--brand-red); text-align: center; font-style: italic; font-weight: 700;
         }
 
-        .content-tr p:first-of-type::first-letter { float: left; font-family: 'Playfair Display'; font-size: 5rem; line-height: 0.8; padding: 10px 15px 0 0; color: var(--brand-red); font-weight: 900; }
-        .content-tr, .content-pt { text-align: justify; font-size: 1.2rem; color: var(--text-dark); clear: both; }
-        .content-tr p, .content-pt p { margin-bottom: 35px; }
-        
-        .signature-block { text-align: right; margin-top: 50px; padding-bottom: 10px; display: block; width: 100%; clear: both; }
-        .sig-text { font-family: 'Monsieur La Doulaise', cursive; font-size: 4rem; color: var(--brand-red); margin: 0; line-height: 0.8; display: inline-block; white-space: nowrap; }
-        .sig-sub { font-family: 'Inter'; font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase; color: var(--text-light); display: block; margin-top: 5px; font-weight: 900; }
+        /* İmza - Sadece En Altta */
+        .signature-block { text-align: right; margin-top: 80px; clear: both; }
+        .sig-text { font-family: 'Monsieur La Doulaise', cursive; font-size: 4.5rem; color: var(--brand-red); line-height: 0.5; display: inline-block; }
+        .sig-sub { font-family: 'Inter'; font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase; color: var(--text-light); display: block; margin-top: 15px; font-weight: 900; }
+
+        /* Glossary Tooltip */
+        .glossary-term { border-bottom: 2px dotted var(--brand-red); cursor: help; position: relative; }
+        .glossary-content { visibility: hidden; width: 200px; background: var(--text-dark); color: #fff; text-align: center; border-radius: 6px; padding: 12px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: 0.3s; font-family: 'Inter'; font-size: 0.7rem; line-height: 1.4; }
+        .glossary-term:hover .glossary-content { visibility: visible; opacity: 1; }
 
         @media (max-width: 1024px) {
             .main-wrapper { flex-direction: column; align-items: center; }
-            .container { padding: 40px 25px; width: 100%; }
-            h2 { font-size: 1.1rem; letter-spacing: 1px; }
-            .sig-text { font-size: 2.8rem; }
+            .container { padding: 40px 25px; width: 100%; margin-top: 0; }
+            .pull-quote { margin: 40px 0; font-size: 1.4rem; }
+            .sig-text { font-size: 3rem; }
         }
     </style>
 </head>
-<body>
+<body id="body-bg">
 
 <div id="progress-container"><div id="progress-bar"></div></div>
 
 <header>
     <div class="kufi-box">ASC</div>
-    <div class="header-info">
-        <h1>Ahmet Salim Çınarbaş</h1>
-    </div>
+    <div class="header-info"><h1>Ahmet Salim Çınarbaş</h1></div>
 </header>
 
-<div class="main-wrapper">
+<div class="main-wrapper reveal">
     <aside class="author-sidebar">
         <div class="author-photo"></div>
-        <div style="font-family:'Inter'; font-weight:900; font-size:0.8rem; letter-spacing:2px; color:var(--text-dark); margin-top:10px;">A.S.Ç.</div>
+        <div class="clocks">
+            <div id="mardin-clock">Mardin --:--</div>
+            <div class="geo-bridge"></div>
+            <div id="brasilia-clock">Brasília --:--</div>
+        </div>
+        <div style="font-family:'Inter'; font-weight:900; font-size:0.8rem; letter-spacing:2px; color:var(--text-dark);">A.S.Ç.</div>
         <div class="sidebar-motto">Mardin & Brasília Günlüğü</div>
         <div class="sidebar-social" style="margin-top:20px;">
             <a href="https://x.com/ASCIBARBAS" target="_blank" style="color: var(--brand-red); text-decoration: none; font-weight: 900; font-family: 'Inter'; font-size: 0.75rem; letter-spacing: 2px; border-bottom: 1px solid var(--brand-red);">X / @ASCIBARBAS</a>
@@ -91,57 +108,47 @@
     <div class="container">
         <article>
             <div class="meta" style="font-family:'Inter'; font-size:0.7rem; color:#bbb; letter-spacing:4px; margin-bottom:25px; text-align:center;">24 MART 2026</div>
-            
             <h2>MARDİN VE BRASÍLIA: MEDENİYETİN İKİ UCU</h2>
             
-            <div class="content-tr">
-                <p>
-                    <span class="glossary-term">Mardin<span class="glossary-content">Artuklu mimarisinin zirvesi olan açık hava müzesi şehir.</span></span>, 
-                    jeolojik olarak <span class="glossary-term">Kretase<span class="glossary-content">Tebeşir dönemi; Mardin taşının oluştuğu 145-66 milyon yıl öncesi.</span></span> 
-                    dönemine ait kireçtaşlarının insan eliyle mühürlendiği bir <span class="glossary-term">Antroposen<span class="glossary-content">İnsanın dünya ekosistemi üzerinde baskın hale geldiği çağ.</span></span> 
-                    mucizesidir. Şehrin dikey yerleşimi, sadece estetik bir tercih değil, Mezopotamya'nın termal rüzgarlarını optimize eden kadim bir iklimlendirme mühendisliğidir. Binlerce yıllık taş işçiliği, bugün modern mimarinin "sürdürülebilirlik" dediği kavramın tarihsel temelidir.
-                </p>
-                
-                <p>
-                    Öte yandan <span class="glossary-term">Brasília<span class="glossary-content">Modernizmin ve rasyonalizmin betona bürünmüş hali.</span></span>, 
-                    bilimsel rasyonalizmin ve fütüristik vizyonun yeryüzündeki izdüşümüdür. <span class="glossary-term">Oscar Niemeyer<span class="glossary-content">Eğrisel çizgileri betonla birleştiren Pritzker ödüllü dahi.</span></span>'in 
-                    kavisli beton formları, maddenin direnci ile matematiğin zarafeti arasındaki dengenin kanıtıdır. Brasília, bir şehirden ziyade, insan zihninin doğaya karşı kurduğu modern bir geometrik düzendir.
-                </p>
-                
-                <p>
-                    Kültürel düzlemde bu iki uç, kahvenin moleküler yolculuğunda birleşir. Mardin'in <span class="glossary-term">Dibek<span class="glossary-content">Kahvenin taş havanda dövülerek aromatik yağlarının korunması yöntemi.</span></span> 
-                    geleneği, aromatik yağların fiziksel çarpışmayla açığa çıkmasıyken; Brezilya'nın dünya kahve üretimindeki %37'lik bilimsel dominasyonu, Latin Amerika'nın biyolojik çeşitliliğini temsil eder. Her iki coğrafya da insanlığın ortak mirasının farklı frekanslardaki yankısıdır.
-                </p>
-
-                <div class="signature-block">
-                    <span class="sig-text">Ahmet Salim</span>
-                    <span class="sig-sub">Mardin Notları</span>
+            <div class="para-block">
+                <div class="para-tr">
+                    <span class="glossary-term">Mardin<span class="glossary-content">Kadim taş mimarisiyle ünlü açık hava müzesi.</span></span>, 
+                    jeolojik olarak Kretase dönemine ait kireçtaşlarının insan eliyle mühürlendiği bir mucizedir. Şehrin dikey yerleşimi, Mezopotamya'nın termal rüzgarlarını optimize eden kadim bir mühendislik harikasıdır.
+                </div>
+                <div class="para-pt">
+                    Mardin é um milagre do Antropoceno, onde o calcário do período Cretáceo foi selado por mãos humanas. Sua disposição vertical é uma maravilha da engenharia antiga que otimiza os ventos térmicos da Mesopotâmia.
                 </div>
             </div>
 
-            <div class="lang-divider"><span>RESUMO CIENTÍFICO E CULTURAL</span></div>
+            <div class="pull-quote">
+                "Mardin bir sabır, Brasília ise bir düş şehridir."
+            </div>
 
-            <div class="content-pt">
-                <p>Mardin representa a engenharia vernacular milenar, otimizando o fluxo térmico da Mesopotâmia através de sua arquitetura de calcário. Por outro lado, Brasília é o ápice do racionalismo científico, onde Niemeyer desafiou a gravidade com curvas matemáticas em concreto armado.</p>
-                
-                <p>Ambas as cidades, embora separadas por oceanos e milênios, convergem na busca humana pela harmonia entre o ambiente construído e o cosmos. É um diálogo entre a pedra ancestral e o concreto futurista.</p>
-
-                <div class="signature-block">
-                    <span class="sig-text">Ahmet Salim</span>
-                    <span class="sig-sub">Notas de Brasília</span>
+            <div class="para-block" style="line-height: 2.2;"> <div class="para-tr">
+                    Öte yandan <span class="glossary-term">Brasília<span class="glossary-content">1960'ta kurulan fütüristik başkent.</span></span>, 
+                    bilimsel rasyonalizmin yeryüzündeki izdüşümüdür. Oscar Niemeyer'in kavisli beton formları, maddenin direnci ile matematiğin zarafeti arasındaki dengenin kanıtıdır.
                 </div>
+                <div class="para-pt">
+                    Por outro lado, Brasília é a projeção do racionalismo científico na terra. As formas curvas de concreto de Oscar Niemeyer são a prova do equilíbrio entre a resistência da matéria e a elegância da matemática.
+                </div>
+            </div>
+
+            <div class="para-block">
+                <div class="para-tr">
+                    Kültürel düzlemde bu iki uç, kahvenin moleküler yolculuğunda birleşir. Mardin'in Dibek geleneği ve Brezilya'nın biyolojik çeşitliliği, insanlığın ortak mirasının farklı yankılarıdır.
+                </div>
+                <div class="para-pt">
+                    No plano cultural, esses dois extremos se unem na jornada molecular do café. A tradição Dibek de Mardin e a biodiversidade do Brasil são ecos diferentes do patrimônio comum da humanidade.
+                </div>
+            </div>
+
+            <div class="signature-block">
+                <span class="sig-text">Ahmet Salim</span>
+                <span class="sig-sub">Mardin & Brasília Notları</span>
             </div>
         </article>
     </div>
 </div>
-
-<footer>
-    <div class="footer-content">
-        <div style="font-weight:900; letter-spacing:6px; font-size:1.8rem;">ASC</div>
-        <div style="opacity:0.8;">© 2026 Ahmet Salim Çınarbaş</div>
-        <div style="font-family:'Inter'; font-size:0.7rem; letter-spacing:3px;">MARDİN / BRASÍLIA</div>
-    </div>
-</footer>
 
 <script>
     window.onscroll = function() {
@@ -149,7 +156,17 @@
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         let scrolled = (winScroll / height) * 100;
         document.getElementById("progress-bar").style.width = scrolled + "%";
+        document.getElementById("body-bg").style.backgroundPositionY = -(winScroll * 0.1) + "px";
     };
+
+    function updateClocks() {
+        const now = new Date();
+        const mardinTime = new Intl.DateTimeFormat('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit' }).format(now);
+        document.getElementById('mardin-clock').innerText = "Mardin " + mardinTime;
+        const brasiliaTime = new Intl.DateTimeFormat('tr-TR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' }).format(now);
+        document.getElementById('brasilia-clock').innerText = "Brasília " + brasiliaTime;
+    }
+    setInterval(updateClocks, 1000); updateClocks();
 </script>
 
 </body>
