@@ -33,37 +33,60 @@
         .section-title { font-size: 0.85rem; font-weight: 800; color: var(--txt-sub); display: flex; align-items: center; }
         .section-title::before { content: ''; width: 4px; height: 18px; background: var(--accent); margin-right: 10px; border-radius: 2px; }
 
-        /* SATIR TASARIMI - MOBİL ODAKLI */
         .row { 
             background: var(--card); border: 1px solid var(--brd); border-radius: 12px; 
             margin-bottom: 12px; padding: 15px; 
             display: grid; 
-            grid-template-columns: 1fr 1fr; /* Mobilde 2 sütun */
+            grid-template-columns: 1fr 1fr; 
             gap: 10px; align-items: center;
         }
         
-        /* Masaüstü için geniş görünüm */
         @media (min-width: 900px) {
             .row { grid-template-columns: 2fr 1fr 1fr 100px 120px; }
-            .spread-col { display: block; }
         }
 
-        .asset-info { grid-column: span 2; margin-bottom: 5px; } /* Mobilde isim tam satır */
+        .asset-info { grid-column: span 2; margin-bottom: 5px; }
         @media (min-width: 900px) { .asset-info { grid-column: span 1; } }
 
         .name-main { font-weight: 800; font-size: 1rem; display: block; }
         .name-sub { font-size: 0.7rem; color: var(--txt-sub); font-weight: 600; }
         
-        .price-box { background: rgba(0,0,0,0.02); padding: 8px; border-radius: 8px; }
+        /* Fiyat Kutusu ve Animasyon Hazırlığı */
+        .price-box { 
+            background: rgba(0,0,0,0.02); 
+            padding: 8px; 
+            border-radius: 8px; 
+            transition: background-color 0.4s ease; /* Yumuşak geçiş için */
+            position: relative;
+        }
         [data-theme="dark"] .price-box { background: rgba(255,255,255,0.03); }
         
         .price-val { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.05rem; display: block; }
         .price-label { font-size: 0.6rem; font-weight: 800; color: #94a3b8; display: block; text-transform: uppercase; }
-        
-        .spread-col { display: none; } /* Mobilde makası gizle veya alta al */
 
+        /* FLASH EFEKTLERİ */
+        @keyframes flash-green {
+            0% { background-color: rgba(16, 185, 129, 0.4); }
+            100% { background-color: rgba(0,0,0,0.02); }
+        }
+        @keyframes flash-red {
+            0% { background-color: rgba(239, 68, 68, 0.4); }
+            100% { background-color: rgba(0,0,0,0.02); }
+        }
+        [data-theme="dark"] @keyframes flash-green {
+            0% { background-color: rgba(16, 185, 129, 0.4); }
+            100% { background-color: rgba(255,255,255,0.03); }
+        }
+        [data-theme="dark"] @keyframes flash-red {
+            0% { background-color: rgba(239, 68, 68, 0.4); }
+            100% { background-color: rgba(255,255,255,0.03); }
+        }
+
+        .up-flash { animation: flash-green 1.5s ease-out; }
+        .down-flash { animation: flash-red 1.5s ease-out; }
+        
         .chg-badge { 
-            grid-column: span 2; /* Mobilde değişim oranı tam genişlik */
+            grid-column: span 2; 
             padding: 10px; border-radius: 8px; font-size: 0.85rem; 
             font-weight: 800; text-align: center; margin-top: 5px;
         }
@@ -81,14 +104,14 @@
     <div class="logo">QUANTUM <span style="color:var(--accent)">V20</span></div>
     <div style="display: flex; align-items: center; gap: 10px;">
         <div id="clock">00:00:00</div>
-        <button class="theme-toggle" id="themeToggle">🌙 KOYU</button>
+        <button class="theme-toggle" id="themeToggle"> KOYU</button>
     </div>
 </header>
 
 <div class="container">
     <div class="section-header">
         <div class="section-title">ALTIN PİYASASI (₺ / LOKAL)</div>
-        <div id="connStatus" style="font-size: 0.7rem; font-weight: 800; color: var(--up);">🔄 BAĞLANIYOR...</div>
+        <div id="connStatus" style="font-size: 0.7rem; font-weight: 800; color: var(--up);"> BAĞLANIYOR...</div>
     </div>
     <div id="gold-list"></div>
 
@@ -99,6 +122,9 @@
 </div>
 
 <script>
+// Fiyat takibi için depo
+const priceStore = {};
+
 const COFFEE_ASSETS = [
     { id: 'arabica', name: 'Arabica Premium', sub: 'NY Arabica Futures', base: 5620, spread: 18 },
     { id: 'robusta', name: 'Robusta Standard', sub: 'London Robusta', base: 4950, spread: 22 },
@@ -121,6 +147,16 @@ const GOLD_ASSETS = [
     { id: 'tam', name: 'Tam Altın', sub: 'Ziynet / Tam', multi: 6.552, spread: 320 }
 ];
 
+// Fiyat değişimine göre class döndüren fonksiyon
+function getFlashClass(id, currentPrice) {
+    const lastPrice = priceStore[id];
+    priceStore[id] = currentPrice;
+    if (lastPrice === undefined) return ""; 
+    if (currentPrice > lastPrice) return "up-flash";
+    if (currentPrice < lastPrice) return "down-flash";
+    return "";
+}
+
 async function updateData() {
     try {
         const curRes = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
@@ -134,11 +170,12 @@ async function updateData() {
         const gList = document.getElementById('gold-list');
         gList.innerHTML = GOLD_ASSETS.map(item => {
             const price = goldGramPrice * item.multi;
+            const flash = getFlashClass(item.id, price);
             return `
             <div class="row">
                 <div class="asset-info"><span class="name-main">${item.name}</span><span class="name-sub">${item.sub}</span></div>
-                <div class="price-box"><span class="price-label">ALIŞ</span><span class="price-val">${(price - item.spread/2).toFixed(2)} ₺</span></div>
-                <div class="price-box"><span class="price-label">SATIŞ</span><span class="price-val" style="color:var(--up)">${(price + item.spread/2).toFixed(2)} ₺</span></div>
+                <div class="price-box ${flash}"><span class="price-label">ALIŞ</span><span class="price-val">${(price - item.spread/2).toFixed(2)} ₺</span></div>
+                <div class="price-box ${flash}"><span class="price-label">SATIŞ</span><span class="price-val" style="color:var(--up)">${(price + item.spread/2).toFixed(2)} ₺</span></div>
                 <div class="chg-badge up-bg">CANLI</div>
             </div>`;
         }).join('');
@@ -147,18 +184,19 @@ async function updateData() {
         cList.innerHTML = COFFEE_ASSETS.map(asset => {
             const drift = (Math.random() * 10 - 5);
             const finalPrice = asset.base + drift;
+            const flash = getFlashClass(asset.id, finalPrice);
             return `
             <div class="row">
                 <div class="asset-info"><span class="name-main">${asset.name}</span><span class="name-sub">${asset.sub}</span></div>
-                <div class="price-box"><span class="price-label">ALIŞ ($)</span><span class="price-val">${(finalPrice - asset.spread/2).toFixed(0)} $</span></div>
-                <div class="price-box"><span class="price-label">SATIŞ ($)</span><span class="price-val" style="color:var(--accent)">${(finalPrice + asset.spread/2).toFixed(0)} $</span></div>
+                <div class="price-box ${flash}"><span class="price-label">ALIŞ ($)</span><span class="price-val">${(finalPrice - asset.spread/2).toFixed(0)} $</span></div>
+                <div class="price-box ${flash}"><span class="price-label">SATIŞ ($)</span><span class="price-val" style="color:var(--accent)">${(finalPrice + asset.spread/2).toFixed(0)} $</span></div>
                 <div class="chg-badge up-bg">▲ %${(Math.random()*2).toFixed(2)}</div>
             </div>`;
         }).join('');
 
-        document.getElementById('connStatus').innerHTML = "🟢 SİSTEM AKTİF";
+        document.getElementById('connStatus').innerHTML = " SİSTEM AKTİF";
     } catch (e) {
-        document.getElementById('connStatus').innerHTML = "⚠️ YEDEK MOD";
+        document.getElementById('connStatus').innerHTML = " YEDEK MOD";
     }
 }
 
@@ -169,7 +207,7 @@ updateData();
 document.getElementById('themeToggle').onclick = () => {
     const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', t);
-    document.getElementById('themeToggle').innerText = t === 'dark' ? '☀️ AÇIK' : '🌙 KOYU';
+    document.getElementById('themeToggle').innerText = t === 'dark' ? ' AÇIK' : ' KOYU';
 };
 </script>
 </body>
