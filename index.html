@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brasília Anlık Bölge Paneli</title>
+    <title>Brasília Bölge Paneli</title>
     <style>
         * {
             margin: 0;
@@ -12,145 +12,252 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #009c3b 0%, #ffdf00 50%, #002776 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f5f7fa;
             min-height: 100vh;
             padding: 20px;
-            color: white;
+            color: #1a1a2e;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
+        /* Header */
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
 
         .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            color: #009c3b;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 0.9rem;
         }
 
         .brasilia-badge {
-            background: rgba(255,255,255,0.2);
+            background: #002776;
+            color: white;
             display: inline-block;
             padding: 5px 15px;
             border-radius: 30px;
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 12px;
+            margin-bottom: 12px;
         }
 
+        /* Canlı badge */
         .live-badge {
-            background: #ff4444;
+            background: #e74c3c;
+            color: white;
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 12px;
-            animation: pulse 1s infinite;
+            font-size: 11px;
+            animation: pulse 1.5s infinite;
             margin-left: 10px;
         }
 
         @keyframes pulse {
             0% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
             100% { opacity: 1; }
         }
 
+        /* Kartlar */
         .card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
+            background: white;
+            border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #eef2f6;
         }
 
-        .info-card {
-            background: rgba(255,255,255,0.15);
-            border-radius: 16px;
-            padding: 15px;
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
             margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #009c3b;
+            display: inline-block;
         }
 
-        .info-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        /* Haber kartı */
+        .haber-card {
+            background: #fafbfc;
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 4px solid #009c3b;
+            transition: all 0.2s;
         }
 
-        .info-content {
+        .haber-card:hover {
+            background: #f0f2f5;
+            transform: translateX(3px);
+        }
+
+        .haber-bairro {
+            font-size: 12px;
+            font-weight: 600;
+            color: #009c3b;
+            margin-bottom: 6px;
+        }
+
+        .haber-baslik {
             font-size: 14px;
-            color: rgba(255,255,255,0.9);
-            line-height: 1.5;
+            color: #333;
+            line-height: 1.4;
         }
 
-        .update-time {
-            text-align: center;
-            font-size: 11px;
-            color: rgba(255,255,255,0.6);
-            margin-top: 20px;
+        .haber-zaman {
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
         }
 
+        /* Bölge etiketleri */
         .bairro-list {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 10px;
         }
 
         .bairro-tag {
-            background: rgba(255,255,255,0.2);
-            padding: 4px 10px;
-            border-radius: 15px;
+            background: #eef2f6;
+            color: #333;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .bairro-tag:hover {
+            background: #009c3b;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Durum kartı */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .status-item {
+            background: #fafbfc;
+            border-radius: 14px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .status-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .status-text {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .status-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-top: 5px;
+        }
+
+        /* Güncelleme zamanı */
+        .update-time {
+            text-align: center;
             font-size: 11px;
+            color: #aaa;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eef2f6;
+        }
+
+        /* Yükleniyor */
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #999;
         }
 
         hr {
-            border-color: rgba(255,255,255,0.2);
+            border: none;
+            border-top: 1px solid #eef2f6;
             margin: 15px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            .card {
+                padding: 15px;
+            }
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
-            <div class="brasilia-badge">🇧🇷 BRASÍLIA - DF</div>
-            <h1>📡 Bölge Paneli</h1>
-            <p>Anlık bölge haberleri ve duyurular</p>
+            <div class="brasilia-badge">🇧🇷 BRASÍLIA - DISTRITO FEDERAL</div>
+            <h1>📡 Brasília Bölge Paneli</h1>
+            <p>Anlık bölge haberleri, durum bilgileri ve duyurular</p>
         </div>
 
+        <!-- Son Güncelleme -->
         <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span>🕐 Son Güncelleme</span>
-                <span class="live-badge" id="liveBadge">CANLI</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <span>🕐 <span id="updateTime">Yükleniyor...</span></span>
+                <span class="live-badge" id="liveBadge">LIVE</span>
             </div>
-            <div id="updateTime" style="margin-top: 10px; font-size: 14px;">Yükleniyor...</div>
         </div>
 
-        <div class="card" id="haberlerCard">
-            <div class="info-title">📰 Bölge Haberleri</div>
-            <div id="haberlerContent">Yükleniyor...</div>
+        <!-- Bölge Haberleri -->
+        <div class="card">
+            <div class="card-title">📰 Bölge Haberleri</div>
+            <div id="haberlerContent">
+                <div class="loading">⏳ Haberler yükleniyor...</div>
+            </div>
         </div>
 
-        <div class="card" id="bairroCard">
-            <div class="info-title">🏘️ Bölgeler</div>
-            <div class="bairro-list" id="bairroList"></div>
+        <!-- Bölgeler -->
+        <div class="card">
+            <div class="card-title">🏘️ Takip Edilen Bölgeler</div>
+            <div id="bairroList" class="bairro-list">
+                <div class="loading">Yükleniyor...</div>
+            </div>
         </div>
 
-        <div class="card" id="durumCard">
-            <div class="info-title">📍 Bölge Durumu</div>
-            <div id="durumContent">Yükleniyor...</div>
+        <!-- Anlık Durum -->
+        <div class="card">
+            <div class="card-title">📍 Anlık Durum</div>
+            <div id="durumContent">
+                <div class="loading">Yükleniyor...</div>
+            </div>
         </div>
 
+        <!-- Footer -->
         <div class="update-time">
             🔄 Her 10 dakikada bir otomatik güncellenir<br>
-            📱 Telegram: @Krizgozlem_bot
+            📱 Telegram: <strong>@Krizgozlem_bot</strong>
         </div>
     </div>
 
@@ -160,24 +267,27 @@
                 const response = await fetch('brasilia_data.json?v=' + Date.now());
                 const data = await response.json();
                 
+                // Güncelleme zamanı
                 document.getElementById('updateTime').innerHTML = data.son_guncelleme || 'Veri alınamadı';
                 
+                // Haberler
                 if (data.haberler && data.haberler.length > 0) {
                     let haberHtml = '';
-                    for (const haber of data.haberler.slice(0, 10)) {
+                    for (const haber of data.haberler.slice(0, 12)) {
                         haberHtml += `
-                            <div class="info-card">
-                                <div style="font-weight: bold;">📍 ${haber.bairro || 'Brasília'}</div>
-                                <div style="font-size: 13px; margin-top: 5px;">${haber.baslik || haber.metin}</div>
-                                <div style="font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 8px;">🕐 ${haber.zaman || 'Şimdi'}</div>
+                            <div class="haber-card">
+                                <div class="haber-bairro">📍 ${haber.bairro || 'Brasília'}</div>
+                                <div class="haber-baslik">${haber.baslik || haber.metin}</div>
+                                <div class="haber-zaman">🕐 ${haber.zaman || 'Şimdi'}</div>
                             </div>
                         `;
                     }
                     document.getElementById('haberlerContent').innerHTML = haberHtml;
                 } else {
-                    document.getElementById('haberlerContent').innerHTML = '<div class="info-card">Henüz haber alınamadı</div>';
+                    document.getElementById('haberlerContent').innerHTML = '<div class="loading">📭 Henüz haber alınamadı</div>';
                 }
                 
+                // Bölgeler
                 if (data.bairrolar && data.bairrolar.length > 0) {
                     let bairroHtml = '';
                     for (const b of data.bairrolar) {
@@ -186,19 +296,33 @@
                     document.getElementById('bairroList').innerHTML = bairroHtml;
                 }
                 
+                // Durum
                 if (data.durum) {
                     document.getElementById('durumContent').innerHTML = `
-                        <div class="info-card">
-                            <div>🌡️ ${data.durum.hava || 'Bilinmiyor'}</div>
-                            <div>🚦 ${data.durum.trafik || 'Veri yok'}</div>
-                            <div>🔒 ${data.durum.guvenlik || 'Normal'}</div>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <div class="status-icon">🌡️</div>
+                                <div class="status-text">Hava Durumu</div>
+                                <div class="status-value">${data.durum.hava || 'Bilinmiyor'}</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon">🚦</div>
+                                <div class="status-text">Trafik</div>
+                                <div class="status-value">${data.durum.trafik || 'Veri yok'}</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon">🔒</div>
+                                <div class="status-text">Güvenlik</div>
+                                <div class="status-value">${data.durum.guvenlik || 'Normal'}</div>
+                            </div>
                         </div>
                     `;
                 }
                 
             } catch(e) {
                 console.log('Veri bekleniyor...');
-                document.getElementById('haberlerContent').innerHTML = '<div class="info-card">⏳ İlk veriler hazırlanıyor... 10 dakika içinde gelecek.</div>';
+                document.getElementById('haberlerContent').innerHTML = '<div class="loading">⏳ İlk veriler hazırlanıyor... 10 dakika içinde gelecek.</div>';
+                document.getElementById('updateTime').innerHTML = 'İlk veri bekleniyor';
             }
         }
         
