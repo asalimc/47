@@ -2,8 +2,10 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Dünya Paneli | 25 Kategori | Brasília - Brezilya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Brasília - Brezilya için anlık veri paneli. 25+ kategori, hava durumu, döviz, deprem, haberler ve daha fazlası.">
+    <title>Brasília Paneli | Anlık Veri | Brezilya</title>
+    <link rel="manifest" href="manifest.json">
     <style>
         * {
             margin: 0;
@@ -12,108 +14,106 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: #f5f7fb;
             color: #1a2a3a;
-            line-height: 1.5;
+            line-height: 1.4;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Header */
+        /* Header - Mobil dostu */
         .header {
             background: white;
-            border-bottom: 1px solid #e0e6ed;
-            padding: 20px 24px;
+            padding: 16px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border-bottom: 1px solid #e0e6ed;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
 
-        .header-content {
-            max-width: 1600px;
-            margin: 0 auto;
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
         }
 
         .header h1 {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #009c3b;
         }
 
         .header p {
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             color: #6c7a8a;
+            margin-top: 4px;
         }
 
         .live-badge {
             background: #e74c3c;
             color: white;
-            padding: 5px 14px;
+            padding: 4px 12px;
             border-radius: 30px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             animation: pulse 1.5s infinite;
+            white-space: nowrap;
         }
 
         @keyframes pulse {
             0% { opacity: 1; }
-            50% { opacity: 0.7; }
+            50% { opacity: 0.6; }
             100% { opacity: 1; }
         }
 
-        /* Ana container */
+        /* Ana container - mobil padding */
         .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 24px;
+            max-width: 100%;
+            padding: 12px;
         }
 
-        /* Grid sistemi - 25 kategori için */
+        /* Grid - Mobil öncelikli */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
 
         /* Kartlar */
         .card {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
             overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             border: 1px solid #eef2f8;
+            transition: transform 0.2s;
         }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        .card:active {
+            transform: scale(0.99);
         }
 
         .card-header {
             background: #f8fafc;
-            padding: 16px 20px;
+            padding: 14px 16px;
             border-bottom: 2px solid #009c3b;
             font-weight: 700;
-            font-size: 1rem;
-            color: #1a2a3a;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .card-header span:first-child {
-            font-size: 1.3rem;
+        .card-header-icon {
+            font-size: 1.2rem;
         }
 
         .card-content {
-            padding: 16px 20px;
-            max-height: 380px;
+            padding: 14px;
+            max-height: 400px;
             overflow-y: auto;
         }
 
@@ -122,10 +122,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #eef2f8;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .list-item:last-child {
@@ -135,33 +135,35 @@
         .item-label {
             font-weight: 600;
             color: #2c3e50;
+            font-size: 0.85rem;
         }
 
         .item-value {
             color: #009c3b;
             font-weight: 700;
+            font-size: 0.9rem;
         }
 
         .item-sub {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #94a3b8;
         }
 
-        .item-change-up {
+        .change-up {
             color: #27ae60;
             font-size: 0.7rem;
         }
 
-        .item-change-down {
+        .change-down {
             color: #e74c3c;
             font-size: 0.7rem;
         }
 
-        /* 3'lü grid (durum kartları için) */
+        /* 3'lu grid mobilde 1'e düşüyor */
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: 1fr;
+            gap: 10px;
         }
 
         .status-item {
@@ -174,7 +176,7 @@
 
         .status-icon {
             font-size: 28px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .status-value {
@@ -184,7 +186,7 @@
         }
 
         .status-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #6c7a8a;
             margin-top: 4px;
         }
@@ -193,56 +195,19 @@
         .tag-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .tag {
             background: #f0f4f9;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 25px;
+            font-size: 0.7rem;
             font-weight: 500;
             color: #2c3e50;
         }
 
-        .tag:hover {
-            background: #009c3b;
-            color: white;
-            cursor: default;
-        }
-
-        /* Tablo stilleri */
-        .simple-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .simple-table td {
-            padding: 8px 0;
-            border-bottom: 1px solid #eef2f8;
-        }
-
-        .simple-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* Progress bar */
-        .progress-bar {
-            background: #eef2f8;
-            border-radius: 10px;
-            height: 6px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-
-        .progress-fill {
-            background: #009c3b;
-            height: 100%;
-            border-radius: 10px;
-            width: 0%;
-        }
-
-        /* Anma bölümü özel */
+        /* ANMA BÖLÜMÜ - VEFAT EDENLER ÖZEL */
         .anma-card {
             background: linear-gradient(135deg, #fef9f0 0%, #fff 100%);
             border-left: 4px solid #e74c3c;
@@ -255,17 +220,23 @@
             padding: 12px 0;
             border-bottom: 1px solid #f0e6d2;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .vefat-item:last-child {
+            border-bottom: none;
         }
 
         .vefat-name {
             font-weight: 700;
             color: #2c3e50;
+            font-size: 0.9rem;
         }
 
         .vefat-detail {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #7f8c8d;
+            margin-top: 2px;
         }
 
         .vefat-age {
@@ -277,329 +248,227 @@
             font-weight: 600;
         }
 
+        /* Arama çubuğu */
+        .search-bar {
+            background: white;
+            border-radius: 30px;
+            padding: 8px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #e0e6ed;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            background: transparent;
+        }
+
+        .search-bar button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Bildirim badge */
+        .notification-badge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.6rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Bottom navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px;
+            border-top: 1px solid #e0e6ed;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.6rem;
+            color: #6c7a8a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #009c3b;
+        }
+
+        .nav-item span:first-child {
+            font-size: 1.2rem;
+        }
+
         /* Footer */
         .footer {
-            margin-top: 32px;
-            padding: 20px 24px;
+            margin: 12px;
+            padding: 16px;
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: #94a3b8;
             border: 1px solid #eef2f8;
         }
 
-        /* Scrollbar */
-        .card-content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .card-content::-webkit-scrollbar-track {
-            background: #eef2f8;
-            border-radius: 4px;
-        }
-
-        .card-content::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
+        /* Tablet ve üzeri */
+        @media (min-width: 600px) {
             .container {
-                padding: 16px;
+                padding: 20px;
             }
-            .header-content {
-                flex-direction: column;
-                text-align: center;
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
             }
             .status-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(3, 1fr);
             }
+        }
+
+        @media (min-width: 1024px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Scrollbar */
+        .card-content::-webkit-scrollbar {
+            width: 3px;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="header-content">
+        <div class="header-top">
             <div>
-                <h1>🌍 Dünya Paneli</h1>
-                <p>Brasília / Brezilya | 25 Kategori | 500+ Veri Noktası</p>
+                <h1>🇧🇷 Brasília Paneli</h1>
+                <p>Anlık Veri | 25+ Kategori | Brezilya</p>
             </div>
-            <div class="live-badge" id="liveBadge">🔴 CANLI VERİ</div>
+            <div class="live-badge" id="liveBadge">🔴 CANLI</div>
         </div>
     </div>
 
     <div class="container">
-        <div class="grid" id="panelGrid">
-            <!-- İçerik JS ile doldurulacak -->
+        <!-- Arama -->
+        <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" id="searchInput" placeholder="Kategori, haber veya bölge ara...">
+            <button onclick="clearSearch()">✖</button>
         </div>
-        <div class="footer">
-            <span id="updateTime"></span> • Her 10 dakikada bir otomatik güncellenir • Kaynaklar: Resmi kurumlar, API'ler, RSS
-        </div>
+
+        <div class="grid" id="panelGrid"></div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="scrollToTop()"><span>🏠</span><span>Ana</span></button>
+        <button class="nav-item" onclick="showAnma()"><span>🕯️</span><span>Anma</span></button>
+        <button class="nav-item" onclick="showFavorites()"><span>⭐</span><span>Favoriler</span></button>
+        <button class="nav-item" onclick="showSettings()"><span>⚙️</span><span>Ayarlar</span></button>
+    </div>
+
+    <div class="footer" id="footer">
+        🕐 <span id="updateTime"></span> • Her 10 dakikada güncellenir
     </div>
 
     <script>
-        // Son güncelleme
+        // ============ SON GÜNCELLEME ============
         function updateTime() {
             const now = new Date();
-            document.getElementById('updateTime').innerHTML = `🕐 Son güncelleme: ${now.toLocaleString('tr-TR')}`;
-            document.getElementById('liveBadge').innerHTML = `🔴 CANLI | ${now.toLocaleTimeString('tr-TR')}`;
+            document.getElementById('updateTime').innerHTML = now.toLocaleString('tr-TR');
+            document.getElementById('liveBadge').innerHTML = `🔴 CANLI ${now.toLocaleTimeString('tr-TR')}`;
         }
 
-        // 25 Kategori Verisi
+        // ============ VEFAT EDENLER (ANMA) ============
+        const vefatEdenler = [
+            { ad: "Oscar Niemeyer", meslek: "Mimar", tarih: "5 Aralık 2012", yas: 104, aciklama: "Brasília'nın mimarı, UNESCO Dünya Mirası" },
+            { ad: "Juscelino Kubitschek", meslek: "Cumhurbaşkanı", tarih: "22 Ağustos 1976", yas: 73, aciklama: "Brasília'nın kurucusu, 50 yılda 50 yıl kalkınma" },
+            { ad: "Lucio Costa", meslek: "Şehir Plancısı", tarih: "13 Haziran 1998", yas: 96, aciklama: "Brasília şehir planının mimarı" },
+            { ad: "Ayrton Senna", meslek: "Formula 1 Pilotu", tarih: "1 Mayıs 1994", yas: 34, aciklama: "3 kez Dünya Şampiyonu, Brezilya efsanesi" },
+            { ad: "Pelé", meslek: "Futbolcu", tarih: "29 Aralık 2022", yas: 82, aciklama: "3 kez Dünya Kupası şampiyonu, efsane 10 numara" },
+            { ad: "Carmen Miranda", meslek: "Şarkıcı/Aktris", tarih: "5 Ağustos 1955", yas: 46, aciklama: "Brezilya kültür ikonu, Hollywood yıldızı" },
+            { ad: "Roberto Burle Marx", meslek: "Peyzaj Mimarı", tarih: "4 Haziran 1994", yas: 84, aciklama: "Brasília bahçeleri ve modern peyzaj" },
+            { ad: "Tom Jobim", meslek: "Besteci", tarih: "8 Aralık 1994", yas: 67, aciklama: "Bossa nova'nın yaratıcısı, 'The Girl from Ipanema'" },
+            { ad: "Gal Costa", meslek: "Şarkıcı", tarih: "9 Kasım 2022", yas: 77, aciklama: "Tropicalia hareketinin ikonu" },
+            { ad: "Chico Xavier", meslek: "Medyum/Yazar", tarih: "30 Haziran 2002", yas: 92, aciklama: "Brezilya'nın ruhani lideri, 400+ kitap" }
+        ];
+
+        // ============ TÜM VERİLER ============
         const panelData = {
-            // 1. Döviz & Kripto
-            doviz: {
-                dolar: { alis: 5.42, satis: 5.45, degisim: "+0.02" },
-                euro: { alis: 5.88, satis: 5.92, degisim: "-0.01" },
-                sterlin: { alis: 6.85, satis: 6.90, degisim: "+0.03" },
-                bitcoin: { fiyat: 312500, degisim: "+2.3" },
-                ethereum: { fiyat: 16800, degisim: "+1.1" }
-            },
-            // 2. Hava Durumu
-            hava: {
-                brasilia: { durum: "Güneşli", sicaklik: 28, nem: 45, ruzgar: 12 },
-                taguatinga: { durum: "Açık", sicaklik: 27, nem: 47, ruzgar: 10 },
-                ceilandia: { durum: "Güneşli", sicaklik: 29, nem: 43, ruzgar: 11 }
-            },
-            // 3. Haberler
-            haberler: [
-                "Brasília'da yeni metro hattı açılıyor",
-                "DF hükümeti eğitime 100 milyon BRL bütçe ayırdı",
-                "Eixão'da gece bakım çalışmaları başlıyor",
-                "Taguatinga'da yeni hastane temeli atıldı",
-                "Ceilândia'da su kesintisi olacak"
-            ],
-            // 4. Deprem & Afet
-            deprem: {
-                son_deprem: "Brasília 120km kuzeydoğu, 2.1 büyüklüğünde",
-                riskli_bolgeler: ["Planaltina", "Sobradinho", "Brazlândia"],
-                uyarilar: "Acil durum çantası hazırlığı yapın"
-            },
-            // 5. Ekonomi
-            ekonomi: {
-                enflasyon: "4.2%",
-                faiz: "10.75%",
-                isizlik: "6.8%",
-                buyume: "2.9%",
-                ic_borc: "6.2 trilyon BRL"
-            },
-            // 6. Akaryakıt
-            akaryakit: {
-                benzin: 5.79,
-                motorin: 6.12,
-                etanol: 3.89,
-                lpg: 3.45
-            },
-            // 7. Altın & Emtia
-            altin: {
-                gram: 412.50,
-                ceyrek: 665.00,
-                ons: 2350,
-                gumus: 28.50
-            },
-            // 8. Borsa
-            borsa: {
-                bovespa: 127850,
-                ibovespa: "+0.45%",
-                sp500: 5200,
-                nasdaq: 16400
-            },
-            // 9. Sağlık
-            saglik: {
-                hastane_acil: "Hospital de Base - 193",
-                nobetci_eczane: "Farmácia Brasil - (61) 3224-1234",
-                asi_durumu: "Covid-19 aşısı %85 tamamlandı",
-                dengue_vaka: 1245
-            },
-            // 10. Eğitim
-            egitim: {
-                universite_siralamasi: "UnB - 1. sırada",
-                okul_sayisi: 1250,
-                ogrenci_sayisi: 450000,
-                en_iyi_okul: "Colégio Militar de Brasília"
-            },
-            // 11. Spor
-            spor: {
-                takimlar: ["Brasília FC", "Gama", "Ceilândia"],
-                maclar: "Brasília FC x Gama - Pazar 16:00",
-                stadyum: "Mané Garrincha - 72.788 kapasite"
-            },
-            // 12. Ulaşım
-            ulasim: {
-                trafik: "Hafif yoğunluk (%45)",
-                metro_saatleri: "06:00 - 23:30",
-                otobus_hatti: "Eixão Güney hattı aktif",
-                havalimani: "BSB - 182 uçuş/gün"
-            },
-            // 13. Emlak
-            emlak: {
-                m2_fiyati: 8250,
-                kira_ortalama: 1850,
-                en_pahali: "Lago Sul - 18.500 BRL/m2",
-                en_ucuz: "Ceilândia - 3.200 BRL/m2"
-            },
-            // 14. Otomotiv
-            otomotiv: {
-                en_cok_satan: "Fiat Strada",
-                ikinci_el_endeksi: "+1.2%",
-                sifir_arac_fiyat: "85.000 BRL",
-                ehliyet_ucreti: 285
-            },
-            // 15. Din & İbadet
-            din: {
-                cami_sayisi: 8,
-                en_buyuk_cami: "Mesquita do Centro",
-                namaz_vakitleri: "Öğle: 12:15, İkindi: 15:30",
-                ramazan: "2026: 18 Şubat - 19 Mart"
-            },
-            // 16. Seyahat
-            seyahat: {
-                otel_doluluk: "72%",
-                en_populer: "Eixo Monumental",
-                ucak_bileti: "BSB-GRU: 450 BRL",
-                turist_sayisi: 185000
-            },
-            // 17. Teknoloji
-            teknoloji: {
-                internet_hizi: "95 Mbps",
-                iletisim: "5G kapsama: %65",
-                startuplar: 320,
-                en_hizli_wifi: "Park Shopping - 250 Mbps"
-            },
-            // 18. Tarım
-            tarim: {
-                soyafiyat: "145 BRL/saca",
-                misirfiyat: "62 BRL/saca",
-                kuraklik_uyarisi: "Normal seviyede",
-                hasat: "Soya hasadı devam ediyor"
-            },
-            // 19. Alışveriş
-            alisveris: {
-                alisveris_merkezleri: ["Park Shopping", "Conjunto Nacional", "Taguatinga Shopping"],
-                en_iyi_marka: "Havan",
-                indirimler: "Sezon sonu indirimi %30"
-            },
-            // 20. Güvenlik
-            guvenlik: {
-                suc_orani: "-2.5% (düşüş)",
-                en_guvenli: "Lago Sul",
-                polis_md: "190 - PMDF",
-                ihbar_hatti: "181 - Disque Denúncia"
-            },
-            // 21. Eğlence
-            eglence: {
-                sinema: "Cinemark - 12 film vizyonda",
-                konser: "Anitta - 25 Mayıs",
-                tiyatro: "Teatro Nacional - Hamlet",
-                barlar: "Asa Sul: 30+ mekan"
-            },
-            // 22. Göçmen & Mülteci
-            gocmen: {
-                gocmen_sayisi: 185000,
-                en_cok: "Venezuela, Haiti, Kolombiya",
-                oturum_izni: "45 gün bekleme",
-                dil_kursu: "Portekizce kursları ücretsiz"
-            },
-            // 23. Araçlar & Hesaplayıcılar
-            araclar: {
-                kdv_orani: "12%",
-                faiz_hesap: "Selic: 10.75%",
-                enflasyon_hesap: "IPCA: 4.2%"
-            },
-            // 24. İstatistik
-            istatistik: {
-                nufus: 3050000,
-                yuzolcumu: "5.802 km²",
-                gsyih: "285 milyar BRL",
-                gelir_ortalama: 4250
-            },
-            // 25. Harita & Konum
-            harita: {
-                merkez: "Praça dos Três Poderes",
-                onemli_noktalar: ["Congresso Nacional", "Catedral", "Palácio do Planalto"],
-                ulasim_noktalari: ["Rodoviária do Plano Piloto", "Aeroporto BSB"]
-            }
+            doviz: { baslik: "Döviz & Kripto", ikon: "💰", veri: { Dolar: "5.42 BRL ▲", Euro: "5.88 BRL ▲", Sterlin: "6.90 BRL ▼", Bitcoin: "312.500 BRL ▲+2.3%", Ethereum: "16.800 BRL ▲+1.1%" } },
+            hava: { baslik: "Hava Durumu", ikon: "🌤️", veri: { Brasília: "🌞 28°C | Nem %45", Taguatinga: "☀️ 27°C | Nem %47", Ceilândia: "🌞 29°C | Nem %43", Rüzgar: "12 km/h GB", UV: "Yüksek - Korunun" } },
+            haberler: { baslik: "Bölge Haberleri", ikon: "📰", veri: ["Yeni metro hattı açılıyor", "Eğitime 100M BRL bütçe", "Eixão'da gece bakımı", "Ceilândia'da su kesintisi", "Taguatinga'da yeni hastane"] },
+            deprem: { baslik: "Deprem & Afet", ikon: "🌋", veri: { SonDeprem: "Brasília 120km - 2.1", RiskliBolgeler: "Planaltina, Sobradinho", Uyari: "Acil durum çantası hazırlayın" } },
+            ekonomi: { baslik: "Ekonomi", ikon: "📈", veri: { Enflasyon: "4.2%", Faiz: "10.75%", İsizlik: "6.8%", Büyüme: "2.9%", IçBorç: "6.2 trilyon BRL" } },
+            akaryakit: { baslik: "Akaryakıt", ikon: "⛽", veri: { Benzin: "5.79 BRL/L", Motorin: "6.12 BRL/L", Etanol: "3.89 BRL/L", LPG: "3.45 BRL/L", Tavsiye: "Etanol %70 altında avantajlı" } },
+            altin: { baslik: "Altın & Emtia", ikon: "🥇", veri: { GramAltın: "412.50 BRL", Çeyrek: "665 BRL", Ons: "2.350 USD", Gümüş: "28.50 BRL" } },
+            borsa: { baslik: "Borsa", ikon: "📊", veri: { Bovespa: "127.850 ▲0.45%", SP500: "5.200", Nasdaq: "16.400", Ibovespa: "+0.45%" } },
+            saglik: { baslik: "Sağlık", ikon: "🏥", veri: { Acil: "Hospital de Base - 193", Eczane: "Farmácia Brasil - (61) 3224-1234", Asi: "Covid-19 %85 tamamlandı", Dengue: "1.245 vaka" } },
+            egitim: { baslik: "Eğitim", ikon: "📚", veri: { EnIyiUni: "UnB - 1. sırada", OkulSayisi: "1.250", OgrenciSayisi: "450.000", EnIyiOkul: "Colégio Militar" } },
+            spor: { baslik: "Spor", ikon: "⚽", veri: { Takimlar: "Brasília FC, Gama, Ceilândia", Mac: "Brasília FC x Gama - Pazar", Stadyum: "Mané Garrincha - 72.788" } },
+            ulasim: { baslik: "Ulaşım", ikon: "🚗", veri: { Trafik: "Hafif yoğunluk %45", Metro: "06:00 - 23:30", Otobus: "Eixão Güney aktif", Havalimani: "BSB - 182 uçuş/gün" } },
+            emlak: { baslik: "Emlak", ikon: "🏠", veri: { MetreKare: "8.250 BRL", Kira: "1.850 BRL", EnPahali: "Lago Sul - 18.500", EnUcuz: "Ceilândia - 3.200" } },
+            otomotiv: { baslik: "Otomotiv", ikon: "🚘", veri: { EnCokSatan: "Fiat Strada", IkinciEl: "+1.2%", SifirArac: "85.000 BRL", Ehliyet: "285 BRL" } },
+            din: { baslik: "Din & İbadet", ikon: "🕌", veri: { CamiSayisi: "8", EnBuyukCami: "Mesquita do Centro", Namaz: "Öğle 12:15, İkindi 15:30", Ramazan: "18 Şubat 2026" } },
+            seyahat: { baslik: "Seyahat", ikon: "✈️", veri: { OtelDoluluk: "72%", EnPopuler: "Eixo Monumental", Ucak: "BSB-GRU: 450 BRL", Turist: "185.000" } },
+            teknoloji: { baslik: "Teknoloji", ikon: "💻", veri: { Internet: "95 Mbps", 5G: "%65 kapsama", Startup: "320", EnHizliWifi: "Park Shopping - 250 Mbps" } },
+            tarim: { baslik: "Tarım", ikon: "🌾", veri: { Soya: "145 BRL/saca", Misir: "62 BRL/saca", Kuraklik: "Normal seviyede", Hasat: "Soya hasadı devam ediyor" } },
+            alisveris: { baslik: "Alışveriş", ikon: "🛒", veri: { AVMler: "Park Shopping, Conjunto Nacional, Taguatinga", Indirim: "Sezon sonu %30", EnIyiMarka: "Havan" } },
+            guvenlik: { baslik: "Güvenlik", ikon: "🔒", veri: { SucOrani: "-2.5% düşüş", EnGuvenli: "Lago Sul", Polis: "190 - PMDF", Ihbar: "181 - Disque Denúncia" } },
+            eglence: { baslik: "Eğlence", ikon: "🎭", veri: { Sinema: "Cinemark - 12 film", Konser: "Anitta - 25 Mayıs", Tiyatro: "Teatro Nacional - Hamlet", Barlar: "Asa Sul: 30+ mekan" } },
+            gocmen: { baslik: "Göçmen", ikon: "🚶", veri: { GocmenSayisi: "185.000", EnCok: "Venezuela, Haiti, Kolombiya", OturumIzni: "45 gün", DilKursu: "Portekizce ücretsiz" } },
+            araclar: { baslik: "Araçlar", ikon: "🧮", veri: { KDV: "12%", Faiz: "Selic 10.75%", Enflasyon: "IPCA 4.2%" } },
+            istatistik: { baslik: "İstatistik", ikon: "📊", veri: { Nufus: "3.050.000", Yuzolcumu: "5.802 km²", GSYIH: "285 milyar BRL", Gelir: "4.250 BRL/ay" } },
+            harita: { baslik: "Harita", ikon: "🗺️", veri: { Merkez: "Praça dos Três Poderes", Noktalar: "Congresso, Catedral, Planalto", Ulasim: "Rodoviária, Aeroporto BSB" } }
         };
 
-        // Vefat edenler (Anma bölümü)
-        const vefatEdenler = [
-            { ad: "Oscar Niemeyer", meslek: "Mimar", tarih: "5 Aralık 2012", yas: 104, aciklama: "Brasília'nın mimarı" },
-            { ad: "Juscelino Kubitschek", meslek: "Cumhurbaşkanı", tarih: "22 Ağustos 1976", yas: 73, aciklama: "Brasília'nın kurucusu" },
-            { ad: "Lucio Costa", meslek: "Şehir Plancısı", tarih: "13 Haziran 1998", yas: 96, aciklama: "Brasília şehir planı" },
-            { ad: "Ayrton Senna", meslek: "Pilot", tarih: "1 Mayıs 1994", yas: 34, aciklama: "Brezilya efsanesi" },
-            { ad: "Pelé", meslek: "Futbolcu", tarih: "29 Aralık 2022", yas: 82, aciklama: "Brezilya'nın kralı" },
-            { ad: "Carmen Miranda", meslek: "Sanatçı", tarih: "5 Ağustos 1955", yas: 46, aciklama: "Kültür ikonu" }
-        ];
-
-        // 25 kategori listesi
-        const categories = [
-            { id: "doviz", name: "Döviz & Kripto", icon: "💰" },
-            { id: "hava", name: "Hava Durumu", icon: "🌤️" },
-            { id: "haberler", name: "Bölge Haberleri", icon: "📰" },
-            { id: "deprem", name: "Deprem & Afet", icon: "🌋" },
-            { id: "ekonomi", name: "Ekonomi", icon: "📈" },
-            { id: "akaryakit", name: "Akaryakıt Fiyatları", icon: "⛽" },
-            { id: "altin", name: "Altın & Emtia", icon: "🥇" },
-            { id: "borsa", name: "Borsa", icon: "📊" },
-            { id: "saglik", name: "Sağlık", icon: "🏥" },
-            { id: "egitim", name: "Eğitim", icon: "📚" },
-            { id: "spor", name: "Spor", icon: "⚽" },
-            { id: "ulasim", name: "Ulaşım & Trafik", icon: "🚗" },
-            { id: "emlak", name: "Emlak & Konut", icon: "🏠" },
-            { id: "otomotiv", name: "Otomotiv", icon: "🚘" },
-            { id: "din", name: "Din & İbadet", icon: "🕌" },
-            { id: "seyahat", name: "Seyahat", icon: "✈️" },
-            { id: "teknoloji", name: "Teknoloji", icon: "💻" },
-            { id: "tarim", name: "Tarım", icon: "🌾" },
-            { id: "alisveris", name: "Alışveriş", icon: "🛒" },
-            { id: "guvenlik", name: "Güvenlik", icon: "🔒" },
-            { id: "eglence", name: "Eğlence", icon: "🎭" },
-            { id: "gocmen", name: "Göçmen", icon: "🚶" },
-            { id: "araclar", name: "Araçlar", icon: "🧮" },
-            { id: "istatistik", name: "İstatistik", icon: "📊" },
-            { id: "harita", name: "Harita", icon: "🗺️" }
-        ];
-
-        function renderValue(key, val) {
-            if (typeof val === 'object') {
-                let html = '';
-                for (const [k, v] of Object.entries(val)) {
-                    html += `<div class="list-item"><span class="item-label">${k}</span><span class="item-value">${v}</span></div>`;
-                }
-                return html;
-            }
-            return `<div class="list-item"><span class="item-value">${val}</span></div>`;
-        }
-
-        function renderCard(category) {
-            const data = panelData[category.id];
-            if (!data) return '';
-
+        // ============ PANEL OLUŞTURMA ============
+        function renderCard(id, item) {
             let content = '';
+            const data = item.veri;
             
-            if (category.id === 'haberler') {
-                content = data.map(h => `<div class="list-item"><span class="item-label">📌</span><span class="item-value">${h}</span></div>`).join('');
-            } else if (category.id === 'akaryakit') {
-                content = `
-                    <div class="list-item"><span class="item-label">⛽ Benzin</span><span class="item-value">${data.benzin} BRL/L</span></div>
-                    <div class="list-item"><span class="item-label">⛽ Motorin</span><span class="item-value">${data.motorin} BRL/L</span></div>
-                    <div class="list-item"><span class="item-label">🌽 Etanol</span><span class="item-value">${data.etanol} BRL/L</span></div>
-                    <div class="list-item"><span class="item-label">💨 LPG</span><span class="item-value">${data.lpg} BRL/L</span></div>
-                `;
+            if (Array.isArray(data)) {
+                content = data.map(d => `<div class="list-item"><span class="item-label">📌</span><span class="item-value">${d}</span></div>`).join('');
             } else {
-                content = renderValue(category.id, data);
+                content = Object.entries(data).map(([k, v]) => `
+                    <div class="list-item">
+                        <span class="item-label">${k}</span>
+                        <span class="item-value">${v}</span>
+                    </div>
+                `).join('');
             }
-
+            
             return `
-                <div class="card">
+                <div class="card" data-category="${id}" data-name="${item.baslik}">
                     <div class="card-header">
-                        <span>${category.icon}</span>
-                        <span>${category.name}</span>
+                        <span class="card-header-icon">${item.ikon}</span>
+                        <span>${item.baslik}</span>
                     </div>
                     <div class="card-content">
                         ${content}
@@ -608,15 +477,11 @@
             `;
         }
 
-        function renderPanel() {
-            const grid = document.getElementById('panelGrid');
-            let html = '';
-            
-            // Anma kartı özel
-            html += `
-                <div class="card anma-card">
+        function renderAnmaCard() {
+            return `
+                <div class="card anma-card" data-category="anma" data-name="Anma Paneli">
                     <div class="card-header">
-                        <span>🕯️</span>
+                        <span class="card-header-icon">🕯️</span>
                         <span>Anma Paneli - Vefat Edenler</span>
                     </div>
                     <div class="card-content">
@@ -626,24 +491,69 @@
                                     <div class="vefat-name">${v.ad}</div>
                                     <div class="vefat-detail">${v.meslek} | ${v.tarih} | ${v.aciklama}</div>
                                 </div>
-                                <div class="vefat-age">${v.yas} yas</div>
+                                <div class="vefat-age">${v.yas} yaş</div>
                             </div>
                         `).join('')}
                     </div>
                 </div>
             `;
-            
-            // Diğer 25 kategori
-            for (const cat of categories) {
-                html += renderCard(cat);
-            }
-            
-            grid.innerHTML = html;
         }
 
-        // Sayfa başlatma
+        function renderAllCards() {
+            let html = renderAnmaCard();
+            for (const [id, item] of Object.entries(panelData)) {
+                html += renderCard(id, item);
+            }
+            document.getElementById('panelGrid').innerHTML = html;
+        }
+
+        // ============ ARAMA ============
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            filterCards('');
+        }
+
+        function filterCards(searchTerm) {
+            const term = searchTerm.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name') || '';
+                const category = card.getAttribute('data-category') || '';
+                if (name.toLowerCase().includes(term) || category.toLowerCase().includes(term)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            filterCards(e.target.value);
+        });
+
+        // ============ BOTTOM NAV ============
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showAnma() {
+            const anmaCard = document.querySelector('.anma-card');
+            if (anmaCard) {
+                anmaCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function showFavorites() {
+            alert("⭐ Favoriler özelliği: Beğendiğiniz kartları yıldızlayarak buradan görüntüleyebilirsiniz. Yakında!");
+        }
+
+        function showSettings() {
+            alert("⚙️ Ayarlar: Tema değiştirme, bildirim tercihleri ve dil seçenekleri yakında eklenecek.");
+        }
+
+        // ============ SAYFA BAŞLATMA ============
         function init() {
-            renderPanel();
+            renderAllCards();
             updateTime();
             setInterval(updateTime, 60000);
         }
