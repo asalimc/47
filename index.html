@@ -2,8 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brasília Digital | Portal Oficial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brasília Digital | Portal Integrado</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -15,9 +15,10 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         
         :root {
-            --royal-blue: #0057B7;
-            --gold: #FFD700;
+            --royal-blue: #0057B7; /* Görselindeki okyanus mavisi */
+            --pure-white: #FFFFFF;
             --snow: #F8FAFC;
+            --gold: #FFD700;
         }
 
         body { 
@@ -25,242 +26,232 @@
             background-color: var(--snow); 
             color: #0F172A; 
             font-style: normal !important;
+            margin: 0; padding: 0;
         }
 
-        * { font-style: normal !important; scroll-behavior: smooth; }
+        /* Kesinlikle İtalik Yok */
+        * { font-style: normal !important; }
 
-        .glass-header {
+        /* Modern Kart Yapıları */
+        .premium-card {
+            background: var(--pure-white);
+            border: 1px solid rgba(0, 87, 183, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px -5px rgba(0, 87, 183, 0.05);
+            transition: all 0.3s ease;
+        }
+        .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 87, 183, 0.1); }
+
+        /* Harita Konfigürasyonu */
+        #map { height: 500px; width: 100%; border-radius: 32px; z-index: 10; border: 4px solid white; }
+
+        /* Mobil Harita ve Drawer Çözümü */
+        @media (max-width: 768px) {
+            #map { height: 350px; }
+        }
+
+        /* Navigasyon Cam Efekti */
+        .glass-nav {
             background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 87, 183, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
 
-        .service-card {
-            background: white;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid #F1F5F9;
-        }
-
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 87, 183, 0.08);
-            border-color: var(--royal-blue);
-        }
-
-        #main-map { height: 600px; width: 100%; border-radius: 32px; z-index: 10; }
-
-        .stat-value { background: linear-gradient(135deg, var(--royal-blue), #003d82); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        /* No Italic Rule */
-        i, em, address { font-style: normal !important; }
+        .traffic-line { stroke-dasharray: 10; animation: flow 20s linear infinite; }
+        @keyframes flow { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
     </style>
 </head>
-<body x-data="portalEngine()">
+<body x-data="portalControl()">
 
-    <header class="fixed w-full z-[1000] glass-header">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+    <nav class="fixed w-full z-[2000] glass-nav">
+        <div class="max-w-[1400px] mx-auto px-6 h-20 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-[var(--royal-blue)] rounded-xl flex items-center justify-center">
+                <div class="w-10 h-10 bg-[var(--royal-blue)] rounded-xl flex items-center justify-center shadow-lg">
                     <i data-lucide="landmark" class="text-white w-6 h-6"></i>
                 </div>
-                <h1 class="text-xl font-extrabold tracking-tighter uppercase">Brasília<span class="text-[var(--royal-blue)]">Digital</span></h1>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tighter uppercase leading-none">Brasília<span class="text-[var(--royal-blue)]">Digital</span></h1>
+                    <p class="text-[9px] font-bold text-slate-400 tracking-[0.2em] mt-1">Sponsor: Yaşarbey Kahve</p>
+                </div>
             </div>
-            <nav class="hidden lg:flex gap-8 font-bold text-sm uppercase tracking-widest text-slate-500">
-                <a href="#services" class="hover:text-[var(--royal-blue)] transition">Serviços</a>
-                <a href="#news" class="hover:text-[var(--royal-blue)] transition">Notícias</a>
-                <a href="#live-map" class="hover:text-[var(--royal-blue)] transition">Mapa Vivo</a>
-                <a href="#culture" class="hover:text-[var(--royal-blue)] transition">Cultura</a>
-            </nav>
-            <div class="flex items-center gap-4">
-                <span class="hidden md:block text-xs font-black text-slate-400" x-text="currentTime"></span>
-                <button class="bg-[var(--royal-blue)] text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:shadow-lg transition">Login</button>
+            <div class="hidden lg:flex gap-8 font-bold text-xs uppercase tracking-widest text-slate-500">
+                <a href="#map-section" class="hover:text-[var(--royal-blue)]">Mapa Vivo</a>
+                <a href="#services" class="hover:text-[var(--royal-blue)]">Serviços</a>
+                <a href="#news" class="hover:text-[var(--royal-blue)]">Notícias</a>
+                <a href="#contact" class="hover:text-[var(--royal-blue)]">Contato</a>
+            </div>
+            <button class="bg-[var(--royal-blue)] text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition shadow-blue-200 shadow-lg">Entrar</button>
+        </div>
+    </nav>
+
+    <section class="pt-32 pb-16 px-6 max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-8">
+            <div class="inline-flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full border border-blue-100">
+                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                <span class="text-[10px] font-black text-blue-700 uppercase tracking-widest">Cidade em Tempo Real</span>
+            </div>
+            <h2 class="text-6xl md:text-7xl font-black tracking-tighter leading-[0.9] text-slate-900">
+                Brasília <br> <span class="text-[var(--royal-blue)]">Conectada.</span>
+            </h2>
+            <p class="text-lg text-slate-500 font-medium leading-relaxed max-w-lg">
+                Gerencie sua vida urbana com a inteligência da capital mais moderna do mundo. Serviços, tráfego e cultura em um só lugar.
+            </p>
+            <div class="flex gap-4">
+                <button class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest">Ver Serviços</button>
+                <button class="bg-white border border-slate-200 px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest text-slate-700">Agenda 2026</button>
             </div>
         </div>
-    </header>
-
-    <section class="pt-32 pb-20 px-6">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-            <div class="space-y-8">
-                <div class="inline-flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full border border-blue-100">
-                    <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-                    <span class="text-[10px] font-black text-blue-700 uppercase tracking-widest">Brasília OS 2.0 Ativo</span>
-                </div>
-                <h2 class="text-7xl font-black tracking-tighter leading-none text-slate-900">
-                    Sua Cidade, <br> <span class="text-[var(--royal-blue)]">Em Tempo Real.</span>
-                </h2>
-                <p class="text-xl text-slate-500 font-medium leading-relaxed max-w-xl">
-                    Acesse serviços governamentais, acompanhe o trânsito e descubra a agenda cultural da capital mais moderna do mundo.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <button class="bg-[var(--royal-blue)] text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl shadow-blue-200">Explorar Mapa</button>
-                    <button class="bg-white border border-slate-200 px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest text-slate-700 hover:bg-slate-50">Transparência</button>
-                </div>
-            </div>
-            <div class="relative">
-                <img src="https://images.unsplash.com/photo-1599450012224-345479261a38?auto=format&fit=crop&q=80&w=1000" class="rounded-[40px] shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                <div class="absolute -bottom-10 -left-10 bg-white p-8 rounded-[32px] shadow-2xl border border-slate-50 max-w-[280px]">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600"><i data-lucide="coffee"></i></div>
-                        <p class="text-xs font-black uppercase text-slate-400">Yaşarbey Kahve</p>
-                    </div>
-                    <p class="text-sm font-bold text-slate-800 italic">"O combustível oficial dos desenvolvedores de Brasília."</p>
-                </div>
+        <div class="hidden lg:block relative">
+            <img src="https://images.unsplash.com/photo-1599450012224-345479261a38?auto=format&fit=crop&q=80&w=800" class="rounded-[40px] shadow-2xl rotate-2">
+            <div class="absolute -bottom-6 -left-6 premium-card p-6 flex items-center gap-4 max-w-xs">
+                <div class="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-500"><i data-lucide="coffee"></i></div>
+                <p class="text-xs font-bold text-slate-700 leading-snug">"O café que move os planos da capital." <br> <span class="text-[var(--royal-blue)]">- Yaşarbey Kahve</span></p>
             </div>
         </div>
     </section>
 
-    <section class="py-12 bg-white border-y border-slate-100">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="text-center">
-                <p class="stat-value text-4xl font-black">28°C</p>
-                <p class="text-[10px] font-bold text-slate-400 uppercase mt-2">Temperatura</p>
+    <section id="map-section" class="py-12 px-6 max-w-[1400px] mx-auto">
+        <div class="premium-card overflow-hidden relative">
+            <div class="p-6 border-b border-slate-50 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-xl font-black tracking-tighter uppercase">Monitoramento <span class="text-[var(--royal-blue)]">Ao Vivo</span></h3>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Tráfego e Eventos em Tempo Real</p>
+                </div>
+                <div class="flex gap-2">
+                    <button @click="setMapFilter('traffic')" :class="mapMode === 'traffic' ? 'bg-blue-600 text-white' : 'bg-slate-100'" class="px-4 py-2 rounded-xl text-[10px] font-black uppercase transition">Trânsito</button>
+                    <button @click="setMapFilter('events')" :class="mapMode === 'events' ? 'bg-blue-600 text-white' : 'bg-slate-100'" class="px-4 py-2 rounded-xl text-[10px] font-black uppercase transition">Eventos</button>
+                </div>
             </div>
-            <div class="text-center">
-                <p class="stat-value text-4xl font-black text-green-500">BOA</p>
-                <p class="text-[10px] font-bold text-slate-400 uppercase mt-2">Qualidade do Ar</p>
-            </div>
-            <div class="text-center">
-                <p class="stat-value text-4xl font-black">82%</p>
-                <p class="text-[10px] font-bold text-slate-400 uppercase mt-2">Tráfego Fluido</p>
-            </div>
-            <div class="text-center">
-                <p class="stat-value text-4xl font-black">1.2k</p>
-                <p class="text-[10px] font-bold text-slate-400 uppercase mt-2">Eventos Hoje</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <div class="space-y-4">
-                <h3 class="text-4xl font-black tracking-tighter uppercase">Serviços <span class="text-[var(--royal-blue)]">Cidadãos</span></h3>
-                <p class="text-slate-500 font-medium">Tudo o que você precisa a um clique de distância.</p>
-            </div>
-            <button class="text-xs font-black uppercase tracking-widest text-[var(--royal-blue)] flex items-center gap-2 border-b-2 border-blue-100 pb-1">Ver todos os serviços <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <template x-for="service in services">
-                <div class="service-card p-10 rounded-[32px] space-y-6 cursor-pointer">
-                    <div :class="service.color" class="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg">
-                        <i :data-lucide="service.icon"></i>
+            <div id="map"></div>
+            
+            <template x-if="selectedPoint">
+                <div class="absolute bottom-10 left-10 z-[1000] w-72 bg-white/95 backdrop-blur-xl p-6 rounded-[32px] shadow-2xl border border-blue-50 animate-in slide-in-from-bottom-5">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-blue-100 text-[var(--royal-blue)] text-[9px] font-black px-2 py-1 rounded uppercase" x-text="selectedPoint.type"></span>
+                        <button @click="selectedPoint = null"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
                     </div>
-                    <div>
-                        <h4 class="text-xl font-bold mb-2" x-text="service.title"></h4>
-                        <p class="text-sm text-slate-400 font-medium leading-relaxed" x-text="service.desc"></p>
-                    </div>
+                    <h4 class="font-black text-slate-900" x-text="selectedPoint.name"></h4>
+                    <p class="text-[11px] text-slate-500 mt-2 font-medium" x-text="selectedPoint.desc"></p>
+                    <button class="w-full mt-4 bg-[var(--royal-blue)] text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-widest">Ver Detalhes</button>
                 </div>
             </template>
         </div>
     </section>
 
-    <section id="live-map" class="py-24 px-6 bg-slate-900 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto space-y-12 relative z-10">
-            <div class="text-center space-y-4">
-                <h3 class="text-4xl font-black text-white tracking-tighter uppercase">Monitoramento <span class="text-[var(--royal-blue)]">Ao Vivo</span></h3>
-                <p class="text-slate-400">Tráfego, eventos e pontos turísticos em tempo real.</p>
-            </div>
-            <div class="relative">
-                <div id="main-map" class="shadow-2xl"></div>
-                <div class="absolute top-8 right-8 z-[1000] space-y-4 hidden md:block">
-                    <div class="bg-white/95 backdrop-blur p-6 rounded-3xl shadow-2xl w-64 border border-slate-100">
-                        <p class="text-[10px] font-black text-slate-400 uppercase mb-4">Legenda de Tráfego</p>
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-bold">Fluido</span>
-                                <div class="w-12 h-1.5 bg-green-500 rounded-full"></div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-bold">Moderado</span>
-                                <div class="w-12 h-1.5 bg-orange-500 rounded-full"></div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-bold">Congestionado</span>
-                                <div class="w-12 h-1.5 bg-red-500 rounded-full"></div>
-                            </div>
+    <section id="services" class="py-20 px-6 max-w-[1400px] mx-auto grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2 space-y-8">
+            <h3 class="text-3xl font-black tracking-tighter uppercase">Serviços <span class="text-[var(--royal-blue)]">Essenciais</span></h3>
+            <div class="grid sm:grid-cols-2 gap-6">
+                <template x-for="s in services">
+                    <div class="premium-card p-8 flex gap-6">
+                        <div :class="s.color" class="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center text-white shadow-lg shadow-blue-100">
+                            <i :data-lucide="s.icon"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-900" x-text="s.title"></h4>
+                            <p class="text-xs text-slate-400 mt-2 font-medium leading-relaxed" x-text="s.desc"></p>
                         </div>
                     </div>
+                </template>
+            </div>
+        </div>
+        
+        <div class="space-y-8">
+            <h3 class="text-3xl font-black tracking-tighter uppercase">Destaques</h3>
+            <div class="space-y-4">
+                <template x-for="n in news">
+                    <div class="premium-card p-5 group cursor-pointer hover:border-[var(--royal-blue)]">
+                        <span class="text-[9px] font-black text-blue-500 uppercase tracking-widest" x-text="n.cat"></span>
+                        <h5 class="font-bold text-slate-800 mt-2 group-hover:text-[var(--royal-blue)]" x-text="n.title"></h5>
+                        <p class="text-[11px] text-slate-400 mt-2" x-text="n.date"></p>
+                    </div>
+                </template>
+                <div class="bg-[var(--royal-blue)] rounded-3xl p-6 text-white overflow-hidden relative">
+                    <h4 class="font-black text-lg leading-tight">Mola para um Café?</h4>
+                    <p class="text-[10px] mt-2 font-medium opacity-80 uppercase tracking-widest leading-relaxed text-blue-100">Yaşarbey Kahve: O sabor que respira Brasília em cada xícara.</p>
+                    <button class="mt-4 bg-[var(--gold)] text-slate-900 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Achar Lojas</button>
+                    <i data-lucide="coffee" class="absolute -right-4 -bottom-4 w-20 h-20 opacity-10"></i>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-20 px-6 bg-white border-t border-slate-100">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="space-y-6">
-                <h1 class="text-2xl font-extrabold tracking-tighter uppercase leading-none">Brasília<br><span class="text-[var(--royal-blue)]">Digital</span></h1>
-                <p class="text-sm text-slate-400 font-medium leading-relaxed">O portal oficial da capital federal, projetado para o cidadão do futuro.</p>
+    <footer class="bg-white border-t border-slate-100 py-16 px-6 mt-12">
+        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white"><i data-lucide="globe" class="w-4 h-4"></i></div>
+                <span class="font-black uppercase tracking-tighter text-slate-900">Brasília Digital 2026</span>
             </div>
-            <div class="space-y-4">
-                <h5 class="font-black text-xs uppercase tracking-[.2em] text-slate-900">Governo</h5>
-                <nav class="flex flex-col gap-3 text-sm font-bold text-slate-500">
-                    <a href="#" class="hover:text-[var(--royal-blue)]">Secretarias</a>
-                    <a href="#" class="hover:text-[var(--royal-blue)]">Transparência</a>
-                    <a href="#" class="hover:text-[var(--royal-blue)]">Leis Estaduais</a>
-                </nav>
+            <div class="flex gap-8 text-[10px] font-black uppercase tracking-[.2em] text-slate-400">
+                <a href="#">Privacidade</a>
+                <a href="#">Transparência</a>
+                <a href="#">Governo Federal</a>
             </div>
-            <div class="space-y-4">
-                <h5 class="font-black text-xs uppercase tracking-[.2em] text-slate-900">Parceiro Oficial</h5>
-                <div class="bg-amber-50 p-6 rounded-3xl border border-amber-100">
-                    <h6 class="font-black text-amber-800 mb-2">Yaşarbey Kahve</h6>
-                    <p class="text-xs text-amber-700 leading-relaxed font-medium">Experimente a tradição e o sabor que movem a nossa capital.</p>
-                    <button class="mt-4 text-[10px] font-black uppercase text-amber-900 underline">Conhecer Unidades</button>
-                </div>
-            </div>
-            <div class="space-y-4 text-right">
-                <h5 class="font-black text-xs uppercase tracking-[.2em] text-slate-900">Siga a Capital</h5>
-                <div class="flex justify-end gap-4">
-                    <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center hover:bg-[var(--royal-blue)] hover:text-white transition cursor-pointer"><i data-lucide="instagram" class="w-4 h-4"></i></div>
-                    <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center hover:bg-[var(--royal-blue)] hover:text-white transition cursor-pointer"><i data-lucide="twitter" class="w-4 h-4"></i></div>
-                </div>
-            </div>
+            <p class="text-[10px] font-bold text-slate-400">© Todos os direitos reservados.</p>
         </div>
     </footer>
 
     <script>
-        function portalEngine() {
+        function portalControl() {
             return {
-                currentTime: '',
+                map: null,
+                mapMode: 'traffic',
+                selectedPoint: null,
+                news: [
+                    { title: 'Festival de Inverno no Pontão 2026', cat: 'Cultura', date: 'Hoje, 10:00' },
+                    { title: 'Novo Corredor de Ônibus no Eixo Sul', cat: 'Mobilidade', date: 'Há 2 horas' },
+                    { title: 'Exposição Niemeyer Inédita', cat: 'Arte', date: 'Ontem' }
+                ],
                 services: [
-                    { title: 'Transporte', desc: 'Consulte horários de ônibus e metrô em tempo real.', icon: 'bus', color: 'bg-blue-500' },
-                    { title: 'Saúde Digital', desc: 'Agende consultas e verifique tempos de espera.', icon: 'heart-pulse', color: 'bg-red-500' },
-                    { title: 'Educação', desc: 'Portal do aluno e inscrições em escolas públicas.', icon: 'graduation-cap', color: 'bg-indigo-500' },
-                    { title: 'Impostos', desc: 'Emita guias de IPTU e IPVA de forma simplificada.', icon: 'receipt', color: 'bg-emerald-500' }
+                    { title: 'Saúde', desc: 'Agendamentos e farmácia popular.', icon: 'heart-pulse', color: 'bg-red-500' },
+                    { title: 'Educação', desc: 'Portal do aluno e matrículas.', icon: 'graduation-cap', color: 'bg-indigo-500' },
+                    { title: 'Urbano', desc: 'Iluminação e manutenção de vias.', icon: 'map-pin', color: 'bg-emerald-500' },
+                    { title: 'Fiscal', desc: 'Emissão de notas e impostos.', icon: 'receipt', color: 'bg-amber-500' }
                 ],
                 
                 init() {
                     lucide.createIcons();
-                    this.startClock();
                     this.initMap();
                 },
 
-                startClock() {
-                    setInterval(() => {
-                        const now = new Date();
-                        this.currentTime = now.toLocaleTimeString('pt-BR') + ' • ' + now.toLocaleDateString('pt-BR');
-                    }, 1000);
+                initMap() {
+                    this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([-15.7938, -47.8828], 13);
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(this.map);
+                    this.drawTraffic();
+                    this.addMarkers();
                 },
 
-                initMap() {
-                    const map = L.map('main-map', { zoomControl: false, attributionControl: false }).setView([-15.7938, -47.8828], 13);
+                drawTraffic() {
+                    // Eixo Monumental Trafik Akışı (Simülasyon)
+                    const coords = [[-15.7938, -47.8828], [-15.7997, -47.8641]];
+                    L.polyline(coords, { color: '#22C55E', weight: 6, opacity: 0.6, className: 'traffic-line' }).addTo(this.map);
                     
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+                    const coords2 = [[-15.7938, -47.8828], [-15.7834, -47.8992]];
+                    L.polyline(coords2, { color: '#EF4444', weight: 6, opacity: 0.6, className: 'traffic-line' }).addTo(this.map);
+                },
 
-                    // Add markers for Yaşarbey Coffee & Points of Interest
+                addMarkers() {
                     const points = [
-                        { name: "Catedral de Brasília", coords: [-15.7982, -47.8755], type: "monument" },
-                        { name: "Congresso Nacional", coords: [-15.7997, -47.8641], type: "monument" },
-                        { name: "Yaşarbey Kahve - Pontão", coords: [-15.8236, -47.8710], type: "coffee" }
+                        { name: 'Catedral de Brasília', type: 'Monumento', desc: 'Ícone da arquitetura moderna mundial.', coords: [-15.7982, -47.8755] },
+                        { name: 'Yaşarbey Kahve - Pontão', type: 'Gastronomia', desc: 'O melhor café da capital para sua tarde.', coords: [-15.8236, -47.8710] }
                     ];
 
                     points.forEach(p => {
-                        const iconColor = p.type === 'coffee' ? '#FFD700' : '#0057B7';
                         const icon = L.divIcon({
                             className: 'custom-pin',
-                            html: `<div style="background:${iconColor}; width:16px; height:16px; border-radius:50%; border:3px solid white; box-shadow:0 0 15px rgba(0,0,0,0.1)"></div>`
+                            html: `<div style="background:var(--royal-blue); width:12px; height:12px; border-radius:50%; border:3px solid white; box-shadow:0 0 10px rgba(0,0,0,0.2)"></div>`
                         });
-                        L.marker(p.coords, { icon }).addTo(map).bindPopup(`<b class="font-black uppercase text-xs">${p.name}</b>`);
+                        L.marker(p.coords, { icon }).addTo(this.map).on('click', () => {
+                            this.selectedPoint = p;
+                            this.map.flyTo(p.coords, 15);
+                            setTimeout(() => lucide.createIcons(), 50);
+                        });
                     });
+                },
+
+                setMapFilter(mode) {
+                    this.mapMode = mode;
+                    // Filtreleme mantığı buraya gelir
                 }
             }
         }
