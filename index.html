@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Brasília Digital | City OS v3.0</title>
+    <title>Brasília Digital | Living Organism OS</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -18,308 +18,290 @@
             --royal-blue: #0057B7;
             --gold: #FFD700;
             --pure-white: #FFFFFF;
-            --snow-bg: #F8FAFC;
+            --organism-green: #10B981;
             --slate-900: #0F172A;
-            /* Atmospheric Lighting - Dinamik Değişecek */
-            --sky-tint: rgba(0, 87, 183, 0.02);
+            --shadow-angle: 5px; /* Dinamik değişecek */
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--snow-bg); 
+            background-color: #F8FAFC; 
             color: var(--slate-900);
             font-style: normal !important;
             overflow-x: hidden;
-            background-image: radial-gradient(var(--sky-tint) 2px, transparent 2px);
-            background-size: 40px 40px;
         }
 
-        /* STRICT NO ITALIC RULE */
-        * { font-style: normal !important; scroll-behavior: smooth; }
+        * { font-style: normal !important; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 25px 50px -12px rgba(0, 87, 183, 0.1);
+        /* Yaşayan Arka Plan: Metabolic Pulse */
+        .metabolic-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 87, 183, 0.03) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
         }
 
-        /* Traffic & Pulse Animations */
-        .pulse-line {
-            stroke-dasharray: 10;
-            animation: flow 15s linear infinite;
-        }
-        @keyframes flow { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
-
-        .glow-blue { box-shadow: 0 0 20px rgba(0, 87, 183, 0.3); }
-
-        /* Digital Twin Mini-Map Container */
-        #digital-twin {
-            width: 180px; height: 180px;
-            perspective: 1000px;
-        }
-        .twin-box {
-            width: 100%; height: 100%;
-            background: linear-gradient(45deg, var(--royal-blue), #003066);
-            border-radius: 24px;
-            transform-style: preserve-3d;
-            transition: transform 0.1s;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px -10px rgba(0, 87, 183, 0.05);
         }
 
-        /* Timeline Styling */
-        .timeline-item::before {
-            content: ''; position: absolute; left: -21px; top: 0;
-            width: 2px; height: 100%; background: #E2E8F0;
-        }
-        .timeline-active::before { background: var(--royal-blue); }
-
-        /* AR Blueprint Effect */
-        .blueprint-card {
-            background-image: linear-gradient(rgba(0, 87, 183, 0.1) 1px, transparent 1px), 
-                              linear-gradient(90deg, rgba(0, 87, 183, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            background-color: #f0f4f8;
-            border: 2px solid var(--royal-blue);
+        /* Niemeyer Shadow Physics */
+        .niemeyer-shadow {
+            filter: drop-shadow(var(--shadow-x) var(--shadow-y) 15px rgba(0, 0, 0, 0.1));
         }
 
-        #map { height: 650px; border-radius: 40px; z-index: 10; }
+        /* Map Layers */
+        #map { height: 700px; border-radius: 50px; z-index: 10; cursor: crosshair; }
+
+        /* Akciğer Efekti: Green Oxygen Halo */
+        .oxygen-halo {
+            animation: breathe 4s ease-in-out infinite;
+            filter: blur(20px);
+            background: rgba(16, 185, 129, 0.15);
+        }
+        @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.6; } }
+
+        /* Timeline Sinir Hattı */
+        .synapse-line {
+            width: 2px; height: 100%; background: linear-gradient(to bottom, transparent, var(--royal-blue), transparent);
+            position: absolute; left: 24px; top: 0;
+        }
+
+        /* Yaşarbey Aroma Radius */
+        .aroma-wave {
+            position: absolute; border: 2px solid var(--gold); border-radius: 50%;
+            animation: ripple 3s linear infinite; opacity: 0;
+        }
+        @keyframes ripple { from { transform: scale(0.5); opacity: 0.8; } to { transform: scale(2.5); opacity: 0; } }
+
+        /* Custom Scroll */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--royal-blue); border-radius: 10px; }
     </style>
 </head>
-<body x-data="cityOS()">
+<body x-data="organismOS()" @mousemove="updateMouse($event)">
 
-    <nav class="fixed w-full z-[3000] glass-panel px-8 py-5 border-b border-blue-50">
-        <div class="max-w-[1700px] mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-[var(--royal-blue)] rounded-2xl flex items-center justify-center glow-blue">
-                    <i data-lucide="cpu" class="text-white w-6 h-6"></i>
+    <div class="metabolic-bg"></div>
+
+    <nav class="fixed w-full z-[3000] px-10 py-6">
+        <div class="max-w-[1800px] mx-auto glass-card rounded-[32px] px-10 py-4 flex justify-between items-center border border-white/50 shadow-2xl">
+            <div class="flex items-center gap-5">
+                <div class="w-12 h-12 bg-[var(--royal-blue)] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+                    <i data-lucide="activity" class="text-white w-6 h-6 animate-pulse"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black tracking-tighter uppercase leading-none">Brasília<span class="text-[var(--royal-blue)]">OS</span></h1>
-                    <p class="text-[10px] font-bold text-slate-400 tracking-[0.3em] mt-1">Sponsor: Yaşarbey Kahve</p>
+                    <h1 class="text-2xl font-black tracking-tighter uppercase leading-none">Brasília<span class="text-[var(--royal-blue)]">Live</span></h1>
+                    <p class="text-[9px] font-bold text-slate-400 tracking-[0.4em] mt-1 uppercase">Organismo Digital Ativo</p>
                 </div>
             </div>
 
-            <div class="hidden xl:flex items-center gap-12 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
-                <a href="#pulse" class="hover:text-[var(--royal-blue)] transition">Pulse</a>
-                <a href="#map-engine" class="hover:text-[var(--royal-blue)] transition">Live Map</a>
-                <a href="#timeline" class="hover:text-[var(--royal-blue)] transition">Timeline</a>
-                <div class="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full border border-blue-100">
-                    <i data-lucide="sun" class="w-3 h-3 text-[var(--gold)]"></i>
-                    <span class="text-[var(--royal-blue)]" x-text="sunPhase"></span>
+            <div class="hidden lg:flex items-center gap-12 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                <a href="#metabolism" class="hover:text-[var(--royal-blue)]">Metabolismo</a>
+                <a href="#synapse" class="hover:text-[var(--royal-blue)]">Sinapses</a>
+                <a href="#oxygen" class="hover:text-[var(--royal-blue)]">Oxigênio</a>
+                <div class="h-4 w-[1px] bg-slate-200"></div>
+                <div class="flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span class="text-slate-900" x-text="cityStatus">ESTÁVEL</span>
                 </div>
             </div>
 
-            <button class="bg-slate-900 text-white px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-[var(--royal-blue)] transition shadow-xl">Master Access</button>
+            <div class="flex items-center gap-6">
+                <div class="text-right hidden sm:block">
+                    <p class="text-[11px] font-black" x-text="currentTime"></p>
+                    <p class="text-[9px] font-bold text-[var(--royal-blue)] uppercase">Yaşarbey Coffee Active</p>
+                </div>
+                <button class="bg-slate-900 text-white px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-[var(--royal-blue)] hover:scale-105 transition">Dashboard</button>
+            </div>
         </div>
     </nav>
 
-    <main class="pt-32 pb-20 px-8 max-w-[1700px] mx-auto grid xl:grid-cols-12 gap-10">
+    <main class="pt-40 pb-20 px-10 max-w-[1800px] mx-auto grid xl:grid-cols-12 gap-10">
         
-        <div class="xl:col-span-3 space-y-8" id="pulse">
-            <div class="glass-panel p-8 rounded-[40px]">
-                <h3 class="text-xs font-black text-[var(--royal-blue)] uppercase tracking-[0.3em] mb-6">Pulse of Brasília</h3>
-                <div class="space-y-8">
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-[10px] font-black uppercase">Consumo de Energia</span>
-                            <span class="text-[10px] font-black text-green-500">OPTIMAL</span>
+        <div class="xl:col-span-3 space-y-10">
+            <div class="glass-card p-10 rounded-[50px] relative overflow-hidden">
+                <div class="relative z-10">
+                    <h3 class="text-xs font-black text-[var(--royal-blue)] uppercase tracking-[0.3em] mb-8">Metabolismo Urbano</h3>
+                    <div class="space-y-10">
+                        <div x-for="stat in stats">
+                            <div class="flex justify-between mb-3 items-end">
+                                <span class="text-[10px] font-black uppercase text-slate-400" x-text="stat.label"></span>
+                                <span class="text-xs font-black" x-text="stat.value"></span>
+                            </div>
+                            <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-[var(--royal-blue)]" :style="`width: ${stat.percent}%`"></div>
+                            </div>
                         </div>
-                        <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-green-500 animate-pulse" style="width: 62%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-[10px] font-black uppercase">Densidade Social</span>
-                            <span class="text-[10px] font-black text-blue-500">HIGH (Eixo)</span>
-                        </div>
-                        <div class="flex gap-1 h-8 items-end">
-                            <template x-for="i in 12">
-                                <div class="bg-blue-200 w-full rounded-t-sm" :style="`height: ${Math.random()*100}%`"></div>
-                            </template>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
-                        <i data-lucide="waves" class="w-4 h-4 text-slate-400"></i>
-                        <span class="text-xs font-black">42 dB (Quiet)</span>
                     </div>
                 </div>
+                <div class="absolute -right-10 -bottom-10 opacity-5"><i data-lucide="zap" class="w-40 h-40"></i></div>
             </div>
 
-            <div class="glass-panel p-8 rounded-[40px]" id="timeline">
-                <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-8">Smart Timeline</h3>
-                <div class="space-y-10 ml-5 relative">
-                    <template x-for="log in timelineLogs">
-                        <div class="relative timeline-item" :class="log.active ? 'timeline-active' : ''">
-                            <div class="absolute -left-[27px] top-0 w-3 h-3 rounded-full border-2 border-white" :class="log.active ? 'bg-[var(--royal-blue)] glow-blue' : 'bg-slate-200'"></div>
-                            <p class="text-[9px] font-black text-slate-400 uppercase" x-text="log.time"></p>
-                            <h4 class="text-xs font-bold mt-1 text-slate-800" x-text="log.msg"></h4>
+            <div class="glass-card p-10 rounded-[50px] relative">
+                <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-10">Sinapses em Tempo Real</h3>
+                <div class="synapse-line"></div>
+                <div class="space-y-12 relative">
+                    <template x-for="log in logs">
+                        <div class="pl-12 relative group">
+                            <div class="absolute left-[-2px] top-1 w-4 h-4 rounded-full border-4 border-white bg-slate-200 group-hover:bg-[var(--royal-blue)] transition shadow-sm"></div>
+                            <span class="text-[9px] font-black text-[var(--royal-blue)]" x-text="log.time"></span>
+                            <h4 class="text-xs font-bold text-slate-800 mt-1 leading-tight" x-text="log.event"></h4>
                         </div>
                     </template>
                 </div>
             </div>
         </div>
 
-        <div class="xl:col-span-6 space-y-8" id="map-engine">
-            <div class="glass-panel p-4 rounded-[48px] relative">
-                <div id="map"></div>
+        <div class="xl:col-span-6 space-y-8">
+            <div class="glass-card p-4 rounded-[60px] relative group shadow-inner">
+                <div id="map" class="niemeyer-shadow"></div>
                 
-                <div class="absolute top-10 left-10 z-[1000] glass-panel p-6 rounded-3xl border-l-4 border-[var(--gold)]">
-                    <div class="flex items-center gap-3 mb-2">
-                        <i data-lucide="coffee" class="text-amber-600 w-4 h-4"></i>
-                        <span class="text-[10px] font-black uppercase">Yaşarbey Coffee-Working</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-[9px] font-bold text-slate-400 uppercase">Ocupação</p>
-                            <p class="text-sm font-black text-slate-800">72%</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] font-bold text-slate-400 uppercase">WiFi Speed</p>
-                            <p class="text-sm font-black text-green-500">850 Mbps</p>
-                        </div>
+                <div class="absolute top-1/2 left-1/3 w-32 h-32 oxygen-halo rounded-full pointer-events-none"></div>
+                <div class="absolute top-1/4 right-1/4 w-48 h-48 oxygen-halo rounded-full pointer-events-none" style="animation-delay: 1s"></div>
+
+                <div class="absolute bottom-20 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none" x-show="showAroma">
+                    <div class="aroma-wave" style="width: 100px; height: 100px; left: -50px; top: -50px;"></div>
+                    <div class="aroma-wave" style="width: 100px; height: 100px; left: -50px; top: -50px; animation-delay: 1s;"></div>
+                    <div class="bg-white/90 backdrop-blur px-6 py-3 rounded-full shadow-2xl border border-[var(--gold)] flex items-center gap-3">
+                        <i data-lucide="coffee" class="w-4 h-4 text-amber-600"></i>
+                        <span class="text-[10px] font-black uppercase tracking-widest">Fresh Brew @ Yaşarbey Pontão</span>
                     </div>
                 </div>
 
-                <template x-if="scannedBuilding">
-                    <div class="absolute inset-0 z-[2000] p-10 flex items-center justify-center bg-white/20 backdrop-blur-md">
-                        <div class="blueprint-card w-full max-w-lg p-10 rounded-[40px] shadow-2xl relative">
-                            <button @click="scannedBuilding = null" class="absolute top-6 right-6 text-[var(--royal-blue)]"><i data-lucide="x-circle"></i></button>
-                            <p class="text-[10px] font-black text-[var(--royal-blue)] uppercase tracking-widest mb-4">AI Architecture Scanner</p>
-                            <h3 class="text-3xl font-black text-slate-900 mb-6" x-text="scannedBuilding.name"></h3>
-                            <div class="grid grid-cols-2 gap-8 mb-8">
-                                <div class="border-l-2 border-blue-200 pl-4 text-[10px] font-bold text-slate-500 uppercase">Niemeyer Concept: <br> <span class="text-slate-900" x-text="scannedBuilding.concept"></span></div>
-                                <div class="border-l-2 border-blue-200 pl-4 text-[10px] font-bold text-slate-500 uppercase">Estrutura: <br> <span class="text-slate-900" x-text="scannedBuilding.tech"></span></div>
-                            </div>
-                            <button class="w-full py-4 bg-[var(--royal-blue)] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Visualizar em 3D</button>
-                        </div>
-                    </div>
-                </template>
+                <div class="absolute top-10 right-10 z-[1000] flex flex-col gap-3">
+                    <button @click="mapLayer = 'organism'" :class="mapLayer === 'organism' ? 'bg-[var(--royal-blue)] text-white' : 'bg-white/90'" class="p-4 rounded-2xl shadow-xl transition-all hover:scale-110"><i data-lucide="fingerprint" class="w-5 h-5"></i></button>
+                    <button @click="mapLayer = 'traffic'" :class="mapLayer === 'traffic' ? 'bg-[var(--royal-blue)] text-white' : 'bg-white/90'" class="p-4 rounded-2xl shadow-xl transition-all hover:scale-110"><i data-lucide="wind" class="w-5 h-5"></i></button>
+                </div>
             </div>
         </div>
 
-        <div class="xl:col-span-3 space-y-8">
-            <div class="glass-panel p-8 rounded-[40px] flex flex-col items-center">
-                <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-6 self-start">Digital Twin</h3>
-                <div id="digital-twin" @mousemove="tiltTwin($event)">
-                    <div class="twin-box flex items-center justify-center" :style="`transform: rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`">
-                        <i data-lucide="box" class="text-white w-12 h-12 opacity-20"></i>
+        <div class="xl:col-span-3 space-y-10">
+            <div class="glass-card p-10 rounded-[50px] bg-slate-900 text-white border-none">
+                <h3 class="text-xs font-black text-slate-500 uppercase tracking-[0.3em] mb-8">Densidade Humana</h3>
+                <div class="flex items-center gap-8 mb-10">
+                    <div class="relative">
+                        <svg class="w-24 h-24 transform -rotate-90">
+                            <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="8" fill="transparent" class="text-slate-800" />
+                            <circle cx="48" cy="48" r="40" stroke="var(--gold)" stroke-width="8" fill="transparent" stroke-dasharray="251" :stroke-dashoffset="251 - (251 * 0.85)" class="transition-all duration-1000" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center font-black text-xl">85%</div>
                     </div>
-                </div>
-                <p class="mt-6 text-[10px] font-black text-slate-400 uppercase">Interação Direta 3D</p>
-            </div>
-
-            <div class="glass-panel p-8 rounded-[40px] bg-[var(--royal-blue)] text-white border-none">
-                <div class="flex justify-between items-start mb-10">
                     <div>
-                        <h4 class="text-4xl font-black">28°C</h4>
-                        <p class="text-[10px] font-black uppercase opacity-60 mt-1">Brasília, DF</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase">Eixo Monumental</p>
+                        <p class="text-sm font-bold text-green-400">Fluxo Elevado</p>
                     </div>
-                    <i data-lucide="sun" class="w-10 h-10 text-[var(--gold)]"></i>
                 </div>
                 <div class="space-y-4">
-                    <div class="flex justify-between text-[10px] font-black uppercase">
-                        <span>Vento</span>
-                        <span>12 KM/H (N)</span>
-                    </div>
-                    <div class="h-[1px] bg-white/10"></div>
-                    <div class="flex justify-between text-[10px] font-black uppercase">
-                        <span>Pôr do Sol</span>
-                        <span>18:12</span>
+                    <p class="text-[10px] font-black text-slate-500 uppercase">Pontos Quentes</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-slate-800 px-3 py-1.5 rounded-lg text-[9px] font-black">Rodoviária</span>
+                        <span class="bg-slate-800 px-3 py-1.5 rounded-lg text-[9px] font-black">Pontão</span>
+                        <span class="bg-slate-800 px-3 py-1.5 rounded-lg text-[9px] font-black text-[var(--gold)]">Yaşarbey</span>
                     </div>
                 </div>
             </div>
 
-            <div class="glass-panel p-8 rounded-[40px] relative overflow-hidden group">
-                <div class="relative z-10">
-                    <h4 class="text-xl font-black leading-tight mb-2">Yaşarbey <br> Experience</h4>
-                    <p class="text-[10px] font-bold text-slate-400 uppercase leading-relaxed mb-6">Grãos selecionados para os pensadores da capital.</p>
-                    <button class="bg-[var(--gold)] text-slate-900 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest">Reserve Desk</button>
+            <div class="glass-card p-10 rounded-[50px] group cursor-pointer hover:border-[var(--royal-blue)] transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <i data-lucide="layout" class="text-[var(--royal-blue)] w-8 h-8"></i>
+                    <span class="bg-blue-50 text-[var(--royal-blue)] text-[9px] font-black px-3 py-1 rounded-full uppercase">AI Scanner</span>
                 </div>
-                <i data-lucide="coffee" class="absolute -right-6 -bottom-6 w-24 h-24 text-blue-50 opacity-5 group-hover:scale-110 transition"></i>
+                <h4 class="text-xl font-black text-slate-900 leading-tight mb-4">Mecânica da Luz & Sombra</h4>
+                <p class="text-xs font-medium text-slate-500 leading-relaxed mb-6">A arquitetura de Niemeyer respira conforme o sol. Veja as sombras projetadas em tempo real.</p>
+                <div class="bg-slate-50 p-6 rounded-3xl border border-dashed border-slate-200">
+                    <div class="flex justify-between text-[10px] font-black uppercase text-slate-400 mb-2">
+                        <span>Ângulo Solar</span>
+                        <span class="text-slate-900" x-text="sunAngle + '°'"></span>
+                    </div>
+                    <div class="w-full bg-slate-200 h-1 rounded-full"><div class="bg-[var(--royal-blue)] h-full transition-all" :style="`width: ${sunAngle/1.8}%`"></div></div>
+                </div>
+            </div>
+
+            <div class="bg-[var(--royal-blue)] p-10 rounded-[50px] text-white relative overflow-hidden group">
+                <div class="relative z-10">
+                    <h4 class="text-2xl font-black leading-none mb-2 italic-none">Yaşarbey<br>Aroma</h4>
+                    <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest mb-8">O café que oxigena as ideias da capital.</p>
+                    <button class="bg-white text-[var(--royal-blue)] px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest group-hover:bg-[var(--gold)] group-hover:text-slate-900 transition">Siga o Aroma</button>
+                </div>
+                <i data-lucide="coffee" class="absolute -right-10 -bottom-10 w-44 h-44 opacity-10 group-hover:rotate-12 transition-transform duration-1000"></i>
             </div>
         </div>
     </main>
 
-    <footer class="py-16 px-8 border-t border-slate-100 bg-white">
-        <div class="max-w-[1700px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">© 2026 Brasília OS v3.0 | Intelligent City Infrastructure</p>
-            <div class="flex gap-10 text-[10px] font-black uppercase tracking-widest text-slate-900">
-                <a href="#">Security</a>
-                <a href="#">API Docs</a>
-                <a href="#">Privacy</a>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        function cityOS() {
+        function organismOS() {
             return {
-                sunPhase: 'GÜN ORTASI',
-                scannedBuilding: null,
-                tilt: { x: 0, y: 0 },
-                map: null,
-                timelineLogs: [
-                    { time: '13:42', msg: 'Tráfego intenso detectado no Eixão Sul.', active: true },
-                    { time: '12:00', msg: 'Yaşarbey Coffee: Horário de pico de produtividade.', active: false },
-                    { time: '09:15', msg: 'Iluminação pública desligada automaticamente.', active: false },
-                    { time: '07:30', msg: 'Abertura dos Monumentos da Esplanada.', active: false }
+                currentTime: '',
+                cityStatus: 'ESTÁVEL',
+                sunAngle: 45,
+                showAroma: true,
+                mapLayer: 'organism',
+                stats: [
+                    { label: 'Fluxo Hidrológico', value: '420 m³/s', percent: 65 },
+                    { label: 'Carga Elétrica', value: '1.2 GW', percent: 42 },
+                    { label: 'Oksijeni Üretimi', value: 'High', percent: 88 }
                 ],
-                
+                logs: [
+                    { time: '14:28', event: 'Metabolismo urbano em pico produtivo.' },
+                    { time: '14:15', event: 'Sinapse social elevada no Pontão do Lago.' },
+                    { time: '13:50', event: 'Oxigenação máxima detectada no Parque da Cidade.' }
+                ],
+
                 init() {
                     lucide.createIcons();
+                    this.updateClock();
+                    setInterval(() => this.updateClock(), 1000);
                     this.initMap();
-                    this.updateAtmosphere();
+                    this.simulateAtmosphere();
+                },
+
+                updateClock() {
+                    const now = new Date();
+                    this.currentTime = now.toLocaleTimeString('pt-BR');
+                },
+
+                updateMouse(e) {
+                    document.body.style.setProperty('--mouse-x', `${e.clientX}px`);
+                    document.body.style.setProperty('--mouse-y', `${e.clientY}px`);
                 },
 
                 initMap() {
-                    this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([-15.7938, -47.8828], 13);
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(this.map);
-                    
-                    // Add Pulse Traffic Lines
-                    const traffic = [
+                    const map = L.map('map', { zoomControl: false, attributionControl: false }).setView([-15.7938, -47.8828], 13);
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+                    // Dynamic Neural Paths (Traffic)
+                    const paths = [
                         [[-15.7938, -47.8828], [-15.7997, -47.8641]],
                         [[-15.7938, -47.8828], [-15.7834, -47.8992]]
                     ];
-                    traffic.forEach((line, i) => {
-                        L.polyline(line, { color: i===0 ? '#22C55E' : '#0057B7', weight: 4, opacity: 0.6, className: 'pulse-line' }).addTo(this.map);
+                    paths.forEach(p => {
+                        L.polyline(p, { color: '#0057B7', weight: 4, opacity: 0.4, className: 'pulse-line' }).addTo(map);
                     });
 
-                    // Add Interactive Architecture Markers
-                    const buildings = [
-                        { name: 'Catedral de Brasília', coords: [-15.7982, -47.8755], concept: 'Mãos elevadas ao céu', tech: '16 colunas de concreto hiperboloide' },
-                        { name: 'Congresso Nacional', coords: [-15.7997, -47.8641], concept: 'Dualidade e Equilíbrio', tech: 'Cúpulas côncava e convexa' }
+                    // Points of Interest
+                    const dots = [
+                        { name: "Catedral", coords: [-15.7982, -47.8755] },
+                        { name: "Yaşarbey Kahve", coords: [-15.8236, -47.8710] }
                     ];
-
-                    buildings.forEach(b => {
+                    dots.forEach(d => {
                         const icon = L.divIcon({
                             className: 'custom-pin',
-                            html: `<div style="background:var(--royal-blue); width:20px; height:20px; border-radius:50%; border:4px solid white; box-shadow:0 0 20px rgba(0,0,0,0.2)"></div>`
+                            html: `<div style="background:var(--royal-blue); width:14px; height:14px; border-radius:50%; border:3px solid white; box-shadow:0 0 15px rgba(0,0,0,0.1)"></div>`
                         });
-                        L.marker(b.coords, { icon }).addTo(this.map).on('click', () => {
-                            this.scannedBuilding = b;
-                            setTimeout(() => lucide.createIcons(), 50);
-                        });
+                        L.marker(d.coords, { icon }).addTo(map);
                     });
                 },
 
-                updateAtmosphere() {
-                    const hour = new Date().getHours();
-                    if(hour >= 18 || hour < 6) {
-                        this.sunPhase = 'GECE MODU';
-                        document.documentElement.style.setProperty('--sky-tint', 'rgba(0, 0, 0, 0.05)');
-                    } else if(hour >= 16) {
-                        this.sunPhase = 'GÜN BATIMI';
-                        document.documentElement.style.setProperty('--sky-tint', 'rgba(255, 165, 0, 0.05)');
-                    }
-                },
-
-                tiltTwin(e) {
-                    const rect = document.getElementById('digital-twin').getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width/2;
-                    const y = e.clientY - rect.top - rect.height/2;
-                    this.tilt.x = -y / 10;
-                    this.tilt.y = x / 10;
+                simulateAtmosphere() {
+                    setInterval(() => {
+                        this.sunAngle = (this.sunAngle + 1) % 180;
+                        const shadowX = (this.sunAngle - 90) / 5;
+                        document.body.style.setProperty('--shadow-x', `${shadowX}px`);
+                        document.body.style.setProperty('--shadow-y', `10px`);
+                    }, 5000);
                 }
             }
         }
