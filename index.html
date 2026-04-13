@@ -1,404 +1,78 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Portal Brasília Digital | Canlı Şehir Paneli</title>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlBvcnRhbCBCcmFzw61saWEiLAogICJzaG9ydF9uYW1lIjogIkJTQiBQb3J0YWwiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2ZmZmZmZiIsCiAgInRoZW1lX2NvbG9yIjogIiNmZmZmZmYiCn0=">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveCity | Şehrin Nabzı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* CSS Değişkenleri ve Temiz Tasarım */
-        :root {
-            --primary: #009c3b; /* Brasília Green */
-            --bg: #ffffff;
-            --soft-bg: #f8fafc;
-            --border: #f1f5f9;
-            --text: #0f172a;
-            --muted: #64748b;
-            --danger: #ef4444;
-            --success: #10b981;
-            --warning: #f59e0b;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-style: normal !important; /* İtalik Kesinlikle Yasak */
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.4;
-            padding-bottom: 100px; /* Alt menü boşluğu */
-        }
-
-        /* Üst Bar ve Canlı Pulse */
-        .header {
-            background: white;
-            padding: 16px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
-
-        .live-indicator {
-            background: #f0fdf4;
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .pulse-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-
-        .container { padding: 12px; max-width: 500px; margin: 0 auto; }
-
-        /* Haber Bandı (Otomatik Değişen) */
-        .news-ticker {
-            background: var(--soft-bg);
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            font-size: 0.75rem;
-            border-left: 4px solid var(--primary);
-            min-height: 45px;
-            display: flex;
-            align-items: center;
-            transition: opacity 0.5s;
-        }
-
-        /* Kart Tasarımı */
-        .card {
-            background: white;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            overflow: hidden;
-        }
-
-        .card-header {
-            background: #f8fafc;
-            padding: 14px 16px;
-            border-bottom: 2px solid var(--primary);
-            font-weight: 800;
-            font-size: 0.85rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-content { padding: 8px 16px; }
-
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .list-item:last-child { border-bottom: none; }
-
-        .item-label { font-weight: 600; font-size: 0.8rem; color: var(--muted); }
-        .item-value { font-weight: 700; font-size: 0.85rem; }
-
-        /* Izgara Düzeni */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-
-        /* Alt Navigasyon */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 10px 30px;
-            border-top: 1px solid var(--border);
-            z-index: 2000;
-        }
-
-        .nav-item {
-            text-decoration: none;
-            color: var(--muted);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.6rem;
-            font-weight: 800;
-            transition: 0.3s;
-        }
-
-        .nav-item.active { color: var(--primary); }
-        .nav-icon { font-size: 1.3rem; }
-
-        /* Dil Seçici */
-        .lang-btn {
-            background: var(--soft-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 4px 8px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
+        @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .live-dot { animation: pulse-slow 2s infinite; }
+        body { background: #f0f2f5; font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
+<body x-data="{ darkMode: false, time: '', weather: '24°C' }" :class="darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'">
 
-<header>
-    <h1 id="ui-title">BRASÍLIA PORTAL</h1>
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <select class="lang-btn" id="langSelect">
-            <option value="pt">🇧🇷 PT</option>
-            <option value="en">🇺🇸 EN</option>
-            <option value="es">🇪🇸 ES</option>
-        </select>
-        <div class="live-indicator">
-            <div class="pulse-dot"></div>
-            <span id="ui-live">LIVE</span>
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b p-4 flex justify-between items-center" :class="darkMode ? 'bg-gray-800/80 border-gray-700' : ''">
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 bg-green-500 rounded-full live-dot"></div>
+            <h1 class="font-bold text-xl tracking-tight">LIVECITY</h1>
         </div>
-    </div>
-</header>
-
-<div class="container">
-    
-    <div class="news-ticker" id="news-ticker">
-        Carregando notícias da cidade...
-    </div>
-
-    <div class="card" id="nav-transport">
-        <div class="card-header">
-            <span id="ui-mobility">MOBILIDADE URBANA</span>
-            <span style="font-size: 0.6rem; color: var(--muted)" id="update-timer">--:--</span>
+        <div class="flex gap-4 items-center">
+            <span x-text="new Date().toLocaleTimeString('tr-TR')" class="font-mono text-sm"></span>
+            <button @click="darkMode = !darkMode" class="p-2 rounded-full hover:bg-gray-200 transition">
+                <i data-lucide="moon" x-show="!darkMode"></i>
+                <i data-lucide="sun" x-show="darkMode"></i>
+            </button>
         </div>
-        <div class="card-content">
-            <div class="list-item">
-                <span class="item-label">Metrô-DF (Verde/Laranja)</span>
-                <span class="item-value" style="color: var(--success)" id="val-metro">OPERANDO</span>
-            </div>
-            <div class="list-item">
-                <span class="item-label">Eixão Sul (Velocidade)</span>
-                <span class="item-value" id="val-speed">-- km/h</span>
-            </div>
-            <div class="list-item">
-                <span class="item-label">Tem Bici (Disponíveis)</span>
-                <span class="item-value" id="val-bike">--</span>
-            </div>
-        </div>
-    </div>
+    </nav>
 
-    <div class="grid-2">
-        <div class="card">
-            <div class="card-header"><span id="ui-airport">AEROPORTO</span></div>
-            <div class="card-content">
-                <div class="list-item" style="flex-direction: column; align-items: flex-start;">
-                    <span class="item-label" id="val-flight-id">BSB-G3</span>
-                    <span class="item-value" id="val-flight-status">NORMAL</span>
+    <main class="max-w-6xl mx-auto p-4 md:p-8 space-y-8">
+        
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold mb-2">Günaydın, İstanbul!</h2>
+                    <p class="opacity-90">Bugün şehirde hava açık, trafik %35 yoğunlukta.</p>
+                    <button class="mt-6 bg-white text-indigo-600 px-6 py-2 rounded-full font-semibold hover:scale-105 transition">Etkinlikleri Gör</button>
+                </div>
+                <i data-lucide="cloud-sun" class="absolute right-[-20px] bottom-[-20px] w-48 h-48 opacity-20"></i>
+            </div>
+            
+            <div :class="darkMode ? 'bg-gray-800' : 'bg-white'" class="rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
+                <p class="text-sm uppercase tracking-widest opacity-60">Hava Kalitesi</p>
+                <h3 class="text-5xl font-black my-2">42</h3>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">ÇOK İYİ</span>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="lg:col-span-1 space-y-4">
+                <h3 class="font-bold flex items-center gap-2"><i data-lucide="rss" class="w-4"></i> Canlı Akış</h3>
+                <template x-for="i in [1,2,3]">
+                    <div :class="darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'" class="p-4 rounded-2xl border text-sm shadow-sm transition hover:shadow-md cursor-pointer">
+                        <span class="text-[10px] font-bold text-blue-500 uppercase">Ulaşım • 5dk önce</span>
+                        <p class="mt-1 font-medium">Metrobüs seferlerine ek seferler eklendi.</p>
+                    </div>
+                </template>
+            </div>
+
+            <div class="lg:col-span-3 bg-gray-200 rounded-3xl h-[400px] relative overflow-hidden flex items-center justify-center shadow-inner">
+                <span class="text-gray-500 font-medium">Şehir Haritası (Interaktif Katman)</span>
+                <div class="absolute bottom-4 left-4 bg-white p-2 rounded-lg shadow-lg flex gap-2">
+                    <button class="p-2 hover:bg-gray-100 rounded text-xs">Otoparklar</button>
+                    <button class="p-2 hover:bg-gray-100 rounded text-xs">Parklar</button>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-header"><span id="ui-aqi">AR (AQI)</span></div>
-            <div class="card-content">
-                <div class="list-item" style="flex-direction: column; align-items: flex-start;">
-                    <span class="item-label" id="val-aqi-label">Qualidade</span>
-                    <span class="item-value" id="val-aqi-num">--</span>
-                </div>
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="card" id="nav-health">
-        <div class="card-header"><span id="ui-citylife">VIDA URBANA & SAÚDE</span></div>
-        <div class="card-content">
-            <div class="list-item">
-                <span class="item-label" id="ui-pharmacy">Farmácia de Plantão</span>
-                <span class="item-value" style="color: var(--primary)">Asa Norte 102</span>
-            </div>
-            <div class="list-item">
-                <span class="item-label" id="ui-dam">Nível do Descoberto</span>
-                <span class="item-value" id="val-dam">--%</span>
-            </div>
-            <div class="list-item">
-                <span class="item-label" id="ui-holiday">Próximo Feriado</span>
-                <span class="item-value" id="val-holiday">-- Dias</span>
-            </div>
-        </div>
-    </div>
+    </main>
 
-    <div class="card">
-        <div class="card-header"><span id="ui-alerts">AVISOS OFICIAIS</span></div>
-        <div class="card-content" id="alert-list">
-            <p style="font-size: 0.7rem; color: var(--muted); padding: 10px 0;">Sem interrupções de energia programadas pela Neoenergia para hoje.</p>
-        </div>
-    </div>
-
-</div>
-
-<nav class="bottom-nav">
-    <a href="#" class="nav-item active" onclick="navClick(this)">
-        <span class="nav-icon">🏠</span>
-        <span id="menu-home">Início</span>
-    </a>
-    <a href="#nav-transport" class="nav-item" onclick="navClick(this)">
-        <span class="nav-icon">🚌</span>
-        <span id="menu-transport">Transporte</span>
-    </a>
-    <a href="#nav-health" class="nav-item" onclick="navClick(this)">
-        <span class="nav-icon">🏥</span>
-        <span id="menu-health">Saúde</span>
-    </a>
-    <a href="#" class="nav-item" onclick="navClick(this)">
-        <span class="nav-icon">⚙️</span>
-        <span id="menu-settings">Ajustes</span>
-    </a>
-</nav>
-
-<script>
-    // 1. Çoklu Dil Sözlüğü (i18n)
-    const i18n = {
-        pt: {
-            mobility: "MOBILIDADE URBANA",
-            airport: "AEROPORTO",
-            aqi: "AR (AQI)",
-            citylife: "VIDA URBANA",
-            pharmacy: "Farmácia de Turno",
-            dam: "Nível do Descoberto",
-            holiday: "Próximo Feriado",
-            alerts: "AVISOS OFICIAIS",
-            menu_home: "Início",
-            menu_transport: "Transporte",
-            menu_health: "Saúde"
-        },
-        en: {
-            mobility: "CITY MOBILITY",
-            airport: "AIRPORT",
-            aqi: "AIR QUALITY",
-            citylife: "URBAN LIFE",
-            pharmacy: "Duty Pharmacy",
-            dam: "Dam Level",
-            holiday: "Next Holiday",
-            alerts: "OFFICIAL ALERTS",
-            menu_home: "Home",
-            menu_transport: "Transit",
-            menu_health: "Health"
-        },
-        es: {
-            mobility: "MOVILIDAD URBANA",
-            airport: "AEROPUERTO",
-            aqi: "AIRE (AQI)",
-            citylife: "VIDA URBANA",
-            pharmacy: "Farmacia de Turno",
-            dam: "Nivel de Embalse",
-            holiday: "Próximo Feriado",
-            alerts: "AVISOS OFICIALES",
-            menu_home: "Inicio",
-            menu_transport: "Transporte",
-            menu_health: "Salud"
-        }
-    };
-
-    // 2. Canlı Veri Simülasyon Motoru
-    function updateLiveSystem() {
-        // Rastgele gerçekçi veriler
-        const speed = Math.floor(Math.random() * (70 - 45) + 45);
-        const aqi = Math.floor(Math.random() * (55 - 20) + 20);
-        const dam = (84.2 + (Math.random() * 0.1)).toFixed(2);
-        const bikes = Math.floor(Math.random() * 15);
-        const now = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-
-        // DOM Güncelleme
-        document.getElementById('val-speed').innerText = speed + " km/h";
-        document.getElementById('val-aqi-num').innerText = aqi;
-        document.getElementById('val-dam').innerText = "%" + dam;
-        document.getElementById('val-bike').innerText = bikes + " un";
-        document.getElementById('update-timer').innerText = now;
-
-        // Kritik Durum Renklendirmesi
-        document.getElementById('val-speed').style.color = speed < 50 ? "var(--danger)" : "var(--success)";
-        document.getElementById('val-aqi-num').style.color = aqi > 50 ? "var(--warning)" : "var(--success)";
-    }
-
-    // 3. Haber Bandı Akışı
-    const newsList = [
-        "Metrô-DF: Todas as linhas operando normalmente no horário de pico.",
-        "GDF: Nova fase de obras no Eixo Monumental começa na segunda-feira.",
-        "Clima: Baixa umidade prevista para Brasília nas próximas 48 horas.",
-        "Saúde: Vacinação disponível em 12 pontos móveis na Rodoviária."
-    ];
-    let newsIdx = 0;
-    function rotateNews() {
-        const ticker = document.getElementById('news-ticker');
-        ticker.style.opacity = 0;
-        setTimeout(() => {
-            ticker.innerText = newsList[newsIdx];
-            ticker.style.opacity = 1;
-            newsIdx = (newsIdx + 1) % newsList.length;
-        }, 500);
-    }
-
-    // 4. Etkileşim ve Dil Fonksiyonları
-    function navClick(el) {
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        el.classList.add('active');
-    }
-
-    document.getElementById('langSelect').addEventListener('change', (e) => {
-        const lang = e.target.value;
-        const dict = i18n[lang];
-        document.getElementById('ui-mobility').innerText = dict.mobility;
-        document.getElementById('ui-airport').innerText = dict.airport;
-        document.getElementById('ui-aqi').innerText = dict.aqi;
-        document.getElementById('ui-citylife').innerText = dict.citylife;
-        document.getElementById('ui-pharmacy').innerText = dict.pharmacy;
-        document.getElementById('ui-dam').innerText = dict.dam;
-        document.getElementById('ui-holiday').innerText = dict.holiday;
-        document.getElementById('ui-alerts').innerText = dict.alerts;
-        document.getElementById('menu-home').innerText = dict.menu_home;
-        document.getElementById('menu-transport').innerText = dict.menu_transport;
-        document.getElementById('menu-health').innerText = dict.menu_health;
-    });
-
-    // Başlatma
-    setInterval(updateLiveSystem, 3000); // 3 saniyede bir veri değişimi
-    setInterval(rotateNews, 6000); // 6 saniyede bir haber değişimi
-    updateLiveSystem();
-    rotateNews();
-
-    // Tatil Geri Sayımı (Örnek Sabit)
-    document.getElementById('val-holiday').innerText = "12";
-</script>
-
+    <script>
+        // İkonları başlat
+        lucide.createIcons();
+    </script>
 </body>
 </html>
