@@ -2,505 +2,334 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Brasília Kahve Borsası | ICE Emtia | Dünya Trendleri | Yaşarbey Kahve</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Brasília Digital City Portal</title>
     
-    <!-- SEO Meta Etiketler -->
-    <meta name="description" content="Brasília kahve borsası, ICE emtia fiyatları, Brezilya toptan kahve fiyatları, döviz kurları, altın fiyatları, petrol fiyatları, canlı hava durumu, güncel haberler ve dünya trendleri. Sponsor: Yaşarbey Kahve.">
-    <meta name="keywords" content="kahve fiyatları, ICE emtia, Brezilya kahve, toptan kahve, yeşil kahve, arabica fiyatı, robusta fiyatı, dolar kuru, euro kuru, altın fiyatı, petrol fiyatı, emtia borsası, canlı döviz, hava durumu, Brasília haber, Brezilya ekonomisi, kahve üretimi, kahve ihracatı, Yaşarbey Kahve, kahve toptan, kahve ithalat">
-    <meta name="author" content="Brasília Paneli">
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    <link rel="canonical" href="https://asalimc.github.io">
-    
-    <!-- Open Graph / Sosyal Medya -->
-    <meta property="og:title" content="Brasília Kahve Borsası | ICE Emtia">
-    <meta property="og:description" content="Anlık kahve fiyatları, ICE emtia verileri, döviz kurları ve dünya trendleri.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://asalimc.github.io">
-    
-    <!-- Schema.org Yapılandırması -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Brasília Kahve Borsası",
-        "description": "Brezilya kahve fiyatları, ICE emtia ve dünya trendleri",
-        "url": "https://asalimc.github.io"
-    }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --bg-main: #ffffff;
+            --bg-soft: #f8fafc;
+            --primary: #009c3b; /* Brezilya Yeşili */
+            --accent: #ffdf00;  /* Brezilya Sarısı */
+            --text-main: #0f172a;
+            --text-light: #64748b;
+            --border: #f1f5f9;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1a2a3a;
-            line-height: 1.4;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            padding-bottom: 80px; /* Alt menü boşluğu */
         }
 
-        /* Sponsor Banner */
-        .sponsor-banner {
-            background: linear-gradient(135deg, #2c1810 0%, #4a2c1a 100%);
-            color: #ffdf00;
-            padding: 12px 16px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 0.85rem;
-            border-bottom: 2px solid #ffdf00;
-        }
-
-        .sponsor-banner a {
-            color: #ffdf00;
-            text-decoration: none;
-        }
-
-        /* Header */
-        .header {
-            background: white;
-            padding: 16px 20px;
+        /* Üst Header */
+        header {
+            background: var(--bg-main);
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #e0e6ed;
+            z-index: 1000;
         }
 
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
         }
 
-        .header h1 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #009c3b;
+        .logo h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
         }
 
-        .header p {
-            font-size: 0.65rem;
-            color: #6c7a8a;
-            margin-top: 4px;
-        }
-
-        .live-badge {
-            background: #e74c3c;
-            color: white;
+        .live-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #ecfdf5;
+            color: var(--primary);
             padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.65rem;
-            font-weight: 600;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .lang-selector {
-            background: #f0f4f9;
-            border-radius: 20px;
-            padding: 4px 8px;
-            font-size: 0.7rem;
-            border: none;
-        }
-
+        /* Ana Konteyner */
         .container {
-            max-width: 100%;
-            padding: 12px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid #eef2f8;
-        }
-
-        .card-header {
-            background: #f8fafc;
-            padding: 14px 16px;
-            border-bottom: 2px solid #009c3b;
-            font-weight: 700;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card-content {
-            padding: 14px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eef2f8;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .list-item:last-child {
-            border-bottom: none;
-        }
-
-        .item-label {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 0.8rem;
-        }
-
-        .item-value {
-            color: #009c3b;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .trend-up {
-            color: #27ae60;
-        }
-
-        .trend-down {
-            color: #e74c3c;
-        }
-
-        .coffee-card {
-            background: linear-gradient(135deg, #fef8e7 0%, #fff 100%);
-            border-left: 4px solid #ff8c00;
-        }
-
-        .commodity-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-
-        .commodity-item {
-            background: #f8fafc;
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        /* Gizli SEO Div - Google için görünür, kullanıcı için gizli */
-        .seo-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0,0,0,0);
-            border: 0;
-        }
-
-        .footer {
-            margin: 12px;
             padding: 16px;
-            background: white;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Hızlı Bilgi Şeridi (Horizontal Scroll) */
+        .ticker-wrap {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+        .ticker-wrap::-webkit-scrollbar { display: none; }
+
+        .ticker-card {
+            background: var(--bg-soft);
+            padding: 12px 20px;
+            border-radius: 16px;
+            min-width: 140px;
+            border: 1px solid var(--border);
+        }
+
+        .ticker-label { font-size: 0.7rem; color: var(--text-light); font-weight: 600; display: block; }
+        .ticker-value { font-size: 0.9rem; font-weight: 700; color: var(--text-main); }
+
+        /* Bölüm Başlıkları */
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 24px 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title a { font-size: 0.75rem; color: var(--primary); text-decoration: none; }
+
+        /* Kart Yapısı */
+        .card {
+            background: var(--bg-main);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .stat-item {
+            padding: 12px;
+            background: var(--bg-soft);
             border-radius: 16px;
             text-align: center;
-            font-size: 0.6rem;
-            color: #94a3b8;
         }
 
-        @media (min-width: 600px) {
-            .grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .commodity-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .stat-label { font-size: 0.65rem; color: var(--text-light); font-weight: 600; display: block; margin-bottom: 4px; }
+        .stat-value { font-size: 0.9rem; font-weight: 800; }
+
+        /* Borsa Listesi */
+        .list-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .list-row:last-child { border-bottom: none; }
+
+        .trend-up { color: #10b981; font-weight: 700; }
+        .trend-down { color: #ef4444; font-weight: 700; }
+
+        /* Alt Navigasyon (Mobil Öncelikli) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 10px 24px;
+            border-top: 1px solid var(--border);
+            z-index: 2000;
         }
 
-        @media (min-width: 1024px) {
-            .grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 600;
         }
+
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 1.4rem; }
+
+        /* Sponsor Banner */
+        .sponsor-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            border: 2px solid var(--primary);
+            padding: 16px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
-    <!-- Sponsor Banner -->
-    <div class="sponsor-banner">
-        ☕ SPONSORUMUZ: <a href="#">YAŞARBEY KAHVE</a> | Türkiye'nin En Kaliteli Toptan Kahvesi | Brezilya Arabica & Robusta İthalatçısı ☕
-    </div>
 
-    <div class="header">
-        <div class="header-top">
-            <div>
-                <h1>🇧🇷 Brasília Kahve Borsası</h1>
-                <p>ICE Emtia | Canlı Fiyatlar | Dünya Trendleri | Sponsor: Yaşarbey Kahve</p>
-            </div>
-            <div style="display: flex; gap: 8px; align-items: center;">
-                <select id="langSelect" class="lang-selector">
-                    <option value="tr">🇹🇷 Türkçe</option>
-                    <option value="pt">🇧🇷 Português</option>
-                    <option value="en">🇬🇧 English</option>
-                    <option value="es">🇪🇸 Español</option>
-                </select>
-                <div class="live-badge" id="liveBadge">🔴 CANLI</div>
-            </div>
+<header>
+    <div class="header-top">
+        <div class="logo">
+            <h1>BRASÍLIA PORTAL</h1>
+        </div>
+        <div class="live-status">
+            <div class="dot"></div>
+            <span>LIVE BSB</span>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    
+    <div class="ticker-wrap">
+        <div class="ticker-card">
+            <span class="ticker-label">USD / BRL</span>
+            <span class="ticker-value">5.42</span>
+        </div>
+        <div class="ticker-card">
+            <span class="ticker-label">ICE ARABICA</span>
+            <span class="ticker-value">245.80</span>
+        </div>
+        <div class="ticker-card">
+            <span class="ticker-label">TEMP</span>
+            <span class="ticker-value">28°C</span>
+        </div>
+        <div class="ticker-card">
+            <span class="ticker-label">BITCOIN</span>
+            <span class="ticker-value">$62.5k</span>
         </div>
     </div>
 
-    <div class="container">
-        <div class="grid" id="panelGrid"></div>
+    <div class="sponsor-box">
+        <span style="font-size: 0.7rem; color: var(--primary); font-weight: 800; display: block;">OFFICIAL SPONSOR</span>
+        <p style="font-weight: 800; font-size: 1.1rem; color: #1a2a3a;">Yaşarbey Kahve</p>
+        <p style="font-size: 0.75rem; color: var(--text-light);">Brezilya'nın En Seçkin Çekirdekleri Türkiye'de</p>
     </div>
 
-    <div class="footer">
-        🕐 <span id="updateTime"></span> • Her 10 dakikada otomatik güncellenir • Kaynak: ICE, Google Trends, Reuters
+    <div class="section-title">
+        <span>KAHVE BORSASI (ICE)</span>
+        <a href="#">Detaylar</a>
+    </div>
+    <div class="card">
+        <div class="list-row">
+            <span>Arabica (Aralık)</span>
+            <span class="trend-up">245.80 (+1.32%)</span>
+        </div>
+        <div class="list-row">
+            <span>Robusta (Aralık)</span>
+            <span class="trend-up">178.50 (+1.05%)</span>
+        </div>
+        <div class="list-row">
+            <span>Brezilya Yeşil (kg)</span>
+            <span class="trend-up">12.80 BRL</span>
+        </div>
     </div>
 
-    <!-- ============ GİZLİ SEO DİV (Google için anahtar kelimeler) ============ -->
-    <div class="seo-hidden">
-        <h1>Kahve fiyatları 2026, Brezilya kahve fiyatları, ICE kahve borsası, canlı emtia fiyatları</h1>
-        <h2>Toptan kahve fiyatları, yeşil kahve fiyatı, arabica kahve fiyatı, robusta kahve fiyatı</h2>
-        <h3>Brezilya kahve üretimi, kahve ihracatı, kahve hasadı, kahve rekoltesi</h3>
-        <p>Dolar kuru, euro kuru, altın fiyatı, petrol fiyatı, buğday fiyatı, mısır fiyatı, soya fiyatı</p>
-        <p>ICE Arabica kontrat, ICE Robusta kontrat, ICE futures, emtia borsası canlı</p>
-        <p>Yaşarbey Kahve, toptan kahve siparişi, Brezilya kahve ithalat, kahve fiyatları 2025</p>
-        <p>Brasília hava durumu, Brasília haberleri, Brezilya ekonomisi, Brezilya enflasyon</p>
-        <p>En çok aranan kelimeler: kahve, kahve fiyatı, toptan kahve, Brezilya kahvesi, arabica</p>
-        <p>Google trendler: kahve fiyatları, ICE emtia, dolar kuru, altın fiyatı, petrol fiyatı</p>
-        <p>SEO anahtar kelime yoğunluğu için gizli metin. Kahve borsası emtia analizi.</p>
+    <div class="section-title">
+        <span>ŞEHİR MOBİLİTE</span>
+    </div>
+    <div class="grid-2">
+        <div class="card stat-item">
+            <span class="stat-label">METRÔ-DF</span>
+            <span class="stat-value" style="color: #10b981;">AKTİF</span>
+        </div>
+        <div class="card stat-item">
+            <span class="stat-label">HAVA DURUMU</span>
+            <span class="stat-value">GÜNEŞLİ</span>
+        </div>
+        <div class="card stat-item">
+            <span class="stat-label">EIXÃO TRAFİK</span>
+            <span class="stat-value" style="color: #f59e0b;">ORTA</span>
+        </div>
+        <div class="card stat-item">
+            <span class="stat-label">NEM ORANI</span>
+            <span class="stat-value">%45</span>
+        </div>
     </div>
 
-    <script>
-        // Dil çevirileri
-        const translations = {
-            tr: {},
-            pt: {},
-            en: {},
-            es: {}
-        };
+    <div class="section-title">
+        <span>SON DAKİKA</span>
+    </div>
+    <div class="card">
+        <p style="font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;">Brasília Havaalanı yeni uçuş rotalarını duyurdu.</p>
+        <span style="font-size: 0.7rem; color: var(--text-light);">2 dakika önce • Yerel Haberler</span>
+    </div>
 
-        // ============ GOOGLE TRENDLERİ (Gizlice yedirilen kelimeler) ============
-        const googleTrends = [
-            { kelime: "Kahve fiyatları", artis: "+45%", sicak: true },
-            { kelime: "ICE Coffee", artis: "+38%", sicak: true },
-            { kelime: "Brezilya kahvesi", artis: "+35%", sicak: true },
-            { kelime: "Toptan kahve", artis: "+42%", sicak: true },
-            { kelime: "Arabica fiyatı", artis: "+32%", sicak: true },
-            { kelime: "Robusta fiyatı", artis: "+28%", sicak: true },
-            { kelime: "Yaşarbey Kahve", artis: "+999%", sicak: true },
-            { kelime: "ICE Emtia", artis: "+25%", sicak: true },
-            { kelime: "Dolar/TL", artis: "+18%", sicak: false },
-            { kelime: "Altın fiyatı", artis: "+12%", sicak: false }
-        ];
+</div>
 
-        // ============ ICE KAHVE EMTİA VERİLERİ ============
-        const iceCoffeeData = [
-            { ad: "ICE Arabica (Kontrat)", fiyat: "245.80 USc/lb", degisim: "+3.20", yuzde: "+1.32%", durum: "up" },
-            { ad: "ICE Robusta (Kontrat)", fiyat: "178.50 USc/lb", degisim: "+1.85", yuzde: "+1.05%", durum: "up" },
-            { ad: "ICE Futures (Aralık)", fiyat: "248.30 USc/lb", degisim: "+2.90", yuzde: "+1.18%", durum: "up" },
-            { ad: "Günlük En Yüksek", fiyat: "249.20 USc/lb", degisim: "", yuzde: "", durum: "" },
-            { ad: "Günlük En Düşük", fiyat: "243.50 USc/lb", degisim: "", yuzde: "", durum: "" },
-            { ad: "İşlem Hacmi", fiyat: "12,450 sözleşme", degisim: "", yuzde: "", durum: "" }
-        ];
+<nav class="bottom-nav">
+    <a href="#" class="nav-item active">
+        <span class="nav-icon">🏠</span>
+        <span>Anasayfa</span>
+    </a>
+    <a href="#" class="nav-item">
+        <span class="nav-icon">☕</span>
+        <span>Borsa</span>
+    </a>
+    <a href="#" class="nav-item">
+        <span class="nav-icon">🚗</span>
+        <span>Ulaşım</span>
+    </a>
+    <a href="#" class="nav-item">
+        <span class="nav-icon">🏥</span>
+        <span>Sağlık</span>
+    </a>
+</nav>
 
-        // ============ BREZİLYA TOPLAM KAHVE FİYATLARI ============
-        const brasilCoffeePrices = [
-            { ad: "Arabica Kategori 6", fiyat: "1.450 BRL/saca", degisim: "+2.1%" },
-            { ad: "Arabica Kategori 4", fiyat: "1.520 BRL/saca", degisim: "+1.8%" },
-            { ad: "Robusta", fiyat: "1.120 BRL/saca", degisim: "+1.2%" },
-            { ad: "Yeşil Kahve", fiyat: "1.380 BRL/saca", degisim: "+1.5%" },
-            { ad: "Organik Kahve", fiyat: "1.650 BRL/saca", degisim: "+2.5%" },
-            { ad: "Toptan Fiyat (kg)", fiyat: "12.80 BRL/kg", degisim: "+0.9%" },
-            { ad: "İhracat Fiyatı", fiyat: "245 USD/saca", degisim: "+1.3%" }
-        ];
+<script>
+    // Dinamik Saat ve Güncelleme Simülasyonu
+    function updatePortal() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+        console.log("Portal Güncellendi: " + timeString);
+        // Burada gerçek API fetch işlemleri yapılabilir
+    }
 
-        // ============ DİĞER EMTİALAR ============
-        const otherCommodities = [
-            { ad: "Altın (Ons)", fiyat: "2.350 USD", degisim: "+0.8%", durum: "up" },
-            { ad: "Gümüş (Ons)", fiyat: "28.50 USD", degisim: "+0.3%", durum: "up" },
-            { ad: "Petrol (Brent)", fiyat: "85.40 USD", degisim: "-0.5%", durum: "down" },
-            { ad: "Buğday (Ton)", fiyat: "245 USD", degisim: "+1.2%", durum: "up" },
-            { ad: "Mısır (Ton)", fiyat: "185 USD", degisim: "+0.7%", durum: "up" },
-            { ad: "Soya (Ton)", fiyat: "425 USD", degisim: "+1.5%", durum: "up" }
-        ];
+    // Her 30 saniyede bir verileri tazele
+    setInterval(updatePortal, 30000);
 
-        // ============ DÖVİZ & KRİPTO ============
-        const currencyData = [
-            { ad: "USD/BRL", fiyat: "5.42", degisim: "+0.02" },
-            { ad: "EUR/BRL", fiyat: "5.88", degisim: "-0.01" },
-            { ad: "BTC/USD", fiyat: "62.500", degisim: "+2.3%" },
-            { ad: "ETH/USD", fiyat: "3.120", degisim: "+1.1%" }
-        ];
-
-        // ============ HAVA DURUMU ============
-        const weatherData = [
-            { ad: "Brasília", durum: "🌞 Güneşli", sicaklik: "28°C", nem: "%45" },
-            { ad: "Taguatinga", durum: "☀️ Açık", sicaklik: "27°C", nem: "%47" },
-            { ad: "Ceilândia", durum: "🌞 Güneşli", sicaklik: "29°C", nem: "%43" }
-        ];
-
-        // ============ HABERLER ============
-        const newsData = [
-            "Brasília'da yeni metro hattı açılıyor",
-            "ICE kahve fiyatları 2 ayın zirvesinde",
-            "Yaşarbey Kahve Brezilya'da yeni üretici ile anlaştı",
-            "Brezilya kahve ihracatı rekor kırdı",
-            "Emtia borsasında kahve öncü yükselişte"
-        ];
-
-        // ============ EKONOMİ ============
-        const economyData = [
-            { ad: "Enflasyon (IPCA)", fiyat: "4.2%", degisim: "-0.1%" },
-            { ad: "Faiz Oranı (Selic)", fiyat: "10.75%", degisim: "sabit" },
-            { ad: "İşsizlik", fiyat: "6.8%", degisim: "-0.2%" },
-            { ad: "GSYİH Büyüme", fiyat: "2.9%", degisim: "+0.3%" }
-        ];
-
-        // ============ AKARYAKIT ============
-        const fuelData = [
-            { ad: "Benzin Comum", fiyat: "5.79 BRL/L", degisim: "+0.05" },
-            { ad: "Motorin S10", fiyat: "6.12 BRL/L", degisim: "+0.03" },
-            { ad: "Etanol", fiyat: "3.89 BRL/L", degisim: "-0.02" },
-            { ad: "LPG", fiyat: "3.45 BRL/L", degisim: "sabit" }
-        ];
-
-        // ============ TRAFİK ============
-        const trafficData = [
-            { ad: "Eixão Kuzey", durum: "🟢 Hafif yoğun" },
-            { ad: "Eixão Güney", durum: "🟡 Orta yoğun" },
-            { ad: "Metrô-DF", durum: "✅ Normal çalışıyor" },
-            { ad: "BSB Havalimanı", durum: "✅ 182 uçuş/gün" }
-        ];
-
-        // ============ SAĞLIK ============
-        const healthData = [
-            { ad: "Acil Durum", deger: "Hospital de Base - 193" },
-            { ad: "Nöbetçi Eczane", deger: "Farmácia Brasil - (61) 3224-1234" },
-            { ad: "COVID-19 Aşılama", deger: "%85 tamamlandı" },
-            { ad: "Dengue Vakaları", deger: "1.245 (bu yıl)" }
-        ];
-
-        // ============ BORSA ============
-        const stockData = [
-            { ad: "Bovespa", fiyat: "127.850", degisim: "+0.45%" },
-            { ad: "Ibovespa", fiyat: "+0.45%", degisim: "yükseliş" },
-            { ad: "S&P 500", fiyat: "5.200", degisim: "+0.12%" },
-            { ad: "Nasdaq", fiyat: "16.400", degisim: "+0.08%" }
-        ];
-
-        // ============ RENDER FONKSİYONLARI ============
-        function renderCard(title, icon, data, isArray = true) {
-            let content = "";
-            if (isArray) {
-                content = data.map(item => {
-                    const keys = Object.keys(item);
-                    return `
-                        <div class="list-item">
-                            <span class="item-label">${item[keys[0]]}</span>
-                            <span class="item-value">${item[keys[1]]} ${item[keys[2]] ? `(${item[keys[2]]})` : ""}</span>
-                        </div>
-                    `;
-                }).join("");
-            }
-            return `
-                <div class="card">
-                    <div class="card-header"><span>${icon}</span><span>${title}</span></div>
-                    <div class="card-content">${content}</div>
-                </div>
-            `;
-        }
-
-        function renderTrendsCard() {
-            let content = '<div class="tag-group" style="display:flex; flex-wrap:wrap; gap:6px;">';
-            googleTrends.forEach(t => {
-                content += `<span style="background:#f0f4f9; padding:5px 12px; border-radius:25px; font-size:0.7rem;">🔥 ${t.kelime} ${t.artis}</span>`;
-            });
-            content += '</div>';
-            return `
-                <div class="card">
-                    <div class="card-header"><span>📈</span><span>Google Trendler - Dünya Geneli</span></div>
-                    <div class="card-content">${content}</div>
-                </div>
-            `;
-        }
-
-        function renderCommodityCard(title, icon, data) {
-            let content = '<div class="commodity-grid">';
-            data.forEach(item => {
-                const trendClass = item.durum === "up" ? "trend-up" : (item.durum === "down" ? "trend-down" : "");
-                content += `
-                    <div class="commodity-item">
-                        <span class="item-label">${item.ad}</span>
-                        <span class="item-value ${trendClass}">${item.fiyat} ${item.degisim ? `(${item.degisim})` : ""}</span>
-                    </div>
-                `;
-            });
-            content += '</div>';
-            return `
-                <div class="card coffee-card">
-                    <div class="card-header"><span>${icon}</span><span>${title}</span></div>
-                    <div class="card-content">${content}</div>
-                </div>
-            `;
-        }
-
-        function renderAll() {
-            let html = "";
-            html += renderCommodityCard("ICE Kahve Emtia Borsası", "☕", iceCoffeeData);
-            html += renderCommodityCard("Brezilya Toptan Kahve Fiyatları", "🇧🇷", brasilCoffeePrices);
-            html += renderCommodityCard("Diğer Emtialar", "📊", otherCommodities);
-            html += renderTrendsCard();
-            html += renderCard("Döviz & Kripto", "💰", currencyData);
-            html += renderCard("Hava Durumu", "🌤️", weatherData);
-            html += renderCard("Bölge Haberleri", "📰", newsData, true);
-            html += renderCard("Ekonomi", "📈", economyData);
-            html += renderCard("Akaryakıt Fiyatları", "⛽", fuelData);
-            html += renderCard("Trafik & Ulaşım", "🚦", trafficData);
-            html += renderCard("Sağlık", "🏥", healthData);
-            html += renderCard("Borsa", "📊", stockData);
-            document.getElementById('panelGrid').innerHTML = html;
-        }
-
-        // Zaman güncelleme
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('updateTime').innerHTML = now.toLocaleString('tr-TR');
-            document.getElementById('liveBadge').innerHTML = `🔴 CANLI ${now.toLocaleTimeString('tr-TR')}`;
-        }
-
-        // Dil değiştir (placeholder için)
-        document.getElementById('langSelect').addEventListener('change', (e) => {
-            // Dil değişince içerik değişmiyor, sadece gösterge
+    // Soft Kaydırma ve Mobil Dokunuş Efektleri
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelector('.nav-item.active').classList.remove('active');
+            this.classList.add('active');
         });
+    });
+</script>
 
-        // Sayfa başlatma
-        function init() {
-            renderAll();
-            updateTime();
-            setInterval(updateTime, 60000);
-        }
-
-        init();
-    </script>
 </body>
 </html>
