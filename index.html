@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
 <meta name="theme-color" content="#0066cc">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>Brezilya Robusta | Ultimate Pro</title>
+<title>Brezilya Robusta | Oyunlar & Eğlence</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
@@ -17,7 +15,6 @@
 :root {
   --primary: #0066cc;
   --primary-dark: #0052a3;
-  --primary-light: #e8f0fe;
   --gray-50: #f8f9fc;
   --gray-100: #f1f3f8;
   --gray-200: #e4e8f0;
@@ -26,17 +23,14 @@
   --gray-700: #3a4a66;
   --gray-900: #1a2a3e;
   --white: #ffffff;
+  --gold: #d4af37;
   --success: #10b981;
   --warning: #f59e0b;
   --error: #ef4444;
-  --gold: #d4af37;
   --purple: #8b5cf6;
-  --pink: #ec4899;
-  --cyan: #06b6d4;
 }
 [data-theme="dark"] {
   --primary: #3b82f6;
-  --primary-dark: #2563eb;
   --gray-50: #1a1a2e;
   --gray-100: #16213e;
   --gray-200: #2d2d44;
@@ -47,7 +41,7 @@
   --white: #0f0f23;
 }
 body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(--gray-900); transition: all 0.3s; }
-.header { background: var(--white); border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.header { background: var(--white); border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 100; }
 .header-content { max-width: 1280px; margin: 0 auto; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 .logo { display: flex; align-items: center; gap: 10px; }
 .logo-icon { width: 36px; height: 36px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; }
@@ -56,25 +50,26 @@ body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(
 .header-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
 .btn-outline { background: transparent; border: 1px solid var(--gray-300); padding: 8px 14px; border-radius: 8px; font-size: 0.65rem; font-weight: 600; color: var(--gray-700); cursor: pointer; transition: all 0.2s; }
 .btn-outline:hover { background: var(--gray-100); border-color: var(--primary); color: var(--primary); }
-.btn-primary { background: var(--primary); border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.65rem; font-weight: 600; color: white; cursor: pointer; transition: all 0.2s; }
-.btn-primary:hover { background: var(--primary-dark); transform: scale(1.02); }
+.btn-primary { background: var(--primary); border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.65rem; font-weight: 600; color: white; cursor: pointer; }
+.btn-game { background: linear-gradient(135deg, var(--purple), var(--primary)); border: none; padding: 8px 14px; border-radius: 20px; font-size: 0.65rem; font-weight: 600; color: white; cursor: pointer; transition: transform 0.2s; }
+.btn-game:hover { transform: scale(1.05); }
 .container { max-width: 1280px; margin: 0 auto; padding: 16px; padding-bottom: 90px; }
-.stats-banner { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 20px; padding: 20px; margin-bottom: 24px; color: white; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; animation: fadeIn 0.5s; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.stats-banner { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 20px; padding: 20px; margin-bottom: 24px; color: white; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
 .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px; }
 .dash-card { background: var(--white); border-radius: 16px; padding: 16px; text-align: center; border: 1px solid var(--gray-200); cursor: pointer; transition: all 0.2s; }
 .dash-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
 .dash-card .value { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
-.filter-scroll { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 8px; margin-bottom: 16px; }
+.filter-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; }
 .filter-chip { background: var(--white); border: 1px solid var(--gray-200); padding: 8px 18px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; color: var(--gray-700); white-space: nowrap; cursor: pointer; }
 .filter-chip.active { background: var(--primary); border-color: var(--primary); color: white; }
 .action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
-.sort-group { display: flex; gap: 8px; }
-.sort-btn { background: var(--white); border: 1px solid var(--gray-200); padding: 6px 14px; border-radius: 8px; font-size: 0.65rem; font-weight: 600; cursor: pointer; }
+.sort-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.sort-btn { background: var(--white); border: 1px solid var(--gray-200); padding: 8px 14px; border-radius: 8px; font-size: 0.65rem; font-weight: 600; cursor: pointer; }
+.game-group { display: flex; gap: 8px; flex-wrap: wrap; }
 .products-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
 @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
-.product-card { background: var(--white); border-radius: 16px; padding: 20px; border: 1px solid var(--gray-200); transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+.product-card { background: var(--white); border-radius: 16px; padding: 20px; border: 1px solid var(--gray-200); transition: all 0.3s; cursor: pointer; position: relative; }
 .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.1); }
 .product-card.p1 { border-top: 3px solid var(--gold); }
 .product-card.p2 { border-top: 3px solid var(--success); }
@@ -96,14 +91,14 @@ body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(
 .modal-container { background: var(--white); border-radius: 20px; padding: 20px; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; }
 .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--gray-900); color: white; padding: 10px 20px; border-radius: 10px; font-size: 0.7rem; z-index: 500; animation: fadeOut 2s ease forwards; }
 @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-.ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.5); transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
-@keyframes ripple { to { transform: scale(4); opacity: 0; } }
-.hidden { display: none !important; }
 .settings-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: flex-end; justify-content: center; z-index: 200; visibility: hidden; opacity: 0; transition: all 0.3s; }
 .settings-modal.open { visibility: visible; opacity: 1; }
 .settings-panel { background: var(--white); border-radius: 24px 24px 0 0; width: 100%; max-width: 600px; padding: 24px 20px; transform: translateY(100%); transition: transform 0.3s; max-height: 85vh; overflow-y: auto; }
 .settings-modal.open .settings-panel { transform: translateY(0); }
 .params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.hidden { display: none !important; }
+.wheel-container { text-align: center; padding: 20px; }
+.wheel { width: 200px; height: 200px; border-radius: 50%; margin: 20px auto; transition: transform 4s cubic-bezier(0.2, 0.9, 0.4, 1.1); background: conic-gradient(from 0deg, #ff6b6b 0deg 72deg, #4ecdc4 72deg 144deg, #45b7d1 144deg 216deg, #96ceb4 216deg 288deg, #ffeaa7 288deg 360deg); }
 </style>
 </head>
 <body>
@@ -135,6 +130,7 @@ body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(
     <div class="update-badge" id="bannerLastUpdate">--</div>
   </div>
 
+  <!-- OYUN KARTLARI (GÖRÜNÜR) -->
   <div class="dashboard-grid">
     <div class="dash-card" onclick="showMostViewed()"><div class="value" id="mostViewedCount">0</div><div class="label">👁️ En Çok Bakılan</div></div>
     <div class="dash-card" onclick="showMostProfitable()"><div class="value" id="mostProfitable">0%</div><div class="label">💰 En Karlı</div></div>
@@ -157,10 +153,14 @@ body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(
       <button class="sort-btn" onclick="setSort('price')">💰 Fiyat</button>
       <button class="sort-btn" onclick="setSort('profit')">📈 Karlılık</button>
     </div>
-    <div>
-      <button class="sort-btn" id="favFilterBtn" onclick="toggleFavFilter()">⭐ Favoriler</button>
-      <button class="sort-btn" onclick="openRandomProduct()">🎲 Rastgele</button>
-      <button class="sort-btn" onclick="startVoiceCommand()">🎤 Sesli</button>
+    <div class="game-group">
+      <button class="btn-game" onclick="openRandomProduct()">🎲 Rastgele Ürün</button>
+      <button class="btn-game" onclick="startVoiceCommand()">🎤 Sesli Komut</button>
+      <button class="btn-game" onclick="toggleFavFilter()">⭐ Favoriler</button>
+      <button class="btn-game" onclick="openSpinWheel()">🎰 Çarkıfelek</button>
+      <button class="btn-game" onclick="startTreasureHunt()">🗺️ Hazine Avı</button>
+      <button class="btn-game" onclick="feedPet()">🐾 Kahve Maskotu</button>
+      <button class="btn-game" onclick="showLeaderboard()">🏆 Liderlik</button>
     </div>
   </div>
 
@@ -205,7 +205,7 @@ let cocData = [
   { coc: 'COC-03', p: 1, rs: 1895, viewCount: 0, tags: [] },
   { coc: 'COC-04', p: 2, rs: 1885, viewCount: 0, tags: [] },
   { coc: 'COC-05', p: 2, rs: 1845, viewCount: 0, tags: [] },
-  { coc: 'COC-06', p: 2, rs: 1662, viewCount: 0, tags: [] },
+  { coc: 'COC-06', p: 2, rs: 1662, viewCount: 0, tags: ['hazine'] },
   { coc: 'COC-07', p: 3, rs: 1630, viewCount: 0, tags: [] },
   { coc: 'COC-08', p: 3, rs: 1615, viewCount: 0, tags: [] },
   { coc: 'COC-09', p: 4, rs: 1477, viewCount: 0, tags: [] },
@@ -214,7 +214,7 @@ let cocData = [
   { coc: 'COC-12', p: 4, rs: 1257, viewCount: 0, tags: [] },
   { coc: 'COC-13', p: 5, rs: 870, viewCount: 0, tags: [] },
   { coc: 'COC-14', p: 5, rs: 870, viewCount: 0, tags: [] },
-  { coc: 'COC-15', p: 5, rs: 750, viewCount: 0, tags: [] },
+  { coc: 'COC-15', p: 5, rs: 750, viewCount: 0, tags: ['limited', 'hazine'] },
   { coc: 'COC-16', p: 5, rs: 630, viewCount: 0, tags: [] }
 ];
 
@@ -226,6 +226,8 @@ let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
 let offerHistory = JSON.parse(localStorage.getItem('offerHistory') || '[]');
 let badges = JSON.parse(localStorage.getItem('badges') || '[]');
 let monthlyTarget = JSON.parse(localStorage.getItem('monthlyTarget') || '{"target":500000,"current":0}');
+let petHunger = 50;
+let treasureFound = false;
 
 function calcPrices(rs, usdbrl, usdtry, freight, taxRate, profit) {
   let usdkg = (rs / 60) / usdbrl;
@@ -237,169 +239,141 @@ function calcPrices(rs, usdbrl, usdtry, freight, taxRate, profit) {
   return { fobTon, cifTon, ddpTon, sellTon, marginPct };
 }
 
-// RIPPLE EFEKTİ
-function createRipple(event, element) {
-  let rect = element.getBoundingClientRect();
-  let ripple = document.createElement('span');
-  ripple.className = 'ripple';
-  let size = Math.max(rect.width, rect.height);
-  ripple.style.width = ripple.style.height = size + 'px';
-  ripple.style.left = (event.clientX - rect.left - size/2) + 'px';
-  ripple.style.top = (event.clientY - rect.top - size/2) + 'px';
-  element.style.position = 'relative';
-  element.style.overflow = 'hidden';
-  element.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 600);
+// ============ OYUN 1: RASTGELE ÜRÜN ============
+function openRandomProduct() {
+  let random = cocData[Math.floor(Math.random() * cocData.length)];
+  showToast(`🎲 Rastgele ürün: ${random.coc}`);
+  document.getElementById(random.coc)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  canvasConfetti({ particleCount: 50, spread: 60 });
 }
 
-// MORPHING BUTON
-function morphButton(btn) {
-  btn.style.transition = 'all 0.3s';
-  btn.style.borderRadius = '30px';
-  setTimeout(() => { btn.style.borderRadius = '8px'; }, 300);
+// ============ OYUN 2: SESLİ KOMUT ============
+function startVoiceCommand() {
+  if (!('webkitSpeechRecognition' in window)) { showToast('Sesli komut desteklenmiyor'); return; }
+  let recognition = new webkitSpeechRecognition();
+  recognition.lang = 'tr-TR';
+  recognition.onresult = (e) => {
+    let cmd = e.results[0][0].transcript.toLowerCase();
+    showToast(`🎤 "${cmd}"`);
+    if (cmd.includes('rastgele') || cmd.includes('rast') || cmd.includes('şans')) openRandomProduct();
+    else if (cmd.includes('favori')) toggleFavFilter();
+    else if (cmd.includes('karanlık')) toggleTheme();
+    else if (cmd.includes('pdf')) generatePDF();
+    else if (cmd.includes('fiyat') || cmd.includes('göster')) scrollToProducts();
+    else if (cmd.includes('çark')) openSpinWheel();
+    else if (cmd.includes('hazine')) startTreasureHunt();
+    else if (cmd.includes('maskot') || cmd.includes('besle')) feedPet();
+    else showToast('Komutlar: rastgele, favori, karanlık, pdf, çark, hazine, maskot');
+  };
+  recognition.start();
 }
 
-// SHAKE TO RESET
-let lastShake = 0;
-window.addEventListener('devicemotion', (e) => {
-  let acc = e.accelerationIncludingGravity;
-  if (acc && (Math.abs(acc.x) > 15 || Math.abs(acc.y) > 15)) {
-    let now = Date.now();
-    if (now - lastShake > 3000) {
-      lastShake = now;
-      if (confirm('Telefonu salladınız! Parametreleri sıfırlamak istiyor musunuz?')) {
-        document.getElementById('usdbrl').value = '5.10';
-        document.getElementById('usdtry').value = '44.70';
-        document.getElementById('freight').value = '0.47';
-        document.getElementById('taxRate').value = '10.5';
-        document.getElementById('profit').value = '20';
-        document.getElementById('ton').value = '20';
-        render();
-        showToast('Parametreler sıfırlandı!');
-      }
-    }
-  }
-});
-
-// LONG PRESS MENÜ
-let longPressTimer;
-function startLongPress(event, cocName) {
-  longPressTimer = setTimeout(() => {
-    let action = confirm(`${cocName} için ne yapmak istersiniz?\nTamam: Favori ekle/çıkar\nİptal: Vazgeç`);
-    if (action) toggleFavorite(cocName);
-  }, 500);
-}
-function cancelLongPress() { clearTimeout(longPressTimer); }
-
-// DOUBLE TAP
-let lastTap = 0;
-function onDoubleTap(cocName) {
-  let now = Date.now();
-  if (now - lastTap < 300) {
-    toggleFavorite(cocName);
-    showToast(`${cocName} favorilere eklendi/çıkarıldı`);
-  }
-  lastTap = now;
-}
-
-// EDGE SWIPE
-let touchStartX = 0;
-document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
-document.addEventListener('touchend', (e) => {
-  let touchEndX = e.changedTouches[0].clientX;
-  if (touchStartX < 30 && touchEndX > 150) { openSettings(); showToast('Ayarlar açıldı'); }
-  if (touchStartX > window.innerWidth - 30 && touchEndX < window.innerWidth - 150) { openEditor(); showToast('Yönetim açıldı'); }
-});
-
-// CUSTOM CURSOR
-document.body.style.cursor = 'url(\'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'%230066cc\'%3E%3Cpath d=\'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5\'/%3E%3C/svg%3E\') 12 12, auto';
-
-// SESLİ FİYAT OKUMA
-function speakPrice(cocName, price) {
-  let utterance = new SpeechSynthesisUtterance(`${cocName} fiyatı ${price} Türk Lirası`);
-  utterance.lang = 'tr-TR';
-  speechSynthesis.speak(utterance);
-}
-
-// FLOATING ELEMENTS
-function createFloatingElements() {
-  for(let i=0; i<10; i++) {
-    let el = document.createElement('div');
-    el.style.position = 'fixed';
-    el.style.width = Math.random() * 30 + 10 + 'px';
-    el.style.height = el.style.width;
-    el.style.background = `rgba(0,102,204,${Math.random() * 0.1})`;
-    el.style.borderRadius = '50%';
-    el.style.bottom = Math.random() * 100 + '%';
-    el.style.left = Math.random() * 100 + '%';
-    el.style.pointerEvents = 'none';
-    el.style.zIndex = '0';
-    el.style.animation = `float ${Math.random() * 10 + 5}s linear infinite`;
-    document.body.appendChild(el);
-  }
-}
-createFloatingElements();
-
-// ============ PDF (MOBİL DÜZELTMELİ) ============
-function getPDFHTML() {
-  let usdbrl = parseFloat(document.getElementById('usdbrl').value) || 1;
-  let usdtry = parseFloat(document.getElementById('usdtry').value) || 1;
-  let freight = parseFloat(document.getElementById('freight').value) || 0;
-  let taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-  let profit = parseFloat(document.getElementById('profit').value) || 0;
-  let ton = parseFloat(document.getElementById('ton').value) || 0;
-  let totalSell = 0;
-  let rows = '';
-  cocData.forEach(c => {
-    let p = calcPrices(c.rs, usdbrl, usdtry, freight, taxRate, profit);
-    let productTotal = p.sellTon * ton;
-    totalSell += productTotal;
-    rows += `<tr style="border-bottom:1px solid #e0e4ec;"><td style="padding:8px;"><b>${c.coc}</b></td><td style="padding:8px;text-align:center">${c.p}</td><td style="padding:8px;text-align:right">₺ ${Math.round(p.fobTon).toLocaleString()}</td><td style="padding:8px;text-align:right">₺ ${Math.round(p.cifTon).toLocaleString()}</td><td style="padding:8px;text-align:right">₺ ${Math.round(p.ddpTon).toLocaleString()}</td><td style="padding:8px;text-align:right">₺ ${Math.round(p.sellTon).toLocaleString()}</td><td style="padding:8px;text-align:center">${p.marginPct.toFixed(1)}%</td></tr>`;
-  });
-  return `
-    <div style="font-family:'Inter',Arial,sans-serif; max-width:100%; margin:0 auto; background:white;">
-      <div style="background:#0066cc; padding:20px; text-align:center;">
-        <h1 style="color:white; margin:0; font-size:18px;">BREZİLYA ROBUSTA</h1>
-        <p style="color:rgba(255,255,255,0.8); margin-top:4px; font-size:10px;">RESMİ TEKLİF MEKTUBU</p>
+// ============ OYUN 3: ÇARKIFELEK ============
+function openSpinWheel() {
+  let modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal-container" style="text-align:center;">
+      <h3>🎰 Çarkıfelek</h3>
+      <div class="wheel-container">
+        <div class="wheel" id="wheel" style="width:200px;height:200px;border-radius:50%;margin:20px auto;background:conic-gradient(from 0deg, #ff6b6b 0deg 72deg, #4ecdc4 72deg 144deg, #45b7d1 144deg 216deg, #96ceb4 216deg 288deg, #ffeaa7 288deg 360deg);"></div>
+        <button class="btn-primary" onclick="spinWheel()" style="margin-top:16px;">🔄 Çevir</button>
       </div>
-      <div style="padding:16px;">
-        <div style="background:#f8f9fc; padding:12px; border-radius:12px; margin-bottom:16px;">
-          <h3 style="font-size:12px; margin-bottom:8px;">HESAPLAMA PARAMETRELERİ</h3>
-          <table style="width:100%; font-size:9px;"><tr><td>USD/BRL: <b>${usdbrl}</b></td><td>USD/TRY: <b>${usdtry}</b></td><td>Navlun: <b>$${freight}</b></td></tr><tr><td>Vergi: <b>${taxRate}%</b></td><td>Kar: <b>₺${profit}</b></td><td>Miktar: <b>${ton} ton</b></td></tr></table>
-        </div>
-        <h3 style="font-size:12px; margin-bottom:8px;">ÜRÜN BAZLI TEKLİFLER</h3>
-        <div style="overflow-x:auto;">
-          <table style="width:100%; border-collapse:collapse; font-size:8px;">
-            <thead><tr style="background:#0066cc; color:white;"><th style="padding:6px;">COC</th><th>P</th><th>FOB</th><th>CIF</th><th>DDP</th><th>SATIŞ</th><th>KAR%</th></tr></thead>
-            <tbody>${rows}</tbody>
-            <tfoot><tr style="background:#e8f0fe;"><td colspan="5" style="padding:8px;text-align:right;"><b>TOPLAM (${ton} TON):</b></td><td style="padding:8px;text-align:right;"><b>₺ ${Math.round(totalSell).toLocaleString()}</b></td><td></td></tr></tfoot>
-          </table>
-        </div>
-        <div style="margin-top:16px; padding:10px; background:#f8f9fc; border-left:4px solid #0066cc; font-size:8px;">
-          <p>📌 FOB: Mal bedeli | CIF: Navlun dahil | DDP: Vergi dahil teslim</p>
-          <p>📌 Geçerlilik: ${new Date(Date.now()+7*24*60*60*1000).toLocaleDateString('tr-TR')}</p>
-          <p>📌 Ödeme: Peşin/Akreditif | Teslimat: 30 gün içinde</p>
-        </div>
-      </div>
+      <div id="wheelResult" style="margin-top:16px;font-weight:bold;"></div>
+      <button class="btn-outline" onclick="closeModal(this)" style="margin-top:16px;">Kapat</button>
     </div>
   `;
+  document.body.appendChild(modal);
+  window.spinWheel = () => {
+    let wheel = document.getElementById('wheel');
+    let randomDeg = Math.floor(Math.random() * 3600) + 720;
+    wheel.style.transform = `rotate(${randomDeg}deg)`;
+    setTimeout(() => {
+      let segments = ['COC-01', 'COC-03', 'COC-05', 'COC-07', 'COC-09', 'COC-11', 'COC-13', 'COC-15', '⭐ Favori', '🎉 Joker'];
+      let result = segments[Math.floor(Math.random() * segments.length)];
+      document.getElementById('wheelResult').innerHTML = `🎉 Kazandınız: ${result}!`;
+      canvasConfetti({ particleCount: 100, spread: 70 });
+      if (result === '⭐ Favori') { showToast('Rastgele bir ürün favorilere eklendi!'); let r = cocData[Math.floor(Math.random()*cocData.length)]; toggleFavorite(r.coc); }
+      else if (result === '🎉 Joker') { showToast('Tüm parametreler optimize edildi!'); document.getElementById('profit').value = 15; render(); }
+      else { showToast(`${result} ürününe göz atın!`); document.getElementById(result)?.scrollIntoView({ behavior: 'smooth' }); }
+    }, 4000);
+  };
 }
 
-async function generatePDF() {
-  let content = getPDFHTML();
-  let preview = document.createElement('div');
-  preview.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:400;overflow:auto;padding:16px;';
-  preview.innerHTML = `<div style="position:sticky;top:0;background:white;padding:12px;border-radius:12px;display:flex;gap:10px;justify-content:center;margin-bottom:16px;"><button class="btn-primary" onclick="window.dlPDF()">📥 PDF İndir</button><button class="btn-outline" onclick="window.closePDF()">✖ Kapat</button></div><div style="background:white;max-width:100%;margin:0 auto;padding:0;border-radius:12px;overflow:hidden;" id="pdfContent">${content}</div>`;
-  document.body.appendChild(preview);
-  window.dlPDF = () => {
-    let element = document.getElementById('pdfContent');
-    let opt = { margin: [0.3, 0.3, 0.3, 0.3], filename: `BrezilyaRobusta_Teklif_${new Date().toLocaleDateString('tr-TR')}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, logging: false }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
-    html2pdf().set(opt).from(element).save();
-    saveToHistory();
-    canvasConfetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
-    checkAndAwardBadge('firstPDF');
-  };
-  window.closePDF = () => preview.remove();
+// ============ OYUN 4: HAZİNE AVI ============
+let treasureHuntActive = false;
+function startTreasureHunt() {
+  if (treasureHuntActive) { showToast('Zaten hazine avı aktif! Hazine etiketli ürünleri bulun!'); return; }
+  treasureHuntActive = true;
+  showToast('🗺️ HAZİNE AVI BAŞLADI! "hazine" etiketli ürünleri bulun!');
+  let hazineProducts = cocData.filter(c => c.tags.includes('hazine'));
+  showToast(`🔍 İpucu: ${hazineProducts.length} gizli hazine var!`);
+  let found = 0;
+  let checkInterval = setInterval(() => {
+    let newFound = cocData.filter(c => c.tags.includes('hazine') && favorites.includes(c.coc)).length;
+    if (newFound > found) {
+      found = newFound;
+      showToast(`🎁 ${found}/${hazineProducts.length} hazine bulundu!`);
+      canvasConfetti({ particleCount: 50 });
+      if (found === hazineProducts.length) {
+        clearInterval(checkInterval);
+        showToast('🏆 TÜM HAZİNELER BULUNDU! BÜYÜK ÖDÜL KAZANDINIZ!');
+        canvasConfetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
+        checkAndAwardBadge('treasureHunter');
+        treasureHuntActive = false;
+      }
+    }
+  }, 1000);
+  setTimeout(() => { if (treasureHuntActive) { clearInterval(checkInterval); treasureHuntActive = false; showToast('⏰ Hazine avı sona erdi! Tekrar başlatın!'); } }, 60000);
+}
+
+// ============ OYUN 5: SANAL EVcil HAYVAN (KAHVE MASKOTU) ============
+function feedPet() {
+  let modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  petHunger = Math.max(0, petHunger - 10);
+  modal.innerHTML = `
+    <div class="modal-container" style="text-align:center;">
+      <h3>🐾 Kahve Maskotu</h3>
+      <div style="font-size:3rem; margin:16px 0;">☕🐱</div>
+      <div style="background:var(--gray-200); border-radius:10px; height:20px; margin:16px 0;">
+        <div style="width:${petHunger}%; background:var(--success); height:20px; border-radius:10px;"></div>
+      </div>
+      <p>Maskot tokluk: ${petHunger}%</p>
+      <button class="btn-primary" onclick="feedPetAction()" style="margin:8px;">🍪 Besle (+10)</button>
+      <button class="btn-outline" onclick="playWithPet()" style="margin:8px;">🎾 Oyna (+5 mutluluk)</button>
+      <button class="btn-outline" onclick="closeModal(this)">Kapat</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  window.feedPetAction = () => { petHunger = Math.min(100, petHunger + 10); showToast('🍪 Maskot beslendi!'); modal.remove(); feedPet(); if(petHunger>=100) checkAndAwardBadge('petMaster'); };
+  window.playWithPet = () => { showToast('🎾 Maskotla oynadınız! Mutlu oldu ❤️'); canvasConfetti({ particleCount: 30 }); modal.remove(); feedPet(); };
+}
+
+// ============ OYUN 6: LİDERLİK TABLOSU ============
+function showLeaderboard() {
+  let sorted = [...cocData].sort((a,b) => b.viewCount - a.viewCount);
+  let modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  let html = `<div class="modal-container"><h3>🏆 Liderlik Tablosu</h3><div style="margin:16px 0;">`;
+  sorted.forEach((c, idx) => {
+    html += `<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--gray-200);"><span>${idx+1}. ${c.coc}</span><span style="color:var(--gold);">👁️ ${c.viewCount}</span></div>`;
+  });
+  html += `</div><div style="margin-top:16px;"><h4>🏅 Rozetleriniz</h4><div id="badgeList"></div></div><button class="btn-outline" onclick="closeModal(this)">Kapat</button></div>`;
+  modal.innerHTML = html;
+  document.body.appendChild(modal);
+  let badgeHtml = badges.map(b => `<span style="display:inline-block;background:var(--gold);padding:4px 12px;border-radius:20px;margin:4px;">🏆 ${b}</span>`).join('');
+  document.getElementById('badgeList').innerHTML = badgeHtml || 'Henüz rozet yok';
+}
+
+// ============ ROZET SİSTEMİ ============
+function checkAndAwardBadge(badgeId) {
+  if (!badges.includes(badgeId)) {
+    badges.push(badgeId);
+    localStorage.setItem('badges', JSON.stringify(badges));
+    showToast(`🎉 Yeni rozet kazandınız!`);
+    canvasConfetti({ particleCount: 150, spread: 80 });
+  }
 }
 
 // ============ DİĞER FONKSİYONLAR ============
@@ -432,125 +406,94 @@ function toggleFavorite(cocName) {
   render();
 }
 
-function toggleFavFilter() { showOnlyFav = !showOnlyFav; document.getElementById('favFilterBtn').classList.toggle('active', showOnlyFav); render(); }
-function checkAndAwardBadge(badgeId) { if (!badges.includes(badgeId)) { badges.push(badgeId); localStorage.setItem('badges', JSON.stringify(badges)); showToast(`🎉 Yeni rozet!`); canvasConfetti({ particleCount: 100, spread: 70 }); } }
+function toggleFavFilter() { showOnlyFav = !showOnlyFav; render(); }
 function openSettings() { document.getElementById('settingsModal').classList.add('open'); }
 function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
+
+function getPDFHTML() {
+  let u=parseFloat(document.getElementById('usdbrl').value)||1, t=parseFloat(document.getElementById('usdtry').value)||1, f=parseFloat(document.getElementById('freight').value)||0, tx=parseFloat(document.getElementById('taxRate').value)||0, p=parseFloat(document.getElementById('profit').value)||0, ton=parseFloat(document.getElementById('ton').value)||0;
+  let total=0, rows='';
+  cocData.forEach(c=>{ let pr=calcPrices(c.rs,u,t,f,tx,p); total+=pr.sellTon*ton; rows+=`<tr><td style="padding:8px;"><b>${c.coc}</b></td><td style="text-align:center">${c.p}</td><td style="text-align:right">₺ ${Math.round(pr.fobTon).toLocaleString()}</td><td style="text-align:right">₺ ${Math.round(pr.cifTon).toLocaleString()}</td><td style="text-align:right">₺ ${Math.round(pr.ddpTon).toLocaleString()}</td><td style="text-align:right">₺ ${Math.round(pr.sellTon).toLocaleString()}</td><td style="text-align:center">${pr.marginPct.toFixed(1)}%</td></tr>`; });
+  return `<div style="font-family:Inter;max-width:100%;"><div style="background:#0066cc;padding:20px;text-align:center;"><h1 style="color:white;">BREZİLYA ROBUSTA</h1><p style="color:rgba(255,255,255,0.8);">RESMİ TEKLİF</p></div><div style="padding:16px;"><div style="background:#f8f9fc;padding:12px;border-radius:12px;"><h3>PARAMETRELER</h3><table style="width:100%"><tr><td>USD/BRL: ${u}</td><td>USD/TRY: ${t}</td><td>Navlun: $${f}</td></tr><tr><td>Vergi: ${tx}%</td><td>Kar: ₺${p}</td><td>Miktar: ${ton} ton</td></tr></table></div><h3>ÜRÜNLER</h3><table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#0066cc;color:white;"><th>COC</th><th>P</th><th>FOB</th><th>CIF</th><th>DDP</th><th>SATIŞ</th><th>KAR%</th></tr></thead><tbody>${rows}</tbody><tfoot><tr style="background:#e8f0fe;"><td colspan="5"><b>TOPLAM</b></td><td><b>₺ ${Math.round(total).toLocaleString()}</b></td><td></td></tr></tfoot></table></div></div>`;
+}
+
+async function generatePDF() {
+  let content = getPDFHTML();
+  let preview = document.createElement('div');
+  preview.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:400;overflow:auto;padding:16px;';
+  preview.innerHTML = `<div style="position:sticky;top:0;background:white;padding:12px;border-radius:12px;display:flex;gap:10px;justify-content:center;margin-bottom:16px;"><button class="btn-primary" onclick="window.dlPDF()">📥 PDF İndir</button><button class="btn-outline" onclick="window.closePDF()">✖ Kapat</button></div><div style="background:white;max-width:100%;margin:0 auto;border-radius:12px;overflow:hidden;" id="pdfContent">${content}</div>`;
+  document.body.appendChild(preview);
+  window.dlPDF = () => { html2pdf().set({ margin: 0.3, filename: `Teklif_${new Date().toLocaleDateString('tr-TR')}.pdf`, image: { quality: 0.98 }, html2canvas: { scale: 2 } }).from(document.getElementById('pdfContent')).save(); saveToHistory(); canvasConfetti({ particleCount: 150 }); checkAndAwardBadge('firstPDF'); };
+  window.closePDF = () => preview.remove();
+}
+
 function saveToHistory() {
-  let usdbrl = parseFloat(document.getElementById('usdbrl').value);
-  let usdtry = parseFloat(document.getElementById('usdtry').value);
-  let ton = parseFloat(document.getElementById('ton').value);
-  let total = 0;
-  cocData.forEach(c => total += calcPrices(c.rs, usdbrl, usdtry, parseFloat(document.getElementById('freight').value), parseFloat(document.getElementById('taxRate').value), parseFloat(document.getElementById('profit').value)).sellTon * ton);
-  offerHistory.unshift({ date: new Date().toISOString(), total, usdbrl, usdtry, ton });
-  if (offerHistory.length > 20) offerHistory.pop();
+  let u=parseFloat(document.getElementById('usdbrl').value), t=parseFloat(document.getElementById('usdtry').value), ton=parseFloat(document.getElementById('ton').value);
+  let total=0; cocData.forEach(c=>total+=calcPrices(c.rs,u,t,parseFloat(document.getElementById('freight').value),parseFloat(document.getElementById('taxRate').value),parseFloat(document.getElementById('profit').value)).sellTon*ton);
+  offerHistory.unshift({ date: new Date().toISOString(), total, u, t, ton });
+  if(offerHistory.length>20) offerHistory.pop();
   localStorage.setItem('offerHistory', JSON.stringify(offerHistory));
   monthlyTarget.current += total;
   localStorage.setItem('monthlyTarget', JSON.stringify(monthlyTarget));
 }
 
 function openHistory() {
-  if (!offerHistory.length) { showToast('Geçmiş yok'); return; }
-  let modal = document.createElement('div'); modal.className = 'modal-overlay';
-  let html = `<div class="modal-container"><h3>📜 Teklif Geçmişi</h3>`;
-  offerHistory.forEach((h, idx) => { html += `<div style="background:var(--gray-100);padding:12px;border-radius:12px;margin-bottom:10px;cursor:pointer;" onclick="loadHistory(${idx})"><div style="font-size:0.65rem;color:var(--primary);">${new Date(h.date).toLocaleString('tr-TR')}</div><div style="font-weight:700;">₺ ${Math.round(h.total).toLocaleString()}</div></div>`; });
-  html += `<button class="btn-outline" onclick="closeModal(this)">Kapat</button></div>`;
-  modal.innerHTML = html; document.body.appendChild(modal);
-  window.loadHistory = (idx) => { let h = offerHistory[idx]; document.getElementById('usdbrl').value = h.usdbrl; document.getElementById('usdtry').value = h.usdtry; document.getElementById('ton').value = h.ton; modal.remove(); render(); showToast('Geçmiş yüklendi'); };
+  if(!offerHistory.length) { showToast('Geçmiş yok'); return; }
+  let modal=document.createElement('div'); modal.className='modal-overlay';
+  let html=`<div class="modal-container"><h3>📜 Teklif Geçmişi</h3>`;
+  offerHistory.forEach((h,idx)=>{ html+=`<div style="background:var(--gray-100);padding:12px;border-radius:12px;margin-bottom:10px;cursor:pointer;" onclick="loadHistory(${idx})"><div style="font-size:0.65rem;color:var(--primary);">${new Date(h.date).toLocaleString('tr-TR')}</div><div>₺ ${Math.round(h.total).toLocaleString()}</div></div>`; });
+  html+=`<button class="btn-outline" onclick="closeModal(this)">Kapat</button></div>`;
+  modal.innerHTML=html; document.body.appendChild(modal);
+  window.loadHistory=(idx)=>{ let h=offerHistory[idx]; document.getElementById('usdbrl').value=h.u; document.getElementById('usdtry').value=h.t; document.getElementById('ton').value=h.ton; modal.remove(); render(); showToast('Geçmiş yüklendi'); };
 }
 
-function showMostViewed() { let most = [...cocData].sort((a,b)=>b.viewCount - a.viewCount)[0]; showToast(`👁️ En çok bakılan: ${most.coc} (${most.viewCount})`); }
-function showMostProfitable() {
-  let u=parseFloat(document.getElementById('usdbrl').value)||1, t=parseFloat(document.getElementById('usdtry').value)||1, f=parseFloat(document.getElementById('freight').value)||0, tx=parseFloat(document.getElementById('taxRate').value)||0, p=parseFloat(document.getElementById('profit').value)||0;
-  let most = [...cocData].sort((a,b)=>calcPrices(b.rs,u,t,f,tx,p).marginPct - calcPrices(a.rs,u,t,f,tx,p).marginPct)[0];
-  let pr = calcPrices(most.rs,u,t,f,tx,p);
-  showToast(`💰 En karlı: ${most.coc} (%${pr.marginPct.toFixed(1)})`);
-}
-function showGoalStatus() { let prog = (monthlyTarget.current/monthlyTarget.target*100).toFixed(1); showToast(`🎯 Hedef: %${prog} tamamlandı`); }
-function showTodayDeal() {
-  let u=parseFloat(document.getElementById('usdbrl').value)||1, t=parseFloat(document.getElementById('usdtry').value)||1, f=parseFloat(document.getElementById('freight').value)||0, tx=parseFloat(document.getElementById('taxRate').value)||0, p=parseFloat(document.getElementById('profit').value)||0;
-  let cheapest = [...cocData].sort((a,b)=>calcPrices(a.rs,u,t,f,tx,p).sellTon - calcPrices(b.rs,u,t,f,tx,p).sellTon)[0];
-  document.getElementById('todayDeal').innerHTML = cheapest.coc;
-  showToast(`⭐ Günün fırsatı: ${cheapest.coc}`);
-}
-function openDashboard() {
-  let modal = document.createElement('div'); modal.className = 'modal-overlay';
-  modal.innerHTML = `<div class="modal-container"><h3>📊 Analiz</h3><canvas id="priceChart" width="280" height="180"></canvas><div style="margin-top:16px;"><h4>🏆 Rozetler</h4><div id="badgesList"></div></div><button class="btn-outline" onclick="closeModal(this)">Kapat</button></div>`;
-  document.body.appendChild(modal);
-  setTimeout(() => {
-    let ctx = document.getElementById('priceChart').getContext('2d');
-    let u=parseFloat(document.getElementById('usdbrl').value)||1, t=parseFloat(document.getElementById('usdtry').value)||1, f=parseFloat(document.getElementById('freight').value)||0, tx=parseFloat(document.getElementById('taxRate').value)||0, p=parseFloat(document.getElementById('profit').value)||0;
-    let prices = cocData.map(c=>calcPrices(c.rs,u,t,f,tx,p).sellTon);
-    new Chart(ctx, { type: 'bar', data: { labels: cocData.map(c=>c.coc), datasets: [{ label: '₺/TON', data: prices, backgroundColor: '#0066cc' }] }, options: { responsive: true, maintainAspectRatio: true } });
-    document.getElementById('badgesList').innerHTML = badges.map(b=>`<span style="display:inline-block;background:var(--gold);padding:4px 12px;border-radius:20px;margin:4px;font-size:0.65rem;">🏆 ${b}</span>`).join('') || 'Henüz rozet yok';
-  }, 100);
-}
-function openRandomProduct() { let random = cocData[Math.floor(Math.random()*cocData.length)]; showToast(`🎲 Rastgele: ${random.coc}`); document.getElementById(random.coc)?.scrollIntoView({behavior:'smooth'}); }
-
-function startVoiceCommand() {
-  if (!('webkitSpeechRecognition' in window)) { showToast('Sesli komut desteklenmiyor'); return; }
-  let recognition = new webkitSpeechRecognition();
-  recognition.lang = 'tr-TR';
-  recognition.onresult = (e) => {
-    let cmd = e.results[0][0].transcript.toLowerCase();
-    showToast(`🎤 "${cmd}"`);
-    if (cmd.includes('fiyat')) scrollToProducts();
-    else if (cmd.includes('karanlık')) toggleTheme();
-    else if (cmd.includes('pdf')) generatePDF();
-    else if (cmd.includes('favori')) toggleFavFilter();
-    else showToast('Komut: fiyat, karanlık, pdf, favori');
-  };
-  recognition.start();
-}
+function showMostViewed() { let most=[...cocData].sort((a,b)=>b.viewCount-a.viewCount)[0]; showToast(`👁️ En çok bakılan: ${most.coc} (${most.viewCount})`); }
+function showMostProfitable() { let u=parseFloat(document.getElementById('usdbrl').value)||1, t=parseFloat(document.getElementById('usdtry').value)||1, f=parseFloat(document.getElementById('freight').value)||0, tx=parseFloat(document.getElementById('taxRate').value)||0, p=parseFloat(document.getElementById('profit').value)||0; let most=[...cocData].sort((a,b)=>calcPrices(b.rs,u,t,f,tx,p).marginPct-calcPrices(a.rs,u,t,f,tx,p).marginPct)[0]; let pr=calcPrices(most.rs,u,t,f,tx,p); showToast(`💰 En karlı: ${most.coc} (%${pr.marginPct.toFixed(1)})`); }
+function showGoalStatus() { let prog=(monthlyTarget.current/monthlyTarget.target*100).toFixed(1); showToast(`🎯 Hedef: %${prog} tamamlandı`); }
+function showTodayDeal() { let u=parseFloat(document.getElementById('usdbrl').value)||1, t=parseFloat(document.getElementById('usdtry').value)||1, f=parseFloat(document.getElementById('freight').value)||0, tx=parseFloat(document.getElementById('taxRate').value)||0, p=parseFloat(document.getElementById('profit').value)||0; let cheapest=[...cocData].sort((a,b)=>calcPrices(a.rs,u,t,f,tx,p).sellTon-calcPrices(b.rs,u,t,f,tx,p).sellTon)[0]; document.getElementById('todayDeal').innerHTML=cheapest.coc; showToast(`⭐ Günün fırsatı: ${cheapest.coc}`); }
+function openDashboard() { let modal=document.createElement('div'); modal.className='modal-overlay'; modal.innerHTML=`<div class="modal-container"><h3>📊 Analiz</h3><canvas id="priceChart" width="280" height="180"></canvas><div style="margin-top:16px;"><h4>🏆 Rozetler</h4><div id="badgesList"></div></div><button class="btn-outline" onclick="closeModal(this)">Kapat</button></div>`; document.body.appendChild(modal); setTimeout(()=>{ let ctx=document.getElementById('priceChart').getContext('2d'); let u=parseFloat(document.getElementById('usdbrl').value)||1, t=parseFloat(document.getElementById('usdtry').value)||1, f=parseFloat(document.getElementById('freight').value)||0, tx=parseFloat(document.getElementById('taxRate').value)||0, p=parseFloat(document.getElementById('profit').value)||0; let prices=cocData.map(c=>calcPrices(c.rs,u,t,f,tx,p).sellTon); new Chart(ctx,{type:'bar',data:{labels:cocData.map(c=>c.coc),datasets:[{label:'₺/TON',data:prices,backgroundColor:'#0066cc'}]},options:{responsive:true,maintainAspectRatio:true}}); document.getElementById('badgesList').innerHTML=badges.map(b=>`<span style="display:inline-block;background:var(--gold);padding:4px 12px;border-radius:20px;margin:4px;">🏆 ${b}</span>`).join('')||'Henüz rozet yok'; },100); }
 
 function render() {
   let u=parseFloat(document.getElementById('usdbrl').value)||1, t=parseFloat(document.getElementById('usdtry').value)||1, f=parseFloat(document.getElementById('freight').value)||0, tx=parseFloat(document.getElementById('taxRate').value)||0, p=parseFloat(document.getElementById('profit').value)||0, ton=parseFloat(document.getElementById('ton').value)||0;
-  let filtered = [...cocData];
-  if (currentFilter !== 'all') filtered = filtered.filter(c => c.p == currentFilter);
-  if (showOnlyFav) filtered = filtered.filter(c => favorites.includes(c.coc));
-  if (currentSort === 'price') filtered.sort((a,b)=>calcPrices(a.rs,u,t,f,tx,p).sellTon - calcPrices(b.rs,u,t,f,tx,p).sellTon);
-  else if (currentSort === 'profit') filtered.sort((a,b)=>calcPrices(b.rs,u,t,f,tx,p).marginPct - calcPrices(a.rs,u,t,f,tx,p).marginPct);
-  else filtered.sort((a,b)=>a.p - b.p || b.rs - a.rs);
-  let container = document.getElementById('productsGrid');
-  container.innerHTML = '';
-  filtered.forEach(c => {
-    c.viewCount++;
-    let pr = calcPrices(c.rs,u,t,f,tx,p);
-    let isFav = favorites.includes(c.coc);
-    container.innerHTML += `<div class="product-card p${c.p}" id="${c.coc}" ontouchstart="startLongPress(event,'${c.coc}')" ontouchend="cancelLongPress()" onclick="onDoubleTap('${c.coc}')"><div class="card-header"><span class="coc-name">${c.coc}</span><span class="fav-star ${isFav?'active':''}" onclick="event.stopPropagation();toggleFavorite('${c.coc}')">${isFav?'★':'☆'}</span></div><div class="price-main">₺ ${Math.round(pr.sellTon).toLocaleString()}<small>/TON</small></div><div class="price-details ${salesMode?'hidden':''}"><div class="detail-item"><span>📦 FOB</span><span>₺ ${Math.round(pr.fobTon).toLocaleString()}</span></div><div class="detail-item"><span>🚢 CIF</span><span>₺ ${Math.round(pr.cifTon).toLocaleString()}</span></div><div class="detail-item"><span>🏭 DDP</span><span>₺ ${Math.round(pr.ddpTon).toLocaleString()}</span></div><div class="detail-item"><span>📈 Kâr</span><span>%${pr.marginPct.toFixed(1)}</span></div></div>${ton>0?`<div class="total-badge">💰 ${ton} TON: ₺ ${Math.round(pr.sellTon*ton).toLocaleString()}</div>`:''}</div>`;
-  });
-  document.getElementById('modeBtn').innerHTML = salesMode ? '👑 Satış' : '👤 Müşteri';
-  let mostView = Math.max(...cocData.map(c=>c.viewCount));
-  document.getElementById('mostViewedCount').innerHTML = mostView;
-  let maxMargin = Math.max(...filtered.map(c=>calcPrices(c.rs,u,t,f,tx,p).marginPct));
-  document.getElementById('mostProfitable').innerHTML = maxMargin.toFixed(1)+'%';
-  let prog = (monthlyTarget.current/monthlyTarget.target*100).toFixed(1);
-  document.getElementById('goalProgress').innerHTML = prog+'%';
+  let filtered=[...cocData];
+  if(currentFilter!=='all') filtered=filtered.filter(c=>c.p==currentFilter);
+  if(showOnlyFav) filtered=filtered.filter(c=>favorites.includes(c.coc));
+  if(currentSort==='price') filtered.sort((a,b)=>calcPrices(a.rs,u,t,f,tx,p).sellTon-calcPrices(b.rs,u,t,f,tx,p).sellTon);
+  else if(currentSort==='profit') filtered.sort((a,b)=>calcPrices(b.rs,u,t,f,tx,p).marginPct-calcPrices(a.rs,u,t,f,tx,p).marginPct);
+  else filtered.sort((a,b)=>a.p-b.p||b.rs-a.rs);
+  let container=document.getElementById('productsGrid');
+  container.innerHTML='';
+  filtered.forEach(c=>{ c.viewCount++; let pr=calcPrices(c.rs,u,t,f,tx,p); let isFav=favorites.includes(c.coc); let hazineIcon=c.tags.includes('hazine')?'🗝️':''; let limitedIcon=c.tags.includes('limited')?'🔥':''; container.innerHTML+=`<div class="product-card p${c.p}" id="${c.coc}"><div class="card-header"><span class="coc-name">${c.coc} ${hazineIcon} ${limitedIcon}</span><span class="fav-star ${isFav?'active':''}" onclick="event.stopPropagation();toggleFavorite('${c.coc}')">${isFav?'★':'☆'}</span></div><div class="price-main">₺ ${Math.round(pr.sellTon).toLocaleString()}<small>/TON</small></div><div class="price-details ${salesMode?'hidden':''}"><div><span>📦 FOB</span><br><span>₺ ${Math.round(pr.fobTon).toLocaleString()}</span></div><div><span>🚢 CIF</span><br><span>₺ ${Math.round(pr.cifTon).toLocaleString()}</span></div><div><span>🏭 DDP</span><br><span>₺ ${Math.round(pr.ddpTon).toLocaleString()}</span></div><div><span>📈 Kâr</span><br><span>%${pr.marginPct.toFixed(1)}</span></div></div>${ton>0?`<div class="total-badge">💰 ${ton} TON: ₺ ${Math.round(pr.sellTon*ton).toLocaleString()}</div>`:''}</div>`; });
+  document.getElementById('modeBtn').innerHTML=salesMode?'👑 Satış':'👤 Müşteri';
+  document.getElementById('mostViewedCount').innerHTML=Math.max(...cocData.map(c=>c.viewCount));
+  let maxMargin=Math.max(...filtered.map(c=>calcPrices(c.rs,u,t,f,tx,p).marginPct));
+  document.getElementById('mostProfitable').innerHTML=maxMargin.toFixed(1)+'%';
+  document.getElementById('goalProgress').innerHTML=(monthlyTarget.current/monthlyTarget.target*100).toFixed(1)+'%';
   showTodayDeal();
 }
-function toggleMode() { salesMode = !salesMode; render(); }
-function setSort(type) { currentSort = type; render(); }
-function setFilter(priority) { currentFilter = priority; document.querySelectorAll('.filter-chip').forEach(el=>el.classList.toggle('active',el.dataset.priority===priority)); render(); }
-function scrollToTop() { window.scrollTo({top:0,behavior:'smooth'}); }
-function scrollToProducts() { document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'}); }
-function showToast(msg) { let t=document.createElement('div'); t.className='toast'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
-function closeModal(btn) { btn.closest('.modal-overlay').remove(); }
+function toggleMode(){ salesMode=!salesMode; render(); }
+function setSort(type){ currentSort=type; render(); }
+function setFilter(priority){ currentFilter=priority; document.querySelectorAll('.filter-chip').forEach(el=>el.classList.toggle('active',el.dataset.priority===priority)); render(); }
+function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+function scrollToProducts(){ document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'}); }
+function showToast(msg){ let t=document.createElement('div'); t.className='toast'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
+function closeModal(btn){ btn.closest('.modal-overlay').remove(); }
 
 function openEditor() {
-  let modal = document.createElement('div'); modal.className = 'modal-overlay';
-  let listHtml = '';
-  cocData.forEach((c,idx)=>{ listHtml += `<div style="margin-bottom:12px;padding:12px;background:var(--gray-100);border-radius:12px;"><b>${c.coc}</b><div style="display:flex;gap:8px;margin-top:8px;"><input type="number" id="p_${idx}" value="${c.p}" min="1" max="5" style="width:70px;"><input type="number" id="rs_${idx}" value="${c.rs}" step="1" style="width:100px;"><button onclick="window.delCoc(${idx})" style="background:var(--error);border:none;padding:6px 12px;border-radius:8px;color:white;">Sil</button></div></div>`; });
-  modal.innerHTML = `<div class="modal-container"><h3>✎ Yönetim</h3><div style="max-height:400px;overflow-y:auto;">${listHtml}</div><div class="modal-buttons" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;"><button class="btn-primary" onclick="window.addCoc()">+ Yeni</button><button class="btn-primary" onclick="window.importExcel()">📎 İçe Aktar</button><button class="btn-primary" onclick="window.exportExcel()">📎 Dışa Aktar</button><button class="btn-primary" onclick="window.setTarget()">🎯 Hedef</button></div><div class="modal-buttons" style="display:flex;gap:8px;margin-top:12px;"><button class="btn-success" onclick="window.saveCoc()">💾 Kaydet</button><button class="btn-outline" onclick="window.resetCoc()">⟳ Sıfırla</button><button class="btn-outline" onclick="window.backupData()">💾 Yedekle</button><button class="btn-outline" onclick="window.restoreData()">🔄 Geri Yükle</button></div><button class="btn-outline" onclick="closeModal(this)" style="margin-top:12px;width:100%;">Kapat</button></div>`;
+  let modal=document.createElement('div'); modal.className='modal-overlay';
+  let listHtml='';
+  cocData.forEach((c,idx)=>{ listHtml+=`<div style="margin-bottom:12px;padding:12px;background:var(--gray-100);border-radius:12px;"><b>${c.coc}</b><div style="display:flex;gap:8px;margin-top:8px;"><input type="number" id="p_${idx}" value="${c.p}" min="1" max="5" style="width:70px;"><input type="number" id="rs_${idx}" value="${c.rs}" step="1" style="width:100px;"><input type="text" id="tags_${idx}" value="${c.tags.join(',')}" placeholder="etiketler" style="width:100px;"><button onclick="window.delCoc(${idx})" style="background:var(--error);border:none;padding:6px 12px;border-radius:8px;color:white;">Sil</button></div></div>`; });
+  modal.innerHTML=`<div class="modal-container"><h3>✎ Yönetim</h3><div style="max-height:400px;overflow-y:auto;">${listHtml}</div><div class="modal-buttons" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;"><button class="btn-primary" onclick="window.addCoc()">+ Yeni</button><button class="btn-primary" onclick="window.importExcel()">📎 İçe Aktar</button><button class="btn-primary" onclick="window.exportExcel()">📎 Dışa Aktar</button><button class="btn-primary" onclick="window.setTarget()">🎯 Hedef</button></div><div class="modal-buttons" style="display:flex;gap:8px;margin-top:12px;"><button class="btn-success" onclick="window.saveCoc()">💾 Kaydet</button><button class="btn-outline" onclick="window.resetCoc()">⟳ Sıfırla</button><button class="btn-outline" onclick="window.backupData()">💾 Yedekle</button><button class="btn-outline" onclick="window.restoreData()">🔄 Geri Yükle</button></div><button class="btn-outline" onclick="closeModal(this)" style="margin-top:12px;width:100%;">Kapat</button></div>`;
   document.body.appendChild(modal);
-  window.delCoc = (idx) => { if(cocData.length>1) cocData.splice(idx,1); openEditor(); };
-  window.addCoc = () => { cocData.push({ coc: `COC-${String(cocData.length+1).padStart(2,'0')}`, p: 3, rs: 1500, viewCount: 0, tags: [] }); openEditor(); };
-  window.setTarget = () => { let nt = prompt('Aylık hedef (₺):', monthlyTarget.target); if(nt) { monthlyTarget.target = parseFloat(nt); localStorage.setItem('monthlyTarget', JSON.stringify(monthlyTarget)); showToast('Hedef güncellendi'); } };
-  window.importExcel = () => { let inp=document.createElement('input'); inp.type='file'; inp.accept='.xlsx'; inp.onchange=(e)=>{ let file=e.target.files[0]; let reader=new FileReader(); reader.onload=(ev)=>{ let data=new Uint8Array(ev.target.result); let wb=XLSX.read(data,{type:'array'}); let sheet=wb.Sheets[wb.SheetNames[0]]; let rows=XLSX.utils.sheet_to_json(sheet,{header:1}); let newData=[]; for(let i=1;i<rows.length;i++) if(rows[i][0]&&rows[i][1]&&rows[i][2]) newData.push({ coc:String(rows[i][0]), p:parseInt(rows[i][1])||3, rs:parseFloat(rows[i][2])||0, viewCount:0, tags:[] }); if(newData.length) { cocData=newData; localStorage.setItem('cocData',JSON.stringify(cocData)); render(); showToast('İçe aktarıldı'); modal.remove(); } }; reader.readAsArrayBuffer(file); }; inp.click(); };
-  window.exportExcel = () => { let wsData=[['COC','Priority','RS']]; cocData.forEach(c=>wsData.push([c.coc,c.p,c.rs])); let ws=XLSX.utils.aoa_to_sheet(wsData); let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'COC'); XLSX.writeFile(wb,`COC_${new Date().toLocaleDateString('tr-TR')}.xlsx`); showToast('Dışa aktarıldı'); };
-  window.saveCoc = () => { for(let i=0;i<cocData.length;i++) { let pv=document.getElementById(`p_${i}`); let rv=document.getElementById(`rs_${i}`); if(pv) cocData[i].p=parseInt(pv.value)||3; if(rv) cocData[i].rs=parseFloat(rv.value)||0; } localStorage.setItem('cocData',JSON.stringify(cocData)); render(); modal.remove(); showToast('Kaydedildi'); if(favorites.length>=10) checkAndAwardBadge('tenProducts'); };
-  window.resetCoc = () => { cocData = [ { coc:'COC-01',p:1,rs:1915,viewCount:0,tags:[] }, { coc:'COC-02',p:1,rs:1905,viewCount:0,tags:[] }, { coc:'COC-03',p:1,rs:1895,viewCount:0,tags:[] }, { coc:'COC-04',p:2,rs:1885,viewCount:0,tags:[] }, { coc:'COC-05',p:2,rs:1845,viewCount:0,tags:[] }, { coc:'COC-06',p:2,rs:1662,viewCount:0,tags:[] }, { coc:'COC-07',p:3,rs:1630,viewCount:0,tags:[] }, { coc:'COC-08',p:3,rs:1615,viewCount:0,tags:[] }, { coc:'COC-09',p:4,rs:1477,viewCount:0,tags:[] }, { coc:'COC-10',p:4,rs:1442,viewCount:0,tags:[] }, { coc:'COC-11',p:4,rs:1320,viewCount:0,tags:[] }, { coc:'COC-12',p:4,rs:1257,viewCount:0,tags:[] }, { coc:'COC-13',p:5,rs:870,viewCount:0,tags:[] }, { coc:'COC-14',p:5,rs:870,viewCount:0,tags:[] }, { coc:'COC-15',p:5,rs:750,viewCount:0,tags:[] }, { coc:'COC-16',p:5,rs:630,viewCount:0,tags:[] } ]; localStorage.removeItem('cocData'); render(); modal.remove(); showToast('Sıfırlandı'); };
-  window.backupData = () => { let backup={cocData,favorites,offerHistory,monthlyTarget,badges}; let blob=new Blob([JSON.stringify(backup)],{type:'application/json'}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download=`backup_${new Date().toLocaleDateString('tr-TR')}.json`; a.click(); showToast('Yedek alındı'); };
-  window.restoreData = () => { let inp=document.createElement('input'); inp.type='file'; inp.accept='.json'; inp.onchange=(e)=>{ let file=e.target.files[0]; let reader=new FileReader(); reader.onload=(ev)=>{ let backup=JSON.parse(ev.target.result); if(backup.cocData) cocData=backup.cocData; if(backup.favorites) favorites=backup.favorites; if(backup.offerHistory) offerHistory=backup.offerHistory; if(backup.monthlyTarget) monthlyTarget=backup.monthlyTarget; if(backup.badges) badges=backup.badges; localStorage.setItem('cocData',JSON.stringify(cocData)); localStorage.setItem('favorites',JSON.stringify(favorites)); localStorage.setItem('offerHistory',JSON.stringify(offerHistory)); localStorage.setItem('monthlyTarget',JSON.stringify(monthlyTarget)); localStorage.setItem('badges',JSON.stringify(badges)); render(); showToast('Yedek geri yüklendi'); modal.remove(); }; reader.readAsText(file); }; inp.click(); };
+  window.delCoc=(idx)=>{ if(cocData.length>1) cocData.splice(idx,1); openEditor(); };
+  window.addCoc=()=>{ cocData.push({ coc:`COC-${String(cocData.length+1).padStart(2,'0')}`, p:3, rs:1500, viewCount:0, tags:[] }); openEditor(); };
+  window.setTarget=()=>{ let nt=prompt('Aylık hedef (₺):',monthlyTarget.target); if(nt){ monthlyTarget.target=parseFloat(nt); localStorage.setItem('monthlyTarget',JSON.stringify(monthlyTarget)); showToast('Hedef güncellendi'); } };
+  window.importExcel=()=>{ let inp=document.createElement('input'); inp.type='file'; inp.accept='.xlsx'; inp.onchange=(e)=>{ let file=e.target.files[0]; let reader=new FileReader(); reader.onload=(ev)=>{ let data=new Uint8Array(ev.target.result); let wb=XLSX.read(data,{type:'array'}); let sheet=wb.Sheets[wb.SheetNames[0]]; let rows=XLSX.utils.sheet_to_json(sheet,{header:1}); let newData=[]; for(let i=1;i<rows.length;i++) if(rows[i][0]&&rows[i][1]&&rows[i][2]) newData.push({ coc:String(rows[i][0]), p:parseInt(rows[i][1])||3, rs:parseFloat(rows[i][2])||0, viewCount:0, tags:[] }); if(newData.length){ cocData=newData; localStorage.setItem('cocData',JSON.stringify(cocData)); render(); showToast('İçe aktarıldı'); modal.remove(); } }; reader.readAsArrayBuffer(file); }; inp.click(); };
+  window.exportExcel=()=>{ let wsData=[['COC','Priority','RS']]; cocData.forEach(c=>wsData.push([c.coc,c.p,c.rs])); let ws=XLSX.utils.aoa_to_sheet(wsData); let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'COC'); XLSX.writeFile(wb,`COC_${new Date().toLocaleDateString('tr-TR')}.xlsx`); showToast('Dışa aktarıldı'); };
+  window.saveCoc=()=>{ for(let i=0;i<cocData.length;i++){ let pv=document.getElementById(`p_${i}`); let rv=document.getElementById(`rs_${i}`); let tv=document.getElementById(`tags_${i}`); if(pv) cocData[i].p=parseInt(pv.value)||3; if(rv) cocData[i].rs=parseFloat(rv.value)||0; if(tv) cocData[i].tags=tv.value.split(',').map(t=>t.trim()); } localStorage.setItem('cocData',JSON.stringify(cocData)); render(); modal.remove(); showToast('Kaydedildi'); if(favorites.length>=10) checkAndAwardBadge('tenProducts'); };
+  window.resetCoc=()=>{ cocData=[ { coc:'COC-01',p:1,rs:1915,viewCount:0,tags:[] }, { coc:'COC-02',p:1,rs:1905,viewCount:0,tags:[] }, { coc:'COC-03',p:1,rs:1895,viewCount:0,tags:[] }, { coc:'COC-04',p:2,rs:1885,viewCount:0,tags:[] }, { coc:'COC-05',p:2,rs:1845,viewCount:0,tags:[] }, { coc:'COC-06',p:2,rs:1662,viewCount:0,tags:['hazine'] }, { coc:'COC-07',p:3,rs:1630,viewCount:0,tags:[] }, { coc:'COC-08',p:3,rs:1615,viewCount:0,tags:[] }, { coc:'COC-09',p:4,rs:1477,viewCount:0,tags:[] }, { coc:'COC-10',p:4,rs:1442,viewCount:0,tags:[] }, { coc:'COC-11',p:4,rs:1320,viewCount:0,tags:[] }, { coc:'COC-12',p:4,rs:1257,viewCount:0,tags:[] }, { coc:'COC-13',p:5,rs:870,viewCount:0,tags:[] }, { coc:'COC-14',p:5,rs:870,viewCount:0,tags:[] }, { coc:'COC-15',p:5,rs:750,viewCount:0,tags:['limited','hazine'] }, { coc:'COC-16',p:5,rs:630,viewCount:0,tags:[] } ]; localStorage.removeItem('cocData'); render(); modal.remove(); showToast('Sıfırlandı'); };
+  window.backupData=()=>{ let backup={cocData,favorites,offerHistory,monthlyTarget,badges}; let blob=new Blob([JSON.stringify(backup)],{type:'application/json'}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download=`backup_${new Date().toLocaleDateString('tr-TR')}.json`; a.click(); showToast('Yedek alındı'); };
+  window.restoreData=()=>{ let inp=document.createElement('input'); inp.type='file'; inp.accept='.json'; inp.onchange=(e)=>{ let file=e.target.files[0]; let reader=new FileReader(); reader.onload=(ev)=>{ let backup=JSON.parse(ev.target.result); if(backup.cocData) cocData=backup.cocData; if(backup.favorites) favorites=backup.favorites; if(backup.offerHistory) offerHistory=backup.offerHistory; if(backup.monthlyTarget) monthlyTarget=backup.monthlyTarget; if(backup.badges) badges=backup.badges; localStorage.setItem('cocData',JSON.stringify(cocData)); localStorage.setItem('favorites',JSON.stringify(favorites)); localStorage.setItem('offerHistory',JSON.stringify(offerHistory)); localStorage.setItem('monthlyTarget',JSON.stringify(monthlyTarget)); localStorage.setItem('badges',JSON.stringify(badges)); render(); showToast('Yedek geri yüklendi'); modal.remove(); }; reader.readAsText(file); }; inp.click(); };
 }
 
 // INIT
@@ -562,8 +505,7 @@ document.querySelectorAll('.filter-chip').forEach(el => el.addEventListener('cli
 fetchLiveRates();
 render();
 
-// GÜNÜN SÖZÜ
-const quotes = ["☕ Kahve, düşüncenin kahvesidir.", "🌟 Her fincan yeni bir başlangıçtır.", "💪 Robusta, gücün kaynağıdır.", "🌱 Kaliteli kahve, kaliteli hayattır.", "📈 Fırsatları kaçırmayın!", "🎯 Hedeflerinize ulaşın!"];
+const quotes = ["☕ Kahve, düşüncenin kahvesidir.", "🌟 Her fincan yeni bir başlangıçtır.", "💪 Robusta, gücün kaynağıdır.", "🌱 Kaliteli kahve, kaliteli hayattır.", "📈 Fırsatları kaçırmayın!", "🎯 Hedeflerinize ulaşın!", "🎲 Rastgele ürün dene!", "🗺️ Hazine avına katıl!", "🐾 Kahve maskotunu besle!"];
 setInterval(() => { document.getElementById('dailyQuote').innerHTML = quotes[Math.floor(Math.random()*quotes.length)]; }, 30000);
 let hour = new Date().getHours();
 let greeting = hour<12 ? '🌅 GÜNAYDIN' : (hour<18 ? '☀️ İYİ GÜNLER' : '🌙 İYİ AKŞAMLAR');
