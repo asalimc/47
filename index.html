@@ -7,37 +7,37 @@
 
 <style>
 :root{
-  /* HIGH READABILITY PALETTE */
-  --bg:#0e1624;
-  --card:#ffffff;
-  --text:#0f172a;
-  --text-soft:#475569;
-  --text-inv:#e5e7eb;
+  --bg:#050814;
+  --card:#0b1224;
+  --border:#1e293b;
 
-  --accent:#2563eb;
-  --accent-soft:#dbeafe;
+  --text:#f8fafc;
+  --muted:#94a3b8;
 
-  --up:#15803d;
-  --down:#b91c1c;
+  --accent:#38bdf8;
 
-  --low:#dcfce7;
-  --mid:#f8fafc;
-  --high:#fee2e2;
+  --up:#22c55e;
+  --down:#ef4444;
+
+  --low:#052e1c;
+  --mid:#0b1224;
+  --high:#3f0a0a;
 }
 
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont;
+  font-family:system-ui;
   background:var(--bg);
-  color:var(--text-inv);
+  color:var(--text);
 }
 
 /* HEADER */
 .header{
   padding:14px;
-  background:#111827;
+  background:#020617;
+  border-bottom:1px solid var(--border);
   display:flex;
   flex-direction:column;
   gap:10px;
@@ -49,43 +49,31 @@ body{
   font-weight:900;
 }
 
-.small{
-  font-size:12px;
-  color:#cbd5e1;
-}
+.small{font-size:12px;color:var(--muted)}
 
 .monthPicker{
-  width:100%;
-  padding:10px 12px;
+  padding:10px;
   border-radius:12px;
-  border:none;
+  background:#020617;
+  color:white;
+  border:1px solid var(--border);
   font-weight:700;
-  font-size:14px;
 }
 
 /* CONTENT */
-.container{ padding:12px }
+.container{padding:12px}
 
-/* ROUTE CARD */
+/* CARD */
 .routeCard{
   background:var(--card);
   border-radius:18px;
   padding:14px;
   margin-bottom:16px;
-  box-shadow:0 12px 28px rgba(0,0,0,.3);
+  border:1px solid var(--border);
 }
 
-.title{
-  font-weight:900;
-  font-size:16px;
-  color:var(--text);
-}
-
-.info{
-  margin-top:6px;
-  font-size:11px;
-  color:var(--text-soft);
-}
+.title{font-weight:900}
+.info{font-size:12px;color:var(--muted)}
 
 /* CALENDAR */
 .calendar{
@@ -96,94 +84,92 @@ body{
 }
 
 .day{
+  background:#020617;
   border-radius:14px;
-  padding:8px 6px;
+  padding:8px;
   text-align:center;
   cursor:pointer;
-  transition:.15s;
-  position:relative;
+  transition:.2s;
+  border:1px solid #020617;
 }
 
-.day:hover{
-  outline:2px solid var(--accent);
-}
+.day:hover{border-color:var(--accent)}
 
 .hm-low{background:var(--low)}
 .hm-mid{background:var(--mid)}
 .hm-high{background:var(--high)}
 
-.price{
-  font-weight:900;
-  font-size:13px;
-  color:var(--text);
+.price{font-weight:900}
+
+.tag{
+  font-size:10px;
+  font-weight:800;
+  margin-top:2px;
+  color:#e5e7eb;
 }
 
-.cheapest{
-  outline:2px solid var(--accent);
+.cheapest{outline:2px solid var(--accent)}
+
+.flash-up{animation:flashUp .6s}
+.flash-down{animation:flashDown .6s}
+
+@keyframes flashUp{
+  0%{box-shadow:0 0 0 4px rgba(34,197,94,.9)}
 }
-
-/* FLASH */
-.flash-up{animation:up .6s}
-.flash-down{animation:down .6s}
-
-@keyframes up{0%{box-shadow:0 0 0 4px rgba(185,28,28,.5)}}
-@keyframes down{0%{box-shadow:0 0 0 4px rgba(21,128,61,.5)}}
+@keyframes flashDown{
+  0%{box-shadow:0 0 0 4px rgba(239,68,68,.9)}
+}
 
 /* MODAL */
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(14,22,36,.75);
+  background:rgba(2,6,23,.85);
   display:none;
   align-items:center;
   justify-content:center;
+  z-index:99;
 }
 
 .modalContent{
-  background:white;
+  background:#020617;
+  width:95%;
+  max-width:520px;
   border-radius:20px;
   padding:16px;
-  width:94%;
-  max-width:520px;
-  color:var(--text);
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+  border:1px solid var(--border);
 }
 
 .modalHeader{
   display:flex;
   justify-content:space-between;
   align-items:center;
-}
-
-.closeBtn{
-  font-size:20px;
   font-weight:900;
-  cursor:pointer;
-  color:var(--text-soft);
 }
 
-.detailRow{
+.closeBtn{cursor:pointer;font-size:20px}
+
+.detailGrid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:12px;
+  gap:10px;
+  margin-top:12px;
   font-size:14px;
 }
 
-.priceBox{
-  background:var(--accent-soft);
-  border-radius:14px;
-  padding:12px;
-  font-size:18px;
-  font-weight:900;
+.box{
+  background:#0b1224;
+  border-radius:12px;
+  padding:10px;
+  border:1px solid var(--border);
   text-align:center;
+  font-weight:800;
 }
 
 /* RESPONSIVE */
 @media(min-width:700px){
   .calendar{grid-template-columns:repeat(7,1fr)}
-  .header{flex-direction:row;justify-content:space-between;align-items:center}
+  .header{flex-direction:row;justify-content:space-between}
 }
 </style>
 </head>
@@ -193,7 +179,7 @@ body{
 <div class="header">
   <div>
     <h3>✈️ Flight Price Intelligence</h3>
-    <div class="small">Readable • Live pricing • Mobile-first</div>
+    <div class="small">Live pricing • Heatmap • Flash arrows</div>
   </div>
   <input type="month" id="monthPicker" class="monthPicker"/>
 </div>
@@ -202,13 +188,12 @@ body{
   <div id="app"></div>
 </div>
 
-<div id="modal" class="modal">
+<div class="modal" id="modal">
   <div class="modalContent" id="modalContent"></div>
 </div>
 
 <script>
 let usdTry=0;
-let modalState=null;
 const memory={};
 
 async function fx(){
@@ -218,75 +203,74 @@ async function fx(){
 }
 
 const routes=[
- {name:"São Paulo (GRU) → Istanbul (IST)",base:720,airline:"Turkish Airlines",stop:"Direct / DOH",demand:1.1},
- {name:"Brasília (BSB) → Istanbul (IST)",base:690,airline:"LATAM + Turkish",stop:"1 Stop Europe",demand:.95}
+{
+  name:"São Paulo (GRU) → Istanbul (IST)",
+  airline:"Turkish Airlines",
+  stop:"Direct / Doha",
+  transit:"Transit vize gerekmez",
+  base:720,
+  demand:1.1
+},
+{
+  name:"Brasília (BSB) → Istanbul (IST)",
+  airline:"LATAM + Turkish Airlines",
+  stop:"Paris (CDG)",
+  transit:"Transit vize gerekebilir",
+  base:690,
+  demand:.95
+}
 ];
 
 let activeDate=new Date();
 
 function price(b,d,dm){
-  return b+
-    Math.sin(d/6)*25+
-    (Math.random()-.5)*20+
-    dm*Math.cos(d/10)*30;
+  return b+Math.sin(d/6)*25+(Math.random()-.5)*20+dm*Math.cos(d/10)*30;
 }
 
-function openModal(state){
-  modalState=state;
-  renderModal();
-  modal.style.display="flex";
+function tag(date){
+  const t=new Date();
+  const diff=Math.floor((date-t)/(86400000));
+  if(diff===0) return "BUGÜN";
+  if(diff===1) return "YARIN";
+  if(date.getDay()==0||date.getDay()==6) return "HAFTA SONU";
+  return "";
 }
 
-function renderModal(){
-  if(!modalState) return;
-  const {r,label,usd,tryP}=modalState;
-  modalContent.innerHTML=`
+function openModal(r,date,usd){
+  const m=document.getElementById("modal");
+  const c=document.getElementById("modalContent");
+  c.innerHTML=`
     <div class="modalHeader">
-      <b>${r.name}</b>
-      <div class="closeBtn" onclick="closeModal()">✕</div>
+      <div>${r.name}</div>
+      <div class="closeBtn" onclick="modal.style.display='none'">✕</div>
     </div>
-
-    <div class="detailRow">
-      <div>📅 ${label}</div>
-      <div>✈ ${r.airline}</div>
-      <div>🔁 ${r.stop}</div>
-      <div>🛂 Türkiye – Vize Yok</div>
-    </div>
-
-    <div class="detailRow">
-      <div class="priceBox">$${usd.toFixed(0)}</div>
-      <div class="priceBox">₺${tryP.toFixed(0)}</div>
+    <div class="detailGrid">
+      <div class="box">${date}</div>
+      <div class="box">$${usd.toFixed(0)} / ₺${(usd*usdTry).toFixed(0)}</div>
+      <div class="box">${r.airline}</div>
+      <div class="box">${r.stop}</div>
+      <div class="box" style="grid-column:span 2">${r.transit}</div>
     </div>
   `;
+  m.style.display="flex";
 }
-
-function closeModal(){
-  modal.style.display="none";
-  modalState=null;
-}
-
-modal.onclick=closeModal;
 
 function render(){
   const app=document.getElementById("app");
   app.innerHTML="";
-  const y=activeDate.getFullYear();
-  const m=activeDate.getMonth();
+  const y=activeDate.getFullYear(), m=activeDate.getMonth();
   const days=new Date(y,m+1,0).getDate();
 
   routes.forEach(r=>{
     const prices=[];
     for(let i=1;i<=days;i++) prices.push(price(r.base,i,r.demand));
     const min=Math.min(...prices);
-    const max=Math.max(...prices);
 
     const card=document.createElement("div");
     card.className="routeCard";
-    card.innerHTML=`
-      <div class="title">${r.name}</div>
-      <div class="info">${r.airline} • ${r.stop}</div>
-      <div class="calendar"></div>
-    `;
+    card.innerHTML=`<div class="title">${r.name}</div>
+    <div class="info">${r.airline} • ${r.stop}</div>
+    <div class="calendar"></div>`;
     app.appendChild(card);
 
     const cal=card.querySelector(".calendar");
@@ -294,40 +278,32 @@ function render(){
     prices.forEach((usd,i)=>{
       const d=i+1;
       const date=new Date(y,m,d);
-      const label=date.toLocaleDateString("en-US",{weekday:"short",day:"numeric"});
-      const tryP=usd*usdTry;
+      const label=date.toLocaleDateString("tr-TR",{weekday:"short",day:"numeric"});
       const key=r.name+y+m+d;
       const prev=memory[key];
       memory[key]=usd;
 
-      let heat="hm-mid";
-      if(usd===min) heat="hm-low";
-      if(usd===max) heat="hm-high";
-
-      const div=document.createElement("div");
-      div.className=`day ${heat}`;
-      if(usd===min) div.classList.add("cheapest");
+      let arrow="";
+      let flash="";
       if(prev){
-        if(usd>prev) div.classList.add("flash-up");
-        if(usd<prev) div.classList.add("flash-down");
+        if(usd>prev){arrow="▲ ";flash="flash-up"}
+        if(usd<prev){arrow="▼ ";flash="flash-down"}
       }
 
-      const arrow=prev?(usd>prev?"▲ ":usd<prev?"▼ ":""):"";
+      const div=document.createElement("div");
+      div.className=`day ${usd==min?"hm-low":"hm-mid"} ${flash}`;
+      if(usd==min) div.classList.add("cheapest");
 
       div.innerHTML=`
         <div>${label}</div>
         <div class="price">${arrow}$${usd.toFixed(0)}</div>
-        <div class="price">₺${tryP.toFixed(0)}</div>
+        <div class="price">₺${(usd*usdTry).toFixed(0)}</div>
+        ${usd==min?'<div class="tag">⭐ EN UCUZ</div>':""}
+        ${tag(date)?`<div class="tag">${tag(date)}</div>`:""}
       `;
 
-      div.onclick=()=>openModal({r,label,usd,tryP});
+      div.onclick=()=>openModal(r,label,usd);
       cal.appendChild(div);
-
-      if(modalState && modalState.label===label && modalState.r.name===r.name){
-        modalState.usd=usd;
-        modalState.tryP=tryP;
-        renderModal();
-      }
     });
   });
 }
