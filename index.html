@@ -1,221 +1,144 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Mardin Akıllı Rehber | Navigasyon Asistanı</title>
-  
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmet Salim Çınarbaş | Mardin Hafıza Merkezi ve Şehir Analizleri</title>
+    
+    <meta name="description" content="Mardin'in tüm sorunları ve çözümleri: Altyapı, otopark, sosyal alanlar ve kültürel miras üzerine devasa bir inceleme. Yazar Ahmet Salim Çınarbaş'ın tüm eserleri.">
+    <meta name="keywords" content="Mardin otopark sorunu, Mardin altyapı yetersizliği, Mardin parkları, Mardin ulaşım, Mardin müzisyenleri, Ahmet Salim Çınarbaş kitapları, Mardin çözüm önerileri">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Plus+Jakarta+Sans:wght@200;300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #ffffff; --fg: #111111; --sub: #666666; --border: #eeeeee; --accent: #cc0000;
+        }
 
-  <style>
-    :root {
-      --bg: #f8fafc; --panel: #ffffff; --line: #e2e8f0;
-      --text: #0f172a; --primary: #1e3a8a; --accent: #eab308;
-      --white: #ffffff; --shadow: 0 10px 40px rgba(0,0,0,0.1);
-      --radius: 24px;
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--fg); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.8; }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        /* Navigation */
+        nav { position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-between; z-index: 1000; border-bottom: 1px solid var(--border); }
+        .logo { font-weight: 600; letter-spacing: 3px; font-size: 0.8rem; }
 
-    /* --- Hero Alanı --- */
-    .hero {
-      position: relative; height: 75vh; display: flex; align-items: center; justify-content: center;
-      background: #000; color: white; text-align: center;
-    }
-    .hero-bg {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(30,58,138,0.6)), 
-                  url('https://asalimc.github.io/1.webp') center/cover no-repeat;
-      opacity: 0.9; z-index: 1;
-    }
-    .hero-content { position: relative; z-index: 2; padding: 20px; }
-    .hero-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 10vw, 5.5rem); line-height: 1; margin-bottom: 10px; }
+        /* Hero */
+        .hero { height: 80vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 0 10%; gap: 5%; border-bottom: 1px solid var(--border); }
+        .hero-img img { width: 100%; max-width: 400px; filter: grayscale(100%); border: 1px solid var(--border); padding: 10px; }
+        .hero-text h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 1.1; }
 
-    /* --- Akıllı Harita Bölümü --- */
-    .map-section { position: relative; padding: 40px 0; }
-    .map-container { 
-      display: grid; grid-template-columns: 1fr 380px; gap: 20px; height: 650px; 
-      background: var(--panel); padding: 15px; border-radius: var(--radius); box-shadow: var(--shadow);
-    }
-    #map { height: 100%; border-radius: 18px; z-index: 10; }
+        /* Books Section */
+        .books-section { padding: 80px 10%; background: #fafafa; }
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .book-card { padding: 3rem; background: #fff; border: 1px solid var(--border); transition: 0.3s; }
+        .book-card:hover { transform: translateY(-10px); border-color: #000; }
+        .status { color: var(--accent); font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; }
 
-    /* --- Sidebar & Mobil Bilgi --- */
-    .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 5px; }
-    .loc-card {
-      background: #f1f5f9; padding: 20px; border-radius: 20px; border: 1px solid var(--line);
-      cursor: pointer; transition: 0.3s;
-    }
-    .loc-card:hover { transform: scale(0.98); background: white; border-color: var(--accent); }
-    .loc-card h4 { color: var(--primary); font-size: 1.1rem; margin-bottom: 5px; }
-    .distance-tag { font-size: 0.75rem; font-weight: 800; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 5px; }
+        /* MEGA CONTENT (20 SAYFA HEDEFLİ) */
+        .mega-content { max-width: 900px; margin: 0 auto; padding: 100px 5%; }
+        .mega-content h2 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; margin: 4rem 0 2rem; border-bottom: 2px solid #000; padding-bottom: 1rem; }
+        .mega-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin: 3rem 0 1rem; color: #333; }
+        .mega-content p { margin-bottom: 2rem; font-size: 1.2rem; text-align: justify; color: #222; }
+        
+        .box { background: #f0f0f0; padding: 3rem; margin: 3rem 0; border-left: 10px solid var(--accent); }
+        .box h4 { margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
 
-    /* --- Mobil Navigasyon Kontrolleri --- */
-    .nav-controls {
-      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 10px; z-index: 1000; width: 90%; max-width: 400px;
-    }
-    .btn-nav {
-      flex: 1; padding: 16px; border-radius: 16px; border: none; font-weight: 800;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-gps { background: var(--white); color: var(--primary); }
-    .btn-go { background: var(--accent); color: var(--primary); display: none; } /* Bir yer seçilince çıkar */
+        footer { padding: 5rem; background: #000; color: #fff; text-align: center; }
 
-    /* --- Gurme Galeri --- */
-    .food-container { display: flex; gap: 20px; overflow-x: auto; padding: 20px; scroll-snap-type: x mandatory; }
-    .food-item { 
-      min-width: 280px; background: white; border-radius: 20px; overflow: hidden; 
-      box-shadow: var(--shadow); scroll-snap-align: start;
-    }
-    .food-img { height: 180px; width: 100%; object-fit: cover; }
-
-    @media (max-width: 992px) {
-      .map-container { grid-template-columns: 1fr; height: 500px; }
-      .sidebar { display: none; } /* Mobilde yan menü yerine harita üstü etkileşim */
-    }
-  </style>
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; text-align: center; height: auto; padding: 120px 5%; }
+            .hero-img { order: -1; }
+        }
+    </style>
 </head>
 <body>
 
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <p style="letter-spacing: 4px; font-weight: 600;">AKILLI ASİSTAN</p>
-      <h1>MARDİN</h1>
-      <p style="opacity: 0.8;">Canlı konum takibi ve sesli navigasyon desteği</p>
-    </div>
-  </section>
+    <nav>
+        <div class="logo">A. SALİM ÇINARBAŞ</div>
+        <div style="font-size:0.6rem;">MARDİN ANALİZ DOSYASI</div>
+    </nav>
 
-  <div class="container" style="padding: 60px 20px;">
-    <h2 style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 30px;">Tadına Bakmalısın</h2>
-    <div class="food-container">
-      <div class="food-item">
-        <img src="https://images.unsplash.com/photo-1626700051175-656fc77eea3a?auto=format&fit=crop&w=400" class="food-img">
-        <div style="padding: 15px;"><h4>İçli Köfte (Irok)</h4><button onclick="focusOn(37.3142, 40.7360)" style="border:none; color:var(--accent); font-weight:700; background:none;">Mir Han'da Tat ➜</button></div>
-      </div>
-      <div class="food-item">
-        <img src="https://images.unsplash.com/photo-1603048588665-791ca8aea617?auto=format&fit=crop&w=400" class="food-img">
-        <div style="padding: 15px;"><h4>Sembusek</h4><button onclick="focusOn(37.3142, 40.7360)" style="border:none; color:var(--accent); font-weight:700; background:none;">Mir Han'da Tat ➜</button></div>
-      </div>
-      <div class="food-item">
-        <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?auto=format&fit=crop&w=400" class="food-img">
-        <div style="padding: 15px;"><h4>Dibek Kahvesi</h4><button onclick="focusOn(37.3129, 40.7355)" style="border:none; color:var(--accent); font-weight:700; background:none;">Yaşarbey'de Tat ➜</button></div>
-      </div>
-    </div>
+    <section class="hero">
+        <div class="hero-text">
+            <span>Yazar & Araştırmacı</span>
+            <h1>Mardin'in Gerçekleri: Sorunlar ve Çözümler</h1>
+        </div>
+        <div class="hero-img">
+            <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" alt="Ahmet Salim Çınarbaş">
+        </div>
+    </section>
 
-    <h2 style="font-family: 'Playfair Display', serif; color: var(--primary); margin-top: 50px;">Akıllı Harita</h2>
-    <div class="map-container">
-      <div id="map"></div>
-      <div class="sidebar" id="sidebar"></div>
-    </div>
-  </div>
+    <section class="books-section">
+        <h2 style="font-family:'Cormorant Garamond', serif; margin-bottom:3rem; font-size:2.5rem;">Yayımlanmış Eserler</h2>
+        <div class="books-grid">
+            <div class="book-card">
+                <span class="status">TÜKENDİ</span>
+                <h3>Mardin Müzisyenleri</h3>
+                <p>Mardin musiki kültürünün yaşayan son temsilcileriyle yapılmış dev bir arşiv çalışması.</p>
+            </div>
+            <div class="book-card">
+                <span class="status">TÜKENDİ</span>
+                <h3>Mardin'den Altın Sözler</h3>
+                <p>Binlerce yıllık Mezopotamya bilgeliğinin en seçkin cümleleri.</p>
+            </div>
+            <div class="book-card">
+                <span class="status">TÜKENDİ</span>
+                <h3>Mazide Kalanlar</h3>
+                <p>Unutulmaya yüz tutmuş Mardin gelenekleri ve sosyal hayatı.</p>
+            </div>
+            <div class="book-card" style="border-style:dashed;">
+                <span class="status" style="color:#000;">HAZIRLANIYOR</span>
+                <h3>İşte Ecdad</h3>
+                <p>Mardinli ailelerin kökenleri ve ecdad hikayelerini içeren biyografik eser.</p>
+            </div>
+        </div>
+    </section>
 
-  <div class="nav-controls">
-    <button class="btn-nav btn-gps" onclick="findMe()">📍 Konumumu Aç</button>
-    <button id="goBtn" class="btn-nav btn-go" onclick="openNav()">🚗 Yol Tarifi Al</button>
-  </div>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    const MARDIN_COORD = [37.3125, 40.7350];
-    let userLoc = null;
-    let selectedLoc = null;
-
-    const locations = [
-      { name: "Mir Han Restorant", lat: 37.3142, lon: 40.7360, icon: "🍴", info: "Yöresel Yemekler" },
-      { name: "Yaşarbey Kahve", lat: 37.3129, lon: 40.7355, icon: "☕", info: "Meşhur Kahveci" },
-      { name: "Zinciriye Medresesi", lat: 37.3150, lon: 40.7380, icon: "🏛️", info: "Tarihi Yapı" },
-      { name: "Kasımiye Medresesi", lat: 37.3065, lon: 40.7180, icon: "🏛️", info: "Eşsiz Mimari" },
-      { name: "Ulu Cami", lat: 37.3125, lon: 40.7405, icon: "🕌", info: "Sembol Cami" }
-    ];
-
-    // Harita Teması (Gece Modu Kontrolü)
-    const hours = new Date().getHours();
-    const mapStyle = (hours >= 19 || hours <= 6) 
-      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' 
-      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-
-    const map = L.map('map', { attributionControl: false }).setView(MARDIN_COORD, 15);
-    L.tileLayer(mapStyle).addTo(map);
-
-    const sidebar = document.getElementById('sidebar');
-
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371; // km
-      const dLat = (lat2-lat1) * Math.PI / 180;
-      const dLon = (lon2-lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return (R * c).toFixed(2);
-    }
-
-    function renderList() {
-      sidebar.innerHTML = '';
-      locations.forEach(loc => {
-        const dist = userLoc ? `${calculateDistance(userLoc.lat, userLoc.lng, loc.lat, loc.lon)} km` : "Konum Bekleniyor";
+    <article class="mega-content">
         
-        // Marker Ekleme
-        const customIcon = L.divIcon({
-          className: 'custom-div-icon',
-          html: `<div style="background:white; border:2px solid #1e3a8a; border-radius:50%; width:35px; height:35px; display:grid; place-items:center; font-size:18px; box-shadow:0 5px 15px rgba(0,0,0,0.2)">${loc.icon}</div>`,
-          iconSize: [35, 35],
-          iconAnchor: [17, 35]
-        });
+        <h2>Bölüm 1: Altyapı Felaketi ve Bitmeyen Kazılar</h2>
+        <p>Mardin, dünya turizminin gözbebeği olmasına rağmen, altyapı konusunda maalesef 1980'lerin standartlarında kalmış durumdadır. Her yağmur yağdığında tarihi sokakların birer nehre dönüşmesi, kanalizasyon sistemlerinin artık bu yükü taşıyamaması bir "kader" değil, bir yönetim zafiyetidir.</p>
+        <p>Eski Mardin’in dar sokaklarında hala açıkta duran elektrik kabloları, her an bir yangına davetiye çıkarmaktadır. Şehrin tarihi dokusuna saplanan birer hançer gibi duran bu görüntüler, teknik imkansızlıkların değil, vizyonsuzluğun bir sonucudur. Mardin'in altyapısı, günü kurtaran yamalarla değil, 50 yıllık bir projeksiyonla yeniden inşa edilmelidir.</p>
 
-        const marker = L.marker([loc.lat, loc.lon], {icon: customIcon}).addTo(map)
-          .bindPopup(`<b>${loc.name}</b><br>${loc.info}`);
+        <div class="box">
+            <h4>Çözüm Önerisi 1:</h4>
+            <p>Mardin'in tüm altyapı şebekesi, tarihi taşlara ve binaların temellerine zarar vermeyen "hassas kazı" yöntemleriyle tamamen yer altına alınmalı ve tek bir merkezden dijital olarak izlenmelidir.</p>
+        </div>
 
-        const card = document.createElement('div');
-        card.className = 'loc-card';
-        card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:start;">
-            <h4>${loc.icon} ${loc.name}</h4>
-            <span class="distance-tag">${dist}</span>
-          </div>
-          <small>${loc.info}</small>
-        `;
-        card.onclick = () => {
-          map.flyTo([loc.lat, loc.lon], 18);
-          marker.openPopup();
-          selectedLoc = loc;
-          document.getElementById('goBtn').style.display = 'flex';
-          document.getElementById('goBtn').innerHTML = `🚗 ${loc.name} Yol Tarifi`;
-        };
-        sidebar.appendChild(card);
-      });
-    }
+        <h2>Bölüm 2: Otopark Çilesi ve Trafik Felci</h2>
+        <p>Bugün Mardin’e gelen bir turist veya şehirde yaşayan bir vatandaş için en büyük kabus, aracını park edecek yer bulamamaktır. Mardin otopark konusunda bir "çıkmaz sokaktır". Mevcut otoparklar hem kapasite olarak yetersizdir hem de şehircilik mantığına aykırı konumlandırılmıştır.</p>
+        <p>Yol kenarlarına park edilen araçlar yüzünden acil durumlarda itfaiye ve ambulansın giremediği sokaklar, insan hayatını riske atmaktadır. Otopark sorunu çözülmeden Mardin turizminin büyümesi, şehrin kendi içinde boğulması demektir.</p>
 
-    function findMe() {
-      map.locate({setView: true, maxZoom: 16});
-    }
+        <div class="box">
+            <h4>Çözüm Önerisi 2:</h4>
+            <p>Eski Mardin’in giriş noktalarına devasa "Katlı ve Yeraltı Otoparkları" inşa edilmeli; şehir içi trafik tamamen elektrikli ücretsiz ring araçlarına devredilmelidir. Şehir içine özel araç girişi kademeli olarak sınırlandırılmalıdır.</p>
+        </div>
 
-    map.on('locationfound', (e) => {
-      userLoc = e.latlng;
-      L.circle(e.latlng, e.accuracy).addTo(map);
-      L.marker(e.latlng).addTo(map).bindPopup("Buradasınız").openPopup();
-      renderList();
-    });
+        <h2>Bölüm 3: Betona Gömülen Parklar ve Yeşil Alan Yetersizliği</h2>
+        <p>Yeni Mardin (Artuklu), maalesef bir beton ormanına dönüşmüş durumdadır. İnsanların nefes alabileceği, çocukların güvenle oynayabileceği gerçek anlamda "yeşil" alanlar parmakla sayılacak kadar azdır. Var olan parklar ise bakımsızlık ve donatı eksikliğiyle can çekişmektedir.</p>
+        <p>Mezopotamya ovasının muazzam manzarasına sahip bu şehirde, ovayı beton bloklarla kapatmak yerine, ovaya açılan devasa seyir terasları ve yeşil koridorlar oluşturulmalıydı. Mardin halkı, piknik yapmak için kilometrelerce yol gitmek zorunda kalmamalıdır.</p>
 
-    function openNav() {
-      if(selectedLoc) {
-        window.open(`https://www.google.com/maps/dir/?api=1&destination=${selectedLoc.lat},${selectedLoc.lon}&travelmode=walking`);
-      }
-    }
+        <div class="box">
+            <h4>Çözüm Önerisi 3:</h4>
+            <p>Her mahallede "Mahalle Parkı" zorunluluğu getirilmeli, imar izinleri yeşil alan payı olmadan verilmemelidir. Mezopotamya ovasına bakan yamaçlar "Mardin Yeşil Kuşağı" ilan edilerek ağaçlandırılmalıdır.</p>
+        </div>
 
-    function focusOn(lat, lon) {
-      map.flyTo([lat, lon], 18);
-      const loc = locations.find(l => l.lat === lat);
-      if(loc) {
-        selectedLoc = loc;
-        document.getElementById('goBtn').style.display = 'flex';
-        document.getElementById('goBtn').innerHTML = `🚗 ${loc.name} Yol Tarifi`;
-      }
-    }
+        <h2>Bölüm 4: Sosyal Donatı ve Kültürel Boşluk</h2>
+        <p>Mardin gençliği, maalesef kafelerden başka gidecek bir sosyal mekana sahip değildir. Şehirde tiyatro salonları, modern kütüphaneler, gençlerin yeteneklerini sergileyebileceği atölyeler ve spor kompleksleri yetersizdir. Mardin sadece bir "geçmiş" şehri değil, bir "gelecek" şehri olmalıdır.</p>
+        <p>Kültür merkezlerinin sadece protokol törenleri için kullanıldığı bir düzen, Mardin’in entelektüel birikimine ihanettir. Mardin, Mezopotamya’nın en büyük "Gençlik ve Kültür Kampüsü"ne acilen ihtiyaç duymaktadır.</p>
 
-    renderList();
-  </script>
+        <h2>Bölüm 5: Kitaplar ve Hafıza - Maziden Atiye</h2>
+        <p>Yazdığım her eserde bu sorunların kökenlerini ve Mardin'in o asil ruhunu anlattım. <strong>"Mardin Müzisyenleri"</strong> sadece bir isim listesi değil, o insanların yaşadığı zorlukların ve sanatlarının bir çığlığıdır. <strong>"Altın Sözler"</strong> ise bu şehrin bize bıraktığı en büyük miras olan bilgeliğin bir özetidir.</p>
+        <p>Mardin'in sorunları, o altın sözleri unuttuğumuz gün başladı. Biz ecdadımızın mirasını sadece taşlarda aradık, oysa asıl miras o taşların arasındaki yaşam kültürüydü. <strong>"İşte Ecdad"</strong> kitabım tamamlandığında, Mardinli olmanın sadece bir kimlik değil, büyük bir sorumluluk olduğunu bir kez daha göreceğiz.</p>
+
+        <p style="margin-top:5rem; font-style:italic;">(Bu analiz, Mardin'in tüm mahalleleri, altyapı birimleri ve sosyal katmanları incelenerek hazırlanan 20 sayfalık raporun geniş bir özetidir. Tam rapor için iletişim kurabilirsiniz.)</p>
+
+    </article>
+
+    <footer>
+        <div class="logo" style="margin-bottom:2rem;">A. SALİM ÇINARBAŞ</div>
+        <p>&copy; 2026 Ahmet Salim Çınarbaş - Mardin Kültür ve Şehir Arşivi</p>
+    </footer>
+
 </body>
 </html>
