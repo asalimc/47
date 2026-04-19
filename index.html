@@ -2,147 +2,192 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Ahmet Salim Çınarbaş | Mardin Kentsel Gözlem ve Analiz Portalı</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ahmet Salim Çınarbaş | Mardin Kentsel Analiz ve Şehir Manifestosu</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg: #ffffff; --fg: #000000; --accent: #2c3e50; --danger: #d12e2e; --line: #eeeeee; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { background: var(--bg); color: var(--fg); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 2.1; overflow-x: hidden; }
-
-        /* İlerleme Çubuğu */
-        #progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 6px; background: var(--danger); z-index: 10000; }
-        .page-counter { position: fixed; bottom: 30px; left: 30px; font-size: 0.75rem; font-weight: 800; background: #111; color: #fff; padding: 10px 20px; z-index: 999; letter-spacing: 2px; border-radius: 2px; }
-
-        /* Profil Üst Bölüm */
-        header { padding: 6rem 8%; text-align: center; border-bottom: 1px solid var(--line); background: #fff; }
-        .profile-wrap { position: relative; display: inline-block; margin-bottom: 2rem; }
-        .profile-img { width: 100%; max-width: 420px; filter: grayscale(100%); border: 1px solid var(--line); padding: 12px; background: #fff; transition: 1s ease; box-shadow: 0 30px 60px rgba(0,0,0,0.05); }
-        .profile-wrap:hover .profile-img { filter: grayscale(0%); transform: translateY(-5px); }
-        h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1; margin-bottom: 1.5rem; font-weight: 300; color: #111; }
-        .sub-tag { letter-spacing: 10px; font-size: 0.8rem; color: var(--danger); font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; display: block; }
-
-        /* Eserler Bölümü */
-        .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); background: #fdfdfd; border-bottom: 1px solid var(--line); }
-        .work-item { padding: 5rem 4rem; border-right: 1px solid var(--line); text-align: center; transition: 0.4s; }
-        .work-item:hover { background: #f8f8f8; }
-        .work-item:last-child { border-right: none; }
-        .work-item span { color: #888; font-weight: 600; letter-spacing: 4px; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 1.5rem; display: block; }
-        .work-item h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; margin: 1rem 0; line-height: 1.1; color: #111; }
-
-        /* MANİFESTO ANALİZ METNİ */
-        .analysis-body { max-width: 950px; margin: 0 auto; padding: 10rem 8%; }
-        .section-block { margin-bottom: 12rem; }
-        .section-block h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.2; margin-bottom: 4rem; border-bottom: 4px solid #111; padding-bottom: 1.5rem; letter-spacing: -1px; }
+        :root { --bg: #ffffff; --fg: #000000; --accent: #d12e2e; --muted: #555555; --line: #eeeeee; }
         
-        p { font-size: 1.4rem; color: #222; margin-bottom: 3.5rem; text-align: justify; font-weight: 300; line-height: 2.2; }
+        /* Temel Reset ve Responsive Ayarlar */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { 
+            background: var(--bg); 
+            color: var(--fg); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            line-height: 1.8; 
+            overflow-x: hidden;
+            word-wrap: break-word;
+        }
+
+        /* Üst Okuma Barı */
+        #progress-bar { position: fixed; top: 0; left: 0; width: 0%; height: 5px; background: var(--accent); z-index: 10000; }
+        
+        /* Sayfa Sayacı - Mobil Uyumlu */
+        .page-counter { 
+            position: fixed; bottom: 20px; right: 20px; 
+            background: rgba(0,0,0,0.9); color: #fff; 
+            padding: 8px 15px; font-size: 0.7rem; 
+            font-weight: 700; z-index: 999; 
+            letter-spacing: 2px; border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Header ve Profil - Mobil Öncelikli */
+        header { padding: 4rem 5% 2rem; text-align: center; border-bottom: 1px solid var(--line); }
+        .profile-container { margin-bottom: 2rem; }
+        .profile-img { 
+            width: 100%; max-width: 350px; 
+            filter: grayscale(100%); 
+            border: 1px solid var(--line); 
+            padding: 10px; background: #fff; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            transition: 0.5s ease;
+        }
+        .profile-container:hover .profile-img { filter: grayscale(0%); }
+        
+        h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; font-weight: 300; margin-bottom: 1rem; }
+        .sub-head { font-size: 0.75rem; letter-spacing: 8px; color: var(--accent); text-transform: uppercase; font-weight: 700; margin-bottom: 1.5rem; display: block; }
+
+        /* Kitaplar - Full Responsive Grid */
+        .shelf { display: flex; flex-wrap: wrap; background: #fafafa; border-bottom: 1px solid var(--line); }
+        .book { flex: 1 1 300px; padding: 3rem 2rem; border-right: 1px solid var(--line); text-align: center; }
+        .book:last-child { border-right: none; }
+        .book span { font-size: 0.6rem; letter-spacing: 3px; font-weight: 700; color: #888; text-transform: uppercase; }
+        .book h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin: 1rem 0; }
+
+        /* ANALİZ METNİ - İKİ YANA YASLI (JUSTIFY) */
+        .content-main { max-width: 850px; margin: 0 auto; padding: 4rem 6%; }
+        .chapter { margin-bottom: 8rem; }
+        .chapter h2 { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-size: clamp(2rem, 6vw, 3.5rem); 
+            line-height: 1.2; margin-bottom: 2.5rem; 
+            border-left: 5px solid var(--fg); padding-left: 1.5rem;
+        }
+        
+        /* İki yana yaslı paragraf ayarları */
+        p { 
+            font-size: clamp(1.1rem, 4vw, 1.3rem); 
+            margin-bottom: 2.5rem; 
+            text-align: justify; /* İki yana yaslama */
+            hyphens: auto; /* Kelime bölme desteği */
+            color: #1a1a1a;
+            font-weight: 300;
+        }
         strong { font-weight: 600; color: #000; }
 
-        /* Teknik Eleştiri Kutuları */
-        .critique-card { background: #f9f9f9; border-left: 8px solid #111; padding: 4rem; margin: 6rem -10%; box-shadow: 20px 20px 0px rgba(0,0,0,0.02); border: 1px solid #eee; border-left-width: 8px; }
-        .critique-card h4 { text-transform: uppercase; font-size: 0.85rem; letter-spacing: 5px; margin-bottom: 2rem; color: #000; font-weight: 800; border-bottom: 1px solid #ddd; padding-bottom: 10px; display: inline-block; }
+        /* Kritik Eleştiri Kutuları */
+        .critique-box { 
+            background: #fdfdfd; 
+            border: 1px solid #eee; 
+            border-left: 8px solid #000; 
+            padding: 2.5rem; 
+            margin: 4rem 0; 
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.02);
+        }
+        .critique-box h4 { 
+            font-size: 0.8rem; letter-spacing: 4px; 
+            text-transform: uppercase; margin-bottom: 1.5rem; 
+            color: var(--accent); border-bottom: 1px solid #eee; padding-bottom: 10px;
+        }
 
-        .observation-note { font-style: italic; color: #555; border-top: 1px solid #eee; padding-top: 2rem; margin-top: 2rem; font-size: 1.1rem; }
+        /* Alıntı Blokları */
+        .mega-quote { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-size: clamp(1.8rem, 5vw, 2.8rem); 
+            text-align: center; margin: 6rem 0; 
+            font-style: italic; color: #333; line-height: 1.3;
+        }
 
-        .impact-quote { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.2rem); text-align: center; margin: 10rem 0; color: #111; line-height: 1.3; font-weight: 400; padding: 0 5%; }
+        footer { padding: 5rem 5%; background: #000; color: #fff; text-align: center; }
+        .footer-tag { font-size: 0.8rem; letter-spacing: 12px; opacity: 0.4; text-transform: uppercase; }
 
-        footer { padding: 8rem 8%; background: #111; color: #fff; text-align: center; }
-        .footer-info { font-size: 0.9rem; font-weight: 200; opacity: 0.5; text-transform: uppercase; letter-spacing: 10px; }
-
+        /* Mobil Düzenlemeler */
         @media (max-width: 768px) {
-            .critique-card { margin: 4rem 0; padding: 2.5rem; }
-            .work-grid { grid-template-columns: 1fr; }
-            .work-item { border-right: none; border-bottom: 1px solid var(--line); }
+            .shelf .book { border-right: none; border-bottom: 1px solid var(--line); }
+            .content-main { padding: 3rem 5%; }
+            .critique-box { padding: 1.5rem; }
+            p { text-align: justify; text-justify: inter-word; } /* Mobilde daha iyi yaslama */
         }
     </style>
 </head>
 <body>
 
     <div id="progress-bar"></div>
-    <div class="page-counter">GÖZLEM ARŞİVİ / SAYFA <span id="pg">1</span></div>
+    <div class="page-counter">SAYFA <span id="pg">1</span> / 40</div>
 
     <header>
-        <div class="profile-wrap">
+        <div class="profile-container">
             <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" alt="Ahmet Salim Çınarbaş" class="profile-img">
         </div>
-        <span class="sub-tag">Kentsel Analiz & Kültürel Bellek</span>
-        <h1>Mardin: Gözlemler ve<br>Yapısal Analizler.</h1>
-        <p style="font-size: 1.3rem; color: #555; max-width: 750px; margin: 2rem auto 0; font-weight: 300;">Şehrin gelişim süreçlerini, altyapı kroniklerini ve ticari vizyonunu nesnel bir bakış açısıyla kayıt altına alan 40 sayfalık kapsamlı döküm.</p>
+        <span class="sub-head">Şehircilik ve Kültür Analizi</span>
+        <h1>Mardin Gözlemleri.</h1>
+        <p style="text-align: center; max-width: 600px; margin: 0 auto; opacity: 0.7; font-size: 1.1rem;">Kentin yapısal sorunlarını ve ticari vizyonunu nesnel bir çerçevede ele alan 40 sayfalık dijital kayıt.</p>
     </header>
 
-    <section class="work-grid">
-        <div class="work-item">
-            <span>YAYIMLANMIŞ ESER</span>
+    <section class="shelf">
+        <div class="book">
+            <span>ARŞİV ESER</span>
             <h3>Mardin Müzisyenleri</h3>
-            <p>Şehrin somut olmayan kültürel mirasını notalar ve hayat hikayeleri üzerinden belgeleyen bir başvuru kaynağı.</p>
+            <p>Kentin musiki hafızasını belgeleyen kapsamlı çalışma.</p>
         </div>
-        <div class="work-item">
-            <span>YAYIMLANMIŞ ESER</span>
+        <div class="book">
+            <span>KÜLTÜR ESER</span>
             <h3>Mardin'den Altın Sözler</h3>
-            <p>Kadim Mezopotamya’nın etik ve estetik değerlerini günümüze taşıyan bir sözlü gelenek arşivi.</p>
+            <p>Mezopotamya bilgeliğinin günümüze yansıyan arşivi.</p>
         </div>
     </section>
 
-    <article class="analysis-body">
+    <main class="content-main">
 
-        <div class="section-block">
-            <h2>Yenişehir: Kentsel Altyapı ve Planlama Sorunları</h2>
-            <p>Mardin’in genişleme alanı olan <strong>Yenişehir</strong>, modern şehircilik standartları açısından kritik bir sınav vermektedir. Özellikle yağışlı dönemlerde bölgede gözlemlenen ve kamuoyuna <strong>adeta sel</strong> görüntüleri olarak yansıyan durumlar, kentsel altyapının mevcut yapılaşma yoğunluğunu taşımakta zorlandığını bilimsel olarak ortaya koymaktadır. Bu bir suçlama değil, sahada her yağmur sonrası tescillenen yapısal bir gerçektir.</p>
+        <div class="chapter">
+            <h2>Yenişehir: Altyapı ve Planlama Gerçekliği</h2>
+            <p>Mardin’in modern yapılaşma merkezi olan <strong>Yenişehir</strong>, kentsel planlama kriterleri açısından ciddi yapısal sorunlarla karşı karşıyadır. Özellikle mevsimsel yağışlar sırasında gözlemlenen ve kamuoyuna <strong>adeta sel</strong> görüntüleri olarak yansıyan tablolar, bölgedeki drenaj sisteminin mevcut bina yoğunluğunu taşıyamadığının açık bir göstergesidir. Bu durum, şehrin gelişim stratejisinin altyapı öncelikli değil, yüzey odaklı yürütüldüğüne dair haklı bir teknik eleştiri doğurmaktadır.</p>
             
-            <div class="critique-card">
-                <h4>TEKNİK GÖZLEM RAPORU:</h4>
-                <p>Yenişehir bölgesindeki ana tahliye hatlarının eğim yetersizliği ve bağlantı noktalarındaki kapasite darlığı, yüzey sularının hızla deşarj edilmesini engellemektedir. İmar yoğunluğunun artmasıyla birlikte betonlaşan yüzey alanları, toprağın emme kapasitesini yok etmiş, bu durum tüm yükün yetersiz drenaj hatlarına binmesine neden olmuştur. Haberlere yansıyan su baskınları, kentsel planlamanın altyapı öncelikli değil, bina odaklı yürütüldüğünün en somut göstergesidir.</p>
-                <div class="observation-note">İlgili birimlerin altyapı rehabilitasyon projelerini, şehrin önümüzdeki 50 yıllık nüfus projeksiyonuna göre yeniden revize etmesi elzemdir.</div>
+            <div class="critique-box">
+                <h4>TEKNİK ANALİZ NOTU:</h4>
+                <p>Yenişehir bölgesindeki ana arterlerin tahliye kapasitesi, artan nüfus projeksiyonunun çok gerisinde kalmıştır. Betonlaşmanın artmasıyla toprağın su emme kabiliyetini yitirmesi, tüm yüzey sularını yetersiz kanallara yönlendirmektedir. Bu bir mühendislik gerçeğidir ve çözüm ancak köklü bir altyapı revizyonuyla mümkündür.</p>
+            </div>
+            
+            <p>Sosyal yaşam alanlarının daralması ve yeşil kuşakların yapılaşmaya açılması, kentin nefes almasını zorlaştırmaktadır. Gözlemlerimiz, mevcut kentsel dokunun uzun vadeli sürdürülebilirlik açısından yeniden değerlendirilmesi gerektiğini, aksi takdirde her yağışın benzer fiyaskolara davetiye çıkaracağını tescillemektedir.</p>
+        </div>
+
+        <div class="mega-quote">"Şehircilik, binaların görkemiyle değil, yer altındaki sistemin sıhhatiyle ölçülür."</div>
+
+        <div class="chapter">
+            <h2>Otopark Projeleri ve Lojistik Fiyaskolar</h2>
+            <p>Eski Mardin’in kronikleşmiş trafik sorununa çözüm üretmek gayesiyle hayata geçirilen otopark projeleri, ne yazık ki uygulama aşamasında temel trafik lojistiği prensiplerinden uzaklaşmıştır. Tarafımızca sunulan önerilerin aksine, projenin mevcut işleyişi <strong>tamamen kapitalist bir yaklaşımla</strong>, kentsel rahatlamadan ziyade gelir odaklı bir model üzerine kurulmuş görünmektedir.</p>
+            
+            <div class="critique-box">
+                <h4>LOJİSTİK SKANDAL:</h4>
+                <p>Trafik mühendisliğinin en basit kuralı, giriş ve çıkış akslarının birbirini kesmemesidir. Ancak Mardin’deki otopark uygulamasında <strong>giriş ve çıkışların aynı noktada kurgulanmış olması</strong>, rasyonel bir açıklamayla bağdaşmamaktadır. Otoparka girmek isteyen araçla çıkmak isteyen aracın aynı dar boğazda karşı karşıya gelmesi, ana yolda zincirleme trafik tıkanıklıklarına ve vatandaşın zaman kaybına yol açan temel yapısal hatadır.</p>
             </div>
 
-            <p>Kentin estetik görünümü kadar, yer altında işleyen sistemlerin de sağlıklı çalışması gerekir. Sosyal donatı alanlarının azlığı ve kamusal alanların daralması, Yenişehir sakinlerinin yaşam kalitesini doğrudan etkileyen unsurlar arasındadır. Gözlemlerimiz, bölgedeki planlama hatalarının "makyaj" projelerle kapatılamayacak kadar derin olduğunu göstermektedir.</p>
+            <p>Bu planlama talihsizliği, trafik sorununu çözmek yerine kentin girişini bir düğüm noktasına çevirmiştir. Bir projenin verimliliği, kullanıcısına sunduğu hız ve kolaylıkla ölçülür. Giriş-çıkış aksları ayrılmadığı sürece bu yatırımın kente katma değer sağlaması teknik olarak mümkün değildir.</p>
         </div>
 
-        <div class="impact-quote">
-            "Şehircilik sadece yapı inşa etmek değil, yaşayan bir organizmanın damarlarını (altyapısını) doğru kurgulamaktır."
-        </div>
-
-        <div class="section-block">
-            <h2>Otopark Projeleri ve Lojistik Hatalar</h2>
-            <p>Eski Mardin’in trafik yükünü hafifletmek amacıyla kentin girişine inşa edilen otopark alanı, maalesef uygulama aşamasında lojistik prensiplerden uzaklaşmıştır. Yıllar önce sunduğumuz çözüm önerilerinin aksine, projenin bugünkü hali <strong>tamamen kapitalist bir yaklaşımla</strong>, kentsel faydadan ziyade işletme odaklı bir kurguya sahip görünmektedir. Bu durum, projenin toplumsal karşılığını zayıflatmaktadır.</p>
+        <div class="chapter">
+            <h2>Ticari Vizyon ve Turizm Etiği</h2>
+            <p>Mardin'in turizm potansiyeli, sadece tarihi taşlarıyla değil, o taşların ardındaki dürüst ticaret kültürüyle korunabilir. Ne var ki, sahada yapılan gözlemler bazı işletmelerin <strong>fahiş fiyat</strong> politikası izleyerek kentin marka değerine zarar verdiğini göstermektedir. Bu tür yaklaşımlar, yerli ve yabancı ziyaretçilerin kente duyduğu güveni sarsan en büyük etik sorundur.</p>
             
-            <div class="critique-card">
-                <h4>TRAFİK MÜHENDİSLİĞİ ANALİZİ:</h4>
-                <p>Ulaşım planlamasının en temel kurallarından biri; giriş ve çıkış noktalarının akışı bozmayacak şekilde ayrıştırılmasıdır. Ancak Mardin’deki otopark uygulamasında <strong>giriş ve çıkışların aynı noktada kurgulanmış olması</strong>, rasyonel trafik lojistiğiyle bağdaşmamaktadır. Bu durum, otoparka yönelen araçlarla çıkış yapan araçların aynı koridoru kullanmasına, dolayısıyla ana yolda uzun kuyruklara ve zaman kaybına yol açmaktadır.</p>
-                <div class="observation-note">Arapsaçına dönen trafiğin çözümü için yapılan bir yatırımın, lojistik bir hata nedeniyle trafiğin bizzat kaynağı haline gelmesi büyük bir planlama talihsizliğidir.</div>
-            </div>
+            <p>Unutulmamalıdır ki, Mardin’i ziyaret eden bireylerin kendi memleketlerinde de gıda ve hizmet seçenekleri mevcuttur. Hatta bu insanlar, kendi şehirlerinde çok daha nitelikli standartları daha erişilebilir fiyatlarla tüketebilmektedir. <strong>"Fırsat bu fırsat"</strong> düşüncesiyle hareket eden bazı esnafların, ziyaretçileri alternatifiz sanması vizyon daralmasıdır. Bir defalık fahiş kazanç, Mardin turizmini kendi içinden çürüten bir zehirdir.</p>
 
-            <p>Lojistik bir yapının verimliliği, giriş-çıkış hızıyla ölçülür. Eğer bir araç otoparka girmek için dakikalarca ana yolu meşgul ediyorsa, o proje şehre hizmet etme amacından sapmış demektir. Bu noktada yetkililerin, giriş-çıkış akslarını acilen birbirinden ayıracak bir düzenlemeye gitmesi kaçınılmazdır.</p>
-        </div>
-
-        <div class="section-block">
-            <h2>Turizm Ekonomisi ve Ticari Etik Üzerine</h2>
-            <p>Mardin turizminin sürdürülebilirliği, kentin sunduğu tarihi doku kadar ticaret ahlakıyla da doğrudan ilişkilidir. Ancak sahada yaptığımız gözlemler, bazı işletmelerin <strong>fahiş fiyat</strong> politikası izleyerek yerli ve yabancı turistlerin kente olan güvenini zedelediğini göstermektedir. Bu "kısa vadeli kazanç" odaklı yaklaşım, Mardin’in uzun vadeli turizm vizyonuna zarar veren en büyük etkendir.</p>
-            
-            <p>Özellikle dikkat çeken nokta; bu turistlerin memleketlerinde de çay, kahve ve gıda ürünlerine erişimlerinin olmasıdır. Hatta birçoğu bu ürünleri kendi şehirlerinde çok daha nitelikli ve standart fiyatlarla tüketebilmektedir. Ancak <strong>"fırsat bu fırsat"</strong> mantığıyla hareket eden bazı işletmeciler, turistlerin bu alternatiflere sahip olmadığını varsayarak, etik dışı fiyatlandırmalar yapmaktadır. Bu durum, Mardin'i bir "misafirperverlik kenti" imajından uzaklaştırıp, "tek seferlik ticaret" noktasına indirgemektedir.</p>
-
-            <div class="critique-card">
-                <h4>SOSYO-EKONOMİK ETKİ ANALİZİ:</h4>
-                <p>Haber sitelerinde ve turist geri bildirimlerinde sıkça rastlanan yüksek fiyat şikayetleri, kentin marka değerini aşındırmaktadır. Ticari başarının temeli 'tekrar gelen müşteri'dir. Bir turisti ekonomik anlamda sömürme odaklı yaklaşım, o turistin bir daha gelmemesine ve çevresine olumsuz referans vermesine neden olur. Denetim mekanizmalarının bu noktada sadece cezai değil, standart belirleyici olarak devreye girmesi gerekmektedir.</p>
+            <div class="critique-box">
+                <h4>SOSYAL TESPİT:</h4>
+                <p>Dijital platformlardaki geri bildirimler, Mardin'in fiyat/performans dengesinin hızla bozulduğunu tescil etmektedir. 'Tek seferlik müşteri' mantığı üzerine kurulu bir turizm ekonomisi, kentin geleceğini sömürmekten başka bir amaca hizmet etmez. Denetimlerin sadece kağıt üzerinde kalmaması, standartların tespiti şarttır.</p>
             </div>
         </div>
 
-        <div class="impact-quote">
-            "Mardin’in gerçek sermayesi taşları değil, o taşların arasında yaşayan güven ve dürüstlük kültürüdür."
-        </div>
+        <p style="text-align: center; font-size: 0.9rem; opacity: 0.4; margin-top: 5rem;">(40 sayfalık teknik analiz raporunun nesnel özet versiyonudur. Gözlemler harf harf kayıt altına alınmaya devam etmektedir.)</p>
 
-        <div class="section-block">
-            <p style="text-align: center; font-weight: 400; font-size: 1.1rem; opacity: 0.6;">(Bu metin, Ahmet Salim Çınarbaş tarafından kentin yapısal sorunlarını nesnel olarak ortaya koymak amacıyla hazırlanan 40 sayfalık teknik analiz raporunun web versiyonudur. İncelemeler; veri ve gözlem odaklı olarak devam etmektedir.)</p>
-        </div>
-
-    </article>
+    </main>
 
     <footer>
-        <div class="footer-info">Ahmet Salim Çınarbaş</div>
-        <p style="font-size: 0.65rem; opacity: 0.3; margin-top: 3rem;">Kentsel Bellek ve Şehircilik Arşivi &copy; 2026</p>
+        <div class="footer-tag">Ahmet Salim Çınarbaş</div>
+        <p style="font-size: 0.6rem; opacity: 0.3; margin-top: 2rem;">Kentsel Analiz Portalı &copy; 2026</p>
     </footer>
 
     <script>
@@ -152,7 +197,7 @@
             var scrolled = (winScroll / height) * 100;
             document.getElementById("progress-bar").style.width = scrolled + "%";
             
-            // 40 sayfa üzerinden okuma simülasyonu
+            // 40 sayfa simülasyonu
             var pageNum = Math.ceil(scrolled / 2.5) || 1;
             if(pageNum > 40) pageNum = 40;
             document.getElementById("pg").innerText = pageNum;
