@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#0f766e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22SBO%20-%20Simone%20Store%22,%22short_name%22:%22SBO%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230f766e%22,%22theme_color%22:%22%230f766e%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f766e'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white' font-weight='bold'%3ESBO%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]}">
+    <title>SBO - Simone Oliveira Bonifacio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        :root { 
+            --teal-dark: #0f766e; 
+            --teal: #14b8a6; 
+            --teal-light: #ccfbf1; 
+            --teal-bg: #f0fdfa;
+            --text-dark: #134e4a;
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--teal-bg); 
+            color: var(--text-dark); 
+            height: 100vh; 
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        * { font-style: normal !important; box-sizing: border-box; }
+
+        .main-view { 
+            height: calc(100vh - 60px); 
+            overflow-y: auto; 
+            padding: 1rem; 
+            padding-bottom: 20px;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Hamburger Menu */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        .sidebar.open { left: 0; }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        .overlay.active { display: block; }
+        
+        .pos-grid { display: flex; overflow-x: auto; gap: 12px; padding: 10px 0; scrollbar-width: thin; }
+        .pos-card { flex: 0 0 140px; background: white; border-radius: 20px; border: 1px solid #ccfbf1; padding: 12px; transition: 0.2s; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .pos-card:active { transform: scale(0.96); border-color: var(--teal); background: var(--teal-light); }
+
+        .btn-teal { background-color: var(--teal); color: white; font-weight: 700; transition: all 0.2s; }
+        .btn-teal:active { transform: scale(0.96); background-color: var(--teal-dark); }
+        .bg-teal-dark { background-color: var(--teal-dark); }
+        .text-teal { color: var(--teal); }
+        .border-teal { border-color: var(--teal); }
+        
+        .modal-bg { position: fixed; inset: 0; background: rgba(15, 118, 110, 0.4); backdrop-filter: blur(4px); z-index: 1100; display: none; align-items: center; justify-content: center; padding: 1rem; }
+        .modal-active { display: flex; }
+        .modal-content { background: white; width: 100%; max-width: 550px; border-radius: 32px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+
+        .toast-notify { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--teal-dark); color: white; padding: 10px 20px; border-radius: 50px; z-index: 2000; font-size: 12px; font-weight: bold; animation: fadeOut 2s forwards; }
+        @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+        
+        .receipt { font-family: 'Courier New', monospace; background: #f9fafb; border-radius: 16px; padding: 16px; max-width: 300px; margin: 0 auto; font-size: 11px; line-height: 1.4; }
+        .receipt hr { border-top: 1px dashed #ccc; }
+        
+        .expense-btn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 8px; margin-bottom: 12px; }
+        .expense-quick-btn { background: var(--teal-light); border: none; padding: 8px; border-radius: 16px; font-size: 10px; font-weight: bold; color: var(--teal-dark); cursor: pointer; transition: 0.1s; text-align: center; }
+        .expense-quick-btn:active { transform: scale(0.95); background: var(--teal); color: white; }
+        
+        .report-card { background: white; border-radius: 24px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .report-table { width: 100%; font-size: 11px; border-collapse: collapse; }
+        .report-table th, .report-table td { padding: 6px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .report-table th { background: var(--teal-light); color: var(--teal-dark); font-weight: 700; }
+        
+        .stats-card { background: white; border-radius: 20px; padding: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        
+        .sidebar-item { padding: 12px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; }
+        .sidebar-item:hover { background: var(--teal-light); }
+        .sidebar-item i { width: 24px; color: var(--teal); }
+        
+        @media (max-width: 640px) {
+            .main-view { height: calc(100vh - 60px); padding: 0.75rem; }
+            .pos-card { flex: 0 0 110px; padding: 8px; }
+            .expense-btn-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="p-5 bg-teal-dark text-white">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-teal rounded-2xl flex items-center justify-center text-white font-black text-xl">SBO</div>
+                <div>
+                    <h3 class="font-bold text-sm">Simone Oliveira</h3>
+                    <p class="text-[9px] text-teal-light">Bonifacio Store</p>
+                </div>
+            </div>
+        </div>
+        <div class="py-2">
+            <div onclick="switchTab('dashboard'); closeSidebar()" class="sidebar-item"><i class="fas fa-chart-pie"></i><span>Dashboard</span></div>
+            <div onclick="switchTab('pos'); closeSidebar()" class="sidebar-item"><i class="fas fa-cash-register"></i><span>Vendas</span></div>
+            <div onclick="switchTab('stock'); closeSidebar()" class="sidebar-item"><i class="fas fa-boxes"></i><span>Estoque</span></div>
+            <div onclick="switchTab('invoices'); closeSidebar()" class="sidebar-item"><i class="fas fa-file-invoice"></i><span>Faturas</span></div>
+            <div onclick="switchTab('wholesalers'); closeSidebar()" class="sidebar-item"><i class="fas fa-truck-fast"></i><span>Toptancılar</span></div>
+            <div onclick="switchTab('customers'); closeSidebar()" class="sidebar-item"><i class="fas fa-users"></i><span>Clientes</span></div>
+            <div onclick="switchTab('finance'); closeSidebar()" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Finanças</span></div>
+            <div onclick="switchTab('reports'); closeSidebar()" class="sidebar-item"><i class="fas fa-file-alt"></i><span>Relatórios</span></div>
+            <div onclick="switchTab('store'); closeSidebar()" class="sidebar-item"><i class="fas fa-store"></i><span>Loja</span></div>
+            <div onclick="switchTab('settings'); closeSidebar()" class="sidebar-item"><i class="fas fa-cog"></i><span>Configurações</span></div>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <header class="h-14 bg-teal-dark text-white px-4 flex items-center justify-between shadow-lg sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <button onclick="toggleSidebar()" class="text-white text-xl"><i class="fas fa-bars"></i></button>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-teal rounded-xl flex items-center justify-center text-white font-black text-sm">SBO</div>
+                <div>
+                    <h1 id="brand-name" class="font-bold text-xs leading-tight">Simone Oliveira</h1>
+                    <span id="system-badge" class="text-[7px] text-teal-light uppercase font-black">Bonifacio Store</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="toggleLanguage()" class="bg-teal/40 px-2 py-1 rounded-full text-[10px] font-bold"><span id="lang-btn">PT</span></button>
+            <i class="fas fa-moon text-teal-light text-sm cursor-pointer" onclick="toggleTheme()" id="theme-icon"></i>
+            <p id="live-clock" class="text-[9px] font-bold bg-teal/30 px-2 py-1 rounded-lg"></p>
+        </div>
+    </header>
+
+    <main class="main-view no-scrollbar" id="app-content">
+        
+        <!-- DASHBOARD -->
+        <div id="view-dashboard" class="space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+                <div class="stats-card border-l-4 border-teal"><p class="text-[9px] font-bold text-slate-400">VENDAS HOJE</p><h3 id="dash-today-sales" class="text-xl font-black text-teal-dark">R$ 0,00</h3></div>
+                <div class="stats-card border-l-4 border-orange-400"><p class="text-[9px] font-bold text-slate-400">STOCK BAIXO</p><h3 id="dash-low-stock" class="text-xl font-black text-orange-500">0</h3></div>
+                <div class="stats-card border-l-4 border-emerald-400"><p class="text-[9px] font-bold text-slate-400">PRODUTOS</p><h3 id="dash-total-products" class="text-xl font-black text-teal-dark">0</h3></div>
+                <div class="stats-card border-l-4 border-blue-400"><p class="text-[9px] font-bold text-slate-400">CLIENTES</p><h3 id="dash-total-customers" class="text-xl font-black text-teal-dark">0</h3></div>
+            </div>
+            <div class="bg-teal-dark p-5 rounded-3xl text-white"><p class="text-xs font-bold text-teal-light uppercase">PRODUTOS CRÍTICOS</p><div id="dash-critical-list" class="mt-3 space-y-2 max-h-48 overflow-y-auto text-sm"></div></div>
+        </div>
+
+        <!-- POS -->
+        <div id="view-pos" class="h-full flex flex-col gap-3">
+            <div class="bg-teal-dark rounded-3xl p-5 text-white shadow-xl flex flex-col shrink-0 min-h-[300px]">
+                <div class="flex justify-between items-center mb-3 border-b border-teal/50 pb-2">
+                    <select id="cart-customer-select" class="bg-transparent text-xs font-bold border-none outline-none text-teal-light"><option value="0">Cliente Rápido</option></select>
+                    <button onclick="clearCart()" class="text-[9px] text-red-300 font-bold uppercase">LIMPAR</button>
+                </div>
+                <div id="cart-items" class="flex-1 overflow-y-auto space-y-2 no-scrollbar mb-3 max-h-36"></div>
+                <div class="pt-3 border-t border-teal/50 flex justify-between items-end">
+                    <div><p class="text-[9px] text-teal-light font-bold uppercase">TOTAL A PAGAR</p><h3 id="cart-total" class="text-2xl font-black text-teal-light">R$ 0,00</h3></div>
+                    <button onclick="openPaymentModal()" class="btn-teal px-6 py-2 rounded-2xl shadow-lg active:scale-95 text-sm font-bold">FINALIZAR</button>
+                </div>
+            </div>
+            <div class="flex-1">
+                <div class="flex gap-2 mb-2">
+                    <input type="text" id="pos-search" oninput="renderPos()" placeholder="Buscar produto..." class="flex-1 p-3 rounded-xl border border-teal/20 outline-none focus:ring-2 focus:ring-teal bg-white text-sm">
+                    <button onclick="scanBarcode()" class="bg-teal-dark text-white px-4 rounded-xl"><i class="fas fa-camera"></i></button>
+                    <button onclick="togglePosView()" class="bg-teal-light text-teal-dark px-4 rounded-xl"><i id="view-icon" class="fas fa-th-large"></i></button>
+                </div>
+                <div id="pos-products" class="pos-grid no-scrollbar"></div>
+            </div>
+        </div>
+
+        <!-- STOCK -->
+        <div id="view-stock" class="space-y-4">
+            <div class="flex justify-between items-center flex-wrap gap-2"><h2 class="text-xl font-black">Estoque</h2><button onclick="openProductModal()" class="btn-teal px-3 py-2 rounded-xl text-xs"><i class="fas fa-plus"></i> Novo Produto</button></div>
+            <input type="text" id="stock-search" oninput="renderStock()" placeholder="Pesquisar..." class="w-full p-3 rounded-xl border border-teal/20">
+            <div id="stock-list" class="grid grid-cols-1 gap-2"></div>
+        </div>
+
+        <!-- INVOICES -->
+        <div id="view-invoices" class="space-y-4">
+            <h2 class="text-xl font-black">Faturas</h2>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <button onclick="openPurchaseInvoiceModal()" class="bg-blue-600 text-white p-3 rounded-2xl text-center"><i class="fas fa-truck text-xl"></i><p class="font-bold text-xs mt-1">Alış Faturası</p></button>
+                <button onclick="openSalesInvoiceModal()" class="bg-emerald-600 text-white p-3 rounded-2xl text-center"><i class="fas fa-file-invoice-dollar text-xl"></i><p class="font-bold text-xs mt-1">Satış Faturası</p></button>
+            </div>
+            <div id="invoice-list" class="space-y-3 max-h-[60vh] overflow-y-auto"></div>
+        </div>
+
+        <!-- WHOLESALERS -->
+        <div id="view-wholesalers" class="space-y-4">
+            <div class="flex justify-between items-center"><h2 class="text-xl font-black">Toptancılar</h2><button onclick="openWholesalerModal()" class="btn-teal px-3 py-2 rounded-xl text-xs"><i class="fas fa-plus"></i> + Toptancı</button></div>
+            <div id="wholesaler-list" class="grid grid-cols-1 gap-3"></div>
+        </div>
+
+        <!-- CUSTOMERS -->
+        <div id="view-customers" class="space-y-4">
+            <div class="flex justify-between items-center"><h2 class="text-xl font-black">Clientes</h2><button onclick="openCustomerModal()" class="btn-teal px-3 py-2 rounded-xl text-xs"><i class="fas fa-plus"></i> Novo Cliente</button></div>
+            <div id="customer-list" class="grid grid-cols-1 gap-3"></div>
+        </div>
+
+        <!-- FINANCE -->
+        <div id="view-finance" class="space-y-5">
+            <h2 class="text-xl font-black">Financeiro</h2>
+            <div class="grid grid-cols-2 gap-3"><div class="stats-card"><p class="text-[9px] font-bold text-slate-400">RECEITA TOTAL</p><h3 id="fin-income" class="text-lg font-black">R$ 0,00</h3></div><div class="stats-card"><p class="text-[9px] font-bold text-slate-400">VALOR ESTOQUE</p><h3 id="fin-stock" class="text-lg font-black">R$ 0,00</h3></div></div>
+            <div class="bg-teal-dark p-5 rounded-3xl text-white"><p class="text-xs font-bold text-teal-light uppercase">LUCRO LÍQUIDO</p><h2 id="fin-profit" class="text-2xl font-black">R$ 0,00</h2></div>
+            <div class="bg-white p-4 rounded-3xl shadow-sm"><div class="flex justify-between items-center mb-3"><h3 class="font-black"><i class="fas fa-receipt text-teal"></i> Despesas</h3><button onclick="openExpenseModal()" class="btn-teal text-xs px-3 py-1 rounded-xl">+ Adicionar</button></div>
+            <div class="expense-btn-grid">
+                <button onclick="quickAddExpense('Aluguel', 500)" class="expense-quick-btn">🏢 Aluguel</button>
+                <button onclick="quickAddExpense('Água', 80)" class="expense-quick-btn">💧 Água</button>
+                <button onclick="quickAddExpense('Luz', 120)" class="expense-quick-btn">⚡ Luz</button>
+                <button onclick="quickAddExpense('Internet', 90)" class="expense-quick-btn">🌐 Internet</button>
+                <button onclick="quickAddExpense('Salários', 1500)" class="expense-quick-btn">👥 Salários</button>
+                <button onclick="quickAddExpense('Impostos', 300)" class="expense-quick-btn">📄 Impostos</button>
+                <button onclick="quickAddExpense('Transporte', 200)" class="expense-quick-btn">🚛 Transporte</button>
+                <button onclick="quickAddExpense('Manutenção', 150)" class="expense-quick-btn">🔧 Manutenção</button>
+                <button onclick="quickAddExpense('Marketing', 250)" class="expense-quick-btn">📢 Marketing</button>
+                <button onclick="quickAddExpense('Material', 100)" class="expense-quick-btn">📎 Material</button>
+                <button onclick="quickAddExpense('Uber', 45)" class="expense-quick-btn">🚗 Uber</button>
+                <button onclick="quickAddExpense('Comida', 60)" class="expense-quick-btn">🍽️ Comida</button>
+            </div>
+            <div id="expense-list" class="space-y-2 max-h-48 overflow-y-auto"></div></div>
+        </div>
+
+        <!-- REPORTS - Income and Expense Separate -->
+        <div id="view-reports" class="space-y-5">
+            <h2 class="text-xl font-black">Relatórios Avançados</h2>
+            <div class="grid grid-cols-2 gap-2 mb-3">
+                <button onclick="generateReport('sales', 'daily')" class="bg-teal-dark text-white p-2 rounded-xl text-xs">Vendas Hoje</button>
+                <button onclick="generateReport('sales', 'weekly')" class="bg-teal-dark text-white p-2 rounded-xl text-xs">Vendas Semana</button>
+                <button onclick="generateReport('sales', 'monthly')" class="bg-teal-dark text-white p-2 rounded-xl text-xs">Vendas Mês</button>
+                <button onclick="generateReport('sales', 'yearly')" class="bg-teal-dark text-white p-2 rounded-xl text-xs">Vendas Ano</button>
+                <button onclick="generateReport('expenses', 'daily')" class="bg-orange-600 text-white p-2 rounded-xl text-xs">Despesas Hoje</button>
+                <button onclick="generateReport('expenses', 'weekly')" class="bg-orange-600 text-white p-2 rounded-xl text-xs">Despesas Semana</button>
+                <button onclick="generateReport('expenses', 'monthly')" class="bg-orange-600 text-white p-2 rounded-xl text-xs">Despesas Mês</button>
+                <button onclick="generateReport('expenses', 'yearly')" class="bg-orange-600 text-white p-2 rounded-xl text-xs">Despesas Ano</button>
+            </div>
+            <div id="report-container" class="space-y-3 max-h-[55vh] overflow-y-auto"></div>
+        </div>
+
+        <!-- STORE INFO -->
+        <div id="view-store" class="space-y-4">
+            <h2 class="text-xl font-black">Informações da Loja</h2>
+            <div class="bg-white p-5 rounded-3xl shadow-sm space-y-3">
+                <div><label class="text-[9px] font-bold uppercase">Nome da Loja</label><input type="text" id="store-name" value="Simone Oliveira Bonifacio" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
+                <div><label class="text-[9px] font-bold uppercase">Endereço</label><input type="text" id="store-address" placeholder="Rua, número, bairro, cidade" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
+                <div><label class="text-[9px] font-bold uppercase">Telefone</label><input type="tel" id="store-phone" placeholder="(00) 00000-0000" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
+                <div><label class="text-[9px] font-bold uppercase">Responsável</label><input type="text" id="store-manager" placeholder="Nome do responsável" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
+                <div><label class="text-[9px] font-bold uppercase">CPF</label><input type="text" id="store-cpf" placeholder="000.000.000-00" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
+                <div><label class="text-[9px] font-bold uppercase">CNPJ</label><input type="text" id="store-cnpj" placeholder="00.000.000/0000-00" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
+                <button onclick="saveStoreInfo()" class="btn-teal w-full py-3 rounded-xl">SALVAR INFORMAÇÕES</button>
+            </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div id="view-settings" class="space-y-4">
+            <h2 class="text-xl font-black">Configurações</h2>
+            <div class="bg-white p-5 rounded-3xl shadow-sm space-y-4">
+                <div><label class="text-[9px] font-bold uppercase">Moeda</label><input type="text" id="set-currency" value="R$" class="w-full p-3 bg-slate-50 rounded-xl"></div>
+                <div><label class="text-[9px] font-bold uppercase">Stock Crítico</label><input type="number" id="set-low-stock" value="5" class="w-full p-3 bg-slate-50 rounded-xl"></div>
+                <button onclick="saveSettings()" class="btn-teal w-full py-3 rounded-xl">SALVAR</button>
+                <button onclick="exportBackup()" class="bg-slate-100 w-full py-3 rounded-xl text-teal-dark font-bold"><i class="fas fa-download"></i> Backup</button>
+                <button onclick="sendBackupEmailAdmin()" class="bg-teal-light w-full py-3 rounded-xl text-teal-dark font-bold"><i class="fas fa-envelope"></i> Email Backup</button>
+                <button onclick="factoryReset()" class="text-red-500 text-xs font-bold uppercase w-full">Resetar Tudo</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAIS -->
+    <div id="modal-payment" class="modal-bg"><div class="modal-content p-5"><h3 class="text-xl font-black mb-3 text-teal-dark">Pagamento</h3><div class="grid grid-cols-2 gap-2 mb-4"><button onclick="finishSale('Dinheiro')" class="p-3 rounded-xl border-2 border-teal/20"><i class="fas fa-money-bill-wave text-green-600"></i><p class="font-bold text-sm">DINHEIRO</p></button><button onclick="finishSale('Cartão')" class="p-3 rounded-xl border-2 border-teal/20"><i class="fas fa-credit-card text-blue-600"></i><p class="font-bold text-sm">CARTÃO</p></button><button onclick="finishSale('PIX')" class="p-3 rounded-xl border-2 border-teal/20"><i class="fas fa-qrcode text-purple-600"></i><p class="font-bold text-sm">PIX</p></button><button onclick="finishSale('Transferência')" class="p-3 rounded-xl border-2 border-teal/20"><i class="fas fa-exchange-alt text-orange-600"></i><p class="font-bold text-sm">TRANSFERÊNCIA</p></button></div><button onclick="closeModal('modal-payment')" class="w-full py-2 text-slate-400">CANCELAR</button></div></div>
+
+    <div id="modal-product" class="modal-bg"><div class="modal-content p-4"><h3 id="p-modal-title" class="text-lg font-black mb-3">Produto</h3><div class="space-y-2"><div class="relative w-full h-32 bg-slate-100 rounded-2xl overflow-hidden border-2 border-dashed border-teal"><i class="fas fa-camera absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-slate-400"></i><input type="file" id="p-img" accept="image/*" capture="environment" class="absolute inset-0 opacity-0 cursor-pointer"><div id="p-preview" class="absolute inset-0 pointer-events-none"></div></div><input type="hidden" id="p-id"><input type="text" id="p-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="text" id="p-barcode" placeholder="Código" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><select id="p-category" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><option value="Bijuteria">Bijuteria</option><option value="Acessórios">Acessórios</option><option value="Relógios">Relógios</option><option value="Outros">Outros</option></select><div class="grid grid-cols-2 gap-2"><input type="number" id="p-cost" placeholder="Alış Fiyatı" class="p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="p-price" placeholder="Satış Fiyatı" class="p-2 bg-slate-50 rounded-xl text-sm"></div><input type="number" id="p-stock" placeholder="Stok" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveProduct()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-product')" class="bg-slate-100 px-4 rounded-xl">FECHAR</button></div></div></div></div>
+
+    <div id="modal-customer" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3">Cliente</h3><div class="space-y-2"><input type="hidden" id="cust-id"><input type="text" id="cust-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><input type="tel" id="cust-phone" placeholder="Telefone" class="flex-1 p-2 bg-slate-50 rounded-xl text-sm"><button onclick="importFromPhonebook('customer')" class="bg-teal-light px-3 rounded-xl text-teal-dark"><i class="fas fa-address-book"></i></button></div><input type="text" id="cust-address" placeholder="Endereço" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveCustomer()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-customer')" class="bg-slate-100 px-4 rounded-xl">CANCELAR</button></div></div></div></div>
+
+    <div id="modal-wholesaler" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3">Toptancı</h3><div class="space-y-2"><input type="hidden" id="whole-id"><input type="text" id="whole-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><input type="tel" id="whole-phone" placeholder="Telefone" class="flex-1 p-2 bg-slate-50 rounded-xl text-sm"><button onclick="importFromPhonebook('wholesaler')" class="bg-teal-light px-3 rounded-xl text-teal-dark"><i class="fas fa-address-book"></i></button></div><input type="text" id="whole-address" placeholder="Endereço" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveWholesaler()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-wholesaler')" class="bg-slate-100 px-4 rounded-xl">CANCELAR</button></div></div></div></div>
+
+    <div id="modal-customer-detail" class="modal-bg"><div class="modal-content p-4"><h3 id="cd-name" class="text-lg font-black text-teal-dark"></h3><p id="cd-phone" class="text-xs text-slate-400 mb-2"></p><div id="cd-history" class="space-y-2 max-h-80 overflow-y-auto"></div><button onclick="closeModal('modal-customer-detail')" class="w-full mt-3 py-2 bg-teal-dark text-white rounded-xl text-sm">FECHAR</button></div></div>
+
+    <div id="modal-purchase-invoice" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3 text-blue-600">Alış Faturası</h3><div class="space-y-2"><select id="purchase-product-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"></select><input type="number" id="purchase-quantity" placeholder="Miktar" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="purchase-price" placeholder="Birim Fiyat" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><button onclick="processPurchaseInvoice()" class="bg-blue-600 text-white w-full py-2 rounded-xl text-sm">KAYDET</button><button onclick="closeModal('modal-purchase-invoice')" class="w-full py-2 text-slate-400 text-sm">Cancelar</button></div></div></div>
+
+    <div id="modal-sales-invoice" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3 text-emerald-600">Satış Faturası</h3><div class="space-y-2"><select id="sales-product-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"></select><input type="number" id="sales-quantity" placeholder="Miktar" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="sales-price" placeholder="Birim Fiyat" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><select id="sales-customer-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><option value="">Müşteri Seç</option></select><button onclick="processSalesInvoice()" class="bg-emerald-600 text-white w-full py-2 rounded-xl text-sm">KAYDET</button><button onclick="closeModal('modal-sales-invoice')" class="w-full py-2 text-slate-400 text-sm">Cancelar</button></div></div></div>
+
+    <div id="modal-expense" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3">Despesa</h3><div class="space-y-2"><input type="text" id="expense-desc" placeholder="Descrição" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="expense-amount" placeholder="Valor" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="date" id="expense-date" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><button onclick="addExpense()" class="btn-teal w-full py-2 rounded-xl text-sm">ADICIONAR</button><button onclick="closeModal('modal-expense')" class="w-full py-2 text-slate-400 text-sm">Cancelar</button></div></div></div>
+
+    <div id="modal-receipt" class="modal-bg"><div class="modal-content p-3 max-w-sm"><div id="receipt-content" class="receipt"></div><div class="flex gap-2 mt-3"><button onclick="sendReceiptWhatsApp()" class="btn-teal flex-1 py-2 rounded-xl text-xs"><i class="fab fa-whatsapp"></i> Enviar</button><button onclick="closeModal('modal-receipt')" class="bg-slate-100 flex-1 py-2 rounded-xl text-xs">Fechar</button></div></div></div>
+
+    <script>
+        const db = new Dexie("SBO_SYSTEM_V2");
+        db.version(1).stores({ 
+            products: "++id, name, barcode, category, price, cost, stock, img", 
+            customers: "++id, name, phone, address", 
+            wholesalers: "++id, name, phone, address",
+            sales: "++id, date, customerId, total, profit, method, items, invoiceNo",
+            invoices: "++id, date, type, customerId, wholesalerId, items, total, invoiceNo",
+            expenses: "++id, description, amount, date", 
+            store: "id, val",
+            config: "id, val" 
+        });
+
+        let cart = [], config = { company: 'Simone Oliveira Bonifacio', currency: 'R$', lowStock: 5, darkMode: false, lang: 'pt' }, currentImg = "", posGridView = false, lastReceipt = null, currentReportData = [], currentReportType = '', currentReportPeriod = '';
+
+        async function init() { 
+            await loadConfig(); 
+            await loadStoreInfo();
+            applyTheme(); 
+            switchTab('dashboard'); 
+            setInterval(() => { 
+                let now = new Date();
+                document.getElementById('live-clock').innerText = now.toLocaleTimeString(config.lang === 'tr' ? 'tr-TR' : 'pt-BR'); 
+            }, 1000); 
+            document.getElementById('p-img').onchange = (e) => { 
+                const reader = new FileReader(); 
+                reader.onload = (ex) => { currentImg = ex.target.result; document.getElementById('p-preview').innerHTML = `<img src="${currentImg}" class="w-full h-full object-cover">`; }; 
+                reader.readAsDataURL(e.target.files[0]); 
+            }; 
+            await loadCustomerSelect(); 
+            await loadProductSelects();
+            await renderExpenses(); 
+            await renderInvoices(); 
+            await renderWholesalers();
+            document.getElementById('brand-name').innerText = "Simone Oliveira";
+            if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+        }
+        
+        async function loadConfig() { 
+            const res = await db.config.toArray(); 
+            res.forEach(c => config[c.id] = c.val); 
+            document.getElementById('set-currency').value = config.currency; 
+            document.getElementById('set-low-stock').value = config.lowStock; 
+            if(config.darkMode) document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+            document.getElementById('theme-switch') ? document.getElementById('theme-switch').checked = config.darkMode : null;
+            if(config.lang === 'tr') document.documentElement.lang = 'tr';
+            updateUIText(); 
+        }
+        
+        async function loadStoreInfo() {
+            const name = await db.store.get('name'); if(name) document.getElementById('store-name').value = name.val;
+            const addr = await db.store.get('address'); if(addr) document.getElementById('store-address').value = addr.val;
+            const phone = await db.store.get('phone'); if(phone) document.getElementById('store-phone').value = phone.val;
+            const manager = await db.store.get('manager'); if(manager) document.getElementById('store-manager').value = manager.val;
+            const cpf = await db.store.get('cpf'); if(cpf) document.getElementById('store-cpf').value = cpf.val;
+            const cnpj = await db.store.get('cnpj'); if(cnpj) document.getElementById('store-cnpj').value = cnpj.val;
+        }
+        
+        async function saveStoreInfo() {
+            await db.store.put({id: 'name', val: document.getElementById('store-name').value});
+            await db.store.put({id: 'address', val: document.getElementById('store-address').value});
+            await db.store.put({id: 'phone', val: document.getElementById('store-phone').value});
+            await db.store.put({id: 'manager', val: document.getElementById('store-manager').value});
+            await db.store.put({id: 'cpf', val: document.getElementById('store-cpf').value});
+            await db.store.put({id: 'cnpj', val: document.getElementById('store-cnpj').value});
+            showToast('Informações salvas!');
+        }
+        
+        async function loadCustomerSelect() { 
+            const custs = await db.customers.toArray(); 
+            const select = document.getElementById('cart-customer-select'); 
+            select.innerHTML = '<option value="0">Cliente Rápido</option>' + custs.map(c => `<option value="${c.id}">${c.name}</option>`).join(''); 
+            const salesSelect = document.getElementById('sales-customer-select');
+            if(salesSelect) salesSelect.innerHTML = '<option value="">Müşteri Seç</option>' + custs.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        }
+        
+        async function loadProductSelects() { 
+            const prods = await db.products.toArray(); 
+            const purchaseSelect = document.getElementById('purchase-product-select'); 
+            if(purchaseSelect) purchaseSelect.innerHTML = prods.map(p => `<option value="${p.id}">${p.name} (Stok: ${p.stock})</option>`).join(''); 
+            const salesSelect = document.getElementById('sales-product-select'); 
+            if(salesSelect) salesSelect.innerHTML = prods.map(p => `<option value="${p.id}">${p.name} (Stok: ${p.stock})</option>`).join(''); 
+        }
+        
+        function updateUIText() { 
+            document.getElementById('lang-btn').innerText = config.lang === 'tr' ? 'TR' : 'PT'; 
+        }
+        
+        function toggleLanguage() { 
+            config.lang = config.lang === 'pt' ? 'tr' : 'pt'; 
+            db.config.put({id: 'lang', val: config.lang}); 
+            updateUIText(); 
+            renderPos(); renderStock(); renderCustomers(); renderFinance(); renderDashboard(); 
+            showToast(config.lang === 'tr' ? 'Dil değiştirildi' : 'Idioma alterado'); 
+        }
+        
+        function toggleTheme() { 
+            config.darkMode = !config.darkMode; 
+            db.config.put({id: 'darkMode', val: config.darkMode}); 
+            if(config.darkMode) document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+            showToast(config.lang === 'tr' ? 'Tema değiştirildi' : 'Tema alterado');
+        }
+        
+        function toggleSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
+        
+        function switchTab(tab) { 
+            document.querySelectorAll('main > div').forEach(v => v.classList.add('hidden')); 
+            document.getElementById('view-' + tab).classList.remove('hidden'); 
+            if(tab === 'dashboard') renderDashboard(); 
+            if(tab === 'pos') renderPos(); 
+            if(tab === 'stock') renderStock(); 
+            if(tab === 'customers') renderCustomers(); 
+            if(tab === 'wholesalers') renderWholesalers();
+            if(tab === 'invoices') renderInvoices();
+            if(tab === 'finance') { renderFinance(); renderExpenses(); } 
+            closeSidebar();
+        }
+        
+        function showToast(msg) { const t = document.createElement('div'); t.className = 'toast-notify'; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2000); }
+        
+        async function renderDashboard() { 
+            const products = await db.products.toArray(); 
+            const customers = await db.customers.toArray(); 
+            const today = new Date().toISOString().split('T')[0]; 
+            const sales = await db.sales.toArray(); 
+            const todaySales = sales.filter(s => s.date.split('T')[0] === today).reduce((a,b)=> a + b.total, 0); 
+            const lowStockCount = products.filter(p => p.stock <= config.lowStock).length; 
+            document.getElementById('dash-today-sales').innerHTML = todaySales.toFixed(2).replace('.',',') + " " + config.currency; 
+            document.getElementById('dash-low-stock').innerText = lowStockCount; 
+            document.getElementById('dash-total-products').innerText = products.length; 
+            document.getElementById('dash-total-customers').innerText = customers.length; 
+            const critical = products.filter(p => p.stock <= config.lowStock).slice(0,5); 
+            document.getElementById('dash-critical-list').innerHTML = critical.map(p => `<div class="flex justify-between"><span>${p.name}</span><span class="text-teal-light font-bold">Stock: ${p.stock}</span></div>`).join(''); 
+        }
+        
+        async function renderPos() { 
+            const query = document.getElementById('pos-search').value.toLowerCase(); 
+            let prods = await db.products.toArray(); 
+            prods = prods.filter(p => p.name.toLowerCase().includes(query) || (p.barcode && p.barcode.includes(query))); 
+            const container = document.getElementById('pos-products'); 
+            container.className = posGridView ? 'grid-view' : 'pos-grid'; 
+            container.innerHTML = prods.map(p => `<div onclick="addToCart(${p.id})" class="pos-card shadow-sm"><div class="w-full h-16 bg-slate-50 rounded-xl mb-2 overflow-hidden flex items-center justify-center">${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : '<i class="fas fa-box text-2xl text-teal/40"></i>'}</div><h4 class="text-[9px] font-bold truncate">${p.name}</h4><p class="text-xs font-black text-teal-dark">${p.price.toFixed(2).replace('.',',')}</p><span class="text-[7px] ${p.stock <= config.lowStock ? 'text-red-500' : 'text-slate-400'}">Stk:${p.stock}</span></div>`).join(''); 
+        }
+        
+        function togglePosView() { posGridView = !posGridView; renderPos(); }
+        function scanBarcode() { const bc = prompt("Código de barras:"); if(bc) document.getElementById('pos-search').value = bc; renderPos(); }
+        
+        async function addToCart(id) { 
+            const p = await db.products.get(id); 
+            if(p.stock <= 0) { showToast('Stock insuficiente!'); return; } 
+            const inCart = cart.find(x => x.id === id); 
+            if(inCart) inCart.cQty++; else cart.push({...p, cQty: 1}); 
+            renderCart(); 
+        }
+        
+        function renderCart() { 
+            const list = document.getElementById('cart-items'); 
+            list.innerHTML = cart.map((item, i) => `<div class="flex items-center gap-2 bg-white/10 p-2 rounded-xl"><div class="flex-1"><h5 class="text-xs font-bold">${item.name}</h5><p class="text-[9px] text-teal-light">${item.cQty}x ${item.price.toFixed(2).replace('.',',')}</p></div><button onclick="cart.splice(${i},1);renderCart();" class="text-red-300 text-xs"><i class="fas fa-trash-alt"></i></button></div>`).join(''); 
+            const total = cart.reduce((s, x) => s + (x.price * x.cQty), 0); 
+            document.getElementById('cart-total').innerHTML = `${total.toFixed(2).replace('.',',')} ${config.currency}`; 
+        }
+        
+        function openPaymentModal() { if(cart.length > 0) openModal('modal-payment'); else showToast('Carrinho vazio!'); }
+        
+        async function finishSale(method) { 
+            const total = cart.reduce((s, x) => s + (x.price * x.cQty), 0); 
+            const profit = cart.reduce((s, x) => s + ((x.price - (x.cost || 0)) * x.cQty), 0); 
+            const customerId = parseInt(document.getElementById('cart-customer-select').value); 
+            let customer = null; if(customerId) customer = await db.customers.get(customerId); 
+            for(let item of cart) { 
+                const prod = await db.products.get(item.id); 
+                const newStock = prod.stock - item.cQty; 
+                await db.products.update(item.id, { stock: newStock }); 
+            } 
+            const invoiceNo = 'SAT-' + Date.now(); 
+            const sale = { date: new Date().toISOString(), customerId, total, profit, method, items: cart.map(i => ({name: i.name, qty: i.cQty, price: i.price})), invoiceNo }; 
+            await db.sales.add(sale); 
+            await db.invoices.add({ date: new Date().toISOString(), type: 'sales', customerId, items: cart.map(i => ({name: i.name, qty: i.cQty, price: i.price, total: i.price * i.cQty})), total, invoiceNo }); 
+            closeModal('modal-payment'); 
+            showReceiptModal(sale, customer); 
+            clearCart(); 
+            renderPos(); 
+            renderDashboard(); 
+            renderFinance(); 
+            renderInvoices(); 
+        }
+        
+        function showReceiptModal(sale, customer) { 
+            const date = new Date(sale.date).toLocaleString(); 
+            let receiptHtml = `<div class="text-center"><strong>Simone Oliveira Bonifacio</strong><br>${date}<hr>`; 
+            if(customer) receiptHtml += `<b>Cliente:</b> ${customer.name}<br>`; 
+            sale.items.forEach(i => { receiptHtml += `${i.qty}x ${i.name} .... ${(i.price*i.qty).toFixed(2).replace('.',',')} ${config.currency}<br>`; }); 
+            receiptHtml += `<hr><b>TOTAL:</b> ${sale.total.toFixed(2).replace('.',',')} ${config.currency}<br><b>Pagamento:</b> ${sale.method}<hr>Obrigado!</div>`; 
+            document.getElementById('receipt-content').innerHTML = receiptHtml; 
+            lastReceipt = { sale, customer }; 
+            openModal('modal-receipt'); 
+        }
+        
+        function sendReceiptWhatsApp() { 
+            if(!lastReceipt) return; 
+            let text = `Simone Oliveira Bonifacio\nData: ${new Date(lastReceipt.sale.date).toLocaleString()}\n`; 
+            if(lastReceipt.customer) text += `Cliente: ${lastReceipt.customer.name}\n`; 
+            text += `------------------------\n`; 
+            lastReceipt.sale.items.forEach(i => { text += `${i.qty}x ${i.name} = ${(i.price*i.qty).toFixed(2).replace('.',',')} ${config.currency}\n`; }); 
+            text += `------------------------\nTOTAL: ${lastReceipt.sale.total.toFixed(2).replace('.',',')} ${config.currency}\nPagamento: ${lastReceipt.sale.method}\nObrigado!`; 
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); 
+        }
+        
+        // STOCK
+        async function renderStock() { 
+            const query = document.getElementById('stock-search')?.value.toLowerCase() || ''; 
+            let prods = await db.products.toArray(); 
+            if(query) prods = prods.filter(p => p.name.toLowerCase().includes(query)); 
+            document.getElementById('stock-list').innerHTML = prods.map(p => `<div class="bg-white p-3 rounded-2xl border flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden">${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : '<i class="fas fa-box text-2xl text-teal/30"></i>'}</div><div class="flex-1"><h4 class="font-bold text-sm">${p.name}</h4><p class="text-[9px] text-slate-400">Alış: ${(p.cost||0).toFixed(2).replace('.',',')} | Satış: ${p.price.toFixed(2).replace('.',',')}</p></div><div><span class="text-sm font-black ${p.stock <= config.lowStock ? 'text-red-500' : 'text-teal-dark'}">${p.stock}</span></div><button onclick="editProduct(${p.id})" class="text-teal p-2"><i class="fas fa-edit"></i></button></div>`).join(''); 
+            await loadProductSelects(); 
+        }
+        
+        async function saveProduct() { 
+            const data = { name: document.getElementById('p-name').value, barcode: document.getElementById('p-barcode').value, category: document.getElementById('p-category').value, price: parseFloat(document.getElementById('p-price').value), cost: parseFloat(document.getElementById('p-cost').value), stock: parseInt(document.getElementById('p-stock').value), img: currentImg }; 
+            if(!data.name) return; 
+            const id = document.getElementById('p-id').value; 
+            if(id) await db.products.update(parseInt(id), data); 
+            else await db.products.add(data); 
+            closeModal('modal-product'); 
+            renderStock(); 
+            renderPos(); 
+            showToast('Produto salvo'); 
+        }
+        
+        async function editProduct(id) { 
+            const p = await db.products.get(id); 
+            document.getElementById('p-modal-title').innerText = "Editar Produto"; 
+            document.getElementById('p-id').value = p.id; 
+            document.getElementById('p-name').value = p.name; 
+            document.getElementById('p-barcode').value = p.barcode || ''; 
+            document.getElementById('p-category').value = p.category || 'Bijuteria'; 
+            document.getElementById('p-cost').value = p.cost; 
+            document.getElementById('p-price').value = p.price; 
+            document.getElementById('p-stock').value = p.stock; 
+            if(p.img) { document.getElementById('p-preview').innerHTML = `<img src="${p.img}" class="w-full h-full object-cover">`; currentImg = p.img; } 
+            openModal('modal-product'); 
+        }
+        
+        function openProductModal() { 
+            document.getElementById('p-modal-title').innerText = "Novo Produto"; 
+            document.getElementById('p-id').value = ""; 
+            document.getElementById('p-name').value = ""; 
+            document.getElementById('p-barcode').value = ""; 
+            document.getElementById('p-cost').value = ""; 
+            document.getElementById('p-price').value = ""; 
+            document.getElementById('p-stock').value = ""; 
+            document.getElementById('p-preview').innerHTML = ""; 
+            currentImg = ""; 
+            openModal('modal-product'); 
+        }
+        
+        // INVOICES
+        async function renderInvoices() { 
+            const invoices = await db.invoices.toArray(); 
+            const reversed = invoices.reverse().slice(0,30); 
+            document.getElementById('invoice-list').innerHTML = reversed.map(inv => `<div class="bg-white p-3 rounded-2xl border-l-4 ${inv.type === 'purchase' ? 'border-blue-500' : 'border-emerald-500'}"><div class="flex justify-between"><span class="text-xs font-bold">${inv.type === 'purchase' ? 'ALIŞ' : 'SATIŞ'}</span><span class="text-[9px]">${new Date(inv.date).toLocaleDateString()}</span></div><p class="font-bold text-sm">${config.currency} ${inv.total.toFixed(2).replace('.',',')}</p><p class="text-[9px] text-slate-500">${inv.items.length} ürün</p></div>`).join(''); 
+        }
+        
+        async function openPurchaseInvoiceModal() { await loadProductSelects(); openModal('modal-purchase-invoice'); }
+        async function processPurchaseInvoice() { 
+            const productId = parseInt(document.getElementById('purchase-product-select').value); 
+            const qty = parseInt(document.getElementById('purchase-quantity').value); 
+            const price = parseFloat(document.getElementById('purchase-price').value); 
+            if(!productId || !qty || !price) { showToast('Tüm alanları doldurun'); return; } 
+            const prod = await db.products.get(productId); 
+            const newStock = prod.stock + qty; 
+            const newCost = ((prod.cost * prod.stock) + (price * qty)) / newStock; 
+            await db.products.update(productId, { stock: newStock, cost: newCost }); 
+            await db.invoices.add({ date: new Date().toISOString(), type: 'purchase', items: [{ name: prod.name, qty, price, total: price * qty }], total: price * qty, invoiceNo: 'ALIS-' + Date.now() }); 
+            await db.expenses.add({ description: `Alış: ${prod.name} (${qty} adet)`, amount: price * qty, date: new Date().toISOString().split('T')[0] }); 
+            closeModal('modal-purchase-invoice'); 
+            renderStock(); renderInvoices(); renderExpenses(); renderFinance(); 
+            showToast(`${qty} adet eklendi`); 
+        }
+        
+        async function openSalesInvoiceModal() { await loadProductSelects(); await loadCustomerSelect(); openModal('modal-sales-invoice'); }
+        async function processSalesInvoice() { 
+            const productId = parseInt(document.getElementById('sales-product-select').value); 
+            const qty = parseInt(document.getElementById('sales-quantity').value); 
+            const price = parseFloat(document.getElementById('sales-price').value); 
+            const customerId = parseInt(document.getElementById('sales-customer-select').value); 
+            if(!productId || !qty || !price) { showToast('Tüm alanları doldurun'); return; } 
+            const prod = await db.products.get(productId); 
+            if(prod.stock < qty) { showToast('Yeterli stok yok!'); return; } 
+            const newStock = prod.stock - qty; 
+            await db.products.update(productId, { stock: newStock }); 
+            const profit = (price - (prod.cost || 0)) * qty; 
+            await db.invoices.add({ date: new Date().toISOString(), type: 'sales', customerId: customerId || null, items: [{ name: prod.name, qty, price, total: price * qty }], total: price * qty, invoiceNo: 'SATIS-' + Date.now() }); 
+            await db.sales.add({ date: new Date().toISOString(), customerId: customerId || 0, total: price * qty, profit, method: 'Fatura', items: [{ name: prod.name, qty, price }] }); 
+            closeModal('modal-sales-invoice'); 
+            renderStock(); renderInvoices(); renderFinance(); renderDashboard(); 
+            showToast(`Satış: ${config.currency} ${(price*qty).toFixed(2)}`); 
+        }
+        
+        // WHOLESALERS
+        async function renderWholesalers() { 
+            const wholes = await db.wholesalers.toArray(); 
+            document.getElementById('wholesaler-list').innerHTML = wholes.map(w => `<div class="bg-white p-3 rounded-2xl border flex justify-between items-center"><div><h4 class="font-bold text-sm">${w.name}</h4><p class="text-[9px] text-slate-400">${w.phone || '-'}</p></div><i class="fas fa-chevron-right text-teal"></i></div>`).join(''); 
+        }
+        
+        function openWholesalerModal() { 
+            document.getElementById('whole-id').value = ""; 
+            document.getElementById('whole-name').value = ""; 
+            document.getElementById('whole-phone').value = ""; 
+            document.getElementById('whole-address').value = ""; 
+            openModal('modal-wholesaler'); 
+        }
+        
+        async function saveWholesaler() { 
+            const data = { name: document.getElementById('whole-name').value, phone: document.getElementById('whole-phone').value, address: document.getElementById('whole-address').value }; 
+            if(!data.name) return; 
+            const id = document.getElementById('whole-id').value; 
+            if(id) await db.wholesalers.update(parseInt(id), data); 
+            else await db.wholesalers.add(data); 
+            closeModal('modal-wholesaler'); 
+            renderWholesalers(); 
+            showToast('Toptancı kaydedildi'); 
+        }
+        
+        // CUSTOMERS
+        async function renderCustomers() { 
+            const custs = await db.customers.toArray(); 
+            document.getElementById('customer-list').innerHTML = custs.map(c => `<div onclick="viewCustomerDetail(${c.id})" class="bg-white p-3 rounded-2xl border flex justify-between items-center"><div><h4 class="font-bold text-sm">${c.name}</h4><p class="text-[9px] text-slate-400">${c.phone || '-'}</p></div><i class="fas fa-chevron-right text-teal"></i></div>`).join(''); 
+        }
+        
+        function importFromPhonebook(type) { 
+            const phoneInput = prompt("Telefon numarasını girin veya rehberden yapıştırın:", "55 11 91234-5678"); 
+            if(phoneInput) { 
+                if(type === 'customer') document.getElementById('cust-phone').value = phoneInput; 
+                else document.getElementById('whole-phone').value = phoneInput; 
+                showToast("Telefon eklendi!"); 
+            } 
+        }
+        
+        async function saveCustomer() { 
+            const data = { name: document.getElementById('cust-name').value, phone: document.getElementById('cust-phone').value, address: document.getElementById('cust-address').value }; 
+            if(!data.name) return; 
+            const id = document.getElementById('cust-id').value; 
+            if(id) await db.customers.update(parseInt(id), data); 
+            else await db.customers.add(data); 
+            closeModal('modal-customer'); 
+            await loadCustomerSelect(); 
+            renderCustomers(); 
+            showToast('Cliente salvo'); 
+        }
+        
+        function openCustomerModal() { 
+            document.getElementById('cust-id').value = ""; 
+            document.getElementById('cust-name').value = ""; 
+            document.getElementById('cust-phone').value = ""; 
+            document.getElementById('cust-address').value = ""; 
+            openModal('modal-customer'); 
+        }
+        
+        async function viewCustomerDetail(id) { 
+            const c = await db.customers.get(id); 
+            const history = await db.sales.where('customerId').equals(id).toArray(); 
+            document.getElementById('cd-name').innerText = c.name; 
+            document.getElementById('cd-phone').innerText = c.phone; 
+            document.getElementById('cd-history').innerHTML = history.reverse().slice(0,10).map(s => `<div class="p-2 bg-slate-50 rounded-xl"><div class="flex justify-between"><span class="text-teal-dark font-bold text-xs">${s.method}</span><span class="text-[9px]">${new Date(s.date).toLocaleDateString()}</span></div><div class="text-right font-black text-sm">${s.total.toFixed(2).replace('.',',')} ${config.currency}</div></div>`).join(''); 
+            openModal('modal-customer-detail'); 
+        }
+        
+        // FINANCE & EXPENSES
+        async function renderFinance() { 
+            const sales = await db.sales.toArray(); 
+            const products = await db.products.toArray(); 
+            const expenses = await db.expenses.toArray(); 
+            const totalExpenses = expenses.reduce((a,b)=> a + b.amount, 0); 
+            const income = sales.reduce((s, x) => s + x.total, 0); 
+            const profit = sales.reduce((s, x) => s + (x.profit || 0), 0) - totalExpenses; 
+            const stockValue = products.reduce((s, x) => s + ((x.cost || 0) * x.stock), 0); 
+            document.getElementById('fin-income').innerHTML = income.toFixed(2).replace('.',',') + " " + config.currency; 
+            document.getElementById('fin-stock').innerHTML = stockValue.toFixed(2).replace('.',',') + " " + config.currency; 
+            document.getElementById('fin-profit').innerHTML = profit.toFixed(2).replace('.',',') + " " + config.currency; 
+        }
+        
+        async function renderExpenses() { 
+            const expenses = await db.expenses.toArray(); 
+            const sorted = expenses.reverse().slice(0,20);
+            document.getElementById('expense-list').innerHTML = sorted.map(e => `<div class="flex justify-between items-center p-2 bg-slate-50 rounded-xl"><span class="text-xs">${e.description}</span><span class="font-bold text-xs">${e.amount.toFixed(2).replace('.',',')} ${config.currency}</span><button onclick="deleteExpense(${e.id})" class="text-red-400 text-xs"><i class="fas fa-trash"></i></button></div>`).join(''); 
+        }
+        
+        async function addExpense() { 
+            const desc = document.getElementById('expense-desc').value; 
+            const amount = parseFloat(document.getElementById('expense-amount').value); 
+            const date = document.getElementById('expense-date').value; 
+            if(!desc || !amount) return; 
+            await db.expenses.add({ description: desc, amount, date: date || new Date().toISOString().split('T')[0] }); 
+            closeModal('modal-expense'); 
+            renderExpenses(); 
+            renderFinance(); 
+            showToast('Despesa adicionada'); 
+        }
+        
+        async function quickAddExpense(desc, amount) { 
+            await db.expenses.add({ description: desc, amount, date: new Date().toISOString().split('T')[0] }); 
+            renderExpenses(); 
+            renderFinance(); 
+            showToast(`${desc}: ${config.currency} ${amount.toFixed(2)}`); 
+        }
+        
+        async function deleteExpense(id) { await db.expenses.delete(id); renderExpenses(); renderFinance(); }
+        function openExpenseModal() { document.getElementById('expense-desc').value = ""; document.getElementById('expense-amount').value = ""; document.getElementById('expense-date').value = new Date().toISOString().split('T')[0]; openModal('modal-expense'); }
+        
+        // REPORTS
+        function getDateRange(period) { 
+            let start, end = new Date(); 
+            const now = new Date(); 
+            if(period === 'daily') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate()); end = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1); } 
+            else if(period === 'weekly') { const d = new Date(now); d.setDate(now.getDate() - now.getDay()); start = new Date(d.getFullYear(), d.getMonth(), d.getDate()); end = new Date(start); end.setDate(start.getDate() + 7); } 
+            else if(period === 'monthly') { start = new Date(now.getFullYear(), now.getMonth(), 1); end = new Date(now.getFullYear(), now.getMonth()+1, 1); } 
+            else { start = new Date(now.getFullYear(), 0, 1); end = new Date(now.getFullYear()+1, 0, 1); } 
+            return { start, end }; 
+        }
+        
+        async function generateReport(type, period) { 
+            currentReportType = type; 
+            currentReportPeriod = period; 
+            const { start, end } = getDateRange(period); 
+            let data = []; 
+            let title = ''; 
+            if(type === 'sales') { 
+                data = await db.sales.toArray(); 
+                data = data.filter(s => new Date(s.date) >= start && new Date(s.date) < end); 
+                title = `RELATÓRIO DE VENDAS - ${period.toUpperCase()}`; 
+            } else { 
+                data = await db.expenses.toArray(); 
+                data = data.filter(e => new Date(e.date) >= start && new Date(e.date) < end); 
+                title = `RELATÓRIO DE DESPESAS - ${period.toUpperCase()}`; 
+            } 
+            currentReportData = data; 
+            const total = data.reduce((a,b)=> a + (b.total || b.amount), 0); 
+            const container = document.getElementById('report-container'); 
+            let html = `<div class="report-card"><div class="text-center mb-3"><h3 class="text-lg font-black text-teal-dark">${title}</h3><p class="text-xs">${start.toLocaleDateString()} até ${new Date(end.getTime()-1).toLocaleDateString()}</p><p class="text-base font-bold mt-2">Total: ${config.currency} ${total.toFixed(2).replace('.',',')}</p></div>`; 
+            if(type === 'sales') { 
+                html += `<table class="report-table"><thead><tr><th>Data</th><th>Método</th><th>Valor</th></tr></thead><tbody>${data.slice(0,30).map(s => `<tr><td>${new Date(s.date).toLocaleDateString()}</td><td>${s.method}</td><td>${config.currency} ${s.total.toFixed(2).replace('.',',')}</td></tr>`).join('')}</tbody><table>`; 
+            } else { 
+                html += `<table class="report-table"><thead><tr><th>Data</th><th>Descrição</th><th>Valor</th></tr></thead><tbody>${data.slice(0,30).map(e => `<tr><td>${new Date(e.date).toLocaleDateString()}</td><td>${e.description}</td><td>${config.currency} ${e.amount.toFixed(2).replace('.',',')}</td></tr>`).join('')}</tbody><table>`; 
+            } 
+            html += `<div class="flex gap-2 mt-4"><button onclick="exportCurrentReportToPDF()" class="btn-teal flex-1 py-2 rounded-xl text-xs"><i class="fas fa-file-pdf"></i> PDF</button><button onclick="sendCurrentReportWhatsApp()" class="bg-green-600 text-white flex-1 py-2 rounded-xl text-xs"><i class="fab fa-whatsapp"></i> WhatsApp</button></div></div>`; 
+            container.innerHTML = html; 
+            showToast(`Relatório ${period} na tela`); 
+        }
+        
+        async function exportCurrentReportToPDF() { 
+            if(currentReportData.length===0) { showToast('Nenhum relatório'); return; } 
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF('p', 'mm', 'a4'); 
+            const pageWidth = doc.internal.pageSize.getWidth(); 
+            doc.setFontSize(16); 
+            doc.setTextColor(15, 118, 110); 
+            doc.text("Simone Oliveira Bonifacio", pageWidth/2, 20, { align: 'center' }); 
+            doc.setFontSize(12); 
+            doc.setTextColor(0,0,0); 
+            const title = currentReportType === 'sales' ? `Relatório de Vendas - ${currentReportPeriod.toUpperCase()}` : `Relatório de Despesas - ${currentReportPeriod.toUpperCase()}`; 
+            doc.text(title, pageWidth/2, 30, { align: 'center' }); 
+            doc.text(`Data: ${new Date().toLocaleString()}`, pageWidth/2, 38, { align: 'center' }); 
+            const tableData = currentReportData.slice(0,50).map(item => currentReportType === 'sales' ? [new Date(item.date).toLocaleDateString(), item.method, `${config.currency} ${item.total.toFixed(2)}`] : [new Date(item.date).toLocaleDateString(), item.description, `${config.currency} ${item.amount.toFixed(2)}`]); 
+            const headers = currentReportType === 'sales' ? [['Data', 'Pagamento', 'Valor']] : [['Data', 'Descrição', 'Valor']]; 
+            doc.autoTable({ startY: 50, head: headers, body: tableData, theme: 'striped', headStyles: { fillColor: [15,118,110], textColor: 255 }, margin: { left: 10, right: 10 } }); 
+            const total = currentReportData.reduce((a,b)=> a + (b.total || b.amount), 0); 
+            const finalY = doc.lastAutoTable.finalY + 10; 
+            doc.setFontSize(11); 
+            doc.text(`Total: ${config.currency} ${total.toFixed(2)}`, 14, finalY); 
+            doc.save(`relatorio_${currentReportType}_${currentReportPeriod}_${Date.now()}.pdf`); 
+            showToast('PDF gerado!'); 
+        }
+        
+        function sendCurrentReportWhatsApp() { 
+            if(currentReportData.length===0) { showToast('Nenhum relatório'); return; } 
+            let text = `*Simone Oliveira Bonifacio* - *${currentReportType.toUpperCase()}* ${currentReportPeriod.toUpperCase()}\nTotal: ${config.currency} ${currentReportData.reduce((a,b)=>a+(b.total||b.amount),0).toFixed(2)}\n`; 
+            currentReportData.slice(0,10).forEach(item => { 
+                if(currentReportType==='sales') text+=`${new Date(item.date).toLocaleDateString()}: ${item.method} ${config.currency} ${item.total.toFixed(2)}\n`; 
+                else text+=`${new Date(item.date).toLocaleDateString()}: ${item.description} ${config.currency} ${item.amount.toFixed(2)}\n`; 
+            }); 
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); 
+        }
+        
+        // SETTINGS & BACKUP
+        async function exportBackup() { 
+            const allData = { products: await db.products.toArray(), customers: await db.customers.toArray(), wholesalers: await db.wholesalers.toArray(), sales: await db.sales.toArray(), invoices: await db.invoices.toArray(), expenses: await db.expenses.toArray(), store: await db.store.toArray(), config: await db.config.toArray() }; 
+            const blob = new Blob([JSON.stringify(allData)], {type: 'application/json'}); 
+            const a = document.createElement('a'); 
+            a.href = URL.createObjectURL(blob); 
+            a.download = `sbo_backup_${Date.now()}.json`; 
+            a.click(); 
+            showToast('Backup criado'); 
+        }
+        
+        async function sendBackupEmailAdmin() { 
+            const allData = { products: await db.products.toArray(), customers: await db.customers.toArray(), wholesalers: await db.wholesalers.toArray(), sales: await db.sales.toArray(), invoices: await db.invoices.toArray(), expenses: await db.expenses.toArray(), store: await db.store.toArray(), config: await db.config.toArray() }; 
+            window.location.href = `mailto:?subject=Backup SBO Sistema&body=${encodeURIComponent(JSON.stringify(allData))}`; 
+            showToast('Enviar e-mail'); 
+        }
+        
+        async function saveSettings() { 
+            await db.config.put({id: 'currency', val: document.getElementById('set-currency').value}); 
+            await db.config.put({id: 'lowStock', val: parseInt(document.getElementById('set-low-stock').value)}); 
+            alert('Configurações salvas!'); 
+            location.reload(); 
+        }
+        
+        function factoryReset() { if(confirm('TODOS OS DADOS SERÃO APAGADOS!')) { db.delete(); localStorage.clear(); location.reload(); } }
+        function openModal(id) { document.getElementById(id).classList.add('modal-active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('modal-active'); }
+        function clearCart() { cart = []; renderCart(); }
+        
+        init();
+    </script>
+</body>
+</html>
