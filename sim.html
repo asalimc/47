@@ -6,7 +6,29 @@
     <meta name="theme-color" content="#0f766e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22SBO%20-%20Simone%20Store%22,%22short_name%22:%22SBO%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230f766e%22,%22theme_color%22:%22%230f766e%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f766e'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white' font-weight='bold'%3ESBO%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]}">
+    <meta name="description" content="Sistema de Gestão Comercial - Simone Oliveira Bonifacio">
+    <meta name="author" content="Simone Oliveira Bonifacio">
+    
+    <!-- Web Manifest - TAM DÜZELTİLMİŞ -->
+    <link rel="manifest" href="data:application/manifest+json,{
+        %22name%22: %22SBO%20-%20Simone%20Oliveira%20Bonifacio%22,
+        %22short_name%22: %22SBO%22,
+        %22description%22: %22Sistema de Gestão Comercial - Vendas, Estoque, Faturas e Fornecedores%22,
+        %22start_url%22: %22.%22,
+        %22display%22: %22standalone%22,
+        %22background_color%22: %22%230f766e%22,
+        %22theme_color%22: %22%230f766e%22,
+        %22orientation%22: %22portrait%22,
+        %22icons%22: [
+            {
+                %22src%22: %22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230f766e'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white' font-weight='bold'%3ESBO%3C/text%3E%3C/svg%3E%22,
+                %22sizes%22: %22any%22,
+                %22type%22: %22image/svg+xml%22,
+                %22purpose%22: %22any%22
+            }
+        ]
+    }">
+    
     <title>SBO - Simone Oliveira Bonifacio</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -44,7 +66,6 @@
             padding: 1rem; 
             padding-bottom: 20px;
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
         
         /* Hamburger Menu */
         .sidebar {
@@ -80,7 +101,6 @@
         .btn-teal:active { transform: scale(0.96); background-color: var(--teal-dark); }
         .bg-teal-dark { background-color: var(--teal-dark); }
         .text-teal { color: var(--teal); }
-        .border-teal { border-color: var(--teal); }
         
         .modal-bg { position: fixed; inset: 0; background: rgba(15, 118, 110, 0.4); backdrop-filter: blur(4px); z-index: 1100; display: none; align-items: center; justify-content: center; padding: 1rem; }
         .modal-active { display: flex; }
@@ -132,7 +152,7 @@
             <div onclick="switchTab('pos'); closeSidebar()" class="sidebar-item"><i class="fas fa-cash-register"></i><span>Vendas</span></div>
             <div onclick="switchTab('stock'); closeSidebar()" class="sidebar-item"><i class="fas fa-boxes"></i><span>Estoque</span></div>
             <div onclick="switchTab('invoices'); closeSidebar()" class="sidebar-item"><i class="fas fa-file-invoice"></i><span>Faturas</span></div>
-            <div onclick="switchTab('wholesalers'); closeSidebar()" class="sidebar-item"><i class="fas fa-truck-fast"></i><span>Toptancılar</span></div>
+            <div onclick="switchTab('fornecedores'); closeSidebar()" class="sidebar-item"><i class="fas fa-truck-fast"></i><span>Fornecedores</span></div>
             <div onclick="switchTab('customers'); closeSidebar()" class="sidebar-item"><i class="fas fa-users"></i><span>Clientes</span></div>
             <div onclick="switchTab('finance'); closeSidebar()" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Finanças</span></div>
             <div onclick="switchTab('reports'); closeSidebar()" class="sidebar-item"><i class="fas fa-file-alt"></i><span>Relatórios</span></div>
@@ -207,16 +227,16 @@
         <div id="view-invoices" class="space-y-4">
             <h2 class="text-xl font-black">Faturas</h2>
             <div class="grid grid-cols-2 gap-3 mb-4">
-                <button onclick="openPurchaseInvoiceModal()" class="bg-blue-600 text-white p-3 rounded-2xl text-center"><i class="fas fa-truck text-xl"></i><p class="font-bold text-xs mt-1">Alış Faturası</p></button>
-                <button onclick="openSalesInvoiceModal()" class="bg-emerald-600 text-white p-3 rounded-2xl text-center"><i class="fas fa-file-invoice-dollar text-xl"></i><p class="font-bold text-xs mt-1">Satış Faturası</p></button>
+                <button onclick="openPurchaseInvoiceModal()" class="bg-blue-600 text-white p-3 rounded-2xl text-center"><i class="fas fa-truck text-xl"></i><p class="font-bold text-xs mt-1">Fatura Compra</p></button>
+                <button onclick="openSalesInvoiceModal()" class="bg-emerald-600 text-white p-3 rounded-2xl text-center"><i class="fas fa-file-invoice-dollar text-xl"></i><p class="font-bold text-xs mt-1">Fatura Venda</p></button>
             </div>
             <div id="invoice-list" class="space-y-3 max-h-[60vh] overflow-y-auto"></div>
         </div>
 
-        <!-- WHOLESALERS -->
-        <div id="view-wholesalers" class="space-y-4">
-            <div class="flex justify-between items-center"><h2 class="text-xl font-black">Toptancılar</h2><button onclick="openWholesalerModal()" class="btn-teal px-3 py-2 rounded-xl text-xs"><i class="fas fa-plus"></i> + Toptancı</button></div>
-            <div id="wholesaler-list" class="grid grid-cols-1 gap-3"></div>
+        <!-- FORNECEDORES (Toptancılar Portekizce) -->
+        <div id="view-fornecedores" class="space-y-4">
+            <div class="flex justify-between items-center"><h2 class="text-xl font-black">Fornecedores</h2><button onclick="openFornecedorModal()" class="btn-teal px-3 py-2 rounded-xl text-xs"><i class="fas fa-plus"></i> + Fornecedor</button></div>
+            <div id="fornecedor-list" class="grid grid-cols-1 gap-3"></div>
         </div>
 
         <!-- CUSTOMERS -->
@@ -248,9 +268,9 @@
             <div id="expense-list" class="space-y-2 max-h-48 overflow-y-auto"></div></div>
         </div>
 
-        <!-- REPORTS - Income and Expense Separate -->
+        <!-- REPORTS -->
         <div id="view-reports" class="space-y-5">
-            <h2 class="text-xl font-black">Relatórios Avançados</h2>
+            <h2 class="text-xl font-black">Relatórios</h2>
             <div class="grid grid-cols-2 gap-2 mb-3">
                 <button onclick="generateReport('sales', 'daily')" class="bg-teal-dark text-white p-2 rounded-xl text-xs">Vendas Hoje</button>
                 <button onclick="generateReport('sales', 'weekly')" class="bg-teal-dark text-white p-2 rounded-xl text-xs">Vendas Semana</button>
@@ -274,7 +294,7 @@
                 <div><label class="text-[9px] font-bold uppercase">Responsável</label><input type="text" id="store-manager" placeholder="Nome do responsável" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
                 <div><label class="text-[9px] font-bold uppercase">CPF</label><input type="text" id="store-cpf" placeholder="000.000.000-00" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
                 <div><label class="text-[9px] font-bold uppercase">CNPJ</label><input type="text" id="store-cnpj" placeholder="00.000.000/0000-00" class="w-full p-3 bg-slate-50 rounded-xl border border-teal/20"></div>
-                <button onclick="saveStoreInfo()" class="btn-teal w-full py-3 rounded-xl">SALVAR INFORMAÇÕES</button>
+                <button onclick="saveStoreInfo()" class="btn-teal w-full py-3 rounded-xl">SALVAR</button>
             </div>
         </div>
 
@@ -295,30 +315,30 @@
     <!-- MODAIS -->
     <div id="modal-payment" class="modal-bg"><div class="modal-content p-5"><h3 class="text-xl font-black mb-3 text-teal-dark">Pagamento</h3><div class="grid grid-cols-2 gap-2 mb-4"><button onclick="finishSale('Dinheiro')" class="p-3 rounded-xl border-2 border-teal/20"><i class="fas fa-money-bill-wave text-green-600"></i><p class="font-bold text-sm">DINHEIRO</p></button><button onclick="finishSale('Cartão')" class="p-3 rounded-xl border-2 border-teal/20"><i class="fas fa-credit-card text-blue-600"></i><p class="font-bold text-sm">CARTÃO</p></button><button onclick="finishSale('PIX')" class="p-3 rounded-xl border-2 border-teal/20"><i class="fas fa-qrcode text-purple-600"></i><p class="font-bold text-sm">PIX</p></button><button onclick="finishSale('Transferência')" class="p-3 rounded-xl border-2 border-teal/20"><i class="fas fa-exchange-alt text-orange-600"></i><p class="font-bold text-sm">TRANSFERÊNCIA</p></button></div><button onclick="closeModal('modal-payment')" class="w-full py-2 text-slate-400">CANCELAR</button></div></div>
 
-    <div id="modal-product" class="modal-bg"><div class="modal-content p-4"><h3 id="p-modal-title" class="text-lg font-black mb-3">Produto</h3><div class="space-y-2"><div class="relative w-full h-32 bg-slate-100 rounded-2xl overflow-hidden border-2 border-dashed border-teal"><i class="fas fa-camera absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-slate-400"></i><input type="file" id="p-img" accept="image/*" capture="environment" class="absolute inset-0 opacity-0 cursor-pointer"><div id="p-preview" class="absolute inset-0 pointer-events-none"></div></div><input type="hidden" id="p-id"><input type="text" id="p-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="text" id="p-barcode" placeholder="Código" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><select id="p-category" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><option value="Bijuteria">Bijuteria</option><option value="Acessórios">Acessórios</option><option value="Relógios">Relógios</option><option value="Outros">Outros</option></select><div class="grid grid-cols-2 gap-2"><input type="number" id="p-cost" placeholder="Alış Fiyatı" class="p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="p-price" placeholder="Satış Fiyatı" class="p-2 bg-slate-50 rounded-xl text-sm"></div><input type="number" id="p-stock" placeholder="Stok" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveProduct()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-product')" class="bg-slate-100 px-4 rounded-xl">FECHAR</button></div></div></div></div>
+    <div id="modal-product" class="modal-bg"><div class="modal-content p-4"><h3 id="p-modal-title" class="text-lg font-black mb-3">Produto</h3><div class="space-y-2"><div class="relative w-full h-32 bg-slate-100 rounded-2xl overflow-hidden border-2 border-dashed border-teal"><i class="fas fa-camera absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-slate-400"></i><input type="file" id="p-img" accept="image/*" capture="environment" class="absolute inset-0 opacity-0 cursor-pointer"><div id="p-preview" class="absolute inset-0 pointer-events-none"></div></div><input type="hidden" id="p-id"><input type="text" id="p-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="text" id="p-barcode" placeholder="Código" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><select id="p-category" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><option value="Bijuteria">Bijuteria</option><option value="Acessórios">Acessórios</option><option value="Relógios">Relógios</option><option value="Outros">Outros</option></select><div class="grid grid-cols-2 gap-2"><input type="number" id="p-cost" placeholder="Preço de Custo" class="p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="p-price" placeholder="Preço de Venda" class="p-2 bg-slate-50 rounded-xl text-sm"></div><input type="number" id="p-stock" placeholder="Estoque" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveProduct()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-product')" class="bg-slate-100 px-4 rounded-xl">FECHAR</button></div></div></div></div>
 
-    <div id="modal-customer" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3">Cliente</h3><div class="space-y-2"><input type="hidden" id="cust-id"><input type="text" id="cust-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><input type="tel" id="cust-phone" placeholder="Telefone" class="flex-1 p-2 bg-slate-50 rounded-xl text-sm"><button onclick="importFromPhonebook('customer')" class="bg-teal-light px-3 rounded-xl text-teal-dark"><i class="fas fa-address-book"></i></button></div><input type="text" id="cust-address" placeholder="Endereço" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveCustomer()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-customer')" class="bg-slate-100 px-4 rounded-xl">CANCELAR</button></div></div></div></div>
+    <div id="modal-customer" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3">Cliente</h3><div class="space-y-2"><input type="hidden" id="cust-id"><input type="text" id="cust-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><input type="tel" id="cust-phone" placeholder="Telefone" class="flex-1 p-2 bg-slate-50 rounded-xl text-sm"><button onclick="importFromPhonebook('customer')" class="bg-teal-light px-3 rounded-xl text-teal-dark"><i class="fas fa-address-card"></i></button></div><input type="text" id="cust-address" placeholder="Endereço" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveCustomer()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-customer')" class="bg-slate-100 px-4 rounded-xl">CANCELAR</button></div></div></div></div>
 
-    <div id="modal-wholesaler" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3">Toptancı</h3><div class="space-y-2"><input type="hidden" id="whole-id"><input type="text" id="whole-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><input type="tel" id="whole-phone" placeholder="Telefone" class="flex-1 p-2 bg-slate-50 rounded-xl text-sm"><button onclick="importFromPhonebook('wholesaler')" class="bg-teal-light px-3 rounded-xl text-teal-dark"><i class="fas fa-address-book"></i></button></div><input type="text" id="whole-address" placeholder="Endereço" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveWholesaler()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-wholesaler')" class="bg-slate-100 px-4 rounded-xl">CANCELAR</button></div></div></div></div>
+    <div id="modal-fornecedor" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3">Fornecedor</h3><div class="space-y-2"><input type="hidden" id="fornecedor-id"><input type="text" id="fornecedor-name" placeholder="Nome" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><input type="tel" id="fornecedor-phone" placeholder="Telefone" class="flex-1 p-2 bg-slate-50 rounded-xl text-sm"><button onclick="importFromPhonebook('fornecedor')" class="bg-teal-light px-3 rounded-xl text-teal-dark"><i class="fas fa-address-card"></i></button></div><input type="text" id="fornecedor-address" placeholder="Endereço" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><div class="flex gap-2"><button onclick="saveFornecedor()" class="btn-teal flex-1 py-2 rounded-xl text-sm">SALVAR</button><button onclick="closeModal('modal-fornecedor')" class="bg-slate-100 px-4 rounded-xl">CANCELAR</button></div></div></div></div>
 
     <div id="modal-customer-detail" class="modal-bg"><div class="modal-content p-4"><h3 id="cd-name" class="text-lg font-black text-teal-dark"></h3><p id="cd-phone" class="text-xs text-slate-400 mb-2"></p><div id="cd-history" class="space-y-2 max-h-80 overflow-y-auto"></div><button onclick="closeModal('modal-customer-detail')" class="w-full mt-3 py-2 bg-teal-dark text-white rounded-xl text-sm">FECHAR</button></div></div>
 
-    <div id="modal-purchase-invoice" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3 text-blue-600">Alış Faturası</h3><div class="space-y-2"><select id="purchase-product-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"></select><input type="number" id="purchase-quantity" placeholder="Miktar" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="purchase-price" placeholder="Birim Fiyat" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><button onclick="processPurchaseInvoice()" class="bg-blue-600 text-white w-full py-2 rounded-xl text-sm">KAYDET</button><button onclick="closeModal('modal-purchase-invoice')" class="w-full py-2 text-slate-400 text-sm">Cancelar</button></div></div></div>
+    <div id="modal-purchase-invoice" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3 text-blue-600">Fatura de Compra</h3><div class="space-y-2"><select id="purchase-product-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"></select><input type="number" id="purchase-quantity" placeholder="Quantidade" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="purchase-price" placeholder="Preço Unitário" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><button onclick="processPurchaseInvoice()" class="bg-blue-600 text-white w-full py-2 rounded-xl text-sm">REGISTRAR</button><button onclick="closeModal('modal-purchase-invoice')" class="w-full py-2 text-slate-400 text-sm">Cancelar</button></div></div></div>
 
-    <div id="modal-sales-invoice" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3 text-emerald-600">Satış Faturası</h3><div class="space-y-2"><select id="sales-product-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"></select><input type="number" id="sales-quantity" placeholder="Miktar" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="sales-price" placeholder="Birim Fiyat" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><select id="sales-customer-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><option value="">Müşteri Seç</option></select><button onclick="processSalesInvoice()" class="bg-emerald-600 text-white w-full py-2 rounded-xl text-sm">KAYDET</button><button onclick="closeModal('modal-sales-invoice')" class="w-full py-2 text-slate-400 text-sm">Cancelar</button></div></div></div>
+    <div id="modal-sales-invoice" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3 text-emerald-600">Fatura de Venda</h3><div class="space-y-2"><select id="sales-product-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"></select><input type="number" id="sales-quantity" placeholder="Quantidade" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="sales-price" placeholder="Preço Unitário" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><select id="sales-customer-select" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><option value="">Selecione Cliente</option></select><button onclick="processSalesInvoice()" class="bg-emerald-600 text-white w-full py-2 rounded-xl text-sm">REGISTRAR</button><button onclick="closeModal('modal-sales-invoice')" class="w-full py-2 text-slate-400 text-sm">Cancelar</button></div></div></div>
 
     <div id="modal-expense" class="modal-bg"><div class="modal-content p-4"><h3 class="text-lg font-black mb-3">Despesa</h3><div class="space-y-2"><input type="text" id="expense-desc" placeholder="Descrição" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="number" id="expense-amount" placeholder="Valor" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><input type="date" id="expense-date" class="w-full p-2 bg-slate-50 rounded-xl text-sm"><button onclick="addExpense()" class="btn-teal w-full py-2 rounded-xl text-sm">ADICIONAR</button><button onclick="closeModal('modal-expense')" class="w-full py-2 text-slate-400 text-sm">Cancelar</button></div></div></div>
 
     <div id="modal-receipt" class="modal-bg"><div class="modal-content p-3 max-w-sm"><div id="receipt-content" class="receipt"></div><div class="flex gap-2 mt-3"><button onclick="sendReceiptWhatsApp()" class="btn-teal flex-1 py-2 rounded-xl text-xs"><i class="fab fa-whatsapp"></i> Enviar</button><button onclick="closeModal('modal-receipt')" class="bg-slate-100 flex-1 py-2 rounded-xl text-xs">Fechar</button></div></div></div>
 
     <script>
-        const db = new Dexie("SBO_SYSTEM_V2");
+        const db = new Dexie("SBO_SYSTEM_V4");
         db.version(1).stores({ 
             products: "++id, name, barcode, category, price, cost, stock, img", 
             customers: "++id, name, phone, address", 
-            wholesalers: "++id, name, phone, address",
+            fornecedores: "++id, name, phone, address",
             sales: "++id, date, customerId, total, profit, method, items, invoiceNo",
-            invoices: "++id, date, type, customerId, wholesalerId, items, total, invoiceNo",
+            invoices: "++id, date, type, customerId, fornecedorId, items, total, invoiceNo",
             expenses: "++id, description, amount, date", 
             store: "id, val",
             config: "id, val" 
@@ -344,9 +364,56 @@
             await loadProductSelects();
             await renderExpenses(); 
             await renderInvoices(); 
-            await renderWholesalers();
+            await renderFornecedores();
             document.getElementById('brand-name').innerText = "Simone Oliveira";
             if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+        }
+        
+        async function importFromPhonebook(type) {
+            if ('contacts' in navigator && navigator.contacts) {
+                try {
+                    const props = ['name', 'tel'];
+                    const opts = { multiple: false };
+                    const contacts = await navigator.contacts.select(props, opts);
+                    if (contacts.length > 0) {
+                        const contact = contacts[0];
+                        const name = contact.name[0] || '';
+                        const phone = contact.tel && contact.tel[0] ? contact.tel[0].value : '';
+                        if(type === 'customer') {
+                            document.getElementById('cust-name').value = name;
+                            document.getElementById('cust-phone').value = phone;
+                        } else if(type === 'fornecedor') {
+                            document.getElementById('fornecedor-name').value = name;
+                            document.getElementById('fornecedor-phone').value = phone;
+                        }
+                        showToast('Contato importado com sucesso!');
+                    } else {
+                        showToast('Nenhum contato selecionado');
+                    }
+                } catch (err) {
+                    showToast('Erro ao acessar contatos: ' + err.message);
+                    fallbackPhoneImport(type);
+                }
+            } else {
+                showToast('Seu navegador não suporta acesso direto à agenda. Use o método alternativo.');
+                fallbackPhoneImport(type);
+            }
+        }
+        
+        function fallbackPhoneImport(type) {
+            const dummyContact = prompt("Digite o nome e telefone do contato:\nEx: Maria Silva 11912345678");
+            if(dummyContact) {
+                const name = dummyContact.replace(/\d+/g, '').trim();
+                const phone = (dummyContact.match(/\d+/g) || []).join('');
+                if(type === 'customer') {
+                    document.getElementById('cust-name').value = name || dummyContact;
+                    document.getElementById('cust-phone').value = phone;
+                } else if(type === 'fornecedor') {
+                    document.getElementById('fornecedor-name').value = name || dummyContact;
+                    document.getElementById('fornecedor-phone').value = phone;
+                }
+                showToast("Contato adicionado manualmente!");
+            }
         }
         
         async function loadConfig() { 
@@ -356,7 +423,6 @@
             document.getElementById('set-low-stock').value = config.lowStock; 
             if(config.darkMode) document.documentElement.classList.add('dark');
             else document.documentElement.classList.remove('dark');
-            document.getElementById('theme-switch') ? document.getElementById('theme-switch').checked = config.darkMode : null;
             if(config.lang === 'tr') document.documentElement.lang = 'tr';
             updateUIText(); 
         }
@@ -385,15 +451,15 @@
             const select = document.getElementById('cart-customer-select'); 
             select.innerHTML = '<option value="0">Cliente Rápido</option>' + custs.map(c => `<option value="${c.id}">${c.name}</option>`).join(''); 
             const salesSelect = document.getElementById('sales-customer-select');
-            if(salesSelect) salesSelect.innerHTML = '<option value="">Müşteri Seç</option>' + custs.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            if(salesSelect) salesSelect.innerHTML = '<option value="">Selecione Cliente</option>' + custs.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
         }
         
         async function loadProductSelects() { 
             const prods = await db.products.toArray(); 
             const purchaseSelect = document.getElementById('purchase-product-select'); 
-            if(purchaseSelect) purchaseSelect.innerHTML = prods.map(p => `<option value="${p.id}">${p.name} (Stok: ${p.stock})</option>`).join(''); 
+            if(purchaseSelect) purchaseSelect.innerHTML = prods.map(p => `<option value="${p.id}">${p.name} (Estoque: ${p.stock})</option>`).join(''); 
             const salesSelect = document.getElementById('sales-product-select'); 
-            if(salesSelect) salesSelect.innerHTML = prods.map(p => `<option value="${p.id}">${p.name} (Stok: ${p.stock})</option>`).join(''); 
+            if(salesSelect) salesSelect.innerHTML = prods.map(p => `<option value="${p.id}">${p.name} (Estoque: ${p.stock})</option>`).join(''); 
         }
         
         function updateUIText() { 
@@ -426,7 +492,7 @@
             if(tab === 'pos') renderPos(); 
             if(tab === 'stock') renderStock(); 
             if(tab === 'customers') renderCustomers(); 
-            if(tab === 'wholesalers') renderWholesalers();
+            if(tab === 'fornecedores') renderFornecedores();
             if(tab === 'invoices') renderInvoices();
             if(tab === 'finance') { renderFinance(); renderExpenses(); } 
             closeSidebar();
@@ -527,7 +593,7 @@
             const query = document.getElementById('stock-search')?.value.toLowerCase() || ''; 
             let prods = await db.products.toArray(); 
             if(query) prods = prods.filter(p => p.name.toLowerCase().includes(query)); 
-            document.getElementById('stock-list').innerHTML = prods.map(p => `<div class="bg-white p-3 rounded-2xl border flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden">${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : '<i class="fas fa-box text-2xl text-teal/30"></i>'}</div><div class="flex-1"><h4 class="font-bold text-sm">${p.name}</h4><p class="text-[9px] text-slate-400">Alış: ${(p.cost||0).toFixed(2).replace('.',',')} | Satış: ${p.price.toFixed(2).replace('.',',')}</p></div><div><span class="text-sm font-black ${p.stock <= config.lowStock ? 'text-red-500' : 'text-teal-dark'}">${p.stock}</span></div><button onclick="editProduct(${p.id})" class="text-teal p-2"><i class="fas fa-edit"></i></button></div>`).join(''); 
+            document.getElementById('stock-list').innerHTML = prods.map(p => `<div class="bg-white p-3 rounded-2xl border flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden">${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : '<i class="fas fa-box text-2xl text-teal/30"></i>'}</div><div class="flex-1"><h4 class="font-bold text-sm">${p.name}</h4><p class="text-[9px] text-slate-400">Custo: ${(p.cost||0).toFixed(2).replace('.',',')} | Venda: ${p.price.toFixed(2).replace('.',',')}</p></div><div><span class="text-sm font-black ${p.stock <= config.lowStock ? 'text-red-500' : 'text-teal-dark'}">${p.stock}</span></div><button onclick="editProduct(${p.id})" class="text-teal p-2"><i class="fas fa-edit"></i></button></div>`).join(''); 
             await loadProductSelects(); 
         }
         
@@ -574,7 +640,7 @@
         async function renderInvoices() { 
             const invoices = await db.invoices.toArray(); 
             const reversed = invoices.reverse().slice(0,30); 
-            document.getElementById('invoice-list').innerHTML = reversed.map(inv => `<div class="bg-white p-3 rounded-2xl border-l-4 ${inv.type === 'purchase' ? 'border-blue-500' : 'border-emerald-500'}"><div class="flex justify-between"><span class="text-xs font-bold">${inv.type === 'purchase' ? 'ALIŞ' : 'SATIŞ'}</span><span class="text-[9px]">${new Date(inv.date).toLocaleDateString()}</span></div><p class="font-bold text-sm">${config.currency} ${inv.total.toFixed(2).replace('.',',')}</p><p class="text-[9px] text-slate-500">${inv.items.length} ürün</p></div>`).join(''); 
+            document.getElementById('invoice-list').innerHTML = reversed.map(inv => `<div class="bg-white p-3 rounded-2xl border-l-4 ${inv.type === 'purchase' ? 'border-blue-500' : 'border-emerald-500'}"><div class="flex justify-between"><span class="text-xs font-bold">${inv.type === 'purchase' ? 'COMPRA' : 'VENDA'}</span><span class="text-[9px]">${new Date(inv.date).toLocaleDateString()}</span></div><p class="font-bold text-sm">${config.currency} ${inv.total.toFixed(2).replace('.',',')}</p><p class="text-[9px] text-slate-500">${inv.items.length} produto(s)</p></div>`).join(''); 
         }
         
         async function openPurchaseInvoiceModal() { await loadProductSelects(); openModal('modal-purchase-invoice'); }
@@ -582,16 +648,16 @@
             const productId = parseInt(document.getElementById('purchase-product-select').value); 
             const qty = parseInt(document.getElementById('purchase-quantity').value); 
             const price = parseFloat(document.getElementById('purchase-price').value); 
-            if(!productId || !qty || !price) { showToast('Tüm alanları doldurun'); return; } 
+            if(!productId || !qty || !price) { showToast('Preencha todos os campos'); return; } 
             const prod = await db.products.get(productId); 
             const newStock = prod.stock + qty; 
             const newCost = ((prod.cost * prod.stock) + (price * qty)) / newStock; 
             await db.products.update(productId, { stock: newStock, cost: newCost }); 
-            await db.invoices.add({ date: new Date().toISOString(), type: 'purchase', items: [{ name: prod.name, qty, price, total: price * qty }], total: price * qty, invoiceNo: 'ALIS-' + Date.now() }); 
-            await db.expenses.add({ description: `Alış: ${prod.name} (${qty} adet)`, amount: price * qty, date: new Date().toISOString().split('T')[0] }); 
+            await db.invoices.add({ date: new Date().toISOString(), type: 'purchase', items: [{ name: prod.name, qty, price, total: price * qty }], total: price * qty, invoiceNo: 'COMPRA-' + Date.now() }); 
+            await db.expenses.add({ description: `Compra: ${prod.name} (${qty} unidades)`, amount: price * qty, date: new Date().toISOString().split('T')[0] }); 
             closeModal('modal-purchase-invoice'); 
             renderStock(); renderInvoices(); renderExpenses(); renderFinance(); 
-            showToast(`${qty} adet eklendi`); 
+            showToast(`${qty} unidades adicionadas ao estoque`); 
         }
         
         async function openSalesInvoiceModal() { await loadProductSelects(); await loadCustomerSelect(); openModal('modal-sales-invoice'); }
@@ -600,57 +666,48 @@
             const qty = parseInt(document.getElementById('sales-quantity').value); 
             const price = parseFloat(document.getElementById('sales-price').value); 
             const customerId = parseInt(document.getElementById('sales-customer-select').value); 
-            if(!productId || !qty || !price) { showToast('Tüm alanları doldurun'); return; } 
+            if(!productId || !qty || !price) { showToast('Preencha todos os campos'); return; } 
             const prod = await db.products.get(productId); 
-            if(prod.stock < qty) { showToast('Yeterli stok yok!'); return; } 
+            if(prod.stock < qty) { showToast('Estoque insuficiente!'); return; } 
             const newStock = prod.stock - qty; 
             await db.products.update(productId, { stock: newStock }); 
             const profit = (price - (prod.cost || 0)) * qty; 
-            await db.invoices.add({ date: new Date().toISOString(), type: 'sales', customerId: customerId || null, items: [{ name: prod.name, qty, price, total: price * qty }], total: price * qty, invoiceNo: 'SATIS-' + Date.now() }); 
+            await db.invoices.add({ date: new Date().toISOString(), type: 'sales', customerId: customerId || null, items: [{ name: prod.name, qty, price, total: price * qty }], total: price * qty, invoiceNo: 'VENDA-' + Date.now() }); 
             await db.sales.add({ date: new Date().toISOString(), customerId: customerId || 0, total: price * qty, profit, method: 'Fatura', items: [{ name: prod.name, qty, price }] }); 
             closeModal('modal-sales-invoice'); 
             renderStock(); renderInvoices(); renderFinance(); renderDashboard(); 
-            showToast(`Satış: ${config.currency} ${(price*qty).toFixed(2)}`); 
+            showToast(`Venda registrada: ${config.currency} ${(price*qty).toFixed(2)}`); 
         }
         
-        // WHOLESALERS
-        async function renderWholesalers() { 
-            const wholes = await db.wholesalers.toArray(); 
-            document.getElementById('wholesaler-list').innerHTML = wholes.map(w => `<div class="bg-white p-3 rounded-2xl border flex justify-between items-center"><div><h4 class="font-bold text-sm">${w.name}</h4><p class="text-[9px] text-slate-400">${w.phone || '-'}</p></div><i class="fas fa-chevron-right text-teal"></i></div>`).join(''); 
+        // FORNECEDORES
+        async function renderFornecedores() { 
+            const fornecs = await db.fornecedores.toArray(); 
+            document.getElementById('fornecedor-list').innerHTML = fornecs.map(f => `<div class="bg-white p-3 rounded-2xl border flex justify-between items-center"><div><h4 class="font-bold text-sm">${f.name}</h4><p class="text-[9px] text-slate-400">${f.phone || '-'}</p></div><i class="fas fa-chevron-right text-teal"></i></div>`).join(''); 
         }
         
-        function openWholesalerModal() { 
-            document.getElementById('whole-id').value = ""; 
-            document.getElementById('whole-name').value = ""; 
-            document.getElementById('whole-phone').value = ""; 
-            document.getElementById('whole-address').value = ""; 
-            openModal('modal-wholesaler'); 
+        function openFornecedorModal() { 
+            document.getElementById('fornecedor-id').value = ""; 
+            document.getElementById('fornecedor-name').value = ""; 
+            document.getElementById('fornecedor-phone').value = ""; 
+            document.getElementById('fornecedor-address').value = ""; 
+            openModal('modal-fornecedor'); 
         }
         
-        async function saveWholesaler() { 
-            const data = { name: document.getElementById('whole-name').value, phone: document.getElementById('whole-phone').value, address: document.getElementById('whole-address').value }; 
+        async function saveFornecedor() { 
+            const data = { name: document.getElementById('fornecedor-name').value, phone: document.getElementById('fornecedor-phone').value, address: document.getElementById('fornecedor-address').value }; 
             if(!data.name) return; 
-            const id = document.getElementById('whole-id').value; 
-            if(id) await db.wholesalers.update(parseInt(id), data); 
-            else await db.wholesalers.add(data); 
-            closeModal('modal-wholesaler'); 
-            renderWholesalers(); 
-            showToast('Toptancı kaydedildi'); 
+            const id = document.getElementById('fornecedor-id').value; 
+            if(id) await db.fornecedores.update(parseInt(id), data); 
+            else await db.fornecedores.add(data); 
+            closeModal('modal-fornecedor'); 
+            renderFornecedores(); 
+            showToast('Fornecedor salvo'); 
         }
         
         // CUSTOMERS
         async function renderCustomers() { 
             const custs = await db.customers.toArray(); 
             document.getElementById('customer-list').innerHTML = custs.map(c => `<div onclick="viewCustomerDetail(${c.id})" class="bg-white p-3 rounded-2xl border flex justify-between items-center"><div><h4 class="font-bold text-sm">${c.name}</h4><p class="text-[9px] text-slate-400">${c.phone || '-'}</p></div><i class="fas fa-chevron-right text-teal"></i></div>`).join(''); 
-        }
-        
-        function importFromPhonebook(type) { 
-            const phoneInput = prompt("Telefon numarasını girin veya rehberden yapıştırın:", "55 11 91234-5678"); 
-            if(phoneInput) { 
-                if(type === 'customer') document.getElementById('cust-phone').value = phoneInput; 
-                else document.getElementById('whole-phone').value = phoneInput; 
-                showToast("Telefon eklendi!"); 
-            } 
         }
         
         async function saveCustomer() { 
@@ -755,13 +812,13 @@
             const container = document.getElementById('report-container'); 
             let html = `<div class="report-card"><div class="text-center mb-3"><h3 class="text-lg font-black text-teal-dark">${title}</h3><p class="text-xs">${start.toLocaleDateString()} até ${new Date(end.getTime()-1).toLocaleDateString()}</p><p class="text-base font-bold mt-2">Total: ${config.currency} ${total.toFixed(2).replace('.',',')}</p></div>`; 
             if(type === 'sales') { 
-                html += `<table class="report-table"><thead><tr><th>Data</th><th>Método</th><th>Valor</th></tr></thead><tbody>${data.slice(0,30).map(s => `<tr><td>${new Date(s.date).toLocaleDateString()}</td><td>${s.method}</td><td>${config.currency} ${s.total.toFixed(2).replace('.',',')}</td></tr>`).join('')}</tbody><table>`; 
+                html += `<table class="report-table"><thead><tr><th>Data</th><th>Método</th><th>Valor</th></tr></thead><tbody>${data.slice(0,30).map(s => `<tr><td>${new Date(s.date).toLocaleDateString()}</td><td>${s.method}</td><td>${config.currency} ${s.total.toFixed(2).replace('.',',')}</td></tr>`).join('')}</tbody></table>`; 
             } else { 
-                html += `<table class="report-table"><thead><tr><th>Data</th><th>Descrição</th><th>Valor</th></tr></thead><tbody>${data.slice(0,30).map(e => `<tr><td>${new Date(e.date).toLocaleDateString()}</td><td>${e.description}</td><td>${config.currency} ${e.amount.toFixed(2).replace('.',',')}</td></tr>`).join('')}</tbody><table>`; 
+                html += `<table class="report-table"><thead><tr><th>Data</th><th>Descrição</th><th>Valor</th></tr></thead><tbody>${data.slice(0,30).map(e => `<tr><td>${new Date(e.date).toLocaleDateString()}</td><td>${e.description}</td><td>${config.currency} ${e.amount.toFixed(2).replace('.',',')}</td></tr>`).join('')}</tbody></table>`; 
             } 
             html += `<div class="flex gap-2 mt-4"><button onclick="exportCurrentReportToPDF()" class="btn-teal flex-1 py-2 rounded-xl text-xs"><i class="fas fa-file-pdf"></i> PDF</button><button onclick="sendCurrentReportWhatsApp()" class="bg-green-600 text-white flex-1 py-2 rounded-xl text-xs"><i class="fab fa-whatsapp"></i> WhatsApp</button></div></div>`; 
             container.innerHTML = html; 
-            showToast(`Relatório ${period} na tela`); 
+            showToast(`Relatório ${period} exibido na tela`); 
         }
         
         async function exportCurrentReportToPDF() { 
@@ -800,7 +857,7 @@
         
         // SETTINGS & BACKUP
         async function exportBackup() { 
-            const allData = { products: await db.products.toArray(), customers: await db.customers.toArray(), wholesalers: await db.wholesalers.toArray(), sales: await db.sales.toArray(), invoices: await db.invoices.toArray(), expenses: await db.expenses.toArray(), store: await db.store.toArray(), config: await db.config.toArray() }; 
+            const allData = { products: await db.products.toArray(), customers: await db.customers.toArray(), fornecedores: await db.fornecedores.toArray(), sales: await db.sales.toArray(), invoices: await db.invoices.toArray(), expenses: await db.expenses.toArray(), store: await db.store.toArray(), config: await db.config.toArray() }; 
             const blob = new Blob([JSON.stringify(allData)], {type: 'application/json'}); 
             const a = document.createElement('a'); 
             a.href = URL.createObjectURL(blob); 
@@ -810,7 +867,7 @@
         }
         
         async function sendBackupEmailAdmin() { 
-            const allData = { products: await db.products.toArray(), customers: await db.customers.toArray(), wholesalers: await db.wholesalers.toArray(), sales: await db.sales.toArray(), invoices: await db.invoices.toArray(), expenses: await db.expenses.toArray(), store: await db.store.toArray(), config: await db.config.toArray() }; 
+            const allData = { products: await db.products.toArray(), customers: await db.customers.toArray(), fornecedores: await db.fornecedores.toArray(), sales: await db.sales.toArray(), invoices: await db.invoices.toArray(), expenses: await db.expenses.toArray(), store: await db.store.toArray(), config: await db.config.toArray() }; 
             window.location.href = `mailto:?subject=Backup SBO Sistema&body=${encodeURIComponent(JSON.stringify(allData))}`; 
             showToast('Enviar e-mail'); 
         }
