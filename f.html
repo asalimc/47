@@ -8,29 +8,26 @@
     <style>
         :root { --navy: #001f3f; --white: #ffffff; --blue: #00d4ff; --border: 4px solid #001f3f; }
         * { box-sizing: border-box; font-family: 'Sora', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--white); margin: 0; padding: 10px; color: var(--navy); width: 100%; min-height: 100vh; }
+        body { background-color: var(--white); margin: 0; padding: 10px; color: var(--navy); min-height: 100vh; }
         .header { background: var(--navy); color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; text-align: center; box-shadow: 0 4px 0px var(--blue); }
         .header h1 { font-size: 14px; margin: 0 0 5px 0; font-weight: 900; text-transform: uppercase; }
         .kur-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .kur-item { background: white; border: var(--border); padding: 8px; border-radius: 10px; }
         .kur-item label { font-size: 9px; font-weight: 900; color: var(--navy); display: block; text-transform: uppercase; }
         .kur-item input { width: 100%; border: none; font-size: 18px; font-weight: 900; color: #d35400; outline: none; background: transparent; }
-        .main-grid { display: flex; flex-direction: column; gap: 20px; margin-top: 15px; }
-        .card { background: var(--white); border: var(--border); border-radius: 20px; padding: 15px; box-shadow: 8px 8px 0px var(--navy); position: relative; }
-        h2 { font-size: 15px; font-weight: 900; margin: 0 0 12px 0; border-bottom: 4px solid var(--navy); padding-bottom: 4px; color: var(--navy); }
+        .card { background: var(--white); border: var(--border); border-radius: 20px; padding: 15px; box-shadow: 8px 8px 0px var(--navy); margin-bottom: 20px; }
+        h2 { font-size: 15px; font-weight: 900; margin: 0 0 12px 0; border-bottom: 4px solid var(--navy); padding-bottom: 4px; }
         .input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .input-group label { font-size: 8px; font-weight: 900; display: block; margin-bottom: 4px; }
-        .input-group input { width: 100%; padding: 10px; border: 2px solid var(--navy); border-radius: 8px; font-size: 16px; font-weight: 900; color: var(--navy); }
-        .profit-input { background: #ecfdf5 !important; border-color: #059669 !important; }
-        .ton-input { background: #f0faff !important; border-color: var(--blue) !important; }
+        .input-group input { width: 100%; padding: 10px; border: 2px solid var(--navy); border-radius: 8px; font-size: 16px; font-weight: 900; }
         .summary-box { background: #f1f5f9; padding: 12px; border-radius: 12px; border: 2.5px solid var(--navy); margin-bottom: 12px; }
-        .line { display: flex; justify-content: space-between; margin-bottom: 6px; border-bottom: 1.5px solid #cbd5e1; padding-bottom: 2px; font-size: 11px; }
-        .line b { font-weight: 900; color: #000000; font-size: 12px; letter-spacing: -0.3px; }
-        .m-head { font-size: 10px; font-weight: 900; text-transform: uppercase; color: var(--navy); margin-top: 10px; border-left: 4px solid var(--blue); padding-left: 6px; margin-bottom: 6px; background: rgba(0,212,255,0.1); padding-top: 2px; padding-bottom: 2px; }
+        .line { display: flex; justify-content: space-between; margin-bottom: 6px; border-bottom: 1.5px solid #cbd5e1; font-size: 11px; }
+        .line b { font-weight: 900; color: #000; font-size: 12px; }
+        .m-head { font-size: 10px; font-weight: 900; text-transform: uppercase; color: var(--navy); margin: 10px 0 6px; border-left: 4px solid var(--blue); padding-left: 6px; background: rgba(0,212,255,0.1); }
         .price-row { padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; background: var(--navy); color: white; margin-bottom: 6px; }
         .p-val { font-size: 20px; font-weight: 900; color: var(--blue); }
         .profit-final { background: #059669; border: none; }
-        #notif-btn { background: #ff4757; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 11px; margin-top: 10px; width: 100%; cursor: pointer; box-shadow: 0 4px 0 #b3303c; }
+        #notif-btn { background: #ff4757; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 900; font-size: 12px; margin-top: 10px; width: 100%; cursor: pointer; box-shadow: 0 4px 0 #b3303c; }
     </style>
 </head>
 <body>
@@ -39,12 +36,12 @@
     <header class="header">
         <h1>MASTER KAHVE TERMİNALİ</h1>
         <div class="kur-bar">
-            <div class="kur-item"><label>USD / TRY</label><input type="number" inputmode="decimal" id="uTry" value="34.35" oninput="fullSave()"></div>
-            <div class="kur-item"><label>USD / BRL</label><input type="number" inputmode="decimal" id="uBrl" value="5.85" oninput="fullSave()"></div>
+            <div class="kur-item"><label>USD / TRY</label><input type="number" id="uTry" value="34.35" oninput="fullSave()"></div>
+            <div class="kur-item"><label>USD / BRL</label><input type="number" id="uBrl" value="5.85" oninput="fullSave()"></div>
         </div>
-        <button id="notif-btn" onclick="activateMasterNotif()" ondblclick="runAlarmTest()">TAM KORUMA AKTİF ET (TEST İÇİN ÇİFT TIKLA)</button>
+        <button id="notif-btn" onclick="setupPush()">KORUMAYI AKTİF ET (TEST İÇİN ÇİFT TIKLA)</button>
     </header>
-    <div class="main-grid" id="mainGrid"></div>
+    <div id="mainGrid"></div>
 </div>
 
 <script>
@@ -56,53 +53,47 @@
         { id: 'bou', name: 'ARABICA BOURBON', brl: 1420, kar: 10 }
     ];
 
-    // TEST MEKANİZMASI: 5 saniye sonra alarm çalar
-    function runAlarmTest() {
-        alert("Test başlatıldı! 5 saniye içinde ekranı kilitleyin veya sayfayı arka plana atın.");
-        setTimeout(() => {
-            if (Notification.permission === "granted") {
-                new Notification("🚨 TEST ALARMI!", {
-                    body: "Ekran kapalı olsa bile bu mesaj gelmeli. Titreşim ve ses kontrol ediliyor.",
-                    requireInteraction: true,
-                    vibrate: [500, 110, 500, 110, 450, 110, 200, 110, 500]
-                });
-                if (navigator.vibrate) navigator.vibrate([500, 110, 500, 110, 450]);
-            }
-        }, 5000);
-    }
-
-    async function activateMasterNotif() {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-            updateUI(true);
-            new Notification("BAĞLANTI BAŞARILI", { body: "Artık çift tıklayarak test yapabilirsiniz.", silent: false });
-        } else {
-            alert("Lütfen kilit simgesinden 'Bildirimler'e izin verin!");
+    async function setupPush() {
+        if ('serviceWorker' in navigator) {
+            try {
+                const reg = await navigator.serviceWorker.register('sw.js', { scope: './' });
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    updateUI(true);
+                    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                    reg.showNotification("SİSTEM AKTİF", { body: "Arka plan koruması devrede.", icon: "https://cdn-icons-png.flaticon.com/512/2933/2933932.png" });
+                }
+            } catch (e) { alert("Hata: " + e); }
         }
     }
+
+    // Çift tıklama testi için
+    document.getElementById('notif-btn').addEventListener('dblclick', async () => {
+        alert("5 saniye içinde ekranı kapatın, test bildirimi gelecek.");
+        const reg = await navigator.serviceWorker.ready;
+        setTimeout(() => {
+            reg.showNotification("🚨 MASTER TEST", {
+                body: "Ekran kapalıyken bildirim ve titreşim başarılı!",
+                requireInteraction: true,
+                vibrate: [500, 100, 500, 100, 500]
+            });
+        }, 5000);
+    });
 
     function updateUI(active) {
         const btn = document.getElementById('notif-btn');
-        if (active) {
-            btn.innerText = "TAM KORUMA AKTİF ● (TEST İÇİN ÇİFT TIKLA)";
-            btn.style.background = "#059669";
-            btn.style.boxShadow = "0 4px 0 #047857";
-        }
+        btn.innerText = active ? "KORUMA AKTİF (ARKA PLAN) ●" : "KORUMAYI AKTİF ET";
+        btn.style.background = active ? "#059669" : "#ff4757";
+        btn.style.boxShadow = active ? "0 4px 0 #047857" : "0 4px 0 #b3303c";
     }
 
     function fullSave() {
         localStorage.setItem('uTry', document.getElementById('uTry').value);
         localStorage.setItem('uBrl', document.getElementById('uBrl').value);
-        PRODUCTS.forEach(p => {
-            localStorage.setItem(p.id + 'In', document.getElementById(p.id + 'In').value);
-            localStorage.setItem(p.id + 'Ton', document.getElementById(p.id + 'Ton').value);
-            localStorage.setItem(p.id + 'Kar', document.getElementById(p.id + 'Kar').value);
-        });
         calc();
     }
 
-    async function checkRatesLoop() {
+    async function checkRates() {
         try {
             const res = await fetch('https://open.er-api.com/v6/latest/USD');
             const data = await res.json();
@@ -110,8 +101,12 @@
                 const oldTry = parseFloat(localStorage.getItem('uTry')) || 0;
                 const newTry = data.rates.TRY;
                 if (oldTry !== 0 && Math.abs(newTry - oldTry) > 0.02 && Notification.permission === "granted") {
-                    new Notification("KUR DEĞİŞTİ!", { body: `Dolar: ${newTry.toFixed(2)} TL`, requireInteraction: true });
-                    if (navigator.vibrate) navigator.vibrate([500, 110, 500]);
+                    const reg = await navigator.serviceWorker.ready;
+                    reg.showNotification("KRİTİK KUR DEĞİŞİMİ", { 
+                        body: `Dolar: ${newTry.toFixed(2)} TL`, 
+                        vibrate: [500, 200, 500],
+                        requireInteraction: true 
+                    });
                 }
                 document.getElementById('uTry').value = newTry.toFixed(2);
                 document.getElementById('uBrl').value = data.rates.BRL.toFixed(2);
@@ -123,30 +118,23 @@
     function createCards() {
         const grid = document.getElementById('mainGrid');
         PRODUCTS.forEach(p => {
-            const sB = localStorage.getItem(p.id + 'In') || p.brl;
-            const sT = localStorage.getItem(p.id + 'Ton') || 1;
-            const sK = localStorage.getItem(p.id + 'Kar') || p.kar;
             grid.innerHTML += `
                 <div class="card">
                     <h2>${p.name}</h2>
                     <div class="input-row">
-                        <div class="input-group"><label>BRL/60KG</label><input type="number" inputmode="decimal" id="${p.id}In" value="${sB}" oninput="fullSave()"></div>
-                        <div class="input-group"><label>TONAJ</label><input type="number" inputmode="decimal" id="${p.id}Ton" value="${sT}" class="ton-input" oninput="fullSave()"></div>
-                        <div class="input-group"><label>KÂR %</label><input type="number" inputmode="decimal" id="${p.id}Kar" value="${sK}" class="profit-input" oninput="fullSave()"></div>
+                        <div class="input-group"><label>BRL/60KG</label><input type="number" id="${p.id}In" value="${p.brl}" oninput="calc()"></div>
+                        <div class="input-group"><label>TON</label><input type="number" id="${p.id}Ton" value="1" oninput="calc()"></div>
+                        <div class="input-group"><label>KÂR %</label><input type="number" id="${p.id}Kar" value="${p.kar}" oninput="calc()"></div>
                     </div>
                     <div class="summary-box" id="${p.id}Summary"></div>
                     <div class="price-row"><span>SATIŞ:</span><span class="p-val" id="${p.id}FinalTl">0 ₺</span></div>
-                    <div class="price-row profit-final"><span>NET KÂR:</span><span class="p-val" id="${p.id}NetProfit" style="color:#afffd0">0 ₺</span></div>
+                    <div class="price-row profit-final"><span>KÂR:</span><span class="p-val" id="${p.id}NetProfit" style="color:#afffd0">0 ₺</span></div>
                 </div>
             `;
         });
-        if(localStorage.getItem('uTry')) {
-            document.getElementById('uTry').value = localStorage.getItem('uTry');
-            document.getElementById('uBrl').value = localStorage.getItem('uBrl');
-        }
         if (Notification.permission === "granted") updateUI(true);
-        checkRatesLoop();
-        setInterval(checkRatesLoop, 300000);
+        checkRates();
+        setInterval(checkRates, 300000);
         calc();
     }
 
@@ -159,25 +147,16 @@
             const kO = parseFloat(document.getElementById(p.id + 'Kar').value) || 0;
             let tBrl = (bP / 60) * 1000;
             let tUsd = tBrl / bK;
-            let fUsd = tUsd + STATS.limanMasraf;
-            let cUsd = (fUsd + STATS.navlun) * (1 + STATS.sigorta);
-            let dTry = cUsd * (1 + STATS.gumruk) * (1 + STATS.igv) * (1 + STATS.kdv) * tK;
+            let dTry = (tUsd + STATS.limanMasraf + STATS.navlun) * 1.15 * tK;
             let kS = (dTry / 1000) * (1 + (kO / 100));
-            let tS = kS * 1000 * tM;
             document.getElementById(p.id+'Summary').innerHTML = `
-                <div class="m-head">1 Ton Maliyet</div>
-                <div class="line">BRL Ton: <b>${Math.round(tBrl).toLocaleString()} R$</b></div>
+                <div class="m-head">Maliyet Analizi</div>
                 <div class="line">USD Ton: <b>${Math.round(tUsd).toLocaleString()} $</b></div>
-                <div class="m-head">DDP & Lojistik</div>
-                <div class="line">FOB Ton: <b>${Math.round(fUsd).toLocaleString()} $</b></div>
-                <div class="line">CIF Ton: <b>${Math.round(cUsd).toLocaleString()} $</b></div>
                 <div class="line">DDP TRY: <b>${Math.round(dTry).toLocaleString()} ₺</b></div>
-                <div class="m-head">KG Birim Analizi</div>
-                <div class="line">Maliyet: <b>${(dTry/1000).toFixed(2)} ₺</b></div>
-                <div class="line">Satış: <b>${kS.toFixed(2)} ₺</b></div>
+                <div class="line">KG Maliyet: <b>${(dTry/1000).toFixed(2)} ₺</b></div>
             `;
-            document.getElementById(p.id+'FinalTl').innerText = Math.round(tS).toLocaleString() + " ₺";
-            document.getElementById(p.id+'NetProfit').innerText = Math.round(tS - (dTry * tM)).toLocaleString() + " ₺";
+            document.getElementById(p.id+'FinalTl').innerText = Math.round(kS * 1000 * tM).toLocaleString() + " ₺";
+            document.getElementById(p.id+'NetProfit').innerText = Math.round((kS * 1000 * tM) - (dTry * tM)).toLocaleString() + " ₺";
         });
     }
     window.onload = createCards;
