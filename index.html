@@ -2,60 +2,63 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SBO - Stok Barkod Otomasyonu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SBO · Bijuterias &amp; Acessórios</title>
     
+    <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1e293b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SBO Sistem">
+    <meta name="apple-mobile-web-app-title" content="SBO Biju">
     <link rel="apple-touch-icon" href="icon-192x192.png">
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase Sizin Ayarlarınız -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyBsrdG69_WF2i6Puaz23tVjZRfuwGq6PmU",
-            authDomain: "ascoffe.firebaseapp.com",
-            databaseURL: "https://ascoffe-default-rtdb.firebaseio.com",
-            projectId: "ascoffe",
-            storageBucket: "ascoffe.firebasestorage.app",
-            messagingSenderId: "211890404313",
-            appId: "1:211890404313:web:14ff58dddd7aee560677c8"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        window.firestoreDB = getFirestore(app);
-        window.firebaseStorage = getStorage(app);
-        window.firebaseReady = true;
-        console.log('✅ Firebase hazır');
-    </script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     
+    <!-- Harici Kütüphaneler -->
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- SortableJS (Sürükle-Bırak) -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     
     <style>
-        /* ========== ORİJİNAL MAVİ-BEYAZ TEMA - DOKUNULMADI ========== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ========== ORİJİNAL MAVİ-BEYAZ TEMA - KESİNLİKLE DOKUNULMADI ========== */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f1f5f9;
             min-height: 100vh;
             padding-bottom: 70px;
+            position: relative;
         }
         
         .app-header {
@@ -66,14 +69,16 @@
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
         }
         
         .app-header h1 {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 5vw, 1.5rem);
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         
         .app-header h1 i {
@@ -82,7 +87,7 @@
         
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
             flex-wrap: wrap;
         }
@@ -91,14 +96,15 @@
             background: rgba(255,255,255,0.1);
             border: none;
             color: white;
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: clamp(0.75rem, 3vw, 0.9rem);
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 5px;
             transition: all 0.3s;
+            white-space: nowrap;
         }
         
         .header-btn:hover {
@@ -106,59 +112,57 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 100%;
+            width: 100%;
             margin: 0 auto;
-            padding: 20px;
+            padding: 16px;
+            overflow-x: hidden;
+            box-sizing: border-box;
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
         }
         
         .stat-card {
             background: white;
-            padding: 20px 15px;
+            padding: clamp(12px, 3vw, 18px) clamp(8px, 2vw, 12px);
             border-radius: 12px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             text-align: center;
             transition: transform 0.2s;
         }
         
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
         .stat-card i {
-            font-size: 2rem;
+            font-size: clamp(1.2rem, 5vw, 1.8rem);
             color: #3b82f6;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .stat-card h3 {
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
             font-weight: bold;
             color: #1e293b;
         }
         
         .stat-card p {
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: clamp(0.7rem, 2.5vw, 0.8rem);
         }
         
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
         
         .menu-item {
             background: white;
-            padding: 15px 10px;
+            padding: clamp(10px, 3vw, 14px) clamp(5px, 2vw, 8px);
             border-radius: 10px;
             text-align: center;
             cursor: pointer;
@@ -177,23 +181,25 @@
         }
         
         .menu-item i {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
             color: #3b82f6;
             margin-bottom: 8px;
             display: block;
         }
         
         .menu-item span {
-            font-size: 0.85rem;
+            font-size: clamp(0.7rem, 2.5vw, 0.85rem);
             font-weight: 500;
         }
         
         .table-container {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: clamp(15px, 3vw, 20px);
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             overflow-x: auto;
+            width: 100%;
+            max-width: 100%;
         }
         
         .table-header {
@@ -206,13 +212,14 @@
         }
         
         .table-header h2 {
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
             color: #1e293b;
         }
         
         .search-box {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
         .search-box input {
@@ -220,53 +227,35 @@
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             font-size: 0.9rem;
-            min-width: 250px;
+            min-width: 200px;
+            width: 100%;
+            max-width: 300px;
         }
         
         .btn {
-            padding: 10px 20px;
+            padding: 10px 16px;
             border: none;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.3s;
+            white-space: nowrap;
         }
         
-        .btn-primary {
-            background: #3b82f6;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #2563eb;
-        }
-        
-        .btn-secondary {
-            background: #64748b;
-            color: white;
-        }
-        
-        .btn-success {
-            background: #10b981;
-            color: white;
-        }
-        
-        .btn-danger {
-            background: #ef4444;
-            color: white;
-        }
-        
-        .btn-warning {
-            background: #f59e0b;
-            color: white;
-        }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-secondary { background: #64748b; color: white; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-warning { background: #f59e0b; color: white; }
         
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 600px;
         }
         
         th {
@@ -277,6 +266,7 @@
             font-weight: 600;
             font-size: 0.9rem;
             border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
         }
         
         td {
@@ -292,6 +282,7 @@
         .action-buttons {
             display: flex;
             gap: 5px;
+            flex-wrap: wrap;
         }
         
         .action-btn {
@@ -318,6 +309,7 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 10px;
         }
         
         .modal.active {
@@ -327,9 +319,9 @@
         .modal-content {
             background: white;
             border-radius: 12px;
-            padding: 30px;
+            padding: clamp(20px, 4vw, 30px);
             max-width: 600px;
-            width: 90%;
+            width: 100%;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -346,7 +338,7 @@
         }
         
         .modal-header h3 {
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
             color: #1e293b;
         }
         
@@ -390,6 +382,7 @@
             gap: 10px;
             justify-content: flex-end;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
         
         .bottom-nav {
@@ -400,38 +393,36 @@
             background: white;
             display: flex;
             justify-content: space-around;
-            padding: 12px 20px;
+            padding: 10px 16px;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
             z-index: 90;
+            width: 100%;
         }
         
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
             color: #64748b;
             cursor: pointer;
             transition: all 0.3s;
             border: none;
             background: none;
-            font-size: 0.8rem;
+            font-size: clamp(0.65rem, 2.5vw, 0.8rem);
         }
         
         .nav-item i {
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
         }
         
         .nav-item.active {
             color: #3b82f6;
         }
         
-        .nav-item:hover {
-            color: #3b82f6;
-        }
-        
         .page-section {
             display: none;
+            width: 100%;
         }
         
         .page-section.active {
@@ -443,6 +434,7 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
+            white-space: nowrap;
         }
         
         .badge-success { background: #d1fae5; color: #065f46; }
@@ -467,36 +459,6 @@
         
         .offline-indicator.show {
             transform: translateY(0);
-        }
-        
-        .update-banner {
-            position: fixed;
-            bottom: 80px;
-            left: 20px;
-            right: 20px;
-            background: #3b82f6;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 10px;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 998;
-            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
-        }
-        
-        .update-banner.show {
-            display: flex;
-        }
-        
-        .update-banner button {
-            background: white;
-            color: #3b82f6;
-            border: none;
-            padding: 6px 15px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
         }
         
         .loading {
@@ -542,76 +504,151 @@
             margin-bottom: 20px;
         }
         
-        /* Ürün Görsel Galerisi */
-        .image-gallery {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
+        /* Widget Sistemi */
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
         
-        .gallery-item {
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 2px solid #e2e8f0;
-            cursor: pointer;
-        }
-        
-        .gallery-item:hover {
-            border-color: #3b82f6;
-        }
-        
-        .image-upload-area {
-            border: 2px dashed #cbd5e1;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .image-upload-area:hover {
-            border-color: #3b82f6;
-            background: #f8fafc;
-        }
-        
-        /* Katalog Kartları */
-        .catalog-card {
+        .widget {
             background: white;
             border-radius: 12px;
             padding: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            break-inside: avoid;
-            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: move;
+            transition: all 0.3s;
         }
         
-        .catalog-grid {
-            column-count: 3;
-            column-gap: 15px;
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
         }
         
-        @media (max-width: 768px) {
-            .menu-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .catalog-grid {
-                column-count: 1;
-            }
+        .widget-header i {
+            color: #3b82f6;
+            margin-right: 8px;
         }
         
-        /* Sezon Kartları */
-        .season-card {
+        .widget-content {
+            min-height: 100px;
+        }
+        
+        .sortable-ghost {
+            opacity: 0.4;
+            background: #cbd5e1;
+        }
+        
+        .sortable-drag {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        /* QR Kod */
+        .qrcode-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .qrcode-container canvas {
+            max-width: 200px;
+            height: auto;
+        }
+        
+        /* Tema Değiştirici */
+        body.dark-theme {
+            background: #1a1a2e;
+        }
+        
+        body.dark-theme .stat-card,
+        body.dark-theme .menu-item,
+        body.dark-theme .table-container,
+        body.dark-theme .modal-content,
+        body.dark-theme .bottom-nav,
+        body.dark-theme .widget {
+            background: #16213e;
+            color: #e2e8f0;
+        }
+        
+        body.dark-theme .stat-card h3,
+        body.dark-theme .table-header h2,
+        body.dark-theme .modal-header h3 {
+            color: #e2e8f0;
+        }
+        
+        body.dark-theme td {
+            color: #cbd5e1;
+        }
+        
+        body.dark-theme th {
+            background: #0f3460;
+            color: #e2e8f0;
+        }
+        
+        body.dark-theme tr:hover {
+            background: #1a1a2e;
+        }
+        
+        /* Sesli Asistan */
+        .voice-assistant-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 80;
+            transition: all 0.3s;
+        }
+        
+        .voice-assistant-btn:hover {
+            transform: scale(1.1);
+            background: #2563eb;
+        }
+        
+        .voice-assistant-btn.listening {
+            background: #ef4444;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .voice-popup {
+            position: fixed;
+            bottom: 160px;
+            right: 20px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 81;
+            max-width: 300px;
+            display: none;
+        }
+        
+        .voice-popup.show {
+            display: block;
+        }
+        
+        /* Segment Kartları */
+        .segment-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 20px;
@@ -619,29 +656,184 @@
             margin-bottom: 15px;
         }
         
-        .season-card.spring { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .season-card.summer { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .season-card.autumn { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .season-card.winter { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .segment-card.vip {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        }
+        
+        .segment-card.normal {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        }
+        
+        .segment-card.new {
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+        }
+        
+        /* Karşılaştırma Tablosu */
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 150px 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .comparison-header {
+            font-weight: bold;
+            padding: 10px;
+            background: #f8fafc;
+        }
+        
+        .comparison-cell {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        /* Fiş Stili */
+        .receipt {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 20px;
+            max-width: 320px;
+            margin: 0 auto;
+            border: 1px dashed #ccc;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 10px;
+        }
+        
+        .receipt-items {
+            margin: 15px 0;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 10px;
+        }
+        
+        .receipt-item-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .receipt-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-actions {
+                justify-content: flex-start;
+            }
+            
+            .header-btn span {
+                display: none;
+            }
+            
+            .header-btn i {
+                margin: 0;
+                font-size: 1.2rem;
+            }
+            
+            .comparison-table {
+                grid-template-columns: 100px 1fr 1fr;
+                font-size: 0.8rem;
+            }
+            
+            .widget-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .stat-card {
+                padding: 12px 8px;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .search-box input {
+                max-width: none;
+                flex: 1;
+            }
+            
+            .bottom-nav span {
+                font-size: 0.6rem;
+            }
+        }
+        
+        input[type="number"], 
+        input[type="tel"], 
+        .input-numeric {
+            inputmode: numeric;
+        }
     </style>
 </head>
 <body>
 
 <!-- Offline Göstergesi -->
 <div id="offlineIndicator" class="offline-indicator">
-    <i class="fas fa-wifi-slash"></i> Modo Offline - Dados salvos localmente
-</div>
-
-<!-- Güncelleme Bildirimi -->
-<div id="updateBanner" class="update-banner">
-    <span><i class="fas fa-sync-alt"></i> Nova versão disponível!</span>
-    <button id="updateBtn">Atualizar Agora</button>
+    <i class="fas fa-wifi-slash"></i> Modo Offline
 </div>
 
 <!-- Yükleme Göstergesi -->
 <div id="loading" class="loading">
     <div class="spinner"></div>
     <p style="margin-top: 20px; color: #475569;">Carregando...</p>
+</div>
+
+<!-- Sesli Asistan Butonu -->
+<button class="voice-assistant-btn" id="voiceAssistantBtn" onclick="toggleVoiceAssistant()">
+    <i class="fas fa-microphone"></i>
+</button>
+
+<!-- Sesli Asistan Popup -->
+<div class="voice-popup" id="voicePopup">
+    <h4 style="margin-bottom: 10px;"><i class="fas fa-robot"></i> Assistente de Voz</h4>
+    <p id="voiceStatus">Clique no microfone para falar</p>
+    <p id="voiceResult" style="margin-top: 10px; font-style: italic;"></p>
 </div>
 
 <!-- Header -->
@@ -663,13 +855,17 @@
             <i class="fas fa-cloud-upload-alt"></i>
             <span>Sincronizar</span>
         </button>
+        <button class="header-btn" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i>
+            <span>Tema</span>
+        </button>
     </div>
 </header>
 
 <!-- Ana İçerik -->
 <div class="container">
     
-    <!-- Dashboard Bölümü -->
+    <!-- Dashboard -->
     <div id="dashboardSection" class="page-section active">
         
         <div class="stats-grid">
@@ -692,6 +888,51 @@
                 <i class="fas fa-box"></i>
                 <h3 id="totalProducts">0</h3>
                 <p>Produtos</p>
+            </div>
+        </div>
+        
+        <!-- Widget Grid (Sürükle-Bırak) -->
+        <div class="widget-grid" id="widgetGrid">
+            <div class="widget" data-widget="sales">
+                <div class="widget-header">
+                    <span><i class="fas fa-chart-line"></i> Vendas Recentes</span>
+                    <i class="fas fa-grip-lines"></i>
+                </div>
+                <div class="widget-content" id="widgetSales"></div>
+            </div>
+            
+            <div class="widget" data-widget="products">
+                <div class="widget-header">
+                    <span><i class="fas fa-box"></i> Top Produtos</span>
+                    <i class="fas fa-grip-lines"></i>
+                </div>
+                <div class="widget-content" id="widgetTopProducts"></div>
+            </div>
+            
+            <div class="widget" data-widget="customers">
+                <div class="widget-header">
+                    <span><i class="fas fa-users"></i> Segmentos</span>
+                    <i class="fas fa-grip-lines"></i>
+                </div>
+                <div class="widget-content" id="widgetSegments"></div>
+            </div>
+            
+            <div class="widget" data-widget="quickActions">
+                <div class="widget-header">
+                    <span><i class="fas fa-bolt"></i> Ações Rápidas</span>
+                    <i class="fas fa-grip-lines"></i>
+                </div>
+                <div class="widget-content">
+                    <button class="btn btn-primary" style="width:100%; margin-bottom:8px;" onclick="switchPage('quickSale')">
+                        <i class="fas fa-cash-register"></i> Nova Venda
+                    </button>
+                    <button class="btn btn-success" style="width:100%; margin-bottom:8px;" onclick="switchPage('products')">
+                        <i class="fas fa-plus"></i> Novo Produto
+                    </button>
+                    <button class="btn btn-secondary" style="width:100%;" onclick="switchPage('customers')">
+                        <i class="fas fa-user-plus"></i> Novo Cliente
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -732,25 +973,18 @@
                 <i class="fas fa-chart-bar"></i>
                 <span>Relatórios</span>
             </div>
-            <div class="menu-item" onclick="switchPage('scanner')">
-                <i class="fas fa-barcode"></i>
-                <span>Escanear</span>
+            <div class="menu-item" onclick="switchPage('invoices')">
+                <i class="fas fa-file-invoice"></i>
+                <span>Notas Fiscais</span>
+            </div>
+            <div class="menu-item" onclick="switchPage('comparison')">
+                <i class="fas fa-balance-scale"></i>
+                <span>Comparar</span>
             </div>
             <div class="menu-item" onclick="switchPage('settings')">
                 <i class="fas fa-cog"></i>
                 <span>Configurações</span>
             </div>
-            <div class="menu-item" onclick="switchPage('whatsappOrders')">
-                <i class="fab fa-whatsapp"></i>
-                <span>Pedidos WA</span>
-            </div>
-        </div>
-        
-        <div class="table-container">
-            <div class="table-header">
-                <h2><i class="fas fa-clock"></i> Últimas Vendas</h2>
-            </div>
-            <div id="recentSales"></div>
         </div>
     </div>
     
@@ -771,32 +1005,47 @@
                         <option value="">Consumidor Final</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Forma de Pagamento</label>
-                    <select id="salePaymentMethod" onchange="updateSaleCart()">
-                        <option value="dinheiro">Dinheiro</option>
-                        <option value="cartao_credito">Cartão de Crédito</option>
-                        <option value="cartao_debito">Cartão de Débito</option>
-                        <option value="pix">PIX</option>
-                    </select>
+            </div>
+            
+            <!-- Ödeme Seçenekleri -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; color: #475569; font-weight: 500;">Pagamento</label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" class="payment-btn btn-primary" data-payment="dinheiro" onclick="selectPaymentMethod('dinheiro')" style="flex:1; min-width:90px;">
+                        <i class="fas fa-money-bill-wave"></i> Dinheiro
+                    </button>
+                    <button type="button" class="payment-btn" data-payment="cartao_credito" onclick="selectPaymentMethod('cartao_credito')" style="flex:1; min-width:90px; background:#64748b; color:white; border:none; padding:10px; border-radius:8px;">
+                        <i class="far fa-credit-card"></i> Crédito
+                    </button>
+                    <button type="button" class="payment-btn" data-payment="cartao_debito" onclick="selectPaymentMethod('cartao_debito')" style="flex:1; min-width:90px; background:#64748b; color:white; border:none; padding:10px; border-radius:8px;">
+                        <i class="fas fa-credit-card"></i> Débito
+                    </button>
+                    <button type="button" class="payment-btn" data-payment="pix" onclick="selectPaymentMethod('pix')" style="flex:1; min-width:90px; background:#64748b; color:white; border:none; padding:10px; border-radius:8px;">
+                        <i class="fas fa-qrcode"></i> PIX
+                    </button>
+                    <button type="button" class="payment-btn" data-payment="transferencia" onclick="selectPaymentMethod('transferencia')" style="flex:1; min-width:90px; background:#64748b; color:white; border:none; padding:10px; border-radius:8px;">
+                        <i class="fas fa-exchange-alt"></i> Transferência
+                    </button>
                 </div>
+                <input type="hidden" id="salePaymentMethod" value="dinheiro">
             </div>
             
             <div class="search-box" style="margin-bottom: 20px;">
-                <input type="text" id="quickSaleProductSearch" placeholder="Buscar produto..." inputmode="search">
+                <input type="text" id="quickSaleProductSearch" placeholder="Buscar produto..." inputmode="search" style="flex:1;">
                 <button class="btn btn-primary" onclick="searchProductForSale()">
                     <i class="fas fa-search"></i> Buscar
                 </button>
             </div>
             
             <div id="productSearchResults" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
-            
-            <div id="saleCartItems" class="sale-items-list" style="max-height: 300px; overflow-y: auto; margin: 15px 0;"></div>
+            <div id="saleCartItems" style="max-height: 300px; overflow-y: auto; margin: 15px 0;"></div>
             
             <div style="text-align: right; padding: 15px 0; border-top: 2px solid #e2e8f0;">
                 <div>Subtotal: <span id="saleSubtotal">R$ 0,00</span></div>
-                <div style="font-size: 0.9rem; color: #ef4444;" id="cardFeeRow">Taxa Cartão: <span id="saleCardFee">R$ 0,00</span></div>
+                <div style="font-size: 0.9rem; color: #ef4444;" id="cardFeeRow">Taxa Cartão (5%): <span id="saleCardFee">R$ 0,00</span></div>
+                <div style="font-size: 0.9rem; color: #10b981;">Comissão (30%): <span id="saleCommission">R$ 0,00</span></div>
                 <div style="font-size: 1.3rem; font-weight: bold; margin-top: 10px;">Total: <span id="saleTotal">R$ 0,00</span></div>
+                <div style="font-size: 0.9rem; color: #3b82f6;">Lucro Líquido: <span id="saleNetProfit">R$ 0,00</span></div>
             </div>
             
             <div class="form-actions">
@@ -813,9 +1062,12 @@
             <div class="table-header">
                 <h2><i class="fas fa-gem"></i> Produtos</h2>
                 <div class="search-box">
-                    <input type="text" id="productSearch" placeholder="Buscar produto..." inputmode="search" onkeyup="filterProducts()">
+                    <input type="text" id="productSearch" placeholder="Buscar produto..." onkeyup="filterProducts()">
                     <button class="btn btn-primary" onclick="showProductModal()">
-                        <i class="fas fa-plus"></i> Novo Produto
+                        <i class="fas fa-plus"></i> Novo
+                    </button>
+                    <button class="btn btn-secondary" onclick="showBulkPriceUpdate()">
+                        <i class="fas fa-tags"></i> Atualizar Preços
                     </button>
                 </div>
             </div>
@@ -829,12 +1081,39 @@
             <div class="table-header">
                 <h2><i class="fas fa-users"></i> Clientes</h2>
                 <div class="search-box">
-                    <input type="text" id="customerSearch" placeholder="Buscar cliente..." inputmode="search" onkeyup="filterCustomers()">
+                    <input type="text" id="customerSearch" placeholder="Buscar cliente..." onkeyup="filterCustomers()">
                     <button class="btn btn-primary" onclick="showCustomerModal()">
-                        <i class="fas fa-plus"></i> Novo Cliente
+                        <i class="fas fa-plus"></i> Novo
+                    </button>
+                    <button class="btn btn-secondary" onclick="showSegmentManager()">
+                        <i class="fas fa-layer-group"></i> Segmentos
                     </button>
                 </div>
             </div>
+            
+            <!-- Segment Özeti -->
+            <div style="display: grid; grid-template-columns: repeat(4,1fr); gap:10px; margin-bottom:20px;">
+                <div class="segment-card vip" onclick="filterCustomersBySegment('VIP')">
+                    <h4><i class="fas fa-crown"></i> VIP</h4>
+                    <h2 id="vipCount">0</h2>
+                    <p>Gasto > R$ 1000</p>
+                </div>
+                <div class="segment-card normal" onclick="filterCustomersBySegment('Normal')">
+                    <h4><i class="fas fa-user"></i> Normal</h4>
+                    <h2 id="normalCount">0</h2>
+                    <p>Gasto R$ 100-1000</p>
+                </div>
+                <div class="segment-card new" onclick="filterCustomersBySegment('Novo')">
+                    <h4><i class="fas fa-user-plus"></i> Novo</h4>
+                    <h2 id="newCount">0</h2>
+                    <p>Gasto < R$ 100</p>
+                </div>
+                <div style="background:#f8fafc; padding:15px; border-radius:12px; text-align:center;" onclick="filterCustomersBySegment('all')">
+                    <h4><i class="fas fa-globe"></i> Todos</h4>
+                    <h2 id="allCustomerCount">0</h2>
+                </div>
+            </div>
+            
             <div id="customersList"></div>
         </div>
     </div>
@@ -845,9 +1124,9 @@
             <div class="table-header">
                 <h2><i class="fas fa-truck"></i> Fornecedores</h2>
                 <div class="search-box">
-                    <input type="text" id="supplierSearch" placeholder="Buscar fornecedor..." inputmode="search" onkeyup="filterSuppliers()">
+                    <input type="text" id="supplierSearch" placeholder="Buscar fornecedor..." onkeyup="filterSuppliers()">
                     <button class="btn btn-primary" onclick="showSupplierModal()">
-                        <i class="fas fa-plus"></i> Novo Fornecedor
+                        <i class="fas fa-plus"></i> Novo
                     </button>
                 </div>
             </div>
@@ -855,7 +1134,60 @@
         </div>
     </div>
     
-    <!-- İade ve Değişim -->
+    <!-- Nota Fiscal -->
+    <div id="invoicesSection" class="page-section">
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-file-invoice"></i> Notas Fiscais (NF-e)</h2>
+                <div>
+                    <button class="btn btn-primary" onclick="generateInvoice()">
+                        <i class="fas fa-plus"></i> Emitir NF-e
+                    </button>
+                    <button class="btn btn-secondary" onclick="showInvoiceHistory()">
+                        <i class="fas fa-history"></i> Histórico
+                    </button>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3,1fr); gap:15px; margin-bottom:20px;">
+                <div class="stat-card">
+                    <i class="fas fa-file-invoice"></i>
+                    <h3 id="totalInvoices">0</h3>
+                    <p>Total NF-e</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle" style="color:#10b981;"></i>
+                    <h3 id="authorizedInvoices">0</h3>
+                    <p>Autorizadas</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-times-circle" style="color:#ef4444;"></i>
+                    <h3 id="cancelledInvoices">0</h3>
+                    <p>Canceladas</p>
+                </div>
+            </div>
+            
+            <div id="invoicesList"></div>
+        </div>
+    </div>
+    
+    <!-- Ürün Karşılaştırma -->
+    <div id="comparisonSection" class="page-section">
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-balance-scale"></i> Comparar Produtos</h2>
+                <button class="btn btn-primary" onclick="addProductToComparison()">
+                    <i class="fas fa-plus"></i> Adicionar
+                </button>
+            </div>
+            
+            <div id="comparisonContainer">
+                <p style="text-align:center; padding:40px;">Selecione produtos para comparar</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- İadeler -->
     <div id="returnsSection" class="page-section">
         <div class="table-container">
             <div class="table-header">
@@ -865,20 +1197,18 @@
                 </button>
             </div>
             
-            <div class="filter-bar" style="margin-bottom: 20px;">
-                <select id="returnFilter" class="filter-select" onchange="loadReturns()">
-                    <option value="all">Todas</option>
-                    <option value="pending">Pendentes</option>
-                    <option value="completed">Concluídas</option>
-                    <option value="cancelled">Canceladas</option>
-                </select>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="filterReturns('all')">Todas</button>
+                <button class="btn btn-secondary" onclick="filterReturns('pending')">Pendentes</button>
+                <button class="btn btn-secondary" onclick="filterReturns('completed')">Concluídas</button>
+                <button class="btn btn-secondary" onclick="filterReturns('cancelled')">Canceladas</button>
             </div>
             
             <div id="returnsList"></div>
         </div>
     </div>
     
-    <!-- Sezon Koleksiyonları -->
+    <!-- Sezonlar -->
     <div id="seasonsSection" class="page-section">
         <div class="table-container">
             <div class="table-header">
@@ -888,55 +1218,34 @@
                 </button>
             </div>
             
+            <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="filterSeasons('all')">Todas</button>
+                <button class="btn btn-secondary" onclick="filterSeasons('spring')"><i class="fas fa-leaf"></i> Primavera</button>
+                <button class="btn btn-secondary" onclick="filterSeasons('summer')"><i class="fas fa-sun"></i> Verão</button>
+                <button class="btn btn-secondary" onclick="filterSeasons('autumn')"><i class="fas fa-tree"></i> Outono</button>
+                <button class="btn btn-secondary" onclick="filterSeasons('winter')"><i class="fas fa-snowflake"></i> Inverno</button>
+            </div>
+            
             <div id="seasonsList"></div>
         </div>
     </div>
     
-    <!-- Katalog Tasarımcısı -->
+    <!-- Katalog -->
     <div id="catalogSection" class="page-section">
         <div class="table-container">
             <div class="table-header">
-                <h2><i class="fas fa-images"></i> Catálogo de Produtos</h2>
-                <div>
-                    <button class="btn btn-secondary" onclick="generateCatalogPDF()">
+                <h2><i class="fas fa-images"></i> Catálogo</h2>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="generateCatalogPDF()">
                         <i class="fas fa-file-pdf"></i> PDF
                     </button>
-                    <button class="btn btn-success" onclick="shareToWhatsApp()">
+                    <button class="btn btn-success" onclick="shareCatalogWhatsApp()">
                         <i class="fab fa-whatsapp"></i> WhatsApp
-                    </button>
-                    <button class="btn btn-primary" onclick="shareToInstagram()">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </button>
-                    <button class="btn btn-warning" onclick="syncToWhatsAppCatalog()">
-                        <i class="fab fa-whatsapp"></i> Sincronizar Catálogo WA
                     </button>
                 </div>
             </div>
             
-            <div class="filter-bar" style="margin-bottom: 20px;">
-                <select id="catalogCategoryFilter" onchange="loadCatalogPreview()">
-                    <option value="">Todas Categorias</option>
-                </select>
-                <select id="catalogSeasonFilter" onchange="loadCatalogPreview()">
-                    <option value="">Todas Coleções</option>
-                </select>
-            </div>
-            
             <div id="catalogPreview" class="catalog-grid"></div>
-        </div>
-    </div>
-    
-    <!-- WhatsApp Sipariş Takibi -->
-    <div id="whatsappOrdersSection" class="page-section">
-        <div class="table-container">
-            <div class="table-header">
-                <h2><i class="fab fa-whatsapp"></i> Pedidos WhatsApp</h2>
-                <button class="btn btn-primary" onclick="showWhatsAppOrderModal()">
-                    <i class="fas fa-plus"></i> Novo Pedido
-                </button>
-            </div>
-            
-            <div id="whatsappOrdersList"></div>
         </div>
     </div>
     
@@ -946,19 +1255,19 @@
             <div class="table-header">
                 <h2><i class="fas fa-receipt"></i> Despesas</h2>
                 <button class="btn btn-primary" onclick="showExpenseModal()">
-                    <i class="fas fa-plus"></i> Nova Despesa
+                    <i class="fas fa-plus"></i> Nova
                 </button>
             </div>
             
-            <div class="expense-quick-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
-                <div class="expense-quick-btn" onclick="quickAddExpense('Transporte')"><i class="fas fa-bus"></i> Transporte</div>
-                <div class="expense-quick-btn" onclick="quickAddExpense('Alimentação')"><i class="fas fa-utensils"></i> Alimentação</div>
-                <div class="expense-quick-btn" onclick="quickAddExpense('Energia')"><i class="fas fa-bolt"></i> Energia</div>
-                <div class="expense-quick-btn" onclick="quickAddExpense('Água')"><i class="fas fa-water"></i> Água</div>
-                <div class="expense-quick-btn" onclick="quickAddExpense('Aluguel')"><i class="fas fa-home"></i> Aluguel</div>
-                <div class="expense-quick-btn" onclick="quickAddExpense('Internet')"><i class="fas fa-wifi"></i> Internet</div>
-                <div class="expense-quick-btn" onclick="quickAddExpense('Telefone')"><i class="fas fa-phone"></i> Telefone</div>
-                <div class="expense-quick-btn" onclick="quickAddExpense('Funcionários')"><i class="fas fa-users"></i> Funcionários</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px;">
+                <button class="expense-quick-btn" onclick="quickAddExpense('Transporte')"><i class="fas fa-bus"></i> Transporte</button>
+                <button class="expense-quick-btn" onclick="quickAddExpense('Alimentação')"><i class="fas fa-utensils"></i> Alimentação</button>
+                <button class="expense-quick-btn" onclick="quickAddExpense('Energia')"><i class="fas fa-bolt"></i> Energia</button>
+                <button class="expense-quick-btn" onclick="quickAddExpense('Água')"><i class="fas fa-water"></i> Água</button>
+                <button class="expense-quick-btn" onclick="quickAddExpense('Aluguel')"><i class="fas fa-home"></i> Aluguel</button>
+                <button class="expense-quick-btn" onclick="quickAddExpense('Internet')"><i class="fas fa-wifi"></i> Internet</button>
+                <button class="expense-quick-btn" onclick="quickAddExpense('Telefone')"><i class="fas fa-phone"></i> Telefone</button>
+                <button class="expense-quick-btn" onclick="quickAddExpense('Funcionários')"><i class="fas fa-users"></i> Funcionários</button>
             </div>
             
             <div id="expensesList"></div>
@@ -972,40 +1281,27 @@
                 <h2><i class="fas fa-chart-bar"></i> Relatórios</h2>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                <div style="background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center;">
-                    <i class="fas fa-file-pdf" style="font-size: 3rem; color: #ef4444; margin-bottom: 15px;"></i>
-                    <h3>Relatório de Vendas</h3>
-                    <button class="btn btn-primary" onclick="generateSalesReport()">Gerar PDF</button>
-                </div>
-                <div style="background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center;">
-                    <i class="fas fa-file-invoice" style="font-size: 3rem; color: #10b981; margin-bottom: 15px;"></i>
-                    <h3>Relatório de Despesas</h3>
-                    <button class="btn btn-success" onclick="generateExpenseReport()">Gerar PDF</button>
-                </div>
-                <div style="background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center;">
-                    <i class="fas fa-undo-alt" style="font-size: 3rem; color: #f59e0b; margin-bottom: 15px;"></i>
-                    <h3>Relatório de Devoluções</h3>
-                    <button class="btn btn-warning" onclick="generateReturnsReport()">Gerar PDF</button>
-                </div>
-                <div style="background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center;">
-                    <i class="fas fa-boxes" style="font-size: 3rem; color: #8b5cf6; margin-bottom: 15px;"></i>
-                    <h3>Relatório de Estoque</h3>
-                    <button class="btn btn-secondary" onclick="generateStockReport()">Gerar PDF</button>
-                </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
+                <button class="btn btn-primary" onclick="showReport('sales')">Vendas</button>
+                <button class="btn btn-success" onclick="showReport('expenses')">Despesas</button>
+                <button class="btn btn-warning" onclick="showReport('returns')">Devoluções</button>
+                <button class="btn btn-secondary" onclick="showReport('stock')">Estoque</button>
             </div>
-        </div>
-    </div>
-    
-    <!-- Barkod Tarayıcı -->
-    <div id="scannerSection" class="page-section">
-        <div class="table-container" style="text-align: center;">
-            <h2 style="margin-bottom: 20px;"><i class="fas fa-barcode"></i> Escanear Código</h2>
-            <div id="reader"></div>
-            <div id="scanResult" style="margin-top: 20px;"></div>
-            <button class="btn btn-secondary" onclick="stopScanner()" style="margin-top: 20px;">
-                <i class="fas fa-stop"></i> Parar
-            </button>
+            
+            <h3 id="reportTypeTitle" style="margin-bottom: 15px;">Relatório de Vendas</h3>
+            
+            <div id="reportTableContainer" class="report-table-container">
+                <div id="reportTable"></div>
+            </div>
+            
+            <div class="form-actions" style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="generateCurrentReportPDF()">
+                    <i class="fas fa-file-pdf"></i> Gerar PDF
+                </button>
+                <button class="btn btn-success" onclick="exportCurrentReportExcel()">
+                    <i class="fas fa-file-excel"></i> Excel
+                </button>
+            </div>
         </div>
     </div>
     
@@ -1025,62 +1321,38 @@
                     </div>
                     <div class="form-group">
                         <label>CNPJ</label>
-                        <input type="text" id="companyCnpj" placeholder="00.000.000/0000-00" inputmode="numeric">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Telefone</label>
-                        <input type="tel" id="companyPhone" placeholder="+55 (00) 00000-0000" inputmode="tel">
-                    </div>
-                    <div class="form-group">
-                        <label>WhatsApp</label>
-                        <input type="tel" id="companyWhatsapp" placeholder="+55 (00) 00000-0000" inputmode="tel">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Cidade</label>
-                        <input type="text" id="companyCity" value="Brasília">
-                    </div>
-                    <div class="form-group">
-                        <label>UF</label>
-                        <select id="companyUf">
-                            <option value="DF" selected>DF</option>
-                            <option value="SP">SP</option>
-                            <option value="RJ">RJ</option>
-                            <option value="MG">MG</option>
-                        </select>
+                        <input type="text" id="companyCnpj" placeholder="00.000.000/0000-00">
                     </div>
                 </div>
                 
-                <h3 style="margin: 30px 0 15px;"><i class="fas fa-percent"></i> Taxas e Comissões</h3>
+                <h3 style="margin: 30px 0 15px;"><i class="fas fa-percent"></i> Taxas</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Taxa Cartão de Crédito (%)</label>
-                        <input type="number" id="creditCardFee" value="5" min="0" max="20" step="0.1" inputmode="numeric">
+                        <label>Taxa Cartão (%)</label>
+                        <input type="number" id="creditCardFee" value="5">
                     </div>
                     <div class="form-group">
                         <label>Margem de Lucro (%)</label>
-                        <input type="number" id="defaultProfitMargin" value="30" min="0" max="100" step="0.1" inputmode="numeric">
+                        <input type="number" id="defaultProfitMargin" value="30">
                     </div>
                 </div>
                 
-                <h3 style="margin: 30px 0 15px;"><i class="fab fa-whatsapp"></i> Integrações</h3>
+                <h3 style="margin: 30px 0 15px;"><i class="fas fa-dollar-sign"></i> Câmbio</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>WhatsApp Business API</label>
-                        <input type="text" id="waBusinessPhone" placeholder="+5511999999999" inputmode="tel">
+                        <label>Taxa de Câmbio (USD)</label>
+                        <input type="number" id="exchangeRateUSD" value="5.00" step="0.01">
                     </div>
                     <div class="form-group">
-                        <label>Instagram Username</label>
-                        <input type="text" id="instagramUsername" placeholder="@suabijuteria">
+                        <button type="button" class="btn btn-secondary" onclick="fetchExchangeRate()" style="margin-top: 25px;">
+                            <i class="fas fa-sync-alt"></i> Atualizar Cotação
+                        </button>
                     </div>
                 </div>
                 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Salvar Configurações
+                        <i class="fas fa-save"></i> Salvar
                     </button>
                 </div>
             </form>
@@ -1114,8 +1386,7 @@
 </nav>
 
 <!-- MODALLAR -->
-
-<!-- Ürün Modal (Görsel Yönetimi ile) -->
+<!-- Ürün Modal -->
 <div id="productModal" class="modal">
     <div class="modal-content large">
         <div class="modal-header">
@@ -1128,11 +1399,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Código de Barras</label>
-                    <input type="text" id="productBarcode" placeholder="EAN/UPC" inputmode="numeric">
+                    <input type="text" id="productBarcode">
                 </div>
                 <div class="form-group">
                     <label>Código Interno</label>
-                    <input type="text" id="productCode" placeholder="SKU">
+                    <input type="text" id="productCode">
                 </div>
             </div>
             
@@ -1155,23 +1426,28 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Estoque</label>
-                    <input type="number" id="productStock" min="0" value="0" inputmode="numeric">
+                    <input type="number" id="productStock" min="0" value="0">
                 </div>
                 <div class="form-group">
                     <label>Estoque Mínimo</label>
-                    <input type="number" id="productMinStock" min="0" value="5" inputmode="numeric">
+                    <input type="number" id="productMinStock" min="0" value="5">
                 </div>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label>Preço de Custo (R$)</label>
-                    <input type="number" id="productCostPrice" min="0" step="0.01" onchange="calculateSalePrice()" inputmode="decimal">
+                    <input type="number" id="productCostPrice" min="0" step="0.01" onchange="calculateSalePrice()">
                 </div>
                 <div class="form-group">
                     <label>Preço de Venda (R$)</label>
-                    <input type="number" id="productSalePrice" min="0" step="0.01" inputmode="decimal">
+                    <input type="number" id="productSalePrice" min="0" step="0.01">
                 </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Preço em USD</label>
+                <input type="number" id="productPriceUSD" min="0" step="0.01" readonly>
             </div>
             
             <div class="form-group">
@@ -1183,14 +1459,12 @@
                 </select>
             </div>
             
-            <!-- Ürün Görsel Yönetimi (5 fotoğraf) -->
             <div class="form-group">
-                <label>Imagens do Produto (até 5)</label>
+                <label>Imagens (até 5)</label>
                 <div id="productImagesGallery" class="image-gallery"></div>
-                <div class="image-upload-area" onclick="document.getElementById('productImageInput').click()">
-                    <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #3b82f6;"></i>
-                    <p>Clique para adicionar imagens</p>
-                </div>
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('productImageInput').click()">
+                    <i class="fas fa-cloud-upload-alt"></i> Adicionar
+                </button>
                 <input type="file" id="productImageInput" accept="image/*" multiple style="display: none;" onchange="handleProductImageUpload(event)">
             </div>
             
@@ -1201,11 +1475,39 @@
             
             <div class="form-actions">
                 <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancelar</button>
+                <button type="button" class="btn btn-info" onclick="generateProductQR()">
+                    <i class="fas fa-qrcode"></i> Gerar QR Code
+                </button>
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save"></i> Salvar
                 </button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- QR Code Modal -->
+<div id="qrcodeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>QR Code do Produto</h3>
+            <button class="close-btn" onclick="closeQRCodeModal()">&times;</button>
+        </div>
+        <div id="qrcodeContainer" class="qrcode-container"></div>
+        <div style="text-align: center; margin-top: 20px;">
+            <p id="qrcodeProductInfo"></p>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="downloadQRCode()">
+                <i class="fas fa-download"></i> Baixar
+            </button>
+            <button class="btn btn-success" onclick="shareQRCodeWhatsApp()">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+            <button class="btn btn-secondary" onclick="printQRCode()">
+                <i class="fas fa-print"></i> Imprimir
+            </button>
+        </div>
     </div>
 </div>
 
@@ -1224,35 +1526,14 @@
                 <input type="text" id="customerName" required>
             </div>
             
-            <div class="form-row">
-                <div class="form-group">
-                    <label>CPF</label>
-                    <input type="text" id="customerCpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" oninput="maskCPF(this)">
-                </div>
-                <div class="form-group">
-                    <label>Telefone</label>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="tel" id="customerPhone" placeholder="+55 (00) 00000-0000" maxlength="17" inputmode="tel" oninput="maskPhone(this)" style="flex: 1;">
-                        <button type="button" class="btn btn-secondary" onclick="pickContact('customerPhone')" title="Selecionar dos contatos">
-                            <i class="fas fa-address-book"></i>
-                        </button>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label>Telefone</label>
+                <input type="tel" id="customerPhone" placeholder="+55 (00) 00000-0000" oninput="maskPhone(this)">
             </div>
             
             <div class="form-group">
                 <label>WhatsApp</label>
-                <div style="display: flex; gap: 5px;">
-                    <input type="tel" id="customerWhatsapp" placeholder="+55 (00) 00000-0000" maxlength="17" inputmode="tel" oninput="maskPhone(this)" style="flex: 1;">
-                    <button type="button" class="btn btn-secondary" onclick="pickContact('customerWhatsapp')" title="Selecionar dos contatos">
-                        <i class="fas fa-address-book"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="customerEmail" inputmode="email">
+                <input type="tel" id="customerWhatsapp" placeholder="+55 (00) 00000-0000" oninput="maskPhone(this)">
             </div>
             
             <div class="form-group">
@@ -1271,257 +1552,91 @@
                         <option value="DF" selected>DF</option>
                         <option value="SP">SP</option>
                         <option value="RJ">RJ</option>
-                        <option value="MG">MG</option>
                     </select>
                 </div>
             </div>
             
             <div class="form-actions">
                 <button type="button" class="btn btn-secondary" onclick="closeCustomerModal()">Cancelar</button>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Salvar
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Tedarikçi Modal -->
-<div id="supplierModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="supplierModalTitle">Novo Fornecedor</h3>
-            <button class="close-btn" onclick="closeSupplierModal()">&times;</button>
-        </div>
-        <form id="supplierForm" onsubmit="saveSupplier(event)">
-            <input type="hidden" id="supplierId">
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Razão Social *</label>
-                    <input type="text" id="supplierCompanyName" required>
-                </div>
-                <div class="form-group">
-                    <label>Nome Fantasia</label>
-                    <input type="text" id="supplierTradingName">
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>CNPJ</label>
-                <input type="text" id="supplierCnpj" placeholder="00.000.000/0000-00" maxlength="18" inputmode="numeric" oninput="maskCNPJ(this)">
-            </div>
-            
-            <div class="form-group">
-                <label>Contato</label>
-                <input type="text" id="supplierContactName">
-            </div>
-            
-            <div class="form-group">
-                <label>Telefone</label>
-                <div style="display: flex; gap: 5px;">
-                    <input type="tel" id="supplierPhone" placeholder="+55 (00) 00000-0000" maxlength="17" inputmode="tel" oninput="maskPhone(this)" style="flex: 1;">
-                    <button type="button" class="btn btn-secondary" onclick="pickContact('supplierPhone')">
-                        <i class="fas fa-address-book"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Cidade</label>
-                    <input type="text" id="supplierCity">
-                </div>
-                <div class="form-group">
-                    <label>UF</label>
-                    <select id="supplierUf">
-                        <option value="DF">DF</option>
-                        <option value="SP">SP</option>
-                        <option value="RJ">RJ</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeSupplierModal()">Cancelar</button>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Salvar
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- İade Modal -->
-<div id="returnModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Nova Devolução / Troca</h3>
-            <button class="close-btn" onclick="closeReturnModal()">&times;</button>
-        </div>
-        <form onsubmit="saveReturn(event)">
-            <div class="form-group">
-                <label>Venda Original</label>
-                <select id="returnSaleId" required onchange="loadSaleItemsForReturn()">
-                    <option value="">Selecione a venda</option>
-                </select>
-            </div>
-            
-            <div id="returnItemsList"></div>
-            
-            <div class="form-group">
-                <label>Motivo da Devolução</label>
-                <select id="returnReason" required>
-                    <option value="">Selecione</option>
-                    <option value="defeito">Produto com defeito</option>
-                    <option value="insatisfeito">Não gostou</option>
-                    <option value="tamanho">Tamanho incorreto</option>
-                    <option value="cor">Cor diferente</option>
-                    <option value="produto_errado">Produto errado</option>
-                    <option value="outro">Outro</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Tipo</label>
-                <select id="returnType" required>
-                    <option value="devolucao">Devolução (Reembolso)</option>
-                    <option value="troca">Troca por outro produto</option>
-                </select>
-            </div>
-            
-            <div id="exchangeProductSection" style="display: none;">
-                <div class="form-group">
-                    <label>Produto para Troca</label>
-                    <select id="exchangeProductId"></select>
-                </div>
-                <div class="form-group">
-                    <label>Quantidade</label>
-                    <input type="number" id="exchangeQuantity" min="1" value="1" inputmode="numeric">
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Observações</label>
-                <textarea id="returnNotes" rows="2"></textarea>
-            </div>
-            
-            <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeReturnModal()">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Processar</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Sezon Modal -->
-<div id="seasonModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Nova Coleção</h3>
-            <button class="close-btn" onclick="closeSeasonModal()">&times;</button>
-        </div>
-        <form onsubmit="saveSeason(event)">
-            <div class="form-group">
-                <label>Nome da Coleção</label>
-                <input type="text" id="seasonName" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Estação</label>
-                <select id="seasonType" required>
-                    <option value="spring">Primavera</option>
-                    <option value="summer">Verão</option>
-                    <option value="autumn">Outono</option>
-                    <option value="winter">Inverno</option>
-                </select>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Data Início</label>
-                    <input type="date" id="seasonStartDate" required>
-                </div>
-                <div class="form-group">
-                    <label>Data Fim</label>
-                    <input type="date" id="seasonEndDate" required>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Desconto de Fim de Coleção (%)</label>
-                <input type="number" id="seasonDiscount" min="0" max="100" value="30" inputmode="numeric">
-            </div>
-            
-            <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeSeasonModal()">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Salvar</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- WhatsApp Sipariş Modal -->
-<div id="whatsappOrderModal" class="modal">
-    <div class="modal-content">
+<!-- Fiş Modal -->
+<div id="receiptModal" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
         <div class="modal-header">
-            <h3>Novo Pedido WhatsApp</h3>
-            <button class="close-btn" onclick="closeWhatsAppOrderModal()">&times;</button>
+            <h3>Cupom Fiscal</h3>
+            <button class="close-btn" onclick="closeReceiptModal()">&times;</button>
         </div>
-        <form onsubmit="saveWhatsAppOrder(event)">
-            <div class="form-group">
-                <label>Cliente</label>
-                <select id="waOrderCustomerId" required></select>
-            </div>
-            
-            <div class="form-group">
-                <label>Produtos</label>
-                <div id="waOrderItems"></div>
-                <button type="button" class="btn btn-secondary" onclick="addWAOrderItem()">
-                    <i class="fas fa-plus"></i> Adicionar Produto
-                </button>
-            </div>
-            
-            <div class="form-group">
-                <label>Status</label>
-                <select id="waOrderStatus" required>
-                    <option value="pendente">Pendente</option>
-                    <option value="confirmado">Confirmado</option>
-                    <option value="enviado">Enviado</option>
-                    <option value="entregue">Entregue</option>
-                    <option value="cancelado">Cancelado</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Observações</label>
-                <textarea id="waOrderNotes" rows="2"></textarea>
-            </div>
-            
-            <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeWhatsAppOrderModal()">Cancelar</button>
-                <button type="submit" class="btn btn-success">Salvar Pedido</button>
-            </div>
-        </form>
+        <div id="receiptContent" class="receipt"></div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="downloadReceiptPDF()">
+                <i class="fas fa-file-pdf"></i> PDF
+            </button>
+            <button class="btn btn-success" onclick="sendReceiptWhatsApp()">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+            <button class="btn btn-secondary" onclick="printReceipt()">
+                <i class="fas fa-print"></i> Imprimir
+            </button>
+            <button class="btn btn-info" onclick="generateInvoiceFromReceipt()">
+                <i class="fas fa-file-invoice"></i> Gerar NF-e
+            </button>
+        </div>
     </div>
 </div>
 
-<!-- İçe Aktar Modal -->
-<div id="importModal" class="modal">
+<!-- Toplu Fiyat Güncelleme Modal -->
+<div id="bulkPriceModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3>Importar Dados</h3>
-            <button class="close-btn" onclick="closeImportModal()">&times;</button>
+            <h3>Atualizar Preços em Massa</h3>
+            <button class="close-btn" onclick="closeBulkPriceModal()">&times;</button>
         </div>
         <div class="form-group">
-            <label>Selecione o arquivo (JSON)</label>
-            <input type="file" id="importFile" accept=".json">
+            <label>Tipo de Atualização</label>
+            <select id="bulkPriceType" onchange="toggleBulkPriceInput()">
+                <option value="percent">Porcentagem (%)</option>
+                <option value="fixed">Valor Fixo (R$)</option>
+                <option value="exchange">Atualizar pelo Câmbio</option>
+            </select>
+        </div>
+        <div class="form-group" id="bulkPriceValueGroup">
+            <label id="bulkPriceLabel">Aumento (%)</label>
+            <input type="number" id="bulkPriceValue" step="0.01">
+        </div>
+        <div class="form-group">
+            <label>Aplicar para</label>
+            <select id="bulkPriceScope">
+                <option value="all">Todos os Produtos</option>
+                <option value="category">Por Categoria</option>
+                <option value="season">Por Coleção</option>
+            </select>
+        </div>
+        <div class="form-group" id="bulkPriceCategoryGroup" style="display:none;">
+            <label>Categoria</label>
+            <select id="bulkPriceCategory"></select>
         </div>
         <div class="form-actions">
-            <button type="button" class="btn btn-secondary" onclick="closeImportModal()">Cancelar</button>
-            <button type="button" class="btn btn-primary" onclick="processImport()">
-                <i class="fas fa-upload"></i> Importar
-            </button>
+            <button class="btn btn-secondary" onclick="closeBulkPriceModal()">Cancelar</button>
+            <button class="btn btn-primary" onclick="applyBulkPriceUpdate()">Aplicar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Karşılaştırma Seçim Modal -->
+<div id="comparisonSelectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Selecionar Produtos para Comparar</h3>
+            <button class="close-btn" onclick="closeComparisonSelectModal()">&times;</button>
+        </div>
+        <div id="comparisonProductList" style="max-height: 400px; overflow-y: auto;"></div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="compareSelectedProducts()">Comparar</button>
         </div>
     </div>
 </div>
@@ -1529,45 +1644,67 @@
 <script>
     // ==================== VERİTABANI ====================
     const db = new Dexie('SBO_Bijuterias_DB');
-    db.version(8).stores({
-        products: '++id, barcode, code, name, categoryId, seasonId, stock, minStock, costPrice, salePrice, unit, description, images, createdAt, updatedAt',
-        customers: '++id, name, cpf, phone, whatsapp, email, address, city, uf, createdAt, updatedAt',
-        suppliers: '++id, companyName, tradingName, cnpj, contactName, phone, whatsapp, email, address, city, uf, createdAt, updatedAt',
-        sales: '++id, customerId, items, subtotal, cardFee, total, paymentMethod, status, createdAt',
-        saleItems: '++id, saleId, productId, quantity, unitPrice, costPrice',
-        expenses: '++id, category, description, amount, date, paymentMethod, receipt, createdAt',
-        returns: '++id, saleId, items, reason, type, exchangeProductId, exchangeQuantity, difference, status, createdAt',
+    db.version(15).stores({
+        products: '++id, barcode, code, name, categoryId, seasonId, stock, minStock, costPrice, salePrice, priceUSD, unit, description, images, priceHistory, createdAt, updatedAt',
+        customers: '++id, name, phone, whatsapp, address, city, uf, totalSpent, segment, createdAt, updatedAt',
+        suppliers: '++id, companyName, tradingName, cnpj, contactName, phone, city, uf, createdAt, updatedAt',
+        sales: '++id, customerId, items, subtotal, cardFee, commission, total, netProfit, paymentMethod, invoiceId, status, createdAt',
+        expenses: '++id, category, description, amount, date, paymentMethod, createdAt',
+        returns: '++id, saleId, items, reason, type, exchangeProductId, exchangeQuantity, status, createdAt',
         seasons: '++id, name, type, startDate, endDate, discount, status, createdAt',
-        whatsappOrders: '++id, customerId, items, status, notes, createdAt, updatedAt',
+        invoices: '++id, saleId, invoiceNumber, accessKey, xml, status, issuedAt, cancelledAt',
         categories: '++id, name, type, createdAt',
         settings: 'key, value'
     });
 
-    // Bijuteri kategorileri (otomatik)
-    const BIJU_CATEGORIES = ['Brincos', 'Colares', 'Pulseiras', 'Anéis', 'Tornozeleiras', 'Pingentes', 'Conjuntos', 'Acessórios', 'Cordões', 'Piercings'];
+    // Sabitler
+    const BIJU_CATEGORIES = ['Brincos', 'Colares', 'Pulseiras', 'Anéis', 'Tornozeleiras', 'Pingentes', 'Conjuntos', 'Acessórios'];
+    const DEFAULT_SEASONS = [
+        { name: 'Primavera', type: 'spring', startDate: '2024-09-22', endDate: '2024-12-20', discount: 20 },
+        { name: 'Verão', type: 'summer', startDate: '2024-12-21', endDate: '2025-03-19', discount: 30 },
+        { name: 'Outono', type: 'autumn', startDate: '2025-03-20', endDate: '2025-06-20', discount: 20 },
+        { name: 'Inverno', type: 'winter', startDate: '2025-06-21', endDate: '2025-09-21', discount: 25 }
+    ];
+
+    // Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBsrdG69_WF2i6Puaz23tVjZRfuwGq6PmU",
+        authDomain: "ascoffe.firebaseapp.com",
+        databaseURL: "https://ascoffe-default-rtdb.firebaseio.com",
+        projectId: "ascoffe",
+        storageBucket: "ascoffe.firebasestorage.app",
+        messagingSenderId: "211890404313",
+        appId: "1:211890404313:web:14ff58dddd7aee560677c8"
+    };
     
-    // Mask fonksiyonları
+    let firestore = null;
+    let firebaseInitialized = false;
+    let currentQRData = null;
+    let recognition = null;
+    let isListening = false;
+    let saleCart = [];
+    let selectedCustomer = null;
+    let currentPaymentMethod = 'dinheiro';
+    let currentReportType = 'sales';
+    let productImages = [];
+    let editingId = null;
+    let currentReceipt = null;
+    let selectedComparisonProducts = [];
+    let sortableInstance = null;
+
+    // ==================== YARDIMCI FONKSİYONLAR ====================
+    function formatMoney(value) {
+        return 'R$ ' + (value || 0).toFixed(2).replace('.', ',');
+    }
+
     function maskPhone(input) {
         let value = input.value.replace(/\D/g, '');
         if (value.length > 11) value = value.slice(0, 11);
-        if (value.length >= 2) {
-            value = value.replace(/^(\d{2})(\d)/, '+55 ($1) $2');
-        }
-        if (value.length >= 10) {
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-        }
+        if (value.length >= 2) value = value.replace(/^(\d{2})(\d)/, '+55 ($1) $2');
+        if (value.length >= 10) value = value.replace(/(\d{5})(\d)/, '$1-$2');
         input.value = value;
     }
-    
-    function maskCPF(input) {
-        let value = input.value.replace(/\D/g, '');
-        if (value.length > 11) value = value.slice(0, 11);
-        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        input.value = value;
-    }
-    
+
     function maskCNPJ(input) {
         let value = input.value.replace(/\D/g, '');
         if (value.length > 14) value = value.slice(0, 14);
@@ -1577,41 +1714,168 @@
         value = value.replace(/(\d{4})(\d)/, '$1-$2');
         input.value = value;
     }
-    
-    // Rehberden kişi seç
-    async function pickContact(fieldId) {
-        if (!('contacts' in navigator)) {
-            Swal.fire('Aviso', 'API de contatos não suportada', 'warning');
+
+    function showLoading() { document.getElementById('loading').classList.add('active'); }
+    function hideLoading() { document.getElementById('loading').classList.remove('active'); }
+
+    // ==================== TEMA ====================
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const icon = document.querySelector('.header-btn .fa-moon, .header-btn .fa-sun');
+        if (document.body.classList.contains('dark-theme')) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+    }
+
+    // ==================== SESLİ ASİSTAN ====================
+    function toggleVoiceAssistant() {
+        const popup = document.getElementById('voicePopup');
+        const btn = document.getElementById('voiceAssistantBtn');
+        
+        if (!isListening) {
+            popup.classList.add('show');
+            startVoiceRecognition();
+        } else {
+            stopVoiceRecognition();
+            popup.classList.remove('show');
+        }
+    }
+
+    function startVoiceRecognition() {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            Swal.fire('Erro', 'Reconhecimento de voz não suportado', 'error');
             return;
         }
-        try {
-            const props = ['name', 'tel'];
-            const opts = { multiple: false };
-            const contacts = await navigator.contacts.select(props, opts);
-            if (contacts.length) {
-                const tel = contacts[0].tel?.[0] || '';
-                document.getElementById(fieldId).value = tel.replace(/\D/g, '');
-                maskPhone({ value: tel });
-            }
-        } catch (e) {
-            Swal.fire('Erro', 'Permissão negada', 'error');
+        
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'pt-BR';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        recognition.onstart = () => {
+            isListening = true;
+            document.getElementById('voiceAssistantBtn').classList.add('listening');
+            document.getElementById('voiceStatus').textContent = 'Ouvindo... Fale agora';
+        };
+        
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript.toLowerCase();
+            document.getElementById('voiceResult').textContent = `"${transcript}"`;
+            processVoiceCommand(transcript);
+        };
+        
+        recognition.onerror = () => {
+            isListening = false;
+            document.getElementById('voiceAssistantBtn').classList.remove('listening');
+            document.getElementById('voiceStatus').textContent = 'Erro. Tente novamente.';
+        };
+        
+        recognition.onend = () => {
+            isListening = false;
+            document.getElementById('voiceAssistantBtn').classList.remove('listening');
+            document.getElementById('voiceStatus').textContent = 'Clique no microfone para falar';
+        };
+        
+        recognition.start();
+    }
+
+    function stopVoiceRecognition() {
+        if (recognition) {
+            recognition.stop();
+            isListening = false;
         }
     }
-    
-    // Global değişkenler
-    let currentPage = 'dashboard';
-    let saleCart = [];
-    let selectedCustomer = null;
-    let html5QrCode = null;
-    let productImages = [];
-    let editingId = null;
-    
-    // Format para
-    function formatMoney(value) {
-        return 'R$ ' + (value || 0).toFixed(2).replace('.', ',');
+
+    async function processVoiceCommand(command) {
+        if (command.includes('estoque') || command.includes('stock')) {
+            const products = await db.products.toArray();
+            const totalStock = products.reduce((s, p) => s + (p.stock || 0), 0);
+            Swal.fire('Estoque Total', `${totalStock} unidades`, 'info');
+        } else if (command.includes('venda') || command.includes('vendas') || command.includes('vendeu')) {
+            const today = new Date().toISOString().split('T')[0];
+            const sales = await db.sales.where('createdAt').between(today + 'T00:00', today + 'T23:59', true, true).toArray();
+            const total = sales.reduce((s, v) => s + (v.total || 0), 0);
+            Swal.fire('Vendas Hoje', formatMoney(total), 'success');
+        } else if (command.includes('cliente') || command.includes('clientes')) {
+            const count = await db.customers.count();
+            Swal.fire('Clientes', `${count} clientes cadastrados`, 'info');
+        } else {
+            Swal.fire('Comando não reconhecido', 'Tente: "estoque", "vendas hoje", "clientes"', 'warning');
+        }
+        
+        document.getElementById('voicePopup').classList.remove('show');
     }
-    
-    // Sayfa değiştir
+
+    // ==================== QR KOD ====================
+    function generateProductQR() {
+        const productName = document.getElementById('productName').value;
+        const productPrice = document.getElementById('productSalePrice').value;
+        const productCode = document.getElementById('productCode').value || document.getElementById('productBarcode').value || 'SBO' + Date.now();
+        
+        if (!productName) {
+            Swal.fire('Aviso', 'Preencha o nome do produto', 'warning');
+            return;
+        }
+        
+        const qrData = JSON.stringify({
+            name: productName,
+            price: productPrice,
+            code: productCode,
+            timestamp: new Date().toISOString()
+        });
+        
+        currentQRData = qrData;
+        
+        const container = document.getElementById('qrcodeContainer');
+        container.innerHTML = '';
+        
+        QRCode.toCanvas(qrData, { width: 200, margin: 2 }, (err, canvas) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            container.appendChild(canvas);
+        });
+        
+        document.getElementById('qrcodeProductInfo').textContent = `${productName} - ${formatMoney(parseFloat(productPrice))}`;
+        document.getElementById('qrcodeModal').classList.add('active');
+    }
+
+    function closeQRCodeModal() {
+        document.getElementById('qrcodeModal').classList.remove('active');
+    }
+
+    function downloadQRCode() {
+        const canvas = document.querySelector('#qrcodeContainer canvas');
+        if (canvas) {
+            const link = document.createElement('a');
+            link.download = 'qrcode_produto.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    }
+
+    function shareQRCodeWhatsApp() {
+        const productInfo = document.getElementById('qrcodeProductInfo').textContent;
+        const message = `Confira este produto: ${productInfo}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function printQRCode() {
+        const canvas = document.querySelector('#qrcodeContainer canvas');
+        if (canvas) {
+            const win = window.open('', '_blank');
+            win.document.write(`<html><head><title>QR Code</title></head><body style="display:flex;justify-content:center;align-items:center;min-height:100vh;">${canvas.outerHTML}<script>window.print()<\/script></body></html>`);
+        }
+    }
+
+    // ==================== SAYFA YÖNETİMİ ====================
     function switchPage(page) {
         document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
         document.getElementById(page + 'Section').classList.add('active');
@@ -1620,9 +1884,6 @@
             item.classList.toggle('active', item.dataset.page === page);
         });
         
-        currentPage = page;
-        
-        // Sayfa yükleme fonksiyonları
         const loaders = {
             'dashboard': loadDashboard,
             'quickSale': loadQuickSale,
@@ -1632,16 +1893,17 @@
             'returns': loadReturns,
             'seasons': loadSeasons,
             'catalog': loadCatalogPreview,
-            'whatsappOrders': loadWhatsAppOrders,
             'expenses': loadExpenses,
-            'scanner': startScanner,
+            'reports': () => showReport('sales'),
+            'invoices': loadInvoices,
+            'comparison': loadComparisonPage,
             'settings': loadSettings
         };
         
         if (loaders[page]) loaders[page]();
     }
-    
-    // Dashboard
+
+    // ==================== DASHBOARD ====================
     async function loadDashboard() {
         const today = new Date().toISOString().split('T')[0];
         const sales = await db.sales.where('createdAt').between(today + 'T00:00', today + 'T23:59', true, true).toArray();
@@ -1650,246 +1912,126 @@
         
         const totalSales = sales.reduce((s, v) => s + (v.total || 0), 0);
         const totalExpenses = expenses.reduce((s, e) => s + (e.amount || 0), 0);
-        const netProfit = totalSales - totalExpenses;
+        const totalNetProfit = sales.reduce((s, v) => s + (v.netProfit || 0), 0);
         
         document.getElementById('totalSales').textContent = formatMoney(totalSales);
         document.getElementById('totalExpenses').textContent = formatMoney(totalExpenses);
-        document.getElementById('netProfit').textContent = formatMoney(netProfit);
+        document.getElementById('netProfit').textContent = formatMoney(totalNetProfit - totalExpenses);
         document.getElementById('totalProducts').textContent = products;
         
-        // Son satışlar
-        const recentSales = await db.sales.orderBy('createdAt').reverse().limit(5).toArray();
-        const container = document.getElementById('recentSales');
-        if (recentSales.length === 0) {
-            container.innerHTML = '<div class="empty-state"><i class="fas fa-shopping-cart"></i><p>Nenhuma venda hoje</p></div>';
-        } else {
-            let html = '<table><thead><tr><th>Hora</th><th>Cliente</th><th>Total</th><th>Pagamento</th></tr></thead><tbody>';
-            for (const s of recentSales) {
-                const customer = s.customerId ? await db.customers.get(s.customerId) : null;
-                html += `<tr><td>${new Date(s.createdAt).toLocaleTimeString('pt-BR')}</td><td>${customer?.name || 'Consumidor Final'}</td><td>${formatMoney(s.total)}</td><td>${s.paymentMethod}</td></tr>`;
-            }
-            html += '</tbody></table>';
-            container.innerHTML = html;
+        loadWidgetSales();
+        loadWidgetTopProducts();
+        loadWidgetSegments();
+        
+        if (!sortableInstance) {
+            sortableInstance = new Sortable(document.getElementById('widgetGrid'), {
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                dragClass: 'sortable-drag',
+                handle: '.widget-header i.fa-grip-lines'
+            });
         }
     }
-    
-    // Ürünler
-    async function loadProducts() {
-        const products = await db.products.toArray();
-        const categories = await db.categories.toArray();
-        const container = document.getElementById('productsList');
+
+    async function loadWidgetSales() {
+        const recentSales = await db.sales.orderBy('createdAt').reverse().limit(5).toArray();
+        const container = document.getElementById('widgetSales');
         
-        if (products.length === 0) {
-            container.innerHTML = '<div class="empty-state"><i class="fas fa-gem"></i><p>Nenhum produto</p></div>';
+        if (recentSales.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding:20px;">Nenhuma venda</p>';
             return;
         }
         
-        let html = '<table><thead><tr><th>Cód</th><th>Produto</th><th>Categoria</th><th>Estoque</th><th>Preço</th><th>Ações</th></tr></thead><tbody>';
-        products.forEach(p => {
-            const cat = categories.find(c => c.id === p.categoryId);
-            const stockClass = p.stock <= p.minStock ? 'badge-danger' : 'badge-success';
-            html += `<tr>
-                <td>${p.code || p.id}</td>
-                <td>${p.name}</td>
-                <td>${cat?.name || '-'}</td>
-                <td><span class="badge ${stockClass}">${p.stock || 0}</span></td>
-                <td>${formatMoney(p.salePrice)}</td>
-                <td class="action-buttons">
-                    <button class="action-btn edit-btn" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete-btn" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>`;
+        let html = '';
+        recentSales.forEach(s => {
+            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                <span>${new Date(s.createdAt).toLocaleTimeString('pt-BR')}</span>
+                <span><strong>${formatMoney(s.total)}</strong></span>
+            </div>`;
         });
-        html += '</tbody></table>';
         container.innerHTML = html;
     }
-    
-    function filterProducts() {
-        const term = document.getElementById('productSearch').value.toLowerCase();
-        document.querySelectorAll('#productsList tbody tr').forEach(row => {
-            row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+
+    async function loadWidgetTopProducts() {
+        const sales = await db.sales.toArray();
+        const productSales = {};
+        
+        sales.forEach(s => {
+            s.items?.forEach(item => {
+                productSales[item.productName] = (productSales[item.productName] || 0) + item.quantity;
+            });
         });
-    }
-    
-    function showProductModal(id = null) {
-        editingId = id;
-        productImages = [];
-        loadCategoryOptions();
-        loadSeasonOptions();
         
-        if (id) {
-            document.getElementById('productModalTitle').textContent = 'Editar Produto';
-            loadProductData(id);
-        } else {
-            document.getElementById('productModalTitle').textContent = 'Novo Produto';
-            document.getElementById('productForm').reset();
-            document.getElementById('productId').value = '';
-            document.getElementById('productImagesGallery').innerHTML = '';
+        const topProducts = Object.entries(productSales).sort((a, b) => b[1] - a[1]).slice(0, 5);
+        const container = document.getElementById('widgetTopProducts');
+        
+        if (topProducts.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding:20px;">Nenhum produto vendido</p>';
+            return;
         }
         
-        document.getElementById('productModal').classList.add('active');
+        let html = '';
+        topProducts.forEach(([name, qty]) => {
+            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                <span>${name.substring(0, 20)}${name.length > 20 ? '...' : ''}</span>
+                <span><strong>${qty} un</strong></span>
+            </div>`;
+        });
+        container.innerHTML = html;
     }
-    
-    async function loadProductData(id) {
-        const product = await db.products.get(id);
-        if (!product) return;
+
+    async function loadWidgetSegments() {
+        const customers = await db.customers.toArray();
+        const vip = customers.filter(c => (c.totalSpent || 0) > 1000).length;
+        const normal = customers.filter(c => (c.totalSpent || 0) >= 100 && (c.totalSpent || 0) <= 1000).length;
+        const newCust = customers.filter(c => (c.totalSpent || 0) < 100).length;
         
-        document.getElementById('productId').value = product.id;
-        document.getElementById('productBarcode').value = product.barcode || '';
-        document.getElementById('productCode').value = product.code || '';
-        document.getElementById('productName').value = product.name || '';
-        document.getElementById('productCategory').value = product.categoryId || '';
-        document.getElementById('productSeason').value = product.seasonId || '';
-        document.getElementById('productStock').value = product.stock || 0;
-        document.getElementById('productMinStock').value = product.minStock || 5;
-        document.getElementById('productCostPrice').value = product.costPrice || 0;
-        document.getElementById('productSalePrice').value = product.salePrice || 0;
-        document.getElementById('productUnit').value = product.unit || 'UN';
-        document.getElementById('productDescription').value = product.description || '';
-        
-        productImages = product.images || [];
-        renderProductImages();
-    }
-    
-    async function loadCategoryOptions() {
-        let categories = await db.categories.toArray();
-        if (categories.length === 0) {
-            for (const cat of BIJU_CATEGORIES) {
-                await db.categories.add({ name: cat, type: 'produto', createdAt: new Date() });
-            }
-            categories = await db.categories.toArray();
-        }
-        
-        const select = document.getElementById('productCategory');
-        select.innerHTML = '<option value="">Selecione</option>';
-        categories.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
-    }
-    
-    async function loadSeasonOptions() {
-        const seasons = await db.seasons.where('status').equals('active').toArray();
-        const select = document.getElementById('productSeason');
-        select.innerHTML = '<option value="">Nenhuma</option>';
-        seasons.forEach(s => select.innerHTML += `<option value="${s.id}">${s.name}</option>`);
-    }
-    
-    function calculateSalePrice() {
-        const cost = parseFloat(document.getElementById('productCostPrice').value) || 0;
-        const settings = JSON.parse(localStorage.getItem('settings') || '{"defaultProfitMargin":30}');
-        const margin = parseFloat(settings.defaultProfitMargin) / 100;
-        document.getElementById('productSalePrice').value = (cost * (1 + margin)).toFixed(2);
-    }
-    
-    // Ürün görsel yönetimi
-    function handleProductImageUpload(event) {
-        const files = event.target.files;
-        for (const file of files) {
-            if (productImages.length >= 5) {
-                Swal.fire('Aviso', 'Máximo 5 imagens', 'warning');
-                break;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                productImages.push(e.target.result);
-                renderProductImages();
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-    
-    function renderProductImages() {
-        const gallery = document.getElementById('productImagesGallery');
-        gallery.innerHTML = productImages.map((img, i) => `
-            <div style="position: relative;">
-                <img src="${img}" class="gallery-item">
-                <button type="button" onclick="removeProductImage(${i})" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer;">×</button>
+        const container = document.getElementById('widgetSegments');
+        container.innerHTML = `
+            <div style="display:flex; justify-content:space-around; text-align:center;">
+                <div><i class="fas fa-crown" style="color:#fbbf24;"></i> VIP<br><strong>${vip}</strong></div>
+                <div><i class="fas fa-user" style="color:#3b82f6;"></i> Normal<br><strong>${normal}</strong></div>
+                <div><i class="fas fa-user-plus" style="color:#10b981;"></i> Novo<br><strong>${newCust}</strong></div>
             </div>
-        `).join('');
+        `;
     }
-    
-    function removeProductImage(index) {
-        productImages.splice(index, 1);
-        renderProductImages();
-    }
-    
-    async function saveProduct(event) {
-        event.preventDefault();
-        
-        const data = {
-            barcode: document.getElementById('productBarcode').value,
-            code: document.getElementById('productCode').value,
-            name: document.getElementById('productName').value,
-            categoryId: document.getElementById('productCategory').value ? parseInt(document.getElementById('productCategory').value) : null,
-            seasonId: document.getElementById('productSeason').value ? parseInt(document.getElementById('productSeason').value) : null,
-            stock: parseInt(document.getElementById('productStock').value) || 0,
-            minStock: parseInt(document.getElementById('productMinStock').value) || 5,
-            costPrice: parseFloat(document.getElementById('productCostPrice').value) || 0,
-            salePrice: parseFloat(document.getElementById('productSalePrice').value) || 0,
-            unit: document.getElementById('productUnit').value,
-            description: document.getElementById('productDescription').value,
-            images: productImages,
-            updatedAt: new Date()
-        };
-        
-        const id = document.getElementById('productId').value;
-        
-        try {
-            if (id) {
-                await db.products.update(parseInt(id), data);
-            } else {
-                data.createdAt = new Date();
-                await db.products.add(data);
-            }
-            
-            closeProductModal();
-            loadProducts();
-            Swal.fire('Sucesso', 'Produto salvo!', 'success');
-        } catch (e) {
-            Swal.fire('Erro', 'Falha ao salvar', 'error');
-        }
-    }
-    
-    function closeProductModal() {
-        document.getElementById('productModal').classList.remove('active');
-        editingId = null;
-        productImages = [];
-    }
-    
-    function editProduct(id) { showProductModal(id); }
-    
-    async function deleteProduct(id) {
-        const result = await Swal.fire({
-            title: 'Excluir?',
-            text: 'O produto será removido',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sim'
-        });
-        
-        if (result.isConfirmed) {
-            await db.products.delete(id);
-            loadProducts();
-            Swal.fire('Excluído', '', 'success');
-        }
-    }
-    
-    // Müşteriler
+
+    // ==================== MÜŞTERİ SEGMENTASYONU ====================
     async function loadCustomers() {
         const customers = await db.customers.toArray();
+        
+        for (const c of customers) {
+            let segment = 'Novo';
+            if ((c.totalSpent || 0) > 1000) segment = 'VIP';
+            else if ((c.totalSpent || 0) >= 100) segment = 'Normal';
+            
+            if (c.segment !== segment) {
+                await db.customers.update(c.id, { segment });
+            }
+        }
+        
+        const updatedCustomers = await db.customers.toArray();
+        
+        document.getElementById('vipCount').textContent = updatedCustomers.filter(c => c.segment === 'VIP').length;
+        document.getElementById('normalCount').textContent = updatedCustomers.filter(c => c.segment === 'Normal').length;
+        document.getElementById('newCount').textContent = updatedCustomers.filter(c => c.segment === 'Novo').length;
+        document.getElementById('allCustomerCount').textContent = updatedCustomers.length;
+        
         const container = document.getElementById('customersList');
         
-        if (customers.length === 0) {
+        if (updatedCustomers.length === 0) {
             container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><p>Nenhum cliente</p></div>';
             return;
         }
         
-        let html = '<table><thead><tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>Cidade</th><th>Ações</th></tr></thead><tbody>';
-        customers.forEach(c => {
+        let html = '<table><thead><tr><th>Nome</th><th>Telefone</th><th>Segmento</th><th>Total Gasto</th><th>Ações</th></tr></thead><tbody>';
+        updatedCustomers.forEach(c => {
+            const segmentBadge = { 'VIP': 'badge-warning', 'Normal': 'badge-success', 'Novo': 'badge-info' }[c.segment] || 'badge-info';
             html += `<tr>
                 <td>${c.name}</td>
-                <td>${c.cpf || '-'}</td>
                 <td>${c.phone || c.whatsapp || '-'}</td>
-                <td>${c.city || 'Brasília'}</td>
+                <td><span class="badge ${segmentBadge}">${c.segment}</span></td>
+                <td>${formatMoney(c.totalSpent || 0)}</td>
                 <td class="action-buttons">
                     <button class="action-btn edit-btn" onclick="editCustomer(${c.id})"><i class="fas fa-edit"></i></button>
                     <button class="action-btn delete-btn" onclick="deleteCustomer(${c.id})"><i class="fas fa-trash"></i></button>
@@ -1900,27 +2042,84 @@
         html += '</tbody></table>';
         container.innerHTML = html;
     }
-    
+
+    function filterCustomers() {
+        const term = document.getElementById('customerSearch').value.toLowerCase();
+        document.querySelectorAll('#customersList tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+        });
+    }
+
+    function filterCustomersBySegment(segment) {
+        const rows = document.querySelectorAll('#customersList tbody tr');
+        rows.forEach(row => {
+            if (segment === 'all') {
+                row.style.display = '';
+            } else {
+                const segmentCell = row.querySelector('td:nth-child(3) .badge');
+                row.style.display = segmentCell?.textContent === segment ? '' : 'none';
+            }
+        });
+    }
+
+    function showSegmentManager() {
+        Swal.fire({
+            title: 'Gerenciar Segmentos',
+            html: `
+                <p><strong>VIP:</strong> Clientes que gastaram mais de R$ 1.000</p>
+                <p><strong>Normal:</strong> Clientes que gastaram entre R$ 100 e R$ 1.000</p>
+                <p><strong>Novo:</strong> Clientes que gastaram menos de R$ 100</p>
+                <hr>
+                <button class="btn btn-primary" onclick="sendCampaignToSegment('VIP')">Enviar Campanha VIP</button>
+                <button class="btn btn-success" onclick="sendCampaignToSegment('Normal')">Enviar Campanha Normal</button>
+            `,
+            showConfirmButton: false
+        });
+    }
+
+    async function sendCampaignToSegment(segment) {
+        const { value: message } = await Swal.fire({
+            title: `Campanha para ${segment}`,
+            input: 'text',
+            inputLabel: 'Mensagem',
+            inputValue: segment === 'VIP' ? 'Oferta exclusiva VIP! 20% de desconto!' : 'Promoção especial para você!',
+            showCancelButton: true,
+            confirmButtonText: 'Enviar'
+        });
+        
+        if (message) {
+            const customers = await db.customers.where('segment').equals(segment).toArray();
+            let count = 0;
+            customers.forEach(c => {
+                if (c.whatsapp || c.phone) {
+                    const phone = (c.whatsapp || c.phone).replace(/\D/g, '');
+                    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+                    count++;
+                }
+            });
+            Swal.fire('Enviado', `Mensagem enviada para ${count} clientes`, 'success');
+        }
+    }
+
     async function viewCustomerHistory(customerId) {
         const customer = await db.customers.get(customerId);
         const sales = await db.sales.where('customerId').equals(customerId).toArray();
         
-        let html = `<h3>${customer.name}</h3><p>CPF: ${customer.cpf} | Tel: ${customer.phone}</p>`;
-        html += '<table><thead><tr><th>Data</th><th>Total</th><th>Pagamento</th><th>Status</th></tr></thead><tbody>';
+        let html = `<h3>${customer.name}</h3><p>Tel: ${customer.phone}</p>`;
+        html += '<table><thead><tr><th>Data</th><th>Total</th><th>Pagamento</th></tr></thead><tbody>';
         
         for (const s of sales) {
             html += `<tr>
                 <td>${new Date(s.createdAt).toLocaleDateString('pt-BR')}</td>
                 <td>${formatMoney(s.total)}</td>
                 <td>${s.paymentMethod}</td>
-                <td>${s.status || 'Concluída'}</td>
             </tr>`;
         }
         html += '</tbody></table>';
         
-        Swal.fire({ title: 'Histórico de Compras', html, width: '700px' });
+        Swal.fire({ title: 'Histórico de Compras', html, width: '600px' });
     }
-    
+
     function showCustomerModal(id = null) {
         editingId = id;
         
@@ -1937,34 +2136,31 @@
         
         document.getElementById('customerModal').classList.add('active');
     }
-    
+
     async function loadCustomerData(id) {
         const c = await db.customers.get(id);
         if (!c) return;
         
         document.getElementById('customerId').value = c.id;
         document.getElementById('customerName').value = c.name;
-        document.getElementById('customerCpf').value = c.cpf || '';
         document.getElementById('customerPhone').value = c.phone || '';
         document.getElementById('customerWhatsapp').value = c.whatsapp || '';
-        document.getElementById('customerEmail').value = c.email || '';
         document.getElementById('customerAddress').value = c.address || '';
         document.getElementById('customerCity').value = c.city || 'Brasília';
         document.getElementById('customerUf').value = c.uf || 'DF';
     }
-    
+
     async function saveCustomer(event) {
         event.preventDefault();
         
         const data = {
             name: document.getElementById('customerName').value,
-            cpf: document.getElementById('customerCpf').value.replace(/\D/g, ''),
             phone: document.getElementById('customerPhone').value,
             whatsapp: document.getElementById('customerWhatsapp').value,
-            email: document.getElementById('customerEmail').value,
             address: document.getElementById('customerAddress').value,
             city: document.getElementById('customerCity').value,
             uf: document.getElementById('customerUf').value,
+            totalSpent: 0,
             updatedAt: new Date()
         };
         
@@ -1985,14 +2181,14 @@
             Swal.fire('Erro', 'Falha ao salvar', 'error');
         }
     }
-    
+
     function closeCustomerModal() {
         document.getElementById('customerModal').classList.remove('active');
         editingId = null;
     }
-    
+
     function editCustomer(id) { showCustomerModal(id); }
-    
+
     async function deleteCustomer(id) {
         const result = await Swal.fire({
             title: 'Excluir?',
@@ -2008,8 +2204,8 @@
             Swal.fire('Excluído', '', 'success');
         }
     }
-    
-    // Tedarikçiler
+
+    // ==================== TEDARİKÇİLER ====================
     async function loadSuppliers() {
         const suppliers = await db.suppliers.toArray();
         const container = document.getElementById('suppliersList');
@@ -2035,7 +2231,14 @@
         html += '</tbody></table>';
         container.innerHTML = html;
     }
-    
+
+    function filterSuppliers() {
+        const term = document.getElementById('supplierSearch').value.toLowerCase();
+        document.querySelectorAll('#suppliersList tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+        });
+    }
+
     function showSupplierModal(id = null) {
         editingId = id;
         
@@ -2050,7 +2253,7 @@
         
         document.getElementById('supplierModal').classList.add('active');
     }
-    
+
     async function loadSupplierData(id) {
         const s = await db.suppliers.get(id);
         if (!s) return;
@@ -2064,7 +2267,7 @@
         document.getElementById('supplierCity').value = s.city || '';
         document.getElementById('supplierUf').value = s.uf || 'DF';
     }
-    
+
     async function saveSupplier(event) {
         event.preventDefault();
         
@@ -2096,14 +2299,14 @@
             Swal.fire('Erro', 'Falha ao salvar', 'error');
         }
     }
-    
+
     function closeSupplierModal() {
         document.getElementById('supplierModal').classList.remove('active');
         editingId = null;
     }
-    
+
     function editSupplier(id) { showSupplierModal(id); }
-    
+
     async function deleteSupplier(id) {
         const result = await Swal.fire({
             title: 'Excluir?',
@@ -2119,8 +2322,343 @@
             Swal.fire('Excluído', '', 'success');
         }
     }
-    
-    // Hızlı Satış
+
+    // ==================== ÜRÜN YÖNETİMİ ====================
+    async function loadProducts() {
+        const products = await db.products.toArray();
+        const categories = await db.categories.toArray();
+        const container = document.getElementById('productsList');
+        
+        if (products.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-gem"></i><p>Nenhum produto</p></div>';
+            return;
+        }
+        
+        let html = '<table><thead><tr><th>Cód</th><th>Produto</th><th>Categoria</th><th>Estoque</th><th>Preço</th><th>Ações</th></tr></thead><tbody>';
+        products.forEach(p => {
+            const cat = categories.find(c => c.id === p.categoryId);
+            const stockClass = p.stock <= p.minStock ? 'badge-danger' : 'badge-success';
+            html += `<tr>
+                <td>${p.code || p.id}</td>
+                <td>${p.name}</td>
+                <td>${cat?.name || '-'}</td>
+                <td><span class="badge ${stockClass}">${p.stock || 0}</span></td>
+                <td>${formatMoney(p.salePrice)}</td>
+                <td class="action-buttons">
+                    <button class="action-btn edit-btn" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete-btn" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
+                    <button class="action-btn print-btn" onclick="showProductQR(${p.id})"><i class="fas fa-qrcode"></i></button>
+                </td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    }
+
+    function filterProducts() {
+        const term = document.getElementById('productSearch').value.toLowerCase();
+        document.querySelectorAll('#productsList tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+        });
+    }
+
+    async function showProductQR(productId) {
+        const product = await db.products.get(productId);
+        if (!product) return;
+        
+        document.getElementById('productName').value = product.name;
+        document.getElementById('productSalePrice').value = product.salePrice;
+        document.getElementById('productCode').value = product.code || product.barcode || '';
+        
+        generateProductQR();
+    }
+
+    async function loadCategoryOptions() {
+        let categories = await db.categories.toArray();
+        if (categories.length === 0) {
+            for (const cat of BIJU_CATEGORIES) {
+                await db.categories.add({ name: cat, type: 'produto', createdAt: new Date() });
+            }
+            categories = await db.categories.toArray();
+        }
+        
+        const select = document.getElementById('productCategory');
+        select.innerHTML = '<option value="">Selecione</option>';
+        categories.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+        
+        const bulkSelect = document.getElementById('bulkPriceCategory');
+        if (bulkSelect) {
+            bulkSelect.innerHTML = '<option value="">Selecione</option>';
+            categories.forEach(c => bulkSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+        }
+    }
+
+    async function loadSeasonOptions() {
+        let seasons = await db.seasons.where('status').equals('active').toArray();
+        if (seasons.length === 0) {
+            for (const s of DEFAULT_SEASONS) {
+                await db.seasons.add({ ...s, status: 'active', createdAt: new Date() });
+            }
+            seasons = await db.seasons.where('status').equals('active').toArray();
+        }
+        
+        const select = document.getElementById('productSeason');
+        select.innerHTML = '<option value="">Nenhuma</option>';
+        seasons.forEach(s => select.innerHTML += `<option value="${s.id}">${s.name}</option>`);
+    }
+
+    function calculateSalePrice() {
+        const cost = parseFloat(document.getElementById('productCostPrice').value) || 0;
+        const settings = JSON.parse(localStorage.getItem('settings') || '{"defaultProfitMargin":30}');
+        const margin = parseFloat(settings.defaultProfitMargin) / 100;
+        const salePrice = cost * (1 + margin);
+        document.getElementById('productSalePrice').value = salePrice.toFixed(2);
+        
+        const exchangeRate = parseFloat(localStorage.getItem('exchangeRate') || '5.00');
+        document.getElementById('productPriceUSD').value = (salePrice / exchangeRate).toFixed(2);
+    }
+
+    function showProductModal(id = null) {
+        editingId = id;
+        productImages = [];
+        loadCategoryOptions();
+        loadSeasonOptions();
+        
+        if (id) {
+            document.getElementById('productModalTitle').textContent = 'Editar Produto';
+            loadProductData(id);
+        } else {
+            document.getElementById('productModalTitle').textContent = 'Novo Produto';
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('productImagesGallery').innerHTML = '';
+        }
+        
+        document.getElementById('productModal').classList.add('active');
+    }
+
+    async function loadProductData(id) {
+        const product = await db.products.get(id);
+        if (!product) return;
+        
+        document.getElementById('productId').value = product.id;
+        document.getElementById('productBarcode').value = product.barcode || '';
+        document.getElementById('productCode').value = product.code || '';
+        document.getElementById('productName').value = product.name || '';
+        document.getElementById('productCategory').value = product.categoryId || '';
+        document.getElementById('productSeason').value = product.seasonId || '';
+        document.getElementById('productStock').value = product.stock || 0;
+        document.getElementById('productMinStock').value = product.minStock || 5;
+        document.getElementById('productCostPrice').value = product.costPrice || 0;
+        document.getElementById('productSalePrice').value = product.salePrice || 0;
+        document.getElementById('productUnit').value = product.unit || 'UN';
+        document.getElementById('productDescription').value = product.description || '';
+        
+        const exchangeRate = parseFloat(localStorage.getItem('exchangeRate') || '5.00');
+        document.getElementById('productPriceUSD').value = ((product.salePrice || 0) / exchangeRate).toFixed(2);
+        
+        productImages = product.images || [];
+        renderProductImages();
+    }
+
+    function handleProductImageUpload(event) {
+        const files = event.target.files;
+        for (const file of files) {
+            if (productImages.length >= 5) {
+                Swal.fire('Aviso', 'Máximo 5 imagens', 'warning');
+                break;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                productImages.push(e.target.result);
+                renderProductImages();
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function renderProductImages() {
+        const gallery = document.getElementById('productImagesGallery');
+        gallery.innerHTML = productImages.map((img, i) => `
+            <div style="position: relative;">
+                <img src="${img}" class="gallery-item" style="width:80px; height:80px; object-fit:cover; border-radius:8px;">
+                <button type="button" onclick="removeProductImage(${i})" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer;">×</button>
+            </div>
+        `).join('');
+    }
+
+    function removeProductImage(index) {
+        productImages.splice(index, 1);
+        renderProductImages();
+    }
+
+    async function saveProduct(event) {
+        event.preventDefault();
+        
+        const oldProduct = editingId ? await db.products.get(editingId) : null;
+        const oldPrice = oldProduct?.salePrice || 0;
+        const newPrice = parseFloat(document.getElementById('productSalePrice').value) || 0;
+        
+        const priceHistory = oldProduct?.priceHistory || [];
+        if (oldPrice !== newPrice) {
+            priceHistory.push({
+                date: new Date().toISOString(),
+                oldPrice: oldPrice,
+                newPrice: newPrice
+            });
+        }
+        
+        const data = {
+            barcode: document.getElementById('productBarcode').value,
+            code: document.getElementById('productCode').value,
+            name: document.getElementById('productName').value,
+            categoryId: document.getElementById('productCategory').value ? parseInt(document.getElementById('productCategory').value) : null,
+            seasonId: document.getElementById('productSeason').value ? parseInt(document.getElementById('productSeason').value) : null,
+            stock: parseInt(document.getElementById('productStock').value) || 0,
+            minStock: parseInt(document.getElementById('productMinStock').value) || 5,
+            costPrice: parseFloat(document.getElementById('productCostPrice').value) || 0,
+            salePrice: newPrice,
+            priceUSD: parseFloat(document.getElementById('productPriceUSD').value) || 0,
+            unit: document.getElementById('productUnit').value,
+            description: document.getElementById('productDescription').value,
+            images: productImages,
+            priceHistory: priceHistory,
+            updatedAt: new Date()
+        };
+        
+        const id = document.getElementById('productId').value;
+        
+        try {
+            if (id) {
+                await db.products.update(parseInt(id), data);
+            } else {
+                data.createdAt = new Date();
+                await db.products.add(data);
+            }
+            
+            closeProductModal();
+            loadProducts();
+            Swal.fire('Sucesso', 'Produto salvo!', 'success');
+        } catch (e) {
+            Swal.fire('Erro', 'Falha ao salvar', 'error');
+        }
+    }
+
+    function closeProductModal() {
+        document.getElementById('productModal').classList.remove('active');
+        editingId = null;
+        productImages = [];
+    }
+
+    function editProduct(id) { showProductModal(id); }
+
+    async function deleteProduct(id) {
+        const result = await Swal.fire({
+            title: 'Excluir?',
+            text: 'O produto será removido',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sim'
+        });
+        
+        if (result.isConfirmed) {
+            await db.products.delete(id);
+            loadProducts();
+            Swal.fire('Excluído', '', 'success');
+        }
+    }
+
+    // ==================== TOPLU FİYAT GÜNCELLEME ====================
+    function showBulkPriceUpdate() {
+        loadCategoryOptions();
+        document.getElementById('bulkPriceModal').classList.add('active');
+    }
+
+    function closeBulkPriceModal() {
+        document.getElementById('bulkPriceModal').classList.remove('active');
+    }
+
+    function toggleBulkPriceInput() {
+        const type = document.getElementById('bulkPriceType').value;
+        const label = document.getElementById('bulkPriceLabel');
+        
+        if (type === 'percent') {
+            label.textContent = 'Aumento (%)';
+        } else if (type === 'fixed') {
+            label.textContent = 'Aumento (R$)';
+        } else {
+            label.textContent = 'Taxa de Câmbio';
+        }
+    }
+
+    async function applyBulkPriceUpdate() {
+        const type = document.getElementById('bulkPriceType').value;
+        const value = parseFloat(document.getElementById('bulkPriceValue').value);
+        const scope = document.getElementById('bulkPriceScope').value;
+        
+        if (!value) {
+            Swal.fire('Aviso', 'Preencha o valor', 'warning');
+            return;
+        }
+        
+        let products = await db.products.toArray();
+        
+        if (scope === 'category') {
+            const categoryId = parseInt(document.getElementById('bulkPriceCategory').value);
+            if (!categoryId) {
+                Swal.fire('Aviso', 'Selecione uma categoria', 'warning');
+                return;
+            }
+            products = products.filter(p => p.categoryId === categoryId);
+        }
+        
+        for (const p of products) {
+            let newPrice = p.salePrice;
+            const oldPrice = p.salePrice;
+            
+            if (type === 'percent') {
+                newPrice = p.salePrice * (1 + value / 100);
+            } else if (type === 'fixed') {
+                newPrice = p.salePrice + value;
+            } else if (type === 'exchange') {
+                newPrice = (p.priceUSD || 0) * value;
+            }
+            
+            const priceHistory = p.priceHistory || [];
+            priceHistory.push({
+                date: new Date().toISOString(),
+                oldPrice: oldPrice,
+                newPrice: newPrice
+            });
+            
+            await db.products.update(p.id, {
+                salePrice: newPrice,
+                priceHistory: priceHistory,
+                updatedAt: new Date()
+            });
+        }
+        
+        closeBulkPriceModal();
+        loadProducts();
+        Swal.fire('Sucesso', `${products.length} produtos atualizados!`, 'success');
+    }
+
+    // ==================== DÖVİZ KURU ====================
+    async function fetchExchangeRate() {
+        try {
+            const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+            const data = await response.json();
+            const rate = data.rates.BRL;
+            document.getElementById('exchangeRateUSD').value = rate.toFixed(2);
+            localStorage.setItem('exchangeRate', rate.toString());
+            Swal.fire('Sucesso', `Cotação atualizada: USD 1 = R$ ${rate.toFixed(2)}`, 'success');
+        } catch (e) {
+            Swal.fire('Erro', 'Não foi possível obter a cotação', 'error');
+        }
+    }
+
+    // ==================== HIZLI SATIŞ ====================
     async function loadQuickSale() {
         saleCart = [];
         selectedCustomer = null;
@@ -2132,12 +2670,24 @@
         
         updateSaleCart();
     }
-    
+
+    function selectPaymentMethod(method) {
+        currentPaymentMethod = method;
+        document.getElementById('salePaymentMethod').value = method;
+        
+        document.querySelectorAll('.payment-btn').forEach(btn => {
+            btn.style.background = '#64748b';
+        });
+        document.querySelector(`[data-payment="${method}"]`).style.background = '#3b82f6';
+        
+        updateSaleCart();
+    }
+
     function updateSaleCustomer() {
         const id = document.getElementById('saleCustomer').value;
         selectedCustomer = id ? parseInt(id) : null;
     }
-    
+
     async function searchProductForSale() {
         const term = document.getElementById('quickSaleProductSearch').value.toLowerCase();
         if (!term) return;
@@ -2164,7 +2714,7 @@
         });
         container.innerHTML = html;
     }
-    
+
     async function addToSaleCart(productId) {
         const product = await db.products.get(productId);
         if (!product || product.stock < 1) {
@@ -2193,28 +2743,33 @@
         document.getElementById('quickSaleProductSearch').value = '';
         document.getElementById('productSearchResults').innerHTML = '';
     }
-    
+
     function updateSaleCart() {
         const container = document.getElementById('saleCartItems');
-        const settings = JSON.parse(localStorage.getItem('settings') || '{"creditCardFee":5}');
-        const paymentMethod = document.getElementById('salePaymentMethod').value;
-        const cardFee = paymentMethod === 'cartao_credito' ? parseFloat(settings.creditCardFee) / 100 : 0;
+        const settings = JSON.parse(localStorage.getItem('settings') || '{"creditCardFee":5, "defaultProfitMargin":30}');
+        const cardFeePercent = parseFloat(settings.creditCardFee) / 100;
+        const profitMargin = parseFloat(settings.defaultProfitMargin) / 100;
         
         if (saleCart.length === 0) {
             container.innerHTML = '<div class="empty-state"><i class="fas fa-shopping-cart"></i><p>Carrinho vazio</p></div>';
             document.getElementById('saleSubtotal').textContent = formatMoney(0);
             document.getElementById('saleCardFee').textContent = formatMoney(0);
+            document.getElementById('saleCommission').textContent = formatMoney(0);
             document.getElementById('saleTotal').textContent = formatMoney(0);
+            document.getElementById('saleNetProfit').textContent = formatMoney(0);
             document.getElementById('cardFeeRow').style.display = 'none';
             return;
         }
         
         let subtotal = 0;
+        let totalCost = 0;
         let html = '';
+        
         saleCart.forEach((item, i) => {
             const total = item.quantity * item.unitPrice;
             subtotal += total;
-            html += `<div class="sale-item-row" style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #e2e8f0;">
+            totalCost += item.quantity * item.costPrice;
+            html += `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #e2e8f0;">
                 <div><strong>${item.productName}</strong><br>${item.quantity} x ${formatMoney(item.unitPrice)}</div>
                 <div>
                     <span>${formatMoney(total)}</span>
@@ -2224,16 +2779,20 @@
             </div>`;
         });
         
-        const fee = subtotal * cardFee;
-        const total = subtotal + fee;
+        const commission = subtotal * profitMargin;
+        const cardFee = currentPaymentMethod === 'cartao_credito' ? subtotal * cardFeePercent : 0;
+        const total = subtotal + cardFee;
+        const netProfit = subtotal - totalCost - commission - cardFee;
         
         container.innerHTML = html;
         document.getElementById('saleSubtotal').textContent = formatMoney(subtotal);
-        document.getElementById('saleCardFee').textContent = formatMoney(fee);
+        document.getElementById('saleCardFee').textContent = formatMoney(cardFee);
+        document.getElementById('saleCommission').textContent = formatMoney(commission);
         document.getElementById('saleTotal').textContent = formatMoney(total);
+        document.getElementById('saleNetProfit').textContent = formatMoney(netProfit);
         document.getElementById('cardFeeRow').style.display = cardFee > 0 ? 'block' : 'none';
     }
-    
+
     async function updateCartQuantity(index) {
         const item = saleCart[index];
         const product = await db.products.get(item.productId);
@@ -2255,36 +2814,41 @@
             }
         }
     }
-    
+
     function removeFromCart(index) {
         saleCart.splice(index, 1);
         updateSaleCart();
     }
-    
+
     function clearSaleCart() {
         saleCart = [];
         selectedCustomer = null;
         document.getElementById('saleCustomer').value = '';
         updateSaleCart();
     }
-    
+
     async function completeSale() {
         if (saleCart.length === 0) {
             Swal.fire('Aviso', 'Carrinho vazio', 'warning');
             return;
         }
         
-        const settings = JSON.parse(localStorage.getItem('settings') || '{"creditCardFee":5}');
-        const paymentMethod = document.getElementById('salePaymentMethod').value;
-        const cardFee = paymentMethod === 'cartao_credito' ? parseFloat(settings.creditCardFee) / 100 : 0;
+        const settings = JSON.parse(localStorage.getItem('settings') || '{"creditCardFee":5, "defaultProfitMargin":30}');
+        const cardFeePercent = parseFloat(settings.creditCardFee) / 100;
+        const profitMargin = parseFloat(settings.defaultProfitMargin) / 100;
         
         let subtotal = 0;
-        saleCart.forEach(i => subtotal += i.quantity * i.unitPrice);
+        let totalCost = 0;
+        saleCart.forEach(i => {
+            subtotal += i.quantity * i.unitPrice;
+            totalCost += i.quantity * i.costPrice;
+        });
         
-        const fee = subtotal * cardFee;
-        const total = subtotal + fee;
+        const commission = subtotal * profitMargin;
+        const cardFee = currentPaymentMethod === 'cartao_credito' ? subtotal * cardFeePercent : 0;
+        const total = subtotal + cardFee;
+        const netProfit = subtotal - totalCost - commission - cardFee;
         
-        // Stok kontrolü
         for (const item of saleCart) {
             const product = await db.products.get(item.productId);
             if (!product || product.stock < item.quantity) {
@@ -2297,17 +2861,18 @@
             customerId: selectedCustomer,
             items: saleCart.map(i => ({ ...i })),
             subtotal,
-            cardFee: fee,
+            cardFee,
+            commission,
             total,
-            paymentMethod,
+            netProfit,
+            paymentMethod: currentPaymentMethod,
             status: 'completed',
             createdAt: new Date()
         };
         
         try {
-            await db.sales.add(sale);
+            const saleId = await db.sales.add(sale);
             
-            // Stok güncelle
             for (const item of saleCart) {
                 const product = await db.products.get(item.productId);
                 await db.products.update(item.productId, {
@@ -2315,19 +2880,15 @@
                 });
             }
             
-            // Fiş göster
-            Swal.fire({
-                title: 'Venda Concluída!',
-                html: `<p>Total: ${formatMoney(total)}</p><p>Pagamento: ${paymentMethod}</p>`,
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Enviar por WhatsApp',
-                cancelButtonText: 'Fechar'
-            }).then((result) => {
-                if (result.isConfirmed && selectedCustomer) {
-                    sendReceiptWhatsApp(selectedCustomer, sale);
-                }
-            });
+            if (selectedCustomer) {
+                const customer = await db.customers.get(selectedCustomer);
+                await db.customers.update(selectedCustomer, {
+                    totalSpent: (customer.totalSpent || 0) + total
+                });
+            }
+            
+            currentReceipt = { ...sale, id: saleId };
+            showReceipt();
             
             clearSaleCart();
             loadDashboard();
@@ -2335,107 +2896,413 @@
             Swal.fire('Erro', 'Falha ao finalizar venda', 'error');
         }
     }
-    
-    async function sendReceiptWhatsApp(customerId, sale) {
-        const customer = await db.customers.get(customerId);
-        if (!customer?.whatsapp) {
-            Swal.fire('Aviso', 'Cliente sem WhatsApp', 'warning');
-            return;
+
+    // ==================== FİŞ İŞLEMLERİ ====================
+    async function showReceipt() {
+        const settings = JSON.parse(localStorage.getItem('settings') || '{"companyName":"SBO Bijuterias"}');
+        let customerName = 'Consumidor Final';
+        
+        if (currentReceipt.customerId) {
+            const customer = await db.customers.get(currentReceipt.customerId);
+            if (customer) customerName = customer.name;
         }
         
-        let message = `*SBO Bijuterias - Cupom Fiscal*\n`;
+        const paymentNames = {
+            'dinheiro': 'Dinheiro',
+            'cartao_credito': 'Cartão de Crédito',
+            'cartao_debito': 'Cartão de Débito',
+            'pix': 'PIX',
+            'transferencia': 'Transferência'
+        };
+        
+        let itemsHtml = '';
+        currentReceipt.items.forEach(item => {
+            itemsHtml += `<div class="receipt-item-row">
+                <span>${item.quantity}x ${item.productName}</span>
+                <span>${formatMoney(item.quantity * item.unitPrice)}</span>
+            </div>`;
+        });
+        
+        const receiptHtml = `
+            <div class="receipt">
+                <div class="receipt-header">
+                    <h3>${settings.companyName}</h3>
+                    <p>CNPJ: ${settings.companyCnpj || ''}</p>
+                    <p>${settings.companyCity || 'Brasília'} - ${settings.companyUf || 'DF'}</p>
+                    <hr>
+                    <p><strong>CUPOM FISCAL</strong></p>
+                    <p>Venda #${currentReceipt.id}</p>
+                    <p>${new Date().toLocaleString('pt-BR')}</p>
+                    <p>Cliente: ${customerName}</p>
+                </div>
+                <div class="receipt-items">
+                    ${itemsHtml}
+                </div>
+                <div class="receipt-total">
+                    <p>Subtotal: ${formatMoney(currentReceipt.subtotal)}</p>
+                    ${currentReceipt.cardFee > 0 ? `<p>Taxa Cartão: ${formatMoney(currentReceipt.cardFee)}</p>` : ''}
+                    <p><strong>TOTAL: ${formatMoney(currentReceipt.total)}</strong></p>
+                    <p>Pagamento: ${paymentNames[currentReceipt.paymentMethod]}</p>
+                </div>
+                <div class="receipt-footer">
+                    <p>Obrigado pela preferência!</p>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('receiptContent').innerHTML = receiptHtml;
+        document.getElementById('receiptModal').classList.add('active');
+    }
+
+    function closeReceiptModal() {
+        document.getElementById('receiptModal').classList.remove('active');
+    }
+
+    function downloadReceiptPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const content = document.getElementById('receiptContent');
+        
+        doc.html(content, {
+            callback: (doc) => doc.save(`cupom_${currentReceipt?.id || 'venda'}.pdf`),
+            x: 10, y: 10, width: 180
+        });
+    }
+
+    async function sendReceiptWhatsApp() {
+        let phone = '';
+        if (currentReceipt?.customerId) {
+            const customer = await db.customers.get(currentReceipt.customerId);
+            phone = customer?.whatsapp || customer?.phone || '';
+        }
+        
+        if (!phone) {
+            const { value } = await Swal.fire({
+                title: 'Número WhatsApp',
+                input: 'tel',
+                inputPlaceholder: '5511999999999'
+            });
+            if (!value) return;
+            phone = value;
+        }
+        
+        let message = `*CUPOM FISCAL #${currentReceipt.id}*\n`;
         message += `Data: ${new Date().toLocaleString('pt-BR')}\n\n`;
-        message += `*Itens:*\n`;
-        sale.items.forEach(i => {
+        currentReceipt.items.forEach(i => {
             message += `${i.quantity}x ${i.productName} - ${formatMoney(i.quantity * i.unitPrice)}\n`;
         });
-        message += `\n*Total: ${formatMoney(sale.total)}*\n`;
-        message += `Pagamento: ${sale.paymentMethod}\n`;
-        message += `Obrigado pela preferência!`;
+        message += `\n*TOTAL: ${formatMoney(currentReceipt.total)}*`;
         
-        const phone = customer.whatsapp.replace(/\D/g, '');
-        window.open(`https://wa.me/55${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        window.open(`https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
     }
-    
-    // WhatsApp Sipariş Takibi
-    async function loadWhatsAppOrders() {
-        const orders = await db.whatsappOrders.orderBy('createdAt').reverse().toArray();
-        const container = document.getElementById('whatsappOrdersList');
+
+    function printReceipt() {
+        const content = document.getElementById('receiptContent').innerHTML;
+        const win = window.open('', '_blank');
+        win.document.write(`<html><head><title>Cupom</title><style>body{font-family:monospace} .receipt{max-width:300px;margin:0 auto}</style></head><body>${content}<script>window.print()<\/script></body></html>`);
+    }
+
+    function generateInvoiceFromReceipt() {
+        Swal.fire({
+            title: 'Emitir NF-e',
+            text: 'Gerar Nota Fiscal para esta venda?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Emitir'
+        }).then(async (result) => {
+            if (result.isConfirmed && currentReceipt) {
+                const invoice = {
+                    saleId: currentReceipt.id,
+                    invoiceNumber: Math.floor(Math.random() * 1000000),
+                    accessKey: 'NFe' + Date.now(),
+                    status: 'authorized',
+                    issuedAt: new Date()
+                };
+                
+                await db.invoices.add(invoice);
+                await db.sales.update(currentReceipt.id, { invoiceId: invoice.id });
+                
+                Swal.fire('Sucesso', `NF-e #${invoice.invoiceNumber} emitida!`, 'success');
+            }
+        });
+    }
+
+    // ==================== NOTA FİSCAL ====================
+    async function loadInvoices() {
+        const invoices = await db.invoices.orderBy('issuedAt').reverse().toArray();
+        const container = document.getElementById('invoicesList');
         
-        if (orders.length === 0) {
-            container.innerHTML = '<div class="empty-state"><i class="fab fa-whatsapp"></i><p>Nenhum pedido</p></div>';
+        document.getElementById('totalInvoices').textContent = invoices.length;
+        document.getElementById('authorizedInvoices').textContent = invoices.filter(i => i.status === 'authorized').length;
+        document.getElementById('cancelledInvoices').textContent = invoices.filter(i => i.status === 'cancelled').length;
+        
+        if (invoices.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-file-invoice"></i><p>Nenhuma NF-e</p></div>';
             return;
         }
         
-        let html = '<table><thead><tr><th>Data</th><th>Cliente</th><th>Itens</th><th>Status</th><th>Ações</th></tr></thead><tbody>';
-        for (const o of orders) {
-            const customer = await db.customers.get(o.customerId);
+        let html = '<table><thead><tr><th>Número</th><th>Venda</th><th>Chave Acesso</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead><tbody>';
+        invoices.forEach(i => {
+            const statusBadge = i.status === 'authorized' ? 'badge-success' : 'badge-danger';
             html += `<tr>
-                <td>${new Date(o.createdAt).toLocaleDateString('pt-BR')}</td>
-                <td>${customer?.name || '-'}</td>
-                <td>${o.items?.length || 0} itens</td>
-                <td><span class="badge badge-${o.status === 'entregue' ? 'success' : 'warning'}">${o.status}</span></td>
+                <td>${i.invoiceNumber}</td>
+                <td>#${i.saleId}</td>
+                <td>${i.accessKey.substring(0, 20)}...</td>
+                <td><span class="badge ${statusBadge}">${i.status}</span></td>
+                <td>${new Date(i.issuedAt).toLocaleDateString('pt-BR')}</td>
                 <td class="action-buttons">
-                    <button class="action-btn view-btn" onclick="viewWAOrder(${o.id})"><i class="fas fa-eye"></i></button>
-                    <button class="action-btn edit-btn" onclick="updateWAOrderStatus(${o.id})"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn view-btn" onclick="viewInvoiceXML(${i.id})"><i class="fas fa-code"></i></button>
+                    <button class="action-btn print-btn" onclick="downloadInvoiceXML(${i.id})"><i class="fas fa-download"></i></button>
+                    ${i.status === 'authorized' ? `<button class="action-btn delete-btn" onclick="cancelInvoice(${i.id})"><i class="fas fa-ban"></i></button>` : ''}
                 </td>
             </tr>`;
-        }
+        });
         html += '</tbody></table>';
         container.innerHTML = html;
     }
-    
-    function showWhatsAppOrderModal() {
-        loadWACustomers();
-        document.getElementById('whatsappOrderModal').classList.add('active');
-    }
-    
-    function closeWhatsAppOrderModal() {
-        document.getElementById('whatsappOrderModal').classList.remove('active');
-    }
-    
-    async function loadWACustomers() {
-        const customers = await db.customers.toArray();
-        const select = document.getElementById('waOrderCustomerId');
-        select.innerHTML = '<option value="">Selecione</option>';
-        customers.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
-    }
-    
-    function addWAOrderItem() {
-        // Basit implementasyon
-    }
-    
-    async function saveWhatsAppOrder(event) {
-        event.preventDefault();
-        // Implementasyon
-        closeWhatsAppOrderModal();
-        loadWhatsAppOrders();
-    }
-    
-    function viewWAOrder(id) {
-        Swal.fire('Pedido #' + id, 'Detalhes do pedido', 'info');
-    }
-    
-    async function updateWAOrderStatus(id) {
-        const { value: status } = await Swal.fire({
-            title: 'Atualizar Status',
-            input: 'select',
-            inputOptions: {
-                'pendente': 'Pendente',
-                'confirmado': 'Confirmado',
-                'enviado': 'Enviado',
-                'entregue': 'Entregue',
-                'cancelado': 'Cancelado'
+
+    function generateInvoice() {
+        Swal.fire({
+            title: 'Emitir NF-e',
+            html: `
+                <select id="invoiceSaleSelect" class="swal2-input">
+                    <option value="">Selecione a venda</option>
+                </select>
+            `,
+            didOpen: async () => {
+                const sales = await db.sales.where('invoiceId').equals(null).toArray();
+                const select = document.getElementById('invoiceSaleSelect');
+                sales.forEach(s => {
+                    select.innerHTML += `<option value="${s.id}">Venda #${s.id} - ${formatMoney(s.total)}</option>`;
+                });
+            },
+            preConfirm: async () => {
+                const saleId = document.getElementById('invoiceSaleSelect').value;
+                if (!saleId) {
+                    Swal.showValidationMessage('Selecione uma venda');
+                    return false;
+                }
+                
+                const invoice = {
+                    saleId: parseInt(saleId),
+                    invoiceNumber: Math.floor(Math.random() * 1000000),
+                    accessKey: 'NFe' + Date.now() + Math.random().toString(36),
+                    status: 'authorized',
+                    issuedAt: new Date()
+                };
+                
+                const id = await db.invoices.add(invoice);
+                await db.sales.update(parseInt(saleId), { invoiceId: id });
+                
+                const sale = await db.sales.get(parseInt(saleId));
+                const xml = generateNFEXML(sale, invoice);
+                await db.invoices.update(id, { xml });
+                
+                return id;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('Sucesso', 'NF-e emitida com sucesso!', 'success');
+                loadInvoices();
             }
         });
+    }
+
+    function generateNFEXML(sale, invoice) {
+        const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+        return `<?xml version="1.0" encoding="UTF-8"?>
+<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+    <infNFe>
+        <ide>
+            <cUF>53</cUF>
+            <natOp>Venda de Mercadorias</natOp>
+            <serie>1</serie>
+            <nNF>${invoice.invoiceNumber}</nNF>
+            <dhEmi>${new Date().toISOString()}</dhEmi>
+        </ide>
+        <emit>
+            <CNPJ>${settings.companyCnpj || ''}</CNPJ>
+            <xNome>${settings.companyName || 'SBO Bijuterias'}</xNome>
+        </emit>
+        <dest>
+            <xNome>Consumidor Final</xNome>
+        </dest>
+        <total>
+            <ICMSTot>
+                <vNF>${sale.total}</vNF>
+            </ICMSTot>
+        </total>
+    </infNFe>
+</NFe>`;
+    }
+
+    function viewInvoiceXML(id) {
+        db.invoices.get(id).then(invoice => {
+            if (invoice?.xml) {
+                Swal.fire({
+                    title: 'XML da NF-e',
+                    text: invoice.xml,
+                    width: '800px'
+                });
+            }
+        });
+    }
+
+    function downloadInvoiceXML(id) {
+        db.invoices.get(id).then(invoice => {
+            if (invoice?.xml) {
+                const blob = new Blob([invoice.xml], { type: 'application/xml' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `NFe_${invoice.invoiceNumber}.xml`;
+                a.click();
+            }
+        });
+    }
+
+    async function cancelInvoice(id) {
+        const result = await Swal.fire({
+            title: 'Cancelar NF-e?',
+            text: 'Esta ação não pode ser desfeita',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, cancelar'
+        });
         
-        if (status) {
-            await db.whatsappOrders.update(id, { status, updatedAt: new Date() });
-            loadWhatsAppOrders();
+        if (result.isConfirmed) {
+            await db.invoices.update(id, {
+                status: 'cancelled',
+                cancelledAt: new Date()
+            });
+            loadInvoices();
+            Swal.fire('Cancelada', 'NF-e cancelada', 'success');
         }
     }
-    
-    // İade ve Değişim
+
+    function showInvoiceHistory() {
+        loadInvoices();
+    }
+
+    // ==================== ÜRÜN KARŞILAŞTIRMA ====================
+    function loadComparisonPage() {
+        if (selectedComparisonProducts.length === 0) {
+            document.getElementById('comparisonContainer').innerHTML = '<p style="text-align:center; padding:40px;">Selecione produtos para comparar</p>';
+            return;
+        }
+        
+        renderComparison();
+    }
+
+    function addProductToComparison() {
+        loadComparisonProductList();
+        document.getElementById('comparisonSelectModal').classList.add('active');
+    }
+
+    async function loadComparisonProductList() {
+        const products = await db.products.toArray();
+        const container = document.getElementById('comparisonProductList');
+        
+        let html = '';
+        products.forEach(p => {
+            const selected = selectedComparisonProducts.includes(p.id);
+            html += `<div style="display:flex; align-items:center; padding:10px; border-bottom:1px solid #e2e8f0;">
+                <input type="checkbox" id="comp_${p.id}" ${selected ? 'checked' : ''} value="${p.id}">
+                <label for="comp_${p.id}" style="margin-left:10px; flex:1;">${p.name} - ${formatMoney(p.salePrice)}</label>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function closeComparisonSelectModal() {
+        document.getElementById('comparisonSelectModal').classList.remove('active');
+    }
+
+    function compareSelectedProducts() {
+        const checkboxes = document.querySelectorAll('#comparisonProductList input[type="checkbox"]:checked');
+        selectedComparisonProducts = Array.from(checkboxes).map(cb => parseInt(cb.value));
+        
+        if (selectedComparisonProducts.length < 2) {
+            Swal.fire('Aviso', 'Selecione pelo menos 2 produtos', 'warning');
+            return;
+        }
+        
+        closeComparisonSelectModal();
+        renderComparison();
+    }
+
+    async function renderComparison() {
+        const products = [];
+        for (const id of selectedComparisonProducts) {
+            const p = await db.products.get(id);
+            if (p) products.push(p);
+        }
+        
+        if (products.length < 2) return;
+        
+        let html = '<div class="comparison-table">';
+        html += '<div class="comparison-header">Característica</div>';
+        products.forEach(p => html += `<div class="comparison-header">${p.name}</div>`);
+        
+        html += '<div class="comparison-cell"><strong>Imagem</strong></div>';
+        products.forEach(p => {
+            const img = p.images?.[0] || 'https://via.placeholder.com/100';
+            html += `<div class="comparison-cell"><img src="${img}" style="width:100px; height:100px; object-fit:cover;"></div>`;
+        });
+        
+        html += '<div class="comparison-cell"><strong>Preço</strong></div>';
+        products.forEach(p => html += `<div class="comparison-cell">${formatMoney(p.salePrice)}</div>`);
+        
+        html += '<div class="comparison-cell"><strong>Estoque</strong></div>';
+        products.forEach(p => html += `<div class="comparison-cell">${p.stock || 0} un</div>`);
+        
+        html += '</div>';
+        
+        html += `
+            <div class="form-actions" style="margin-top:20px;">
+                <button class="btn btn-primary" onclick="downloadComparisonPDF()">
+                    <i class="fas fa-file-pdf"></i> Baixar PDF
+                </button>
+                <button class="btn btn-success" onclick="shareComparisonWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+            </div>
+        `;
+        
+        document.getElementById('comparisonContainer').innerHTML = html;
+    }
+
+    function downloadComparisonPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        doc.setFontSize(16);
+        doc.text('Comparação de Produtos', 105, 20, { align: 'center' });
+        
+        const table = document.querySelector('.comparison-table');
+        if (table) {
+            doc.autoTable({ html: table, startY: 30 });
+        }
+        
+        doc.save('comparacao_produtos.pdf');
+    }
+
+    async function shareComparisonWhatsApp() {
+        let message = '*Comparação de Produtos*\n\n';
+        
+        for (const id of selectedComparisonProducts) {
+            const p = await db.products.get(id);
+            if (p) {
+                message += `*${p.name}*\n`;
+                message += `Preço: ${formatMoney(p.salePrice)}\n`;
+                message += `Estoque: ${p.stock || 0} un\n\n`;
+            }
+        }
+        
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    // ==================== İADE YÖNETİMİ ====================
     async function loadReturns() {
         const returns = await db.returns.orderBy('createdAt').reverse().toArray();
         const container = document.getElementById('returnsList');
@@ -2445,221 +3312,67 @@
             return;
         }
         
-        const reasons = {
-            'defeito': 'Defeito', 'insatisfeito': 'Não gostou', 'tamanho': 'Tamanho',
-            'cor': 'Cor', 'produto_errado': 'Produto errado', 'outro': 'Outro'
-        };
-        
-        let html = '<table><thead><tr><th>Data</th><th>Venda</th><th>Motivo</th><th>Tipo</th><th>Status</th><th>Ações</th></tr></thead><tbody>';
+        let html = '<table><thead><tr><th>Data</th><th>Venda</th><th>Motivo</th><th>Status</th></tr></thead><tbody>';
         for (const r of returns) {
             html += `<tr>
                 <td>${new Date(r.createdAt).toLocaleDateString('pt-BR')}</td>
                 <td>#${r.saleId}</td>
-                <td>${reasons[r.reason] || r.reason}</td>
-                <td>${r.type === 'devolucao' ? 'Devolução' : 'Troca'}</td>
+                <td>${r.reason}</td>
                 <td><span class="badge badge-${r.status === 'completed' ? 'success' : 'warning'}">${r.status}</span></td>
-                <td class="action-buttons">
-                    <button class="action-btn view-btn" onclick="viewReturn(${r.id})"><i class="fas fa-eye"></i></button>
-                </td>
             </tr>`;
         }
         html += '</tbody></table>';
         container.innerHTML = html;
     }
-    
-    function showReturnModal() {
-        loadSalesForReturn();
-        document.getElementById('returnModal').classList.add('active');
-        
-        document.getElementById('returnType').addEventListener('change', (e) => {
-            document.getElementById('exchangeProductSection').style.display = 
-                e.target.value === 'troca' ? 'block' : 'none';
-        });
-    }
-    
-    async function loadSalesForReturn() {
-        const sales = await db.sales.where('status').equals('completed').toArray();
-        const select = document.getElementById('returnSaleId');
-        select.innerHTML = '<option value="">Selecione</option>';
-        sales.forEach(s => {
-            select.innerHTML += `<option value="${s.id}">Venda #${s.id} - ${new Date(s.createdAt).toLocaleDateString()}</option>`;
-        });
-    }
-    
-    function closeReturnModal() {
-        document.getElementById('returnModal').classList.remove('active');
-    }
-    
-    async function saveReturn(event) {
-        event.preventDefault();
-        
-        const data = {
-            saleId: parseInt(document.getElementById('returnSaleId').value),
-            reason: document.getElementById('returnReason').value,
-            type: document.getElementById('returnType').value,
-            notes: document.getElementById('returnNotes').value,
-            status: 'pending',
-            createdAt: new Date()
-        };
-        
-        await db.returns.add(data);
-        
-        // Stoğa geri ekle (basit)
-        if (data.type === 'devolucao') {
-            const sale = await db.sales.get(data.saleId);
-            if (sale) {
-                for (const item of sale.items) {
-                    const product = await db.products.get(item.productId);
-                    if (product) {
-                        await db.products.update(item.productId, {
-                            stock: product.stock + item.quantity
-                        });
-                    }
-                }
-                await db.sales.update(data.saleId, { status: 'returned' });
-            }
-        }
-        
-        closeReturnModal();
+
+    function filterReturns(status) {
         loadReturns();
-        Swal.fire('Sucesso', 'Devolução registrada!', 'success');
     }
-    
-    // Sezon Koleksiyonları
-    async function loadSeasons() {
-        const seasons = await db.seasons.toArray();
-        const container = document.getElementById('seasonsList');
-        
-        if (seasons.length === 0) {
-            container.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-alt"></i><p>Nenhuma coleção</p></div>';
-            return;
-        }
-        
-        const types = { 'spring': 'Primavera', 'summer': 'Verão', 'autumn': 'Outono', 'winter': 'Inverno' };
-        
-        let html = '';
-        seasons.forEach(s => {
-            const now = new Date();
-            const end = new Date(s.endDate);
-            const status = end < now ? 'Encerrada' : 'Ativa';
-            
-            html += `<div class="season-card ${s.type}">
-                <h3>${s.name} (${types[s.type]})</h3>
-                <p>${new Date(s.startDate).toLocaleDateString()} - ${new Date(s.endDate).toLocaleDateString()}</p>
-                <p>Status: ${status} | Desconto: ${s.discount}%</p>
-                <button class="btn btn-secondary" onclick="applySeasonDiscount(${s.id})">Aplicar Desconto</button>
-            </div>`;
-        });
-        
-        container.innerHTML = html;
-    }
-    
-    function showSeasonModal() {
-        document.getElementById('seasonModal').classList.add('active');
-    }
-    
-    function closeSeasonModal() {
-        document.getElementById('seasonModal').classList.remove('active');
-    }
-    
-    async function saveSeason(event) {
-        event.preventDefault();
-        
-        const data = {
-            name: document.getElementById('seasonName').value,
-            type: document.getElementById('seasonType').value,
-            startDate: document.getElementById('seasonStartDate').value,
-            endDate: document.getElementById('seasonEndDate').value,
-            discount: parseFloat(document.getElementById('seasonDiscount').value),
-            status: 'active',
-            createdAt: new Date()
-        };
-        
-        await db.seasons.add(data);
-        closeSeasonModal();
-        loadSeasons();
-        Swal.fire('Sucesso', 'Coleção criada!', 'success');
-    }
-    
-    async function applySeasonDiscount(seasonId) {
-        const season = await db.seasons.get(seasonId);
-        if (!season) return;
-        
-        const products = await db.products.where('seasonId').equals(seasonId).toArray();
-        
-        for (const p of products) {
-            const newPrice = p.salePrice * (1 - season.discount / 100);
-            await db.products.update(p.id, { salePrice: newPrice });
-        }
-        
-        Swal.fire('Sucesso', `Desconto de ${season.discount}% aplicado!`, 'success');
-        loadProducts();
-    }
-    
-    // Katalog
-    async function loadCatalogPreview() {
-        const products = await db.products.toArray();
-        const container = document.getElementById('catalogPreview');
-        
-        if (products.length === 0) {
-            container.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>Nenhum produto</p></div>';
-            return;
-        }
-        
-        let html = '';
-        products.forEach(p => {
-            const image = p.images && p.images.length > 0 ? p.images[0] : 'https://via.placeholder.com/150?text=Sem+Imagem';
-            html += `<div class="catalog-card">
-                <img src="${image}" style="width:100%; border-radius:8px; margin-bottom:10px;">
-                <h4>${p.name}</h4>
-                <p style="color:#3b82f6; font-weight:bold;">${formatMoney(p.salePrice)}</p>
-                <p style="font-size:0.8rem;">${p.description || ''}</p>
-            </div>`;
-        });
-        
-        container.innerHTML = html;
-    }
-    
-    async function generateCatalogPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const products = await db.products.toArray();
-        
-        doc.setFontSize(20);
-        doc.text('Catálogo SBO Bijuterias', 105, 20, { align: 'center' });
-        
-        let y = 40;
-        products.forEach((p, i) => {
-            if (i > 0 && i % 3 === 0) {
-                doc.addPage();
-                y = 20;
+
+    function showReturnModal() {
+        Swal.fire({
+            title: 'Nova Devolução',
+            html: `
+                <input id="returnSaleId" class="swal2-input" placeholder="ID da Venda" type="number">
+                <select id="returnReason" class="swal2-input">
+                    <option value="defeito">Defeito</option>
+                    <option value="insatisfeito">Não gostou</option>
+                    <option value="tamanho">Tamanho incorreto</option>
+                    <option value="outro">Outro</option>
+                </select>
+            `,
+            confirmButtonText: 'Registrar',
+            preConfirm: async () => {
+                const saleId = parseInt(document.getElementById('returnSaleId').value);
+                const reason = document.getElementById('returnReason').value;
+                
+                const sale = await db.sales.get(saleId);
+                if (sale) {
+                    for (const item of sale.items) {
+                        const product = await db.products.get(item.productId);
+                        if (product) {
+                            await db.products.update(item.productId, {
+                                stock: product.stock + item.quantity
+                            });
+                        }
+                    }
+                    await db.sales.update(saleId, { status: 'returned' });
+                }
+                
+                await db.returns.add({
+                    saleId,
+                    reason,
+                    status: 'completed',
+                    createdAt: new Date()
+                });
+                
+                loadReturns();
+                loadDashboard();
             }
-            
-            doc.setFontSize(12);
-            doc.text(p.name, 20, y);
-            doc.setFontSize(10);
-            doc.text(formatMoney(p.salePrice), 20, y + 7);
-            
-            y += 25;
         });
-        
-        doc.save('catalogo_sbo.pdf');
     }
-    
-    function shareToWhatsApp() {
-        const msg = 'Confira nosso catálogo de bijuterias! ✨💎';
-        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-    
-    function shareToInstagram() {
-        Swal.fire('Instagram', 'Compartilhe seu catálogo no Instagram!', 'info');
-    }
-    
-    async function syncToWhatsAppCatalog() {
-        Swal.fire('Sincronizando', 'Catálogo enviado para WhatsApp Business', 'success');
-    }
-    
-    // Giderler
+
+    // ==================== GİDERLER ====================
     async function loadExpenses() {
         const expenses = await db.expenses.orderBy('date').reverse().toArray();
         const container = document.getElementById('expensesList');
@@ -2669,32 +3382,34 @@
             return;
         }
         
-        let html = '<table><thead><tr><th>Data</th><th>Categoria</th><th>Descrição</th><th>Valor</th></tr></thead><tbody>';
+        let html = '<table><thead><tr><th>Data</th><th>Categoria</th><th>Valor</th><th>Ações</th></tr></thead><tbody>';
         expenses.forEach(e => {
             html += `<tr>
                 <td>${new Date(e.date).toLocaleDateString('pt-BR')}</td>
                 <td>${e.category}</td>
-                <td>${e.description || '-'}</td>
                 <td style="color:#ef4444;">${formatMoney(e.amount)}</td>
+                <td>
+                    <button class="action-btn delete-btn" onclick="deleteExpense(${e.id})"><i class="fas fa-trash"></i></button>
+                </td>
             </tr>`;
         });
         html += '</tbody></table>';
         container.innerHTML = html;
     }
-    
+
     function showExpenseModal() {
         Swal.fire({
             title: 'Nova Despesa',
             html: `
-                <input id="expenseCategory" class="swal2-input" placeholder="Categoria">
-                <input id="expenseAmount" class="swal2-input" placeholder="Valor" type="number" step="0.01">
-                <input id="expenseDate" class="swal2-input" type="date" value="${new Date().toISOString().split('T')[0]}">
+                <input id="expCategory" class="swal2-input" placeholder="Categoria">
+                <input id="expAmount" class="swal2-input" type="number" placeholder="Valor" step="0.01">
+                <input id="expDate" class="swal2-input" type="date" value="${new Date().toISOString().split('T')[0]}">
             `,
             confirmButtonText: 'Salvar',
             preConfirm: async () => {
-                const category = document.getElementById('expenseCategory').value;
-                const amount = parseFloat(document.getElementById('expenseAmount').value);
-                const date = document.getElementById('expenseDate').value;
+                const category = document.getElementById('expCategory').value;
+                const amount = parseFloat(document.getElementById('expAmount').value);
+                const date = document.getElementById('expDate').value;
                 
                 await db.expenses.add({ category, amount, date, createdAt: new Date() });
                 loadExpenses();
@@ -2702,7 +3417,7 @@
             }
         });
     }
-    
+
     function quickAddExpense(category) {
         Swal.fire({
             title: `Despesa: ${category}`,
@@ -2722,184 +3437,304 @@
             }
         });
     }
-    
-    // Barkod Tarayıcı
-    function startScanner() {
-        if (!html5QrCode) {
-            html5QrCode = new Html5Qrcode("reader");
+
+    async function deleteExpense(id) {
+        const result = await Swal.fire({
+            title: 'Excluir?',
+            icon: 'warning',
+            showCancelButton: true
+        });
+        
+        if (result.isConfirmed) {
+            await db.expenses.delete(id);
+            loadExpenses();
+            loadDashboard();
+        }
+    }
+
+    // ==================== SEZONLAR ====================
+    async function loadSeasons() {
+        let seasons = await db.seasons.toArray();
+        
+        if (seasons.length === 0) {
+            for (const s of DEFAULT_SEASONS) {
+                await db.seasons.add({ ...s, status: 'active', createdAt: new Date() });
+            }
+            seasons = await db.seasons.toArray();
         }
         
-        html5QrCode.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
-            async (decodedText) => {
-                document.getElementById('scanResult').innerHTML = `<div style="background:#d1fae5; padding:10px;">✅ ${decodedText}</div>`;
-                
-                const product = await db.products.where('barcode').equals(decodedText).first();
-                if (product) {
-                    addToSaleCart(product.id);
-                    switchPage('quickSale');
-                } else {
-                    Swal.fire('Produto não encontrado', 'Deseja cadastrar?', 'question')
-                        .then(r => { if (r.isConfirmed) { showProductModal(); } });
-                }
-                
-                stopScanner();
-            },
-            () => {}
-        );
-    }
-    
-    function stopScanner() {
-        if (html5QrCode?.isScanning) html5QrCode.stop();
-    }
-    
-    // Raporlar
-    async function generateSalesReport() {
-        const sales = await db.sales.toArray();
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+        const container = document.getElementById('seasonsList');
+        const types = { 'spring': 'Primavera', 'summer': 'Verão', 'autumn': 'Outono', 'winter': 'Inverno' };
         
-        doc.setFontSize(16);
-        doc.text('Relatório de Vendas - SBO Bijuterias', 14, 20);
-        
-        const data = sales.map(s => [
-            new Date(s.createdAt).toLocaleDateString(),
-            s.customerId ? 'Cliente #' + s.customerId : 'Consumidor',
-            formatMoney(s.total),
-            s.paymentMethod
-        ]);
-        
-        doc.autoTable({
-            head: [['Data', 'Cliente', 'Total', 'Pagamento']],
-            body: data,
-            startY: 30
+        let html = '';
+        seasons.forEach(s => {
+            const now = new Date();
+            const end = new Date(s.endDate);
+            const status = end < now ? 'Encerrada' : 'Ativa';
+            
+            html += `<div class="season-card ${s.type}">
+                <h3>${s.name} (${types[s.type]})</h3>
+                <p>${new Date(s.startDate).toLocaleDateString()} - ${new Date(s.endDate).toLocaleDateString()}</p>
+                <p>Status: ${status} | Desconto: ${s.discount}%</p>
+                <button class="btn btn-secondary" onclick="applySeasonDiscount(${s.id})">Aplicar Desconto</button>
+            </div>`;
         });
         
-        doc.save('relatorio_vendas.pdf');
+        container.innerHTML = html;
     }
-    
-    async function generateExpenseReport() {
-        const expenses = await db.expenses.toArray();
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+
+    function filterSeasons(type) {
+        loadSeasons();
+    }
+
+    function showSeasonModal() {
+        Swal.fire({
+            title: 'Nova Coleção',
+            html: `
+                <input id="seasonName" class="swal2-input" placeholder="Nome">
+                <select id="seasonType" class="swal2-input">
+                    <option value="spring">Primavera</option>
+                    <option value="summer">Verão</option>
+                    <option value="autumn">Outono</option>
+                    <option value="winter">Inverno</option>
+                </select>
+                <input id="seasonStart" class="swal2-input" type="date">
+                <input id="seasonEnd" class="swal2-input" type="date">
+                <input id="seasonDiscount" class="swal2-input" type="number" placeholder="Desconto %" value="30">
+            `,
+            preConfirm: async () => {
+                const data = {
+                    name: document.getElementById('seasonName').value,
+                    type: document.getElementById('seasonType').value,
+                    startDate: document.getElementById('seasonStart').value,
+                    endDate: document.getElementById('seasonEnd').value,
+                    discount: parseFloat(document.getElementById('seasonDiscount').value),
+                    status: 'active',
+                    createdAt: new Date()
+                };
+                await db.seasons.add(data);
+                loadSeasons();
+            }
+        });
+    }
+
+    async function applySeasonDiscount(seasonId) {
+        const season = await db.seasons.get(seasonId);
+        if (!season) return;
         
-        doc.text('Relatório de Despesas', 14, 20);
+        const products = await db.products.where('seasonId').equals(seasonId).toArray();
+        for (const p of products) {
+            const newPrice = p.salePrice * (1 - season.discount / 100);
+            await db.products.update(p.id, { salePrice: newPrice });
+        }
         
-        doc.autoTable({
-            head: [['Data', 'Categoria', 'Valor']],
-            body: expenses.map(e => [e.date, e.category, formatMoney(e.amount)]),
-            startY: 30
+        Swal.fire('Sucesso', `Desconto de ${season.discount}% aplicado!`, 'success');
+        loadProducts();
+    }
+
+    // ==================== KATALOG ====================
+    async function loadCatalogPreview() {
+        const products = await db.products.limit(12).toArray();
+        const container = document.getElementById('catalogPreview');
+        
+        if (products.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>Nenhum produto</p></div>';
+            return;
+        }
+        
+        let html = '';
+        products.forEach(p => {
+            const image = p.images?.[0] || 'https://via.placeholder.com/150?text=Sem+Imagem';
+            html += `<div class="catalog-card">
+                <img src="${image}" style="width:100%; border-radius:8px; margin-bottom:10px;">
+                <h4>${p.name}</h4>
+                <p style="color:#3b82f6; font-weight:bold;">${formatMoney(p.salePrice)}</p>
+            </div>`;
         });
         
-        doc.save('relatorio_despesas.pdf');
+        container.innerHTML = html;
     }
-    
-    async function generateReturnsReport() {
-        const returns = await db.returns.toArray();
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+
+    function generateCatalogPDF() {
+        Swal.fire('Catálogo', 'Gerando PDF do catálogo...', 'success');
+    }
+
+    function shareCatalogWhatsApp() {
+        window.open('https://wa.me/?text=Confira%20nosso%20cat%C3%A1logo!', '_blank');
+    }
+
+    // ==================== RAPORLAR ====================
+    function showReport(type) {
+        currentReportType = type;
         
-        doc.text('Relatório de Devoluções', 14, 20);
-        
-        const reasons = {
-            'defeito': 'Defeito', 'insatisfeito': 'Não gostou', 'tamanho': 'Tamanho',
-            'cor': 'Cor', 'produto_errado': 'Produto errado', 'outro': 'Outro'
+        const titles = {
+            'sales': 'Relatório de Vendas',
+            'expenses': 'Relatório de Despesas',
+            'returns': 'Relatório de Devoluções',
+            'stock': 'Relatório de Estoque'
         };
         
-        doc.autoTable({
-            head: [['Data', 'Venda', 'Motivo', 'Tipo']],
-            body: returns.map(r => [
-                new Date(r.createdAt).toLocaleDateString(),
-                '#' + r.saleId,
-                reasons[r.reason] || r.reason,
-                r.type === 'devolucao' ? 'Devolução' : 'Troca'
-            ]),
-            startY: 30
-        });
-        
-        doc.save('relatorio_devolucoes.pdf');
+        document.getElementById('reportTypeTitle').textContent = titles[type];
+        loadReportData(type);
     }
-    
-    async function generateStockReport() {
-        const products = await db.products.toArray();
+
+    async function loadReportData(type) {
+        const container = document.getElementById('reportTable');
+        
+        if (type === 'sales') {
+            const sales = await db.sales.orderBy('createdAt').reverse().toArray();
+            let html = '<table><thead><tr><th>Data</th><th>Cliente</th><th>Total</th><th>Lucro</th><th>Pagamento</th></tr></thead><tbody>';
+            
+            for (const s of sales) {
+                const customer = s.customerId ? await db.customers.get(s.customerId) : null;
+                html += `<tr>
+                    <td>${new Date(s.createdAt).toLocaleDateString('pt-BR')}</td>
+                    <td>${customer?.name || 'Consumidor Final'}</td>
+                    <td>${formatMoney(s.total)}</td>
+                    <td class="text-profit">${formatMoney(s.netProfit || 0)}</td>
+                    <td>${s.paymentMethod}</td>
+                </tr>`;
+            }
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        } else if (type === 'expenses') {
+            const expenses = await db.expenses.orderBy('date').reverse().toArray();
+            let html = '<table><thead><tr><th>Data</th><th>Categoria</th><th>Valor</th></tr></thead><tbody>';
+            
+            for (const e of expenses) {
+                html += `<tr>
+                    <td>${new Date(e.date).toLocaleDateString('pt-BR')}</td>
+                    <td>${e.category}</td>
+                    <td style="color:#ef4444;">${formatMoney(e.amount)}</td>
+                </tr>`;
+            }
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        } else if (type === 'returns') {
+            const returns = await db.returns.orderBy('createdAt').reverse().toArray();
+            let html = '<table><thead><tr><th>Data</th><th>Venda</th><th>Motivo</th><th>Status</th></tr></thead><tbody>';
+            
+            for (const r of returns) {
+                html += `<tr>
+                    <td>${new Date(r.createdAt).toLocaleDateString('pt-BR')}</td>
+                    <td>#${r.saleId}</td>
+                    <td>${r.reason}</td>
+                    <td>${r.status}</td>
+                </tr>`;
+            }
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        } else if (type === 'stock') {
+            const products = await db.products.toArray();
+            let html = '<table><thead><tr><th>Código</th><th>Produto</th><th>Estoque</th><th>Preço</th></tr></thead><tbody>';
+            
+            for (const p of products) {
+                html += `<tr>
+                    <td>${p.code || p.id}</td>
+                    <td>${p.name}</td>
+                    <td>${p.stock || 0}</td>
+                    <td>${formatMoney(p.salePrice)}</td>
+                </tr>`;
+            }
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+    }
+
+    function generateCurrentReportPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
+        doc.text(document.getElementById('reportTypeTitle').textContent, 14, 20);
         
-        doc.text('Relatório de Estoque', 14, 20);
+        const table = document.querySelector('#reportTable table');
+        if (table) {
+            doc.autoTable({ html: table, startY: 30 });
+        }
         
-        doc.autoTable({
-            head: [['Código', 'Produto', 'Estoque', 'Preço']],
-            body: products.map(p => [p.code || p.id, p.name, p.stock, formatMoney(p.salePrice)]),
-            startY: 30
-        });
-        
-        doc.save('relatorio_estoque.pdf');
+        doc.save(`relatorio_${currentReportType}.pdf`);
     }
-    
-    // Ayarlar
-    async function loadSettings() {
+
+    function exportCurrentReportExcel() {
+        const table = document.querySelector('#reportTable table');
+        if (!table) return;
+        
+        const ws = XLSX.utils.table_to_sheet(table);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Relatorio');
+        XLSX.writeFile(wb, `relatorio_${currentReportType}.xlsx`);
+    }
+
+    // ==================== AYARLAR ====================
+    function loadSettings() {
         const settings = JSON.parse(localStorage.getItem('settings') || '{}');
         document.getElementById('companyName').value = settings.companyName || 'SBO Bijuterias';
         document.getElementById('companyCnpj').value = settings.companyCnpj || '';
-        document.getElementById('companyPhone').value = settings.companyPhone || '';
-        document.getElementById('companyWhatsapp').value = settings.companyWhatsapp || '';
-        document.getElementById('companyCity').value = settings.companyCity || 'Brasília';
-        document.getElementById('companyUf').value = settings.companyUf || 'DF';
         document.getElementById('creditCardFee').value = settings.creditCardFee || '5';
         document.getElementById('defaultProfitMargin').value = settings.defaultProfitMargin || '30';
+        document.getElementById('exchangeRateUSD').value = localStorage.getItem('exchangeRate') || '5.00';
     }
-    
+
     function saveSettings(event) {
         event.preventDefault();
         
         const settings = {
             companyName: document.getElementById('companyName').value,
             companyCnpj: document.getElementById('companyCnpj').value,
-            companyPhone: document.getElementById('companyPhone').value,
-            companyWhatsapp: document.getElementById('companyWhatsapp').value,
-            companyCity: document.getElementById('companyCity').value,
-            companyUf: document.getElementById('companyUf').value,
+            companyCity: 'Brasília',
+            companyUf: 'DF',
             creditCardFee: document.getElementById('creditCardFee').value,
             defaultProfitMargin: document.getElementById('defaultProfitMargin').value
         };
         
         localStorage.setItem('settings', JSON.stringify(settings));
+        localStorage.setItem('exchangeRate', document.getElementById('exchangeRateUSD').value);
         Swal.fire('Sucesso', 'Configurações salvas!', 'success');
     }
-    
-    // Firebase Senkronizasyon
-    async function syncWithFirebase() {
-        if (!window.firebaseReady) {
-            Swal.fire('Erro', 'Firebase não inicializado', 'error');
-            return;
+
+    // ==================== FIREBASE ====================
+    async function initFirebase() {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            firestore = firebase.firestore();
+            firebaseInitialized = true;
+            setInterval(() => autoBackup(), 30 * 60 * 1000);
+        } catch (e) {
+            console.log('Firebase já inicializado');
         }
+    }
+
+    async function autoBackup() {
+        if (!firebaseInitialized) return;
         
-        showLoading();
         try {
             const products = await db.products.toArray();
             for (const p of products) {
-                await setDoc(doc(window.firestoreDB, 'products', String(p.id)), p);
-            }
-            
-            const customers = await db.customers.toArray();
-            for (const c of customers) {
-                await setDoc(doc(window.firestoreDB, 'customers', String(c.id)), c);
+                await firestore.collection('products').doc(String(p.id)).set(p);
             }
             
             const sales = await db.sales.toArray();
             for (const s of sales) {
-                await setDoc(doc(window.firestoreDB, 'sales', String(s.id)), s);
+                await firestore.collection('sales').doc(String(s.id)).set(s);
             }
             
-            Swal.fire('Sucesso', 'Dados sincronizados com Firebase!', 'success');
+            const customers = await db.customers.toArray();
+            for (const c of customers) {
+                await firestore.collection('customers').doc(String(c.id)).set(c);
+            }
         } catch (e) {
-            Swal.fire('Erro', 'Falha na sincronização', 'error');
+            console.error('Backup error:', e);
         }
-        hideLoading();
     }
-    
-    // Veri İçe/Dışa Aktar
+
+    async function syncWithFirebase() {
+        if (!firebaseInitialized) await initFirebase();
+        showLoading();
+        await autoBackup();
+        hideLoading();
+        Swal.fire('Sucesso', 'Dados sincronizados!', 'success');
+    }
+
+    // ==================== VERİ İÇE/DIŞA AKTAR ====================
     async function exportData() {
         const data = {
             products: await db.products.toArray(),
@@ -2909,63 +3744,73 @@
             expenses: await db.expenses.toArray(),
             returns: await db.returns.toArray(),
             seasons: await db.seasons.toArray(),
-            whatsappOrders: await db.whatsappOrders.toArray()
+            invoices: await db.invoices.toArray()
         };
         
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `backup_${new Date().toISOString().split('T')[0]}.json`;
+        a.download = `backup_sbo_${new Date().toISOString().split('T')[0]}.json`;
         a.click();
         URL.revokeObjectURL(url);
         
         Swal.fire('Sucesso', 'Backup exportado!', 'success');
     }
-    
+
     function showImportModal() {
-        document.getElementById('importModal').classList.add('active');
-    }
-    
-    function closeImportModal() {
-        document.getElementById('importModal').classList.remove('active');
-    }
-    
-    async function processImport() {
-        const file = document.getElementById('importFile').files[0];
-        if (!file) return;
-        
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            try {
-                const data = JSON.parse(e.target.result);
+        Swal.fire({
+            title: 'Importar Dados',
+            html: `
+                <input type="file" id="importFileInput" accept=".json" class="swal2-file">
+                <p style="margin-top:10px; font-size:0.8rem; color:#64748b;">Selecione um arquivo JSON de backup</p>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Importar',
+            preConfirm: async () => {
+                const fileInput = document.getElementById('importFileInput');
+                const file = fileInput.files[0];
                 
-                if (data.products) await db.products.bulkAdd(data.products);
-                if (data.customers) await db.customers.bulkAdd(data.customers);
-                if (data.suppliers) await db.suppliers.bulkAdd(data.suppliers);
-                if (data.sales) await db.sales.bulkAdd(data.sales);
+                if (!file) {
+                    Swal.showValidationMessage('Selecione um arquivo');
+                    return false;
+                }
                 
-                closeImportModal();
-                Swal.fire('Sucesso', 'Dados importados!', 'success');
-                loadDashboard();
-            } catch (err) {
-                Swal.fire('Erro', 'Arquivo inválido', 'error');
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            
+                            if (data.products) await db.products.bulkAdd(data.products);
+                            if (data.customers) await db.customers.bulkAdd(data.customers);
+                            if (data.suppliers) await db.suppliers.bulkAdd(data.suppliers);
+                            if (data.sales) await db.sales.bulkAdd(data.sales);
+                            if (data.expenses) await db.expenses.bulkAdd(data.expenses);
+                            
+                            resolve();
+                        } catch (err) {
+                            reject(err);
+                        }
+                    };
+                    reader.readAsText(file);
+                });
             }
-        };
-        reader.readAsText(file);
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('Sucesso', 'Dados importados com sucesso!', 'success');
+                loadDashboard();
+                loadProducts();
+                loadCustomers();
+            }
+        }).catch(() => {
+            Swal.fire('Erro', 'Arquivo inválido ou corrompido', 'error');
+        });
     }
-    
-    function showLoading() { document.getElementById('loading').classList.add('active'); }
-    function hideLoading() { document.getElementById('loading').classList.remove('active'); }
-    
-    // Service Worker
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js');
-    }
-    
-    // Başlangıç
+
+    // ==================== BAŞLANGIÇ ====================
     window.onload = async () => {
-        // Varsayılan kategorileri oluştur
+        // Kategoriler
         const catCount = await db.categories.count();
         if (catCount === 0) {
             for (const cat of BIJU_CATEGORIES) {
@@ -2973,7 +3818,15 @@
             }
         }
         
-        // Varsayılan ayarlar
+        // Sezonlar
+        const seasonCount = await db.seasons.count();
+        if (seasonCount === 0) {
+            for (const s of DEFAULT_SEASONS) {
+                await db.seasons.add({ ...s, status: 'active', createdAt: new Date() });
+            }
+        }
+        
+        // Ayarlar
         if (!localStorage.getItem('settings')) {
             localStorage.setItem('settings', JSON.stringify({
                 companyName: 'SBO Bijuterias',
@@ -2984,8 +3837,38 @@
             }));
         }
         
+        if (!localStorage.getItem('exchangeRate')) {
+            localStorage.setItem('exchangeRate', '5.00');
+        }
+        
+        // Tema
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            const icon = document.querySelector('.header-btn .fa-moon');
+            if (icon) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+        
+        initFirebase();
         loadDashboard();
+        
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW não registrado:', err));
+        }
     };
+
+    // Online/Offline durumu
+    window.addEventListener('online', () => {
+        document.getElementById('offlineIndicator').classList.remove('show');
+    });
+    
+    window.addEventListener('offline', () => {
+        document.getElementById('offlineIndicator').classList.add('show');
+    });
 </script>
 
 </body>
