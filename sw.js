@@ -1,141 +1,199 @@
-// SBO - Service Worker v2.0
-// PWA Installation & Offline Support
+// sw.js - Service Worker for SBO System (Düzeltilmiş)
+const CACHE_NAME = 'sbo-cache-v3';
+const RUNTIME_CACHE = 'sbo-runtime-v1';
 
-const CACHE_NAME = 'sbo-cache-v2';
-const STATIC_CACHE = 'sbo-static-v2';
-
-// Arquivos para cache estático (app shell)
+// Önbelleğe alınacak statik kaynaklar
 const urlsToCache = [
-  './',
-  './index.html',
-  './offline.html',
-  'https://cdn.tailwindcss.com',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap',
-  'https://unpkg.com/dexie/dist/dexie.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js',
-  'https://cdn.jsdelivr.net/npm/sweetalert2@11',
-  'https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js',
-  'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js',
-  'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js',
-  'https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js',
-  'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js',
-  'https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js',
-  'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js',
-  'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js'
+    './',
+    './index.html',
+    './offline.html', // Offline sayfası eklenmeli
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+    'https://unpkg.com/dexie/dist/dexie.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js',
+    'https://cdn.jsdelivr.net/npm/sweetalert2@11',
+    // DÜZELTİLDİ: SheetJS URL
+    'https://cdn.sheetjs.com/xlsx-0.20.2/xlsx.full.min.js',
+    'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js',
+    'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js',
+    'https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js',
+    'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js'
 ];
+
+// KALDIRILDI: Tailwind CDN - dinamik içerik cache'lenmez
 
 // Install Event
 self.addEventListener('install', event => {
-  console.log('[Service Worker] Installing...');
-  event.waitUntil(
-    caches.open(STATIC_CACHE)
-      .then(cache => {
-        console.log('[Service Worker] Caching app shell');
-        return cache.addAll(urlsToCache);
-      })
-      .catch(err => console.log('[Service Worker] Cache error:', err))
-  );
-  self.skipWaiting();
-});
-
-// Activate Event - Clean old caches
-self.addEventListener('activate', event => {
-  console.log('[Service Worker] Activating...');
-  event.waitUntil(
-    caches.keys().then(keyList => {
-      return Promise.all(keyList.map(key => {
-        if (key !== STATIC_CACHE && key !== CACHE_NAME) {
-          console.log('[Service Worker] Removing old cache:', key);
-          return caches.delete(key);
-        }
-      }));
-    })
-  );
-  self.clients.claim();
-});
-
-// Fetch Event - Network First Strategy
-self.addEventListener('fetch', event => {
-  const requestUrl = event.request.url;
-  
-  // Skip non-GET requests and external analytics
-  if (event.request.method !== 'GET') return;
-  if (requestUrl.includes('chrome-extension')) return;
-  if (requestUrl.includes('firestore.googleapis.com')) return;
-  if (requestUrl.includes('googleapis.com')) return;
-  if (requestUrl.includes('firebase')) return;
-  
-  event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        // Cache successful responses
-        if (response && response.status === 200 && requestUrl.startsWith('http')) {
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME)
+    event.waitUntil(
+        caches.open(CACHE_NAME)
             .then(cache => {
-              cache.put(event.request, responseToCache);
-            })
-            .catch(err => console.log('[Service Worker] Cache put error:', err));
-        }
-        return response;
-      })
-      .catch(() => {
-        // If network fails, try cache
-        return caches.match(event.request)
-          .then(cachedResponse => {
-            if (cachedResponse) {
-              console.log('[Service Worker] Serving from cache:', requestUrl);
-              return cachedResponse;
-            }
-            // Return offline page for HTML requests
-            const acceptHeader = event.request.headers.get('accept') || '';
-            if (acceptHeader.includes('text/html')) {
-              return caches.match('./offline.html')
-                .then(offlinePage => {
-                  if (offlinePage) return offlinePage;
-                  return new Response('Offline - SBO Sistem', {
-                    status: 503,
-                    statusText: 'Service Unavailable',
-                    headers: new Headers({ 'Content-Type': 'text/html' })
-                  });
+                console.log('Önbelleğe alınıyor...');
+                return cache.addAll(urlsToCache).catch(err => {
+                    console.warn('Bazı kaynaklar önbelleğe alınamadı:', err);
+                    // Hata olsa bile devam et
+                    return Promise.resolve();
                 });
-            }
-            return new Response('Offline - Conecte-se à internet', {
-              status: 503,
-              statusText: 'Service Unavailable',
-              headers: new Headers({ 'Content-Type': 'text/plain' })
-            });
-          });
-      })
-  );
+            })
+            .then(() => self.skipWaiting())
+    );
 });
 
-// Push Notification Support (optional)
-self.addEventListener('push', event => {
-  const data = event.data ? event.data.json() : {};
-  const title = data.title || 'SBO Sistem';
-  const options = {
-    body: data.body || 'Nova notificação do sistema',
-    icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%231e3a5f"/%3E%3Ctext x="50" y="67" font-size="45" text-anchor="middle" fill="%23c9a03d" font-weight="bold"%3ESBO%3C/text%3E%3C/svg%3E',
-    badge: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%231e3a5f"/%3E%3Ctext x="50" y="67" font-size="45" text-anchor="middle" fill="%23c9a03d" font-weight="bold"%3ESBO%3C/text%3E%3C/svg%3E',
-    vibrate: [200, 100, 200],
-    requireInteraction: true
-  };
-  event.waitUntil(self.registration.showNotification(title, options));
+// Fetch Event - Gelişmiş Strateji
+self.addEventListener('fetch', event => {
+    const { request } = event;
+    const url = new URL(request.url);
+
+    // API istekleri - Network First
+    if (url.pathname.includes('/api/') || url.pathname.includes('/graphql')) {
+        event.respondWith(networkFirst(request));
+        return;
+    }
+
+    // Navigasyon istekleri (HTML sayfalar)
+    if (request.mode === 'navigate') {
+        event.respondWith(navigationHandler(request));
+        return;
+    }
+
+    // CDN kaynakları ve statik dosyalar - Cache First + Network Fallback
+    if (urlsToCache.some(cacheUrl => request.url.includes(cacheUrl.split('/').pop()))) {
+        event.respondWith(cacheFirst(request));
+        return;
+    }
+
+    // Diğer istekler - Stale While Revalidate
+    event.respondWith(staleWhileRevalidate(request));
 });
 
-// Background Sync for offline data
-self.addEventListener('sync', event => {
-  if (event.tag === 'sync-data') {
-    console.log('[Service Worker] Background sync triggered');
-    event.waitUntil(syncOfflineData());
-  }
-});
-
-async function syncOfflineData() {
-  console.log('[Service Worker] Syncing offline data...');
-  // This function can be extended to sync pending operations from IndexedDB
-  return Promise.resolve();
+// Cache First Stratejisi
+async function cacheFirst(request) {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) return cachedResponse;
+    
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse && networkResponse.status === 200) {
+            const cache = await caches.open(RUNTIME_CACHE);
+            cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch (error) {
+        // Offline fallback
+        return new Response('Kaynak kullanılamıyor', { 
+            status: 503, 
+            statusText: 'Service Unavailable',
+            headers: { 'Content-Type': 'text/plain' }
+        });
+    }
 }
+
+// Network First Stratejisi (API için)
+async function netWorkFirst(request) {
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse && networkResponse.status === 200) {
+            const cache = await caches.open(RUNTIME_CACHE);
+            cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch (error) {
+        const cachedResponse = await caches.match(request);
+        if (cachedResponse) return cachedResponse;
+        
+        // API offline hatası
+        return new Response(JSON.stringify({ 
+            error: 'Offline', 
+            message: 'İnternet bağlantısı yok' 
+        }), {
+            status: 503,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+}
+
+// Stale While Revalidate Stratejisi
+async function staleWhileRevalidate(request) {
+    const cache = await caches.open(RUNTIME_CACHE);
+    const cachedResponse = await cache.match(request);
+    
+    const networkResponsePromise = fetch(request)
+        .then(response => {
+            if (response && response.status === 200) {
+                cache.put(request, response.clone());
+            }
+            return response;
+        })
+        .catch(() => null);
+
+    // Önbellekte varsa hemen döndür, yoksa ağdan bekle
+    return cachedResponse || networkResponsePromise;
+}
+
+// Navigasyon Handler
+async function navigationHandler(request) {
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse && networkResponse.status === 200) {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch (error) {
+        const cachedResponse = await caches.match(request);
+        if (cachedResponse) return cachedResponse;
+        
+        // Offline sayfasına yönlendir
+        const offlinePage = await caches.match('./offline.html');
+        if (offlinePage) return offlinePage;
+        
+        return new Response(
+            '<h1>Offline - SBO Sistema</h1><p>Lütfen internet bağlantınızı kontrol edin.</p>',
+            { 
+                status: 200, 
+                headers: { 'Content-Type': 'text/html' }
+            }
+        );
+    }
+}
+
+// Activate Event - Eski cache'leri temizle
+self.addEventListener('activate', event => {
+    const currentCaches = [CACHE_NAME, RUNTIME_CACHE];
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (!currentCaches.includes(cacheName)) {
+                        console.log('Eski cache siliniyor:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(() => self.clients.claim())
+    );
+});
+
+// Opsiyonel: Background Sync
+self.addEventListener('sync', event => {
+    if (event.tag === 'sync-sbo-data') {
+        event.waitUntil(syncData());
+    }
+});
+
+async function syncData() {
+    // IndexedDB'den bekleyen verileri al ve sunucuya gönder
+    console.log('Arka plan senkronizasyonu çalışıyor...');
+    // Dexie ile veritabanından veri çekme işlemleri burada
+}
+
+// Opsiyonel: Push Notification
+self.addEventListener('push', event => {
+    const data = event.data?.json() || { title: 'SBO Bildirim', body: 'Yeni bildirim var' };
+    event.waitUntil(
+        self.registration.showNotification(data.title, {
+            body: data.body,
+            icon: '/icon-192x192.png',
+            badge: '/badge-72x72.png'
+        })
+    );
+});
