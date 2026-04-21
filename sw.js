@@ -1,26 +1,11 @@
-// Arka planda bildirim gösterme yeteneği
-self.addEventListener('install', (event) => {
-    self.skipWaiting();
-});
+self.addEventListener('install', (event) => self.skipWaiting());
+self.addEventListener('activate', (event) => event.waitUntil(clients.claim()));
 
-self.addEventListener('activate', (event) => {
-    event.waitUntil(clients.claim());
-});
-
-// Bildirime tıklandığında f.html'i aç
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-            if (clientList.length > 0) {
-                let client = clientList[0];
-                for (let i = 0; i < clientList.length; i++) {
-                    if (clientList[i].focused) {
-                        client = clientList[i];
-                    }
-                }
-                return client.focus();
-            }
+            if (clientList.length > 0) return clientList[0].focus();
             return clients.openWindow('./f.html');
         })
     );
