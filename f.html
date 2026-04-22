@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ASC CAFÉ | Global Trading Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -13,81 +13,86 @@
         }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         
-        /* Tam Ekran & Kaydırma Engelleme */
         html, body { 
             height: 100vh; width: 100vw; overflow: hidden; 
             background: var(--bg); color: var(--text);
-            display: flex; flex-direction: column; padding: 15px;
+            display: flex; flex-direction: column; padding: 12px;
         }
         
+        /* Borsa Barı */
         .market-bar { 
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; 
-            height: 12vh; min-height: 80px; margin-bottom: 15px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; 
+            height: 10vh; min-height: 70px; flex-shrink: 0; margin-bottom: 10px;
         }
         .m-item { 
-            background: var(--card); border-radius: 12px; border: 1px solid var(--border);
+            background: var(--card); border-radius: 10px; border: 1px solid var(--border);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            position: relative; overflow: hidden; transition: 0.3s;
+            cursor: pointer; transition: 0.3s;
         }
-        .m-item label { font-size: clamp(9px, 0.8vw, 11px); font-weight: 800; color: var(--primary); letter-spacing: 1px; margin-bottom: 4px; }
-        .m-item b { font-family: 'JetBrains Mono'; font-size: clamp(18px, 1.8vw, 24px); color: #fff; }
+        .m-item label { font-size: 9px; font-weight: 800; color: var(--primary); letter-spacing: 1px; }
+        .m-item b { font-family: 'JetBrains Mono'; font-size: clamp(14px, 1.5vw, 20px); color: #fff; }
 
         /* Dashboard Grid */
         .container { 
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; 
-            height: 83vh; /* Kalan alanın tamamı */
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; 
+            flex-grow: 1; height: 85vh;
         }
+        
+        @media (max-width: 1024px) { 
+            html, body { overflow-y: auto; height: auto; }
+            .container { grid-template-columns: 1fr; height: auto; }
+            .market-bar { grid-template-columns: 1fr 1fr; height: auto; }
+        }
+
         .p-card { 
-            background: var(--card); border-radius: 16px; padding: 20px; 
+            background: var(--card); border-radius: 14px; padding: 15px; 
             border: 1px solid var(--border); display: flex; flex-direction: column;
-            justify-content: space-between; height: 100%;
+            justify-content: space-between; overflow: hidden;
         }
-        h2 { font-size: clamp(12px, 1vw, 14px); color: var(--primary); border-left: 4px solid var(--primary); padding-left: 12px; margin-bottom: 10px; }
+        h2 { font-size: 11px; color: var(--primary); border-left: 3px solid var(--primary); padding-left: 10px; margin-bottom: 8px; }
 
-        .qty-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .qty-btn { background: #1a1f26; border: 1px solid var(--border); color: #fff; padding: 10px 2px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; }
-        .qty-btn:hover { background: var(--primary); color: #000; }
+        .qty-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 8px; }
+        .qty-btn { background: #1a1f26; border: 1px solid var(--border); color: #fff; padding: 8px 2px; border-radius: 5px; font-size: 8px; font-weight: 800; cursor: pointer; }
 
-        .i-box { background: #07090d; padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin: 8px 0; }
-        .i-box label { display: block; font-size: 9px; color: #94a3b8; font-weight: 800; margin-bottom: 4px; }
-        .i-box input { width: 100%; background: transparent; border: none; color: #fff; font-size: clamp(20px, 2vw, 26px); font-weight: 800; outline: none; font-family: 'JetBrains Mono'; }
+        .i-box { background: #07090d; padding: 8px; border-radius: 8px; border: 1px solid var(--border); margin: 4px 0; }
+        .i-box label { display: block; font-size: 8px; color: #94a3b8; font-weight: 800; }
+        .i-box input { width: 100%; background: transparent; border: none; color: #fff; font-size: 20px; font-weight: 800; outline: none; font-family: 'JetBrains Mono'; }
 
-        .m-list { border-top: 1px solid var(--border); margin: 10px 0; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
-        .m-line { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .m-line span { font-size: 11px; color: #94a3b8; font-weight: 600; }
-        .v-u { font-family: 'JetBrains Mono'; font-weight: 800; font-size: clamp(14px, 1.2vw, 18px); color: #38bdf8; }
+        .m-list { border-top: 1px solid var(--border); margin: 5px 0; display: flex; flex-direction: column; }
+        .m-line { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .m-line span { font-size: 10px; color: #94a3b8; }
+        .v-u { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 14px; color: #38bdf8; }
 
-        .profit-panel { background: #1a1202; color: var(--primary); padding: 15px; border-radius: 10px; text-align: center; border: 1px solid var(--primary); }
-        .profit-panel b { font-size: clamp(24px, 2.5vw, 32px); font-family: 'JetBrains Mono'; }
+        .profit-panel { background: #1a1202; color: var(--primary); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid var(--primary); }
+        .profit-panel b { font-size: 22px; font-family: 'JetBrains Mono'; }
 
-        .btn-pdf { width: 100%; background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 10px; font-size: 12px; letter-spacing: 1px; }
+        .btn-pdf { width: 100%; background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 8px; font-size: 11px; }
 
-        /* Flash Effects */
-        .up-flash { animation: flash-g 1s; }
-        .down-flash { animation: flash-r 1s; }
-        @keyframes flash-g { 0% { background: rgba(16,185,129,0.3); } 100% { background: var(--card); } }
-        @keyframes flash-r { 0% { background: rgba(244,63,94,0.3); } 100% { background: var(--card); } }
+        .flash-up { animation: f-up 1s; color: var(--success) !important; }
+        .flash-down { animation: f-down 1s; color: var(--danger) !important; }
+        @keyframes f-up { 0% { background: rgba(16,185,129,0.2); } 100% { background: transparent; } }
+        @keyframes f-down { 0% { background: rgba(244,63,94,0.2); } 100% { background: transparent; } }
 
-        #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; padding: 20px; }
-        #pdf-preview { background: white; width: 100%; max-width: 900px; height: 90vh; border-radius: 8px; overflow-y: auto; }
+        #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
+        #pdf-preview { background: white; width: 95%; height: 95vh; border-radius: 8px; overflow-y: auto; }
     </style>
 </head>
 <body>
 
 <div class="market-bar">
-    <div class="m-item" id="card-brl"><label>USD/BRL</label><b id="live-brl">5.72</b></div>
-    <div class="m-item" id="card-try"><label>USD/TRY</label><b id="live-try">34.35</b></div>
-    <div class="m-item" id="card-ny"><label>ICE NY ARABICA</label><b id="live-ny">301.50</b></div>
-    <div class="m-item" id="card-ldn"><label>ICE LDN CONILON</label><b id="live-ldn">215.00</b></div>
+    <div class="m-item" id="c-brl" onclick="manualIn('brl')"><label>USD/BRL</label><b id="v-brl">5.72</b></div>
+    <div class="m-item" id="c-try" onclick="manualIn('try')"><label>USD/TRY</label><b id="v-try">34.35</b></div>
+    <div class="m-item" id="c-ny" onclick="manualIn('ny')"><label>NY ARABICA</label><b id="v-ny">301.50</b></div>
+    <div class="m-item" id="c-ldn" onclick="manualIn('ldn')"><label>LDN CONILON</label><b id="v-ldn">215.00</b></div>
 </div>
 
 <div class="container" id="grid"></div>
 
 <div id="modal-overlay">
     <div id="pdf-preview">
-        <div style="background:#000; padding:10px; display:flex; justify-content:space-between;">
-            <button onclick="downloadFinalPDF()" style="background:var(--success); color:white; border:none; padding:8px 15px; font-weight:800; cursor:pointer;">DOWNLOAD PDF</button>
-            <button onclick="closeModal()" style="background:var(--danger); color:white; border:none; padding:8px 15px; font-weight:800; cursor:pointer;">CLOSE</button>
+        <div style="background:#000; padding:10px; display:flex; justify-content:space-between; position:sticky; top:0;">
+            <button onclick="downloadFinalPDF()" style="background:var(--success); color:white; border:none; padding:10px; font-weight:900; cursor:pointer;">PDF İNDİR</button>
+            <button onclick="closeModal()" style="background:var(--danger); color:white; border:none; padding:10px; font-weight:900; cursor:pointer;">KAPAT</button>
         </div>
         <div id="pdf-content"></div>
     </div>
@@ -95,59 +100,46 @@
 
 <script>
 const API_KEY = "4dfdfe192bmshe85964c016dba78p18c09ajsn9718915999f6";
-const API_HOST = "yahoo-finance-scraper.p.rapidapi.com";
-
 let DB = { try: 34.35, brl: 5.72, ny: 301.50, ldn: 215.00 };
+
 const ITEMS = [
     { id: 'mi', name: 'BRAZIL MINAS NY2/3 17/18 SSFC', type: 'NY', diff: 18 },
     { id: 'sa', name: 'BRAZIL SANTOS NY2/3 17/18', type: 'NY', diff: 12 },
-    { id: 'co', name: 'BRAZIL CONILON (ROBUSTA)', type: 'LDN', diff: 8 }
+    { id: 'co', name: 'BRAZIL CONILON TYPE 7/8', type: 'LDN', diff: 8 }
 ];
-const FEES = { fr: 14.50, or: 11.00, tr: 12.00, tax: 0.10 };
 
 async function sync() {
     try {
-        const rC = await fetch('https://open.er-api.com/v6/latest/USD');
-        const dC = await rC.json();
-        if(dC.rates) { updateValue('brl', dC.rates.BRL); updateValue('try', dC.rates.TRY); }
+        const r = await fetch('https://open.er-api.com/v6/latest/USD');
+        const d = await r.json();
+        if(d.rates) { update('brl', d.rates.BRL); update('try', d.rates.TRY); }
 
-        // Borsa Verisi Düzeltme: Yahoo Scraper yapısına göre 'body' ve 'price' kontrolü
-        await fetchBorsa('KC=F', 'ny');
-        await fetchBorsa('RC=F', 'ldn');
-    } catch(e) { console.error(e); }
+        const getS = async (sym, key) => {
+            const rs = await fetch(`https://yahoo-finance-scraper.p.rapidapi.com/api/chart/${sym}?interval=1d`, {
+                headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': 'yahoo-finance-scraper.p.rapidapi.com' }
+            });
+            const dj = await rs.json();
+            const p = dj.body?.meta?.regularMarketPrice;
+            if(p) update(key, p);
+        };
+        await getS('KC=F', 'ny'); await getS('RC=F', 'ldn');
+    } catch(e) { console.warn("Sync error"); }
 }
 
-async function fetchBorsa(symbol, key) {
-    try {
-        const res = await fetch(`https://${API_HOST}/api/price/${symbol}`, {
-            headers: { 'x-rapidapi-key': API_KEY, 'x-rapidapi-host': API_HOST }
-        });
-        const data = await res.json();
-        // API bazen body içinde bazen doğrudan price döndürür. İkisini de kontrol et:
-        let val = null;
-        if (data.price) val = data.price;
-        else if (data.body && data.body.price) val = data.body.price;
-        else if (data.body && data.body.regularMarketPrice) val = data.body.regularMarketPrice;
-
-        if(val) updateValue(key, parseFloat(val));
-    } catch(err) { console.warn(symbol + " fetch error"); }
-}
-
-function updateValue(key, newVal) {
-    const el = document.getElementById(`live-${key}`);
-    const card = document.getElementById(`card-${key}`);
-    const oldVal = DB[key];
-    if(newVal.toFixed(2) !== oldVal.toFixed(2)) {
-        const isUp = newVal > oldVal;
-        DB[key] = newVal;
-        el.innerHTML = `${newVal.toFixed(2)} <span style="font-size:12px">${isUp ? '▲' : '▼'}</span>`;
-        el.style.color = isUp ? 'var(--success)' : 'var(--danger)';
-        card.classList.remove('up-flash', 'down-flash');
-        void card.offsetWidth;
-        card.classList.add(isUp ? 'up-flash' : 'down-flash');
+function update(k, v) {
+    const el = document.getElementById(`v-${k}`);
+    const card = document.getElementById(`c-${k}`);
+    const old = DB[k];
+    if(v.toFixed(2) !== old.toFixed(2)) {
+        DB[k] = v;
+        el.innerHTML = v.toFixed(2) + (v > old ? ' ▲' : ' ▼');
+        card.className = `m-item ${v > old ? 'flash-up' : 'flash-down'}`;
         calc();
+        setTimeout(() => card.className = 'm-item', 2000);
     }
 }
+
+function manualIn(k) { const v = prompt("Değer girin:", DB[k]); if(v) update(k, parseFloat(v)); }
 
 function start() {
     document.getElementById('grid').innerHTML = ITEMS.map(i => `
@@ -155,15 +147,15 @@ function start() {
             <h2>${i.name}</h2>
             <div class="qty-row">
                 <button class="qty-btn" onclick="setQ('${i.id}', 320)">320 SC</button>
-                <button class="qty-btn" onclick="setQ('${i.id}', 450)">450 SC</button>
+                <button class="qty-btn" onclick="setQ('${i.id}', 440)">1 CONT</button>
                 <button class="qty-btn" onclick="setQ('${i.id}', 16.66)">1 MT</button>
                 <button class="qty-btn" onclick="setQ('${i.id}', 416.5)">25 MT</button>
             </div>
-            <div class="i-box"><label>PROFIT (%)</label><input type="number" id="k_${i.id}" value="6" oninput="calc()"></div>
-            <div class="i-box"><label>QUANTITY (SC)</label><input type="number" id="t_${i.id}" value="320" oninput="calc()"></div>
+            <div class="i-box"><label>KÂR (%)</label><input type="number" id="k_${i.id}" value="6" oninput="calc()"></div>
+            <div class="i-box"><label>MİKTAR (SACA)</label><input type="number" id="t_${i.id}" value="320" oninput="calc()"></div>
             <div class="m-list" id="list_${i.id}"></div>
-            <div class="profit-panel"><small>EST. NET PROFIT</small><br><b id="prof_${i.id}">$ 0</b></div>
-            <button class="btn-pdf" onclick="preparePDF('${i.id}')">GENERATE OFFICIAL OFFER</button>
+            <div class="profit-panel"><small>NET KÂR</small><br><b id="prof_${i.id}">$ 0</b></div>
+            <button class="btn-pdf" onclick="preparePDF('${i.id}')">TEKLİF DETAYI & PDF</button>
         </div>
     `).join('');
     calc();
@@ -176,63 +168,80 @@ function calc() {
         const k = (parseFloat(document.getElementById(`k_${i.id}`).value) || 0) / 100;
         const q = parseFloat(document.getElementById(`t_${i.id}`).value) || 0;
         const borsa = (i.type === 'NY' ? DB.ny : DB.ldn) + i.diff;
-        const ddp = (borsa + FEES.or + FEES.fr + FEES.tr) * (1 + FEES.tax);
+        const ddp = (borsa + 36) * 1.10;
         const sat = ddp * (1 + k);
         const f = (n) => Math.round(n).toLocaleString('en-US');
 
         document.getElementById(`list_${i.id}`).innerHTML = `
-            <div class="m-line"><span>UNIT DDP (BAG)</span><b class="v-u">$ ${f(ddp)}</b></div>
-            <div class="m-line"><span>TOTAL DDP</span><b class="v-u">$ ${f(ddp * q)}</b></div>
-            <div class="m-line" style="border:none"><span>UNIT SALES</span><b style="color:var(--primary); font-size:22px">$ ${f(sat)}</b></div>
+            <div class="m-line"><span>BR ALIŞ (REAL)</span><b class="v-u" style="color:var(--primary)">R$ ${f(borsa * DB.brl)}</b></div>
+            <div class="m-line"><span>BİRİM SATIŞ (USD)</span><b class="v-u">$ ${f(sat)}</b></div>
+            <div class="m-line"><span>TOPLAM SATIŞ (USD)</span><b style="color:var(--primary); font-size:18px">$ ${f(sat * q)}</b></div>
         `;
         document.getElementById(`prof_${i.id}`).innerText = `$ ${f((ddp * k) * q)}`;
     });
 }
 
 function preparePDF(id) {
-    const client = prompt("Client Name:"); if(!client) return;
+    const firma = prompt("Müşteri Adı:"); if(!firma) return;
     const i = ITEMS.find(x => x.id === id);
     const q = parseFloat(document.getElementById(`t_${i.id}`).value);
     const k = (parseFloat(document.getElementById(`k_${i.id}`).value) || 0) / 100;
+    
     const borsa = (i.type === 'NY' ? DB.ny : DB.ldn) + i.diff;
-    const ddp = (borsa + FEES.or + FEES.fr + FEES.tr) * (1 + FEES.tax);
-    const sat = ddp * (1 + k);
+    const fob = borsa;
+    const cif = borsa + 24; // Freight
+    const ddp = (cif + 12) * 1.10;
+    const satis = ddp * (1 + k);
+    
+    const ton = (q * 60) / 1000;
+    const cont = q / 440;
+    const f = (n) => Math.round(n).toLocaleString('tr-TR');
 
     document.getElementById('pdf-content').innerHTML = `
-        <div style="padding:40px; color:#1a202c; background:white;">
-            <div style="display:flex; justify-content:space-between; border-bottom:4px solid #d4af37; padding-bottom:15px; margin-bottom:30px;">
-                <h1 style="margin:0; font-size:30px; color:#05070a;">ASC CAFÉ <span style="color:#d4af37;">GLOBAL</span></h1>
-                <div style="text-align:right; font-size:10px; font-weight:800;">OFFER NO: #${Math.floor(Date.now()/100000)}<br>DATE: ${new Date().toLocaleDateString()}</div>
+        <div style="padding:40px; color:#111; background:white;">
+            <div style="border-bottom:5px solid #d4af37; padding-bottom:15px; margin-bottom:30px; display:flex; justify-content:space-between; align-items:center;">
+                <h1 style="margin:0; font-size:32px;">ASC CAFÉ <span style="color:#d4af37;">GLOBAL</span></h1>
+                <div style="text-align:right; font-size:11px;"><b>TARİH:</b> ${new Date().toLocaleDateString('tr-TR')}</div>
             </div>
-            <h2 style="font-size:22px; color:#05070a; margin-bottom:20px;">CLIENT: ${client.toUpperCase()}</h2>
-            <table style="width:100%; border-collapse:collapse; margin-bottom:30px;">
+            
+            <p><b>ALICI FIRMA:</b> ${firma.toUpperCase()}</p>
+            <p><b>ÜRÜN:</b> ${i.name}</p>
+            
+            <table style="width:100%; border-collapse:collapse; margin:25px 0;">
                 <tr style="background:#05070a; color:white; font-size:12px;">
-                    <th style="padding:12px; text-align:left;">DESCRIPTION</th>
-                    <th style="padding:12px;">QTY (SACA)</th>
-                    <th style="padding:12px;">UNIT PRICE</th>
-                    <th style="padding:12px; text-align:right;">TOTAL</th>
+                    <th style="padding:12px; text-align:left;">DETAY</th>
+                    <th style="padding:12px; text-align:right;">MİKTAR / BİRİM</th>
                 </tr>
-                <tr style="font-weight:700; font-size:14px;">
-                    <td style="padding:15px; border-bottom:1px solid #e2e8f0;">${i.name}</td>
-                    <td style="padding:15px; border-bottom:1px solid #e2e8f0; text-align:center;">${q}</td>
-                    <td style="padding:15px; border-bottom:1px solid #e2e8f0; text-align:center;">$ ${Math.round(sat).toLocaleString()}</td>
-                    <td style="padding:15px; border-bottom:1px solid #e2e8f0; text-align:right; color:#d4af37; font-size:18px;">$ ${Math.round(sat * q).toLocaleString()}</td>
-                </tr>
+                <tr><td style="padding:10px; border-bottom:1px solid #eee;">TOPLAM SACA (BAGS)</td><td style="padding:10px; border-bottom:1px solid #eee; text-align:right;">${f(q)} Saca</td></tr>
+                <tr><td style="padding:10px; border-bottom:1px solid #eee;">TOPLAM TONAJ (MT)</td><td style="padding:10px; border-bottom:1px solid #eee; text-align:right;">${ton.toFixed(2)} Ton</td></tr>
+                <tr><td style="padding:10px; border-bottom:1px solid #eee;">KONTEYNER (FCL)</td><td style="padding:10px; border-bottom:1px solid #eee; text-align:right;">~ ${cont.toFixed(1)} x 20' FCL</td></tr>
+                <tr style="font-weight:900; color:#d4af37;"><td style="padding:10px; border-bottom:1px solid #eee;">BİRİM SATIŞ (DDP)</td><td style="padding:10px; border-bottom:1px solid #eee; text-align:right;">$ ${f(satis)}</td></tr>
             </table>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; font-size:10px; background:#f8fafc; padding:15px; border-radius:5px; line-height:1.5;">
-                <div><b>INCOTERMS 2020:</b> DDP (Delivered Duty Paid)<br><b>PAYMENT:</b> CAD / LC Sight<br><b>ARBITRATION:</b> Geneva International Arbitration</div>
-                <div><b>MÜCBİR SEBEP:</b> ICC Kuralları geçerlidir.<br><b>TAHKİM:</b> İhtilaflar Cenevre Tahkimince çözülür.<br><b>VALIDITY:</b> 24 Hours</div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:40px;">
+                <div style="background:#f8fafc; padding:15px; border-radius:5px; font-size:11px;">
+                    <b>LOJİSTİK KIRILIMI:</b><br>
+                    FOB BRAZIL: $ ${f(fob)} / Saca<br>
+                    CIF ISTANBUL: $ ${f(cif)} / Saca<br>
+                    DDP TURKEY: $ ${f(ddp)} / Saca
+                </div>
+                <div style="background:#fff9e6; padding:15px; border-radius:5px; text-align:right;">
+                    <b>TOPLAM TUTAR (USD)</b><br>
+                    <span style="font-size:24px; font-weight:900;">$ ${f(satis * q)}</span><br>
+                    <b>TOPLAM TUTAR (YTL)</b><br>
+                    <span style="font-size:20px; color:#856404;">₺ ${f(satis * q * DB.try)}</span>
+                </div>
             </div>
-            <div style="margin-top:50px; display:flex; justify-content:space-between; text-align:center; font-size:11px; font-weight:800;">
-                <div style="width:150px; border-top:2px solid #000; padding-top:5px;">ASC GLOBAL TRADING</div>
-                <div style="width:150px; border-top:2px solid #000; padding-top:5px;">CLIENT ACCEPTANCE</div>
+            
+            <div style="font-size:10px; line-height:1.6; border-top:1px solid #eee; padding-top:15px;">
+                <b>NOT:</b> Teklif borsa verileri nedeniyle 24 saat geçerlidir. Ödeme: CAD/LC. Arbitraj: Geneva.
             </div>
         </div>`;
     document.getElementById('modal-overlay').style.display = 'flex';
 }
 
 function downloadFinalPDF() {
-    html2pdf().set({ margin:0, filename:'ASC_OFFER.pdf', image:{type:'jpeg', quality:1}, html2canvas:{scale:3}, jsPDF:{format:'a4'} })
+    html2pdf().set({ margin:0, filename:'ASC_TEKLIF.pdf', html2canvas:{scale:3} })
     .from(document.getElementById('pdf-content')).save();
 }
 function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
