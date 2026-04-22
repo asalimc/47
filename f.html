@@ -3,184 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KAHVE TERMİNALİ - USD/TRY</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;900&display=swap" rel="stylesheet">
+    <title>ASC | Premium Coffee Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Sora:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root { --navy: #001f3f; --white: #ffffff; --blue: #00d4ff; --border: 4px solid #001f3f; --ice: #1a2a6c; --green: #059669; }
-        * { box-sizing: border-box; font-family: 'Sora', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #f8fafc; margin: 0; padding: 10px; color: var(--navy); min-height: 100vh; }
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border: #e2e8f0;
+            --text-secondary: #64748b;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         
-        /* Üst Panel */
-        .header { background: var(--navy); color: white; padding: 20px 15px; border-radius: 15px; margin-bottom: 12px; text-align: center; box-shadow: 0 4px 0px var(--blue); }
-        .header h1 { font-size: 18px; margin: 0 0 12px 0; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-        .kur-bar { display: flex; justify-content: center; }
-        .kur-item { background: white; border: 3px solid var(--navy); padding: 8px 20px; border-radius: 12px; min-width: 150px; }
-        .kur-item label { font-size: 10px; font-weight: 900; color: var(--navy); display: block; margin-bottom: 3px; }
-        .kur-item input { width: 100%; border: none; font-size: 18px; font-weight: 900; color: #d35400; text-align: center; outline: none; }
+        body { 
+            background-color: var(--bg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            color: var(--primary);
+            line-height: 1.5;
+        }
 
-        /* Borsa Giriş Paneli */
-        .ice-card { background: var(--ice); color: white; border: 4px solid #000; border-radius: 20px; padding: 15px; margin-bottom: 20px; box-shadow: 4px 4px 0px #333; }
-        .ice-card h2 { font-size: 12px; color: var(--blue); border-bottom: 2px solid var(--blue); margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px; }
-        .exchange-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .ex-box { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; border: 1.5px solid var(--blue); }
-        .ex-box label { font-size: 9px; font-weight: 900; display: block; margin-bottom: 5px; opacity: 0.8; }
-        .ex-box input { background: transparent; border: none; color: white; font-size: 20px; font-weight: 900; width: 100%; text-align: center; outline: none; }
+        /* HEADER */
+        .app-header {
+            background: var(--surface);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .brand {
+            display: inline-block;
+            border: 3px solid var(--primary);
+            padding: 8px 25px;
+            border-radius: 4px;
+            font-family: 'Sora', sans-serif;
+            font-size: 32px;
+            letter-spacing: 8px;
+            font-weight: 800;
+        }
+        .app-header p {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
 
-        /* Kartlar */
-        .card { background: var(--white); border: var(--border); border-radius: 25px; padding: 20px; box-shadow: 6px 6px 0px var(--navy); margin-bottom: 25px; }
-        .card h2 { font-size: 16px; font-weight: 900; margin: 0 0 15px 0; border-bottom: 4px solid var(--navy); padding-bottom: 6px; color: var(--navy); }
+        /* MARKET SCROLLER */
+        .market-bar {
+            display: flex;
+            gap: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            margin-top: -20px;
+        }
+        .market-bar::-webkit-scrollbar { display: none; }
         
-        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
-        .input-group label { font-size: 9px; font-weight: 900; display: block; margin-bottom: 5px; text-transform: uppercase; }
-        .input-group input { width: 100%; padding: 12px; border: 3px solid var(--navy); border-radius: 12px; font-size: 16px; font-weight: 900; text-align: center; background: #fff; }
+        .market-tile {
+            background: var(--surface);
+            padding: 15px;
+            border-radius: 16px;
+            min-width: 140px;
+            flex: 1;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+        .market-tile label { font-size: 9px; font-weight: 800; color: var(--text-secondary); display: block; margin-bottom: 4px; }
+        .market-tile input { width: 100%; border: none; font-size: 18px; font-weight: 800; color: var(--accent); background: transparent; }
 
-        /* Sonuç Paneli */
-        .summary-box { background: #f1f5f9; padding: 15px; border-radius: 15px; border: 2px solid var(--navy); }
-        .m-head { font-size: 11px; font-weight: 900; text-transform: uppercase; color: white; background: var(--navy); padding: 5px 12px; border-radius: 6px; display: inline-block; margin-bottom: 12px; }
-        .line { border-bottom: 1px solid #cbd5e1; padding: 12px 0; }
-        .line:last-child { border: none; }
-        .line-label { font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; display: block; color: #475569; }
-        .line-values { display: flex; justify-content: space-between; font-size: 14px; font-weight: 900; }
-        .line-values b { flex: 1; }
-        .line-values b:first-child { text-align: left; color: var(--navy); font-size: 15px; }
-        .line-values b:last-child { text-align: right; color: #1e293b; }
+        /* CONTENT */
+        .container {
+            padding: 10px 20px 100px;
+            max-width: 1000px;
+            margin: auto;
+            display: grid;
+            gap: 20px;
+        }
 
-        .offer-line { background: #e0f2fe; padding: 12px; border-radius: 12px; border: 2px solid var(--blue); margin-bottom: 10px; }
-        
-        /* Kazanç Barı */
-        .price-row { padding: 18px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; background: var(--green); color: white; margin-top: 15px; border: 3px solid var(--navy); }
-        .p-val-group { display: flex; justify-content: space-around; width: 100%; font-size: 18px; font-weight: 900; }
-        .status-tag { font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; opacity: 0.9; letter-spacing: 1px; }
+        .card {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);
+        }
+        .card h2 { font-size: 18px; margin: 0 0 20px; display: flex; align-items: center; gap: 10px; }
+        .card h2::before { content: ''; width: 4px; height: 18px; background: var(--accent); border-radius: 10px; }
+
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .field { background: #f1f5f9; padding: 12px; border-radius: 14px; }
+        .field label { display: block; font-size: 9px; font-weight: 800; color: var(--text-secondary); margin-bottom: 2px; }
+        .field input { width: 100%; border: none; background: transparent; font-size: 18px; font-weight: 700; color: var(--primary); }
+
+        .data-list { border-top: 1px solid var(--border); }
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .data-item label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+        .data-val { text-align: right; }
+        .data-val b { display: block; font-size: 17px; color: var(--accent); }
+        .data-val span { font-size: 13px; color: var(--success); font-weight: 600; }
+
+        .highlight-box {
+            margin-top: 20px;
+            background: #fffbeb;
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid #fef3c7;
+            text-align: center;
+        }
+        .highlight-box small { display: block; font-size: 10px; font-weight: 800; color: var(--warning); text-transform: uppercase; margin-bottom: 4px; }
+        .highlight-box div { font-size: 19px; font-weight: 800; color: var(--primary); }
+
+        /* FAB */
+        .btn-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 64px;
+            height: 64px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        /* MODAL */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .modal-inner { max-width: 800px; margin: auto; }
+        .modal-btns { display: flex; gap: 10px; margin-bottom: 15px; }
+        .btn-action { flex: 1; padding: 16px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; }
+
+        /* PDF TEMPLATE */
+        #pdfFrame {
+            background: white;
+            width: 794px;
+            min-height: 1123px;
+            margin: auto;
+            padding: 60px;
+            color: #000;
+        }
+        .pdf-header { border-bottom: 4px solid #000; padding-bottom: 25px; margin-bottom: 40px; display: flex; justify-content: space-between; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .pdf-table th { background: #f8fafc; border: 1px solid #000; padding: 12px; font-size: 11px; text-align: left; }
+        .pdf-table td { border: 1px solid #000; padding: 14px; font-size: 13px; font-weight: 700; }
+
+        @media (min-width: 768px) { .container { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
 
-<header class="header">
-    <h1>KAHVE TERMİNALİ PRO</h1>
-    <div class="kur-bar">
-        <div class="kur-item">
-            <label>USD / TRY KURU</label>
-            <input type="number" id="uTry" value="34.35" step="0.01" oninput="calc()">
+    <header class="app-header">
+        <div class="brand">ASC</div>
+        <p>Global Trading Terminal</p>
+    </header>
+
+    <div class="market-bar">
+        <div class="market-tile"><label>USD/TRY</label><input type="number" id="uTry" value="34.35" step="0.0001" oninput="calc()"></div>
+        <div class="market-tile"><label>Arabica NY</label><input type="number" id="iceNy" value="288.45" oninput="calc()"></div>
+        <div class="market-tile"><label>Robusta LDN</label><input type="number" id="iceLdn" value="3339" oninput="calc()"></div>
+    </div>
+
+    <main class="container" id="grid"></main>
+
+    <button class="btn-fab" onclick="openModal()"><i class="fa-solid fa-file-invoice"></i></button>
+
+    <div id="modal">
+        <div class="modal-inner">
+            <div class="modal-btns">
+                <button class="btn-action" style="background:#f1f5f9; color:#0f172a;" onclick="closeModal()">GERİ</button>
+                <button class="btn-action" style="background:#2563eb; color:white;" onclick="savePDF()">PDF KAYDET</button>
+                <button class="btn-action" style="background:#10b981; color:white;" onclick="window.print()">YAZDIR</button>
+            </div>
+            <div id="pdfFrame">
+                <div class="pdf-header">
+                    <div>
+                        <h1 style="margin:0; font-size:30px;">ASC GLOBAL</h1>
+                        <p style="margin:5px 0; font-size:12px;">Ahmet Salim Çınarbaş | Kahve Tedarik Zinciri</p>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="border:2px solid #000; padding:10px; font-weight:900;">TEKLİF BELGESİ</div>
+                        <p id="pdfDate" style="font-size:10px; margin-top:5px;"></p>
+                    </div>
+                </div>
+                <div id="pdfClient" style="background:#f1f5f9; padding:15px; border:1px solid #000; font-weight:800; margin-bottom:30px;">SAYIN: </div>
+                <div id="pdfContent"></div>
+                <div style="margin-top:40px; font-size:11px; line-height:1.6; border-top:1px solid #eee; padding-top:20px;">
+                    <b>ŞARTLAR VE NOTLAR:</b><br>
+                    • Bu fiyatlandırma anlık borsa (ICE) ve döviz verilerine dayanmaktadır.<br>
+                    • Teslimat şartları Incoterms 2020 standartlarındadır.<br>
+                    • Teklif onaylandığında resmi proforma fatura düzenlenecektir.
+                </div>
+                <div style="margin-top:60px; display:flex; justify-content:space-between; align-items:flex-end;">
+                    <div style="font-size:11px;">TR: +90 544 590 60 14<br>BR: +55 19 981 55 29 42</div>
+                    <div style="text-align:center; border-top:1px solid #000; width:180px; padding-top:10px; font-size:12px;">Yetkili İmza / Kaşe</div>
+                </div>
+            </div>
         </div>
     </div>
-</header>
 
-<div class="ice-card">
-    <h2>GLOBAL BORSA ANALİZİ (USD)</h2>
-    <div class="exchange-grid">
-        <div class="ex-box">
-            <label>ARABICA NY (c/lb)</label>
-            <input type="number" id="iceNy" value="245.50" oninput="calc()">
-        </div>
-        <div class="ex-box">
-            <label>ROBUSTA LDN ($/TON)</label>
-            <input type="number" id="iceLdn" value="4800" oninput="calc()">
-        </div>
-    </div>
-</div>
+    <script>
+        const STATS = { navlun: 350, sigorta: 0.015, limanMasraf: 150 };
+        const PRODUCTS = [
+            { id: 'ara', name: 'ARABICA NY COFFEE', type: 'AR' },
+            { id: 'rob', name: 'ROBUSTA CONILON', type: 'RB' }
+        ];
 
-<div id="mainGrid"></div>
+        async function init() {
+            try {
+                const r = await fetch('https://open.er-api.com/v6/latest/USD');
+                const d = await r.json();
+                if(d?.rates) document.getElementById('uTry').value = d.rates.TRY.toFixed(4);
+                
+                const proxy = "https://api.allorigins.win/get?url=";
+                const [rAr, rRob] = await Promise.all([
+                    fetch(proxy + encodeURIComponent("https://query1.finance.yahoo.com/v8/finance/chart/KC=F")),
+                    fetch(proxy + encodeURIComponent("https://query1.finance.yahoo.com/v8/finance/chart/RC=F"))
+                ]);
+                document.getElementById('iceNy').value = JSON.parse((await rAr.json()).contents).chart.result[0].meta.regularMarketPrice;
+                document.getElementById('iceLdn').value = JSON.parse((await rRob.json()).contents).chart.result[0].meta.regularMarketPrice;
+            } catch(e) {}
+            render();
+        }
 
-<script>
-    // Sabitler: Navlun, Sigorta ve Liman Masrafları
-    const STATS = { navlun: 350, sigorta: 0.015, limanMasraf: 150 };
-    const PRODUCTS = [
-        { id: 'ara', name: 'ARABICA NY 2/3', type: 'AR' },
-        { id: 'rob', name: 'ROBUSTA CONILON', type: 'RB' }
-    ];
-
-    // Kur bilgisini anlık çekme fonksiyonu
-    async function liveUpdate() {
-        try {
-            const r = await fetch('https://open.er-api.com/v6/latest/USD');
-            const d = await r.json();
-            if (d && d.rates) {
-                document.getElementById('uTry').value = d.rates.TRY.toFixed(4);
-                calc();
-            }
-        } catch (e) { calc(); }
-    }
-
-    // Kartları oluşturma
-    function createCards() {
-        const grid = document.getElementById('mainGrid');
-        grid.innerHTML = '';
-        PRODUCTS.forEach(p => {
-            grid.innerHTML += `
-                <div class="card">
-                    <h2>${p.name}</h2>
-                    <div class="input-row">
-                        <div class="input-group"><label>MİKTAR (TON)</label><input type="number" id="${p.id}Ton" value="1" oninput="calc()"></div>
-                        <div class="input-group"><label>KÂR MARJI %</label><input type="number" id="${p.id}Kar" value="15" oninput="calc()"></div>
+        function render() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            PRODUCTS.forEach(p => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <h2>${p.name}</h2>
+                        <div class="input-row">
+                            <div class="field"><label>MİKTAR (TON)</label><input type="number" id="${p.id}Ton" value="1" oninput="calc()"></div>
+                            <div class="field"><label>KÂR MARJI %</label><input type="number" id="${p.id}Kar" value="15" oninput="calc()"></div>
+                        </div>
+                        <div class="data-list" id="${p.id}List"></div>
                     </div>
-                    <div class="summary-box" id="${p.id}Summary"></div>
-                    <div class="price-row">
-                        <span class="status-tag">TOPLAM NET KAZANÇ</span>
-                        <div class="p-val-group" id="${p.id}FinalKar"></div>
+                `;
+            });
+            calc();
+        }
+
+        function calc() {
+            const uTry = parseFloat(document.getElementById('uTry').value) || 1;
+            const iceNy = parseFloat(document.getElementById('iceNy').value) || 0;
+            const iceLdn = parseFloat(document.getElementById('iceLdn').value) || 0;
+
+            PRODUCTS.forEach(p => {
+                const ton = parseFloat(document.getElementById(p.id+'Ton').value) || 1;
+                const kar = (parseFloat(document.getElementById(p.id+'Kar').value) || 0) / 100;
+                let borsa = (p.type === 'AR') ? (iceNy/100)*2204.62 : iceLdn;
+
+                // Maliyet Hesaplama (Kâr her birime eklenir)
+                const fS = borsa * (1+kar) * ton;
+                const cM = (borsa + STATS.navlun + (borsa * STATS.sigorta)) * (1+kar);
+                const cS = cM * ton;
+                const dM = (cM + (STATS.limanMasraf * (1+kar))) * 1.15;
+                const dS = dM * ton;
+
+                document.getElementById(p.id+'List').innerHTML = `
+                    <div class="data-item"><label>FOB TOPLAM</label><div class="data-val"><b>$${Math.round(fS).toLocaleString()}</b><span>₺${Math.round(fS*uTry).toLocaleString()}</span></div></div>
+                    <div class="data-item"><label>CIF TOPLAM</label><div class="data-val"><b>$${Math.round(cS).toLocaleString()}</b><span>₺${Math.round(cS*uTry).toLocaleString()}</span></div></div>
+                    <div class="data-item" style="border:none"><label>DDP TOPLAM</label><div class="data-val"><b>$${Math.round(dS).toLocaleString()}</b><span>₺${Math.round(dS*uTry).toLocaleString()}</span></div></div>
+                    <div class="highlight-box">
+                        <small>Birim KG Maliyeti (DDP - Kâr Dahil)</small>
+                        <div>$${(dM/1000).toFixed(2)} / ₺${((dM/1000)*uTry).toFixed(2)}</div>
                     </div>
-                </div>
-            `;
-        });
-        liveUpdate();
-    }
+                `;
+            });
+        }
 
-    // Ana Hesaplama Motoru
-    function calc() {
-        const uTry = parseFloat(document.getElementById('uTry').value) || 1;
-        const iceNy = parseFloat(document.getElementById('iceNy').value) || 0;
-        const iceLdn = parseFloat(document.getElementById('iceLdn').value) || 0;
-
-        PRODUCTS.forEach(p => {
-            const ton = parseFloat(document.getElementById(p.id + 'Ton').value) || 0;
-            const kO = (parseFloat(document.getElementById(p.id + 'Kar').value) || 0) / 100;
-
-            let f1U = 0;
-            if(p.type === 'AR') {
-                // NY Arabica: Cent/lb -> USD/Ton (1 ton = 2204.62 lb)
-                f1U = (iceNy / 100) * 2204.62;
-            } else {
-                // Londra Robusta zaten $/Ton
-                f1U = iceLdn;
-            }
-
-            // Maliyet Zinciri
-            const c1U = f1U + STATS.navlun + (f1U * STATS.sigorta);
-            const d1U = (c1U + STATS.limanMasraf) * 1.15; // Gümrük ve vergiler dahil maliyet
-
-            // Satış ve Kâr
-            const kazancU = (d1U * ton) * kO;
-            const cifS = (c1U * (1 + kO)) * ton;
-            const ddpS = (d1U * (1 + kO)) * ton;
-
-            document.getElementById(p.id+'Summary').innerHTML = `
-                <div class="m-head">SATIŞ TEKLİFLERİ (${ton} T)</div>
-                <div class="line offer-line">
-                    <span class="line-label">CIF SATIŞ (LİMAN TESLİM)</span>
-                    <div class="line-values"><b>₺${Math.round(cifS*uTry).toLocaleString()}</b> <b>$${Math.round(cifS).toLocaleString()}</b></div>
-                </div>
-                <div class="line offer-line">
-                    <span class="line-label">DDP SATIŞ (KAPI TESLİM)</span>
-                    <div class="line-values"><b>₺${Math.round(ddpS*uTry).toLocaleString()}</b> <b>$${Math.round(ddpS).toLocaleString()}</b></div>
-                </div>
-                <div class="m-head">MALİYET ANALİZİ</div>
-                <div class="line">
-                    <span class="line-label">DDP KG MALİYETİ</span>
-                    <div class="line-values">
-                        <b>₺${(d1U*uTry/1000).toFixed(2)}</b> 
-                        <b>$${(d1U/1000).toFixed(2)}</b>
-                    </div>
-                </div>
-            `;
+        function openModal() {
+            const client = prompt("Müşteri / Firma İsmi:");
+            if(!client) return;
+            document.getElementById('pdfClient').innerText = "SAYIN: " + client.toUpperCase();
+            document.getElementById('pdfDate').innerText = "TARİH: " + new Date().toLocaleDateString('tr-TR');
             
-            document.getElementById(p.id+'FinalKar').innerHTML = `
-                <span>₺${Math.round(kazancU*uTry).toLocaleString()}</span>
-                <span>$${Math.round(kazancU).toLocaleString()}</span>
-            `;
-        });
-    }
+            let html = '';
+            const kur = parseFloat(document.getElementById('uTry').value);
+            PRODUCTS.forEach(p => {
+                const ton = document.getElementById(p.id+'Ton').value;
+                const kar = (parseFloat(document.getElementById(p.id+'Kar').value) || 0) / 100;
+                let borsa = (p.type === 'AR') ? (parseFloat(document.getElementById('iceNy').value)/100)*2204.62 : parseFloat(document.getElementById('iceLdn').value);
+                
+                const fS = borsa * (1+kar) * ton;
+                const cM = (borsa + STATS.navlun + (borsa * STATS.sigorta)) * (1+kar);
+                const dM = (cM + (STATS.limanMasraf * (1+kar))) * 1.15;
 
-    // Başlangıç
-    window.onload = createCards;
-</script>
+                html += `
+                    <div style="margin-bottom:35px;">
+                        <h3 style="border-bottom:2px solid #000; padding-bottom:5px; margin-bottom:15px;">${p.name} (${ton} TON)</h3>
+                        <table class="pdf-table">
+                            <tr><th>TESLİM ŞEKLİ</th><th>BİRİM KG ($)</th><th>TOPLAM USD</th><th>TOPLAM TRY</th></tr>
+                            <tr><td>FOB</td><td>$${(borsa*(1+kar)/1000).toFixed(2)}</td><td>$${Math.round(fS).toLocaleString()}</td><td>₺${Math.round(fS*kur).toLocaleString()}</td></tr>
+                            <tr><td>CIF</td><td>$${(cM/1000).toFixed(2)}</td><td>$${Math.round(cM*ton).toLocaleString()}</td><td>₺${Math.round(cM*ton*kur).toLocaleString()}</td></tr>
+                            <tr style="background:#f0fff4;"><td><b>DDP</b></td><td><b>$${(dM/1000).toFixed(2)}</b></td><td><b>$${Math.round(dM*ton).toLocaleString()}</b></td><td><b>₺${Math.round(dM*ton*kur).toLocaleString()}</b></td></tr>
+                        </table>
+                    </div>
+                `;
+            });
+            document.getElementById('pdfContent').innerHTML = html;
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        
+        function savePDF() {
+            const element = document.getElementById('pdfFrame');
+            html2pdf().set({ margin:0, filename:'ASC_Official_Offer.pdf', html2canvas:{scale:2}, jsPDF:{unit:'mm', format:'a4', orientation:'portrait'} }).from(element).save();
+        }
+
+        window.onload = init;
+    </script>
 </body>
 </html>
