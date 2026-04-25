@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCAFÊ - Brezilya Yeşil Kahve İthalat Maliyet Sistemi</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --coffee:#6F4E37;--coffee-dark:#4A3428;--coffee-light:#A67B5B;--green:#2D5016;--green-light:#4A7C2A;
+    --cream:#F5F0E8;--cream-dark:#E8E0D4;--white:#FFFFFF;--text:#2C1810;--text-light:#5C4A3D;--text-muted:#8B7355;
+    --accent:#8B6914;--danger:#C0392B;--success:#2D5016;--warning:#E67E22;--info:#1E3A5F;
+    --shadow:0 2px 12px rgba(0,0,0,0.08);--shadow-lg:0 4px 20px rgba(0,0,0,0.12);--radius:14px;--radius-sm:10px;
+  }
+  .dark{--cream:#1a1510;--cream-dark:#2a2018;--white:#2a2018;--text:#E8D5C4;--text-light:#C4A882;--text-muted:#8B7355;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--cream);color:var(--text);line-height:1.6;min-height:100vh;transition:background .3s,color .3s}
+  .container{max-width:1000px;margin:0 auto;padding:0 16px}
+  .header{background:var(--white);padding:16px 0;box-shadow:var(--shadow);position:sticky;top:0;z-index:100;transition:background .3s}
+  .header-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo-icon{width:44px;height:44px;background:var(--coffee);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+  .logo-text h1{font-size:24px;font-weight:900;color:var(--coffee);letter-spacing:3px;line-height:1}
+  .logo-text p{font-size:11px;color:var(--text-muted);margin-top:2px}
+  .header-actions{display:flex;align-items:center;gap:10px}
+  .btn-icon{background:var(--cream);border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:.2s}
+  .btn-icon:hover{background:var(--cream-dark)}
+  .rate-banner{background:var(--green);color:#fff;padding:12px 20px;border-radius:var(--radius);margin:16px 0;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow);flex-wrap:wrap;gap:8px}
+  .rate-banner-left{display:flex;align-items:center;gap:10px}
+  .rate-banner-value{font-size:22px;font-weight:900}
+  .rate-banner-label{font-size:11px;opacity:.8}
+  .rate-banner-right{text-align:right}
+  .rate-banner-date{font-size:10px;opacity:.7}
+  .rate-banner-error{font-size:10px;color:#FFD700}
+  .card{background:var(--white);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow);transition:background .3s}
+  .card-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .price-card{background:var(--white);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;cursor:pointer;transition:.2s;border:2px solid transparent;box-shadow:var(--shadow)}
+  .price-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--coffee)}
+  .price-card-source{font-size:10px;font-weight:600;color:var(--coffee);margin-bottom:4px}
+  .price-card-value{font-size:17px;font-weight:900;color:var(--text)}
+  .price-card-unit{font-size:10px;color:var(--text-muted)}
+  .price-card-kg{font-size:10px;color:var(--green);font-weight:600;margin-top:2px}
+  .price-card-change{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;color:#fff}
+  .change-up{background:var(--green)}.change-down{background:var(--danger)}
+  .gtip-code{font-size:20px;font-weight:900;color:var(--coffee);font-family:'Courier New',monospace;letter-spacing:1px;margin-bottom:6px}
+  .gtip-desc{font-size:13px;color:var(--text-light);margin-bottom:14px}
+  .gtip-tax-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .gtip-tax-item{background:var(--cream);border-radius:var(--radius-sm);padding:12px;text-align:center}
+  .gtip-tax-label{font-size:10px;color:var(--text-muted)}.gtip-tax-value{font-size:17px;font-weight:900;color:var(--text);margin-top:2px}
+  .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .form-group{display:flex;flex-direction:column}
+  .form-label{font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+  .form-label .hint{font-size:10px;color:var(--text-muted);font-weight:400}
+  .form-input{background:var(--cream);border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:10px 12px;font-size:15px;color:var(--text);transition:border-color .2s;width:100%}
+  .form-input:focus{outline:none;border-color:var(--coffee)}.form-input:read-only{background:#E8F0E4}
+  .form-select{background:var(--cream);border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:10px 12px;font-size:15px;color:var(--text);width:100%;cursor:pointer}
+  .switch-row{display:flex;align-items:center;gap:6px}
+  .switch{position:relative;width:36px;height:20px}.switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--cream-dark);border-radius:20px;transition:.3s}
+  .slider:before{position:absolute;content:"";height:16px;width:16px;left:2px;bottom:2px;background:white;border-radius:50%;transition:.3s}
+  .switch input:checked+.slider{background:var(--coffee)}.switch input:checked+.slider:before{transform:translateX(16px)}
+  .switch-label{font-size:10px;color:var(--text-muted)}
+  .step{display:flex;align-items:center;gap:10px;padding:8px 0}
+  .step.highlight{background:var(--cream);border-radius:var(--radius-sm);padding:10px}
+  .step-num{width:26px;height:26px;min-width:26px;background:var(--coffee);color:#fff;border-radius:50%;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center}
+  .step-content{flex:1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+  .step-label{font-size:13px;color:var(--text-light)}.step-label.bold{font-weight:700;color:var(--text)}
+  .step-value{font-size:13px;font-weight:700;color:var(--text)}.step-value.bold{font-size:15px;font-weight:900;color:var(--coffee)}
+  .result-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--cream)}
+  .result-row:last-child{border-bottom:none}.result-label{font-size:13px;color:var(--text-light)}.result-label.bold{font-weight:700;color:var(--text)}
+  .result-value{font-size:14px;font-weight:700;color:var(--text)}.result-value.accent{color:var(--accent)}.result-value.success{color:var(--success)}.result-value.danger{color:var(--danger)}
+  .divider{height:1px;background:var(--cream-dark);margin:8px 0}
+  .total-box{background:var(--cream);border-radius:var(--radius-sm);padding:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+  .total-label{font-size:15px;font-weight:900;color:var(--text)}.total-value{font-size:16px;font-weight:900;color:var(--coffee)}
+  .unit-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .unit-item{background:var(--cream);border-radius:var(--radius-sm);padding:16px;text-align:center}
+  .unit-label{font-size:12px;color:var(--text-muted);margin-bottom:4px}.unit-value{font-size:22px;font-weight:900;color:var(--text)}
+  .selling-card{background:var(--coffee);color:#fff}.selling-card .card-title{color:#fff}
+  .selling-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+  .selling-item{background:rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:14px;text-align:center}
+  .selling-label{font-size:12px;color:#E8D5C4;margin-bottom:4px}.selling-value{font-size:20px;font-weight:900;color:#fff}
+  .profit-box{background:rgba(255,255,255,0.08);border-radius:var(--radius-sm);padding:14px;text-align:center}
+  .profit-label{font-size:12px;color:#E8D5C4}.profit-value{font-size:24px;font-weight:900;color:#A8E6A3}
+  .toggle-header{display:flex;align-items:center;gap:10px;background:var(--white);border-radius:var(--radius);padding:14px 16px;cursor:pointer;box-shadow:var(--shadow);margin-bottom:10px;transition:.2s}
+  .toggle-header:hover{background:var(--cream)}.toggle-title{flex:1;font-size:15px;font-weight:700;color:var(--text)}.toggle-icon{transition:.3s}.toggle-icon.open{transform:rotate(180deg)}
+  .toggle-content{background:var(--white);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow);display:none}
+  .toggle-content.open{display:block}.toggle-item{padding:8px 0;border-bottom:1px solid var(--cream)}.toggle-item:last-child{border-bottom:none}
+  .toggle-item-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+  .toggle-item-text{font-size:13px;color:var(--text-light);line-height:1.6}.toggle-item-sub{font-size:11px;color:var(--text-muted);font-style:italic;margin-top:2px}
+  .doc-row{display:flex;align-items:center;gap:8px;padding:6px 0}.doc-text{font-size:13px;color:var(--text)}
+  .risk-row{display:flex;align-items:flex-start;gap:8px;padding:6px 0}.risk-text{font-size:12px;color:var(--accent);line-height:1.6}
+  .btn-primary{background:var(--coffee);color:#fff;border:none;border-radius:var(--radius-sm);padding:12px 20px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+  .btn-primary:hover{background:var(--coffee-dark)}.btn-secondary{background:var(--cream);color:var(--text);border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s}
+  .btn-secondary:hover{background:var(--cream-dark)}.btn-danger{background:var(--danger);color:#fff;border:none;border-radius:var(--radius-sm);padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
+  .btn-danger:hover{background:#a93226}
+  .action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .saved-list{display:grid;gap:10px;margin-top:10px}
+  .saved-item{background:var(--cream);border-radius:var(--radius-sm);padding:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .saved-info{flex:1;min-width:200px}.saved-name{font-size:13px;font-weight:700;color:var(--text)}.saved-date{font-size:11px;color:var(--text-muted)}
+  .saved-actions{display:flex;gap:6px}
+  .chart-container{position:relative;height:280px;margin-top:10px}
+  .internal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+  .internal-item{background:var(--cream);border-radius:var(--radius-sm);padding:10px}
+  .internal-label{font-size:11px;color:var(--text-muted);margin-bottom:4px}.internal-input{width:100%;background:var(--white);border:1px solid var(--cream-dark);border-radius:8px;padding:8px;font-size:14px;color:var(--text)}
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--green);color:#fff;padding:12px 20px;border-radius:var(--radius-sm);box-shadow:var(--shadow-lg);z-index:1000;font-size:13px;font-weight:600;transform:translateY(100px);opacity:0;transition:.3s}
+  .toast.show{transform:translateY(0);opacity:1}
+  .alarm-box{background:var(--cream);border-radius:var(--radius-sm);padding:14px;margin-top:10px}
+  .alarm-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+  .lang-select{background:var(--cream);border:1px solid var(--cream-dark);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--text);cursor:pointer}
+  @media(max-width:600px){
+    .price-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.gtip-tax-grid{grid-template-columns:1fr}
+    .unit-grid{grid-template-columns:1fr}.selling-grid{grid-template-columns:1fr}.step-content{flex-direction:column;align-items:flex-start;gap:2px}
+    .header-inner{flex-direction:column;align-items:flex-start}.header-actions{align-self:flex-end}
+    .action-bar{flex-direction:column}.action-bar .btn-primary,.action-bar .btn-secondary{width:100%;justify-content:center}
+  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .card{animation:fadeIn .4s ease-out}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--cream)}::-webkit-scrollbar-thumb{background:var(--coffee-light);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Header -->
+<div class="header">
+  <div class="container">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">☕</div>
+        <div class="logo-text">
+          <h1>ASCAFÊ</h1>
+          <p data-tr="Brezilya Yeşil Kahve İthalat Maliyet Sistemi" data-en="Brazil Green Coffee Import Cost System">Brezilya Yeşil Kahve İthalat Maliyet Sistemi</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
+          <option value="tr">Türkçe</option>
+          <option value="en">English</option>
+        </select>
+        <button class="btn-icon" onclick="toggleDark()" title="Dark Mode">🌙</button>
+        <button class="btn-icon" onclick="fetchPrices()" title="Fiyatları Güncelle">🔄</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Rate Banner -->
+  <div class="rate-banner" id="rateBanner">
+    <div class="rate-banner-left">
+      <span style="font-size:20px">💱</span>
+      <div>
+        <div class="rate-banner-value" id="rateValue">Yükleniyor...</div>
+        <div class="rate-banner-label" data-tr="USD / TRY Canlı Kur" data-en="USD / TRY Live Rate">USD / TRY Canlı Kur</div>
+      </div>
+    </div>
+    <div class="rate-banner-right">
+      <div class="rate-banner-date" id="rateDate"></div>
+      <div class="rate-banner-error" id="rateError"></div>
+    </div>
+  </div>
+
+  <!-- Market Prices -->
+  <div class="card">
+    <div class="card-title">📊 <span data-tr="Piyasa Fiyatları (USD/ton)" data-en="Market Prices (USD/ton)">Piyasa Fiyatları (USD/ton)</span></div>
+    <div class="price-grid" id="priceGrid">
+      <div class="price-card" onclick="setFob(7.85)">
+        <div class="price-card-source">ICE Arabica (KC=F)</div>
+        <div class="price-card-value" id="price1">$7,850</div>
+        <div class="price-card-unit">/ ton</div>
+        <div class="price-card-kg">($7.85/kg)</div>
+        <span class="price-card-change change-up">+2.4%</span>
+      </div>
+      <div class="price-card" onclick="setFob(5.95)">
+        <div class="price-card-source">ICO Composite</div>
+        <div class="price-card-value" id="price2">$5,950</div>
+        <div class="price-card-unit">/ ton</div>
+        <div class="price-card-kg">($5.95/kg)</div>
+        <span class="price-card-change change-up">+1.8%</span>
+      </div>
+      <div class="price-card" onclick="setFob(7.20)">
+        <div class="price-card-source">Brezilya Santos 2/3</div>
+        <div class="price-card-value" id="price3">$7,200</div>
+        <div class="price-card-unit">/ ton</div>
+        <div class="price-card-kg">($7.20/kg)</div>
+        <span class="price-card-change change-up">+1.5%</span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:10px;font-style:italic;" data-tr="• Fiyat kartına tıklayarak FOB değerine aktarın • Kaynak: Yahoo Finance / ICE" data-en="• Click price card to set FOB • Source: Yahoo Finance / ICE">• Fiyat kartına tıklayarak FOB değerine aktarın • Kaynak: Yahoo Finance / ICE</p>
+  </div>
+
+  <!-- Price Chart -->
+  <div class="card">
+    <div class="card-title">📈 <span data-tr="Tarihsel Fiyat Grafiği (Son 30 Gün)" data-en="Historical Price Chart (Last 30 Days)">Tarihsel Fiyat Grafiği (Son 30 Gün)</span></div>
+    <div class="chart-container"><canvas id="priceChart"></canvas></div>
+  </div>
+
+  <!-- Country & GTIP -->
+  <div class="card">
+    <div class="card-title">🌍 <span data-tr="Menşe Ülke & GTIP" data-en="Origin Country & GTIP">Menşe Ülke & GTIP</span></div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label" data-tr="Menşe Ülke Seçin" data-en="Select Origin Country">Menşe Ülke Seçin</label>
+      <select class="form-select" id="countrySelect" onchange="changeCountry()">
+        <option value="BR">Brezilya (Brazil) - GTIP: 0901.11.10</option>
+        <option value="VN">Vietnam - GTIP: 0901.21.90</option>
+        <option value="CO">Kolombiya (Colombia) - GTIP: 0901.11.10</option>
+        <option value="ET">Etiyopya (Ethiopia) - GTIP: 0901.11.10</option>
+        <option value="ID">Endonezya (Indonesia) - GTIP: 0901.11.10</option>
+        <option value="UG">Uganda - GTIP: 0901.11.10</option>
+        <option value="GT">Guatemala - GTIP: 0901.11.10</option>
+        <option value="HN">Honduras - GTIP: 0901.11.10</option>
+        <option value="PE">Peru - GTIP: 0901.11.10</option>
+        <option value="KE">Kenya - GTIP: 0901.11.10</option>
+      </select>
+    </div>
+    <div class="gtip-code" id="gtipCode">0901.11.10</div>
+    <div class="gtip-desc" id="gtipDesc">Kahve yeşil (Arabica) — kavrulmamış, kafeinli</div>
+    <div class="gtip-tax-grid">
+      <div class="gtip-tax-item">
+        <div class="gtip-tax-label" data-tr="Gümrük Vergisi" data-en="Customs Duty">Gümrük Vergisi</div>
+        <div class="gtip-tax-value" style="color:var(--success)" id="dutyDisplay">%0</div>
+      </div>
+      <div class="gtip-tax-item">
+        <div class="gtip-tax-label">KDV</div>
+        <div class="gtip-tax-value" id="vatDisplay">%1</div>
+      </div>
+      <div class="gtip-tax-item">
+        <div class="gtip-tax-label">ÖTV</div>
+        <div class="gtip-tax-value" style="color:var(--text-muted)">YOK</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:12px;line-height:1.5;" id="countryNote">
+      <strong>Not:</strong> Brezilya menşeli yeşil Arabica kahve için gümrük vergisi %0'dır.
+    </p>
+  </div>
+
+  <!-- Input Form -->
+  <div class="card">
+    <div class="card-title">⚙️ <span data-tr="Hesaplama Parametreleri" data-en="Calculation Parameters">Hesaplama Parametreleri</span></div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" data-tr="FOB Fiyatı (USD/ton)" data-en="FOB Price (USD/ton)">FOB Fiyatı (USD/ton)</label>
+        <input type="number" class="form-input" id="fobPerTon" value="2500" step="0.01" oninput="calculate()">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-tr="Miktar (ton)" data-en="Quantity (tons)">Miktar (ton)</label>
+        <input type="number" class="form-input" id="quantityTons" value="20" step="0.1" oninput="calculate()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          <span data-tr="Navlun (USD/ton)" data-en="Freight (USD/ton)">Navlun (USD/ton)</span>
+          <span class="switch-row">
+            <span class="switch-label" data-tr="Oto" data-en="Auto">Oto</span>
+            <label class="switch">
+              <input type="checkbox" id="autoFreight" onchange="toggleAutoFreight()">
+              <span class="slider"></span>
+            </label>
+          </span>
+        </label>
+        <input type="number" class="form-input" id="freightPerTon" value="250" step="1" oninput="calculate()">
+        <span class="hint" id="freightHint">Ref: $150-350/ton (Santos→Türkiye)</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          <span data-tr="Sigorta (%)" data-en="Insurance (%)"">Sigorta (%)</span>
+          <span class="switch-row">
+            <span class="switch-label" data-tr="Oto" data-en="Auto">Oto</span>
+            <label class="switch">
+              <input type="checkbox" id="autoInsurance" checked onchange="toggleAutoInsurance()">
+              <span class="slider"></span>
+            </label>
+          </span>
+        </label>
+        <input type="number" class="form-input" id="insuranceRate" value="0.30" step="0.01" oninput="calculate()">
+        <span class="hint">Ref: %0.30 (CIF üzerinden)</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-tr="Gümrük Vergisi (%)" data-en="Customs Duty (%)">Gümrük Vergisi (%)</label>
+        <input type="number" class="form-input" id="customsDutyRate" value="0" readonly>
+        <span class="hint" id="dutyHint">Brezilya menşeli: %0</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">KDV (%)</label>
+        <input type="number" class="form-input" id="vatRate" value="1" readonly>
+        <span class="hint" data-tr="Kahve için: %1" data-en="For coffee: %1">Kahve için: %1</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-tr="İç Masraflar (TRY/ton)" data-en="Internal Costs (TRY/ton)">İç Masraflar (TRY/ton)</label>
+        <input type="number" class="form-input" id="internalCostsPerTon" value="950" step="10" oninput="calculate()">
+        <span class="hint" data-tr="Gümrükçü+liman+nakliye" data-en="Broker+port+haulage">Gümrükçü+liman+nakliye</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-tr="Kar Marjı (%)" data-en="Profit Margin (%)"">Kar Marjı (%)</label>
+        <input type="number" class="form-input" id="profitMargin" value="10" step="1" oninput="calculate()">
+        <span class="hint" data-tr="Toptan satış marjı" data-en="Wholesale margin">Toptan satış marjı</span>
+      </div>
+    </div>
+
+    <!-- Internal Costs Detail -->
+    <div style="margin-top:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;cursor:pointer" onclick="toggleSection('internalDetail')">
+        <span style="font-size:13px;font-weight:700;color:var(--text)" data-tr="📋 İç Masraf Detayları" data-en="📋 Internal Cost Details">📋 İç Masraf Detayları</span>
+        <span class="toggle-icon" id="internalDetail-icon">▼</span>
+      </div>
+      <div class="toggle-content" id="internalDetail">
+        <div class="internal-grid">
+          <div class="internal-item">
+            <div class="internal-label" data-tr="Gümrük Müşaviri (TRY)" data-en="Customs Broker (TRY)">Gümrük Müşaviri (TRY)</div>
+            <input type="number" class="internal-input" id="costBroker" value="400" oninput="updateInternalTotal()">
+          </div>
+          <div class="internal-item">
+            <div class="internal-label" data-tr="Liman & Antrepo (TRY)" data-en="Port & Warehouse (TRY)">Liman & Antrepo (TRY)</div>
+            <input type="number" class="internal-input" id="costPort" value="300" oninput="updateInternalTotal()">
+          </div>
+          <div class="internal-item">
+            <div class="internal-label" data-tr="Türkiye İçi Nakliye (TRY)" data-en="Domestic Haulage (TRY)">Türkiye İçi Nakliye (TRY)</div>
+            <input type="number" class="internal-input" id="costHaulage" value="200" oninput="updateInternalTotal()">
+          </div>
+          <div class="internal-item">
+            <div class="internal-label" data-tr="Laboratuvar & Diğer (TRY)" data-en="Lab & Other (TRY)">Laboratuvar & Diğer (TRY)</div>
+            <input type="number" class="internal-input" id="costOther" value="50" oninput="updateInternalTotal()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alarm -->
+  <div class="card">
+    <div class="card-title">🔔 <span data-tr="Döviz Kuru Alarmı" data-en="Exchange Rate Alarm">Döviz Kuru Alarmı</span></div>
+    <div class="alarm-box">
+      <div class="alarm-row">
+        <label class="form-label" style="margin:0" data-tr="Hedef Kur (USD/TRY)" data-en="Target Rate (USD/TRY)">Hedef Kur (USD/TRY)</label>
+        <input type="number" class="form-input" id="alarmRate" value="35.00" step="0.01" style="width:120px">
+        <label class="switch-row" style="margin:0">
+          <span class="switch-label" data-tr="Aktif" data-en="Active">Aktif</span>
+          <label class="switch">
+            <input type="checkbox" id="alarmActive">
+            <span class="slider"></span>
+          </label>
+        </label>
+      </div>
+      <p style="font-size:11px;color:var(--text-muted)" data-tr="Kur hedef değerin altına düşürse tarayıcı bildirimi gönderilir" data-en="Browser notification when rate drops below target">Kur hedef değerin altına düşürse tarayıcı bildirimi gönderilir</p>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="card">
+    <div class="card-title">🔢 <span data-tr="Adım Adım Hesaplama" data-en="Step by Step Calculation">Adım Adım Hesaplama</span></div>
+    <div id="stepsContainer"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💰 <span data-tr="Türk Lirası Cinsinden" data-en="In Turkish Lira">Türk Lirası Cinsinden</span></div>
+    <div id="tryResults"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚖️ <span data-tr="Birim Maliyetler" data-en="Unit Costs">Birim Maliyetler</span></div>
+    <div class="unit-grid" id="unitResults"></div>
+  </div>
+
+  <div class="card selling-card">
+    <div class="card-title">📈 <span data-tr="Tahmini Satış Fiyatı" data-en="Estimated Selling Price">Tahmini Satış Fiyatı</span></div>
+    <div id="sellingResults"></div>
+  </div>
+
+  <!-- Actions -->
+  <div class="card">
+    <div class="card-title">💾 <span data-tr="İşlemler" data-en="Actions">İşlemler</span></div>
+    <div class="action-bar">
+      <button class="btn-primary" onclick="saveQuote()">
+        <span>💾</span> <span data-tr="Teklifi Kaydet" data-en="Save Quote">Teklifi Kaydet</span>
+      </button>
+      <button class="btn-secondary" onclick="exportExcel()">
+        <span>📊</span> <span data-tr="Excel İndir" data-en="Download Excel">Excel İndir</span>
+      </button>
+      <button class="btn-secondary" onclick="exportPDF()">
+        <span>📄</span> <span data-tr="PDF İndir" data-en="Download PDF">PDF İndir</span>
+      </button>
+      <button class="btn-secondary" onclick="window.print()">
+        <span>🖨️</span> <span data-tr="Yazdır" data-en="Print">Yazdır</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Saved Quotes -->
+  <div class="card">
+    <div class="card-title">📋 <span data-tr="Kayıtlı Teklifler" data-en="Saved Quotes">Kayıtlı Teklifler</span></div>
+    <div id="savedQuotes"></div>
+  </div>
+
+  <!-- INCOTERMS -->
+  <div class="toggle-header" onclick="toggleSection('incoterms')">
+    <span style="font-size:20px">📖</span>
+    <span class="toggle-title">INCOTERMS® 2020</span>
+    <span class="toggle-icon" id="incoterms-icon">▼</span>
+  </div>
+  <div class="toggle-content" id="incoterms">
+    <div class="toggle-item">
+      <div class="toggle-item-title">FOB (Free On Board)</div>
+      <div class="toggle-item-text">Menşe ülke limanında mal gemiye yüklendiği andaki fiyat. Satıcı navlun ve sigortadan sorumlu değildir.</div>
+      <div class="toggle-item-sub">Risk Transferi: Gemiye yükleme anı</div>
+    </div>
+    <div class="toggle-item">
+      <div class="toggle-item-title">CIF (Cost, Insurance, Freight)</div>
+      <div class="toggle-item-text">FOB + Deniz navlun + Sigorta. Satıcı malın taşınması ve sigortasından sorumludur. Türkiye limanına kadar.</div>
+      <div class="toggle-item-sub">Risk Transferi: Türkiye limanında gemiden indirme anı</div>
+    </div>
+    <div class="toggle-item">
+      <div class="toggle-item-title">DDP (Delivered Duty Paid)</div>
+      <div class="toggle-item-text">Türkiye'de kapıya kadar tüm vergiler dahil maliyet. Satıcı tüm sorumluluğu üstlenir.</div>
+      <div class="toggle-item-sub">Risk Transferi: Alıcının adresinde teslim</div>
+    </div>
+  </div>
+
+  <!-- Documents -->
+  <div class="toggle-header" onclick="toggleSection('documents')">
+    <span style="font-size:20px">📁</span>
+    <span class="toggle-title" data-tr="Gerekli Dokümanlar" data-en="Required Documents">Gerekli Dokümanlar</span>
+    <span class="toggle-icon" id="documents-icon">▼</span>
+  </div>
+  <div class="toggle-content" id="documents">
+    <div class="doc-row"><span style="color:var(--green);font-size:18px">✓</span><span class="doc-text">Ticari Fatura (Commercial Invoice)</span></div>
+    <div class="doc-row"><span style="color:var(--green);font-size:18px">✓</span><span class="doc-text">Paket Listesi (Packing List)</span></div>
+    <div class="doc-row"><span style="color:var(--green);font-size:18px">✓</span><span class="doc-text">Konşimento (Bill of Lading - B/L)</span></div>
+    <div class="doc-row"><span style="color:var(--green);font-size:18px">✓</span><span class="doc-text">Menşe Şahadetnamesi (Certificate of Origin)</span></div>
+    <div class="doc-row"><span style="color:var(--green);font-size:18px">✓</span><span class="doc-text">Fito-saniter Sertifika (Phytosanitary Certificate)</span></div>
+    <div class="doc-row"><span style="color:var(--green);font-size:18px">✓</span><span class="doc-text">Analiz Raporu (Quality Certificate)</span></div>
+    <div class="doc-row"><span style="color:var(--green);font-size:18px">✓</span><span class="doc-text">Sigorta Poliçesi (Insurance Policy)</span></div>
+    <div class="doc-row"><span style="color:var(--green);font-size:18px">✓</span><span class="doc-text">EUR.1 veya A.TR Dolaşım Belgesi (varsa)</span></div>
+  </div>
+
+  <!-- Risks -->
+  <div class="toggle-header" onclick="toggleSection('risks')">
+    <span style="font-size:20px">⚠️</span>
+    <span class="toggle-title" style="color:var(--danger)">Riskler & Uyarılar</span>
+    <span class="toggle-icon" id="risks-icon">▼</span>
+  </div>
+  <div class="toggle-content" id="risks" style="background:#FFF3E0">
+    <div class="risk-row"><span style="color:var(--warning);font-size:18px">⚠</span><span class="risk-text">FOB/CIF/DDP fiyat teklifi mutlaka INCOTERMS® 2020 ile yazılmalıdır.</span></div>
+    <div class="risk-row"><span style="color:var(--warning);font-size:18px">⚠</span><span class="risk-text">Navlun ve sigorta piyasada günlük değişebilir. Kontrat navlun fiyatı FIATA veya freight forwarder ile teyit edilmelidir.</span></div>
+    <div class="risk-row"><span style="color:var(--warning);font-size:18px">⚠</span><span class="risk-text">Türkiye Gümrüğü "Fiili Giriş" kuru kullanır. Kur farkı maliyeti etkileyebilir.</span></div>
+    <div class="risk-row"><span style="color:var(--warning);font-size:18px">⚠</span><span class="risk-text">TAREKS kayıtları zorunlu olabilir. Tarım ürünleri için kontrol gerekebilir.</span></div>
+    <div class="risk-row"><span style="color:var(--warning);font-size:18px">⚠</span><span class="risk-text">EPA / Ticaret lisansı gerekebilir.</span></div>
+    <div class="risk-row"><span style="color:var(--warning);font-size:18px">⚠</span><span class="risk-text">Kuraklık, don olayları ve arz kısıtlılığı fiyatları etkileyebilir.</span></div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:30px 0;color:var(--text-muted);font-size:12px;">
+    <p><strong>ASCAFÊ</strong> — Brezilya Yeşil Kahve İthalat Maliyet Sistemi</p>
+    <p style="margin-top:4px;">Kur: exchangerate-api.com | Fiyatlar: ICE / ICO | Vergi: Ticaret Bakanlığı</p>
+    <p style="margin-top:4px;" data-tr="Bu hesaplama tahmini değerler içerir. Kesin değerler için gümrük müşaviri ile teyit ediniz." data-en="This calculation contains estimated values. Confirm with customs broker for exact values.">Bu hesaplama tahmini değerler içerir. Kesin değerler için gümrük müşaviri ile teyit ediniz.</p>
+  </div>
+
+</div>
+
+<script>
+// ===================== DATA =====================
+const COUNTRIES = {
+  BR: { name: 'Brezilya', nameEn: 'Brazil', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica) - kavrulmamış, kafeinli', duty: 0, vat: 1, freightMin: 150, freightMax: 350, freightAvg: 250, note: 'Brezilya menşeli yeşil Arabica kahve için gümrük vergisi %0\'dır.' },
+  VN: { name: 'Vietnam', nameEn: 'Vietnam', gtip: '0901.21.90', desc: 'Kahve yeşil (Robusta) - kavrulmamış, kafeinli', duty: 0, vat: 1, freightMin: 180, freightMax: 320, freightAvg: 240, note: 'Vietnam menşeli Robusta kahve için gümrük vergisi %0\'dır (GTS).' },
+  CO: { name: 'Kolombiya', nameEn: 'Colombia', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica) - kavrulmamış, kafeinli', duty: 1, vat: 1, freightMin: 200, freightMax: 380, freightAvg: 280, note: 'Kolombiya menşeli kahve için gümrük vergisi %1\'dir.' },
+  ET: { name: 'Etiyopya', nameEn: 'Ethiopia', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica) - kavrulmamış, kafeinli', duty: 0, vat: 1, freightMin: 220, freightMax: 400, freightAvg: 300, note: 'Etiyopya menşeli kahve için gümrük vergisi %0\'dır (EAGÜ).' },
+  ID: { name: 'Endonezya', nameEn: 'Indonesia', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica) - kavrulmamış, kafeinli', duty: 1, vat: 1, freightMin: 190, freightMax: 340, freightAvg: 250, note: 'Endonezya menşeli kahve için gümrük vergisi %1\'dir.' },
+  UG: { name: 'Uganda', nameEn: 'Uganda', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica/Robusta) - kavrulmamış', duty: 0, vat: 1, freightMin: 240, freightMax: 420, freightAvg: 320, note: 'Uganda menşeli kahve için gümrük vergisi %0\'dır (EAGÜ).' },
+  GT: { name: 'Guatemala', nameEn: 'Guatemala', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica) - kavrulmamış, kafeinli', duty: 1, vat: 1, freightMin: 210, freightMax: 390, freightAvg: 290, note: 'Guatemala menşeli kahve için gümrük vergisi %1\'dir.' },
+  HN: { name: 'Honduras', nameEn: 'Honduras', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica) - kavrulmamış, kafeinli', duty: 1, vat: 1, freightMin: 200, freightMax: 370, freightAvg: 270, note: 'Honduras menşeli kahve için gümrük vergisi %1\'dir.' },
+  PE: { name: 'Peru', nameEn: 'Peru', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica) - kavrulmamış, kafeinli', duty: 0, vat: 1, freightMin: 220, freightMax: 400, freightAvg: 300, note: 'Peru menşeli kahve için gümrük vergisi %0\'dır (EAGÜ).' },
+  KE: { name: 'Kenya', nameEn: 'Kenya', gtip: '0901.11.10', desc: 'Kahve yeşil (Arabica) - kavrulmamış, kafeinli', duty: 0, vat: 1, freightMin: 230, freightMax: 410, freightAvg: 310, note: 'Kenya menşeli kahve için gümrük vergisi %0\'dır (EAGÜ).' },
+};
+
+const PRICE_HISTORY = [];
+for(let i=30;i>=0;i--){
+  const d=new Date();d.setDate(d.getDate()-i);
+  PRICE_HISTORY.push({
+    date:d.toLocaleDateString('tr-TR',{day:'2-digit',month:'short'}),
+    arabica:7200+Math.sin(i/5)*800+Math.random()*400,
+    robusta:5200+Math.sin(i/5)*600+Math.random()*300,
+    usdtry:36+Math.sin(i/7)*2+Math.random()*0.5
+  });
+}
+
+// ===================== STATE =====================
+let exchangeRate=38.50;
+let autoFreightEnabled=false;
+let autoInsuranceEnabled=true;
+let currentLang='tr';
+let priceChart=null;
+
+// ===================== EXCHANGE RATE =====================
+async function fetchExchangeRate(){
+  try{
+    const res=await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const data=await res.json();
+    if(data.rates&&data.rates.TRY){
+      exchangeRate=data.rates.TRY;
+      const date=new Date(data.time_last_updated*1000).toLocaleString('tr-TR');
+      document.getElementById('rateValue').textContent='₺'+exchangeRate.toFixed(4);
+      document.getElementById('rateDate').textContent='Güncelleme: '+date;
+      document.getElementById('rateError').textContent='';
+      checkAlarm();
+      calculate();
+    }
+  }catch(e){
+    document.getElementById('rateError').textContent='Kur alınamadı, varsayılan kullanılıyor';
+    document.getElementById('rateValue').textContent='₺'+exchangeRate.toFixed(4);
+  }
+}
+fetchExchangeRate();
+setInterval(fetchExchangeRate,60000);
+
+// ===================== PRICE FETCH =====================
+async function fetchPrices(){
+  showToast('Fiyatlar güncelleniyor...');
+  // Simülasyon - gerçek API entegrasyonu için commodities-api.com key gerekir
+  setTimeout(()=>{
+    const p1=(7200+Math.random()*400).toFixed(0);
+    const p2=(5200+Math.random()*300).toFixed(0);
+    const p3=(7000+Math.random()*350).toFixed(0);
+    document.getElementById('price1').textContent='$'+Number(p1).toLocaleString('tr-TR');
+    document.getElementById('price2').textContent='$'+Number(p2).toLocaleString('tr-TR');
+    document.getElementById('price3').textContent='$'+Number(p3).toLocaleString('tr-TR');
+    showToast('Fiyatlar güncellendi!');
+  },1000);
+}
+
+// ===================== CHART =====================
+function initChart(){
+  const ctx=document.getElementById('priceChart').getContext('2d');
+  priceChart=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:PRICE_HISTORY.map(p=>p.date),
+      datasets:[
+        {label:'ICE Arabica ($/ton)',data:PRICE_HISTORY.map(p=>p.arabica),borderColor:'#6F4E37',backgroundColor:'rgba(111,78,55,0.1)',tension:0.4,fill:true},
+        {label:'ICE Robusta ($/ton)',data:PRICE_HISTORY.map(p=>p.robusta),borderColor:'#2D5016',backgroundColor:'rgba(45,80,22,0.1)',tension:0.4,fill:true},
+        {label:'USD/TRY',data:PRICE_HISTORY.map(p=>p.usdtry*200),borderColor:'#8B6914',borderDash:[5,5],tension:0.4,yAxisID:'y1'}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{intersect:false,mode:'index'},
+      plugins:{legend:{position:'top'}},
+      scales:{
+        y:{beginAtZero:false,title:{display:true,text:'Fiyat ($/ton)'}},
+        y1:{position:'right',beginAtZero:false,title:{display:true,text:'USD/TRY (x200)'},grid:{drawOnChartArea:false}}
+      }
+    }
+  });
+}
+initChart();
+
+// ===================== COUNTRY CHANGE =====================
+function changeCountry(){
+  const code=document.getElementById('countrySelect').value;
+  const c=COUNTRIES[code];
+  document.getElementById('gtipCode').textContent=c.gtip;
+  document.getElementById('gtipDesc').textContent=c.desc;
+  document.getElementById('dutyDisplay').textContent='%'+c.duty;
+  document.getElementById('vatDisplay').textContent='%'+c.vat;
+  document.getElementById('customsDutyRate').value=c.duty;
+  document.getElementById('vatRate').value=c.vat;
+  document.getElementById('countryNote').innerHTML='<strong>Not:</strong> '+c.note;
+  document.getElementById('dutyHint').textContent=c.name+' menşeli: %'+c.duty;
+  document.getElementById('freightHint').textContent='Ref: $'+c.freightMin+'-'+c.freightMax+'/ton';
+  if(autoFreightEnabled){
+    document.getElementById('freightPerTon').value=c.freightAvg;
+  }
+  calculate();
+}
+
+// ===================== HELPERS =====================
+function getVal(id){return parseFloat(document.getElementById(id).value)||0}
+function fmt(n){return n.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function setFob(pricePerKg){
+  document.getElementById('fobPerTon').value=(pricePerKg*1000).toFixed(2);
+  calculate();
+  document.getElementById('fobPerTon').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function toggleAutoFreight(){
+  autoFreightEnabled=document.getElementById('autoFreight').checked;
+  if(autoFreightEnabled){
+    const code=document.getElementById('countrySelect').value;
+    document.getElementById('freightPerTon').value=COUNTRIES[code].freightAvg;
+  }
+  calculate();
+}
+function toggleAutoInsurance(){
+  autoInsuranceEnabled=document.getElementById('autoInsurance').checked;
+  if(autoInsuranceEnabled){
+    document.getElementById('insuranceRate').value='0.30';
+  }
+  calculate();
+}
+function updateInternalTotal(){
+  const total=getVal('costBroker')+getVal('costPort')+getVal('costHaulage')+getVal('costOther');
+  document.getElementById('internalCostsPerTon').value=total;
+  calculate();
+}
+function toggleSection(id){
+  const el=document.getElementById(id);
+  const icon=document.getElementById(id+'-icon');
+  el.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+function toggleDark(){
+  document.body.classList.toggle('dark');
+}
+function changeLang(lang){
+  currentLang=lang;
+  document.querySelectorAll('[data-tr][data-en]').forEach(el=>{
+    el.textContent=el.getAttribute('data-'+lang);
+  });
+}
+
+// ===================== ALARM =====================
+function checkAlarm(){
+  const alarmRate=getVal('alarmRate');
+  const alarmActive=document.getElementById('alarmActive').checked;
+  if(alarmActive&&exchangeRate<=alarmRate){
+    showToast('🔔 ALARM: Kur ₺'+exchangeRate.toFixed(2)+' hedef değerin altına düştü!');
+    if('Notification' in window&&Notification.permission==='granted'){
+      new Notification('ASCAFÊ Kur Alarmı',{body:'USD/TRY '+exchangeRate.toFixed(2)+' hedef değerin altında!'});
+    }
+  }
+}
+if('Notification' in window)Notification.requestPermission();
+
+// ===================== SAVE / LOAD =====================
+function saveQuote(){
+  const quote={
+    id:Date.now(),
+    date:new Date().toLocaleString('tr-TR'),
+    country:document.getElementById('countrySelect').value,
+    fob:getVal('fobPerTon'),
+    qty:getVal('quantityTons'),
+    freight:getVal('freightPerTon'),
+    insurance:getVal('insuranceRate'),
+    internal:getVal('internalCostsPerTon'),
+    margin:getVal('profitMargin'),
+    rate:exchangeRate
+  };
+  let quotes=JSON.parse(localStorage.getItem('ascafe_quotes')||'[]');
+  quotes.unshift(quote);
+  if(quotes.length>50)quotes=quotes.slice(0,50);
+  localStorage.setItem('ascafe_quotes',JSON.stringify(quotes));
+  renderSavedQuotes();
+  showToast('Teklif kaydedildi!');
+}
+function loadQuote(id){
+  const quotes=JSON.parse(localStorage.getItem('ascafe_quotes')||'[]');
+  const q=quotes.find(x=>x.id===id);
+  if(!q)return;
+  document.getElementById('countrySelect').value=q.country;
+  changeCountry();
+  document.getElementById('fobPerTon').value=q.fob;
+  document.getElementById('quantityTons').value=q.qty;
+  document.getElementById('freightPerTon').value=q.freight;
+  document.getElementById('insuranceRate').value=q.insurance;
+  document.getElementById('internalCostsPerTon').value=q.internal;
+  document.getElementById('profitMargin').value=q.margin;
+  calculate();
+  showToast('Teklif yüklendi!');
+}
+function deleteQuote(id){
+  let quotes=JSON.parse(localStorage.getItem('ascafe_quotes')||'[]');
+  quotes=quotes.filter(x=>x.id!==id);
+  localStorage.setItem('ascafe_quotes',JSON.stringify(quotes));
+  renderSavedQuotes();
+  showToast('Teklif silindi!');
+}
+function renderSavedQuotes(){
+  const quotes=JSON.parse(localStorage.getItem('ascafe_quotes')||'[]');
+  const container=document.getElementById('savedQuotes');
+  if(quotes.length===0){container.innerHTML='<p style="color:var(--text-muted);font-size:13px">Henüz kaydedilmiş teklif yok.</p>';return}
+  container.innerHTML='<div class="saved-list">'+quotes.map(q=>{
+    const c=COUNTRIES[q.country];
+    return `<div class="saved-item">
+      <div class="saved-info">
+        <div class="saved-name">${c.name} - $${q.fob}/ton × ${q.qty}ton</div>
+        <div class="saved-date">${q.date} | Kur: ₺${q.rate.toFixed(2)}</div>
+      </div>
+      <div class="saved-actions">
+        <button class="btn-secondary" style="padding:6px 12px;font-size:12px" onclick="loadQuote(${q.id})">Yükle</button>
+        <button class="btn-danger" onclick="deleteQuote(${q.id})">Sil</button>
+      </div>
+    </div>`;
+  }).join('')+'</div>';
+}
+renderSavedQuotes();
+
+// ===================== EXPORT EXCEL =====================
+function exportExcel(){
+  const data=[
+    ['ASCAFÊ','Brezilya Yeşil Kahve İthalat Maliyet Teklifi'],
+    ['Tarih',new Date().toLocaleString('tr-TR')],
+    [''],
+    ['Parametre','Değer'],
+    ['Menşe Ülke',COUNTRIES[document.getElementById('countrySelect').value].name],
+    ['GTIP',document.getElementById('gtipCode').textContent],
+    ['FOB Fiyatı (USD/ton)',getVal('fobPerTon')],
+    ['Miktar (ton)',getVal('quantityTons')],
+    ['Navlun (USD/ton)',getVal('freightPerTon')],
+    ['Sigorta (%)',getVal('insuranceRate')],
+    ['Gümrük Vergisi (%)',getVal('customsDutyRate')],
+    ['KDV (%)',getVal('vatRate')],
+    ['İç Masraflar (TRY/ton)',getVal('internalCostsPerTon')],
+    ['Kar Marjı (%)',getVal('profitMargin')],
+    ['USD/TRY Kuru',exchangeRate],
+    [''],
+    ['Kalem','USD','TRY'],
+    ['FOB Toplam','=HESAPLA()','=HESAPLA()'],
+  ];
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb,ws,'Teklif');
+  XLSX.writeFile(wb,'ASCAFE_Teklif_'+new Date().toISOString().slice(0,10)+'.xlsx');
+  showToast('Excel indirildi!');
+}
+
+// ===================== EXPORT PDF =====================
+async function exportPDF(){
+  showToast('PDF hazırlanıyor...');
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF();
+  doc.setFontSize(18);doc.text('ASCAFÊ - Teklif Raporu',14,20);
+  doc.setFontSize(10);doc.text('Tarih: '+new Date().toLocaleString('tr-TR'),14,28);
+  doc.setFontSize(12);doc.text('Menşe: '+COUNTRIES[document.getElementById('countrySelect').value].name,14,38);
+  doc.text('GTIP: '+document.getElementById('gtipCode').textContent,14,46);
+  doc.setFontSize(10);
+  let y=60;
+  const addRow=(label,val)=>{doc.text(label+': '+val,14,y);y+=6;};
+  addRow('FOB',fmt(getVal('fobPerTon'))+' USD/ton');
+  addRow('Miktar',fmt(getVal('quantityTons'))+' ton');
+  addRow('Navlun',fmt(getVal('freightPerTon'))+' USD/ton');
+  addRow('Kur','₺'+fmt(exchangeRate));
+  doc.save('ASCAFE_Teklif_'+new Date().toISOString().slice(0,10)+'.pdf');
+  showToast('PDF indirildi!');
+}
+
+// ===================== MAIN CALCULATION =====================
+function calculate(){
+  const fobPerTon=getVal('fobPerTon');
+  const qty=getVal('quantityTons');
+  const freightPerTon=getVal('freightPerTon');
+  const insuranceRate=getVal('insuranceRate')/100;
+  const customsDutyRate=getVal('customsDutyRate')/100;
+  const vatRate=getVal('vatRate')/100;
+  const internalCostsPerTon=getVal('internalCostsPerTon');
+  const profitMargin=getVal('profitMargin')/100;
+
+  const fobTotal=fobPerTon*qty;
+  const freightTotal=freightPerTon*qty;
+  const insuranceTotal=(fobTotal+freightTotal)*insuranceRate;
+  const cifTotal=fobTotal+freightTotal+insuranceTotal;
+  const customsDuty=cifTotal*customsDutyRate;
+  const vatBase=cifTotal+customsDuty;
+  const vatAmount=vatBase*vatRate;
+  const totalTax=customsDuty+vatAmount;
+  const totalImportCostUSD=cifTotal+totalTax;
+
+  const cifTRY=cifTotal*exchangeRate;
+  const customsDutyTRY=customsDuty*exchangeRate;
+  const vatAmountTRY=vatAmount*exchangeRate;
+  const totalTaxTRY=totalTax*exchangeRate;
+  const totalImportCostTRY=totalImportCostUSD*exchangeRate;
+  const internalCostsTRY=internalCostsPerTon*qty;
+  const totalCostWithInternalTRY=totalImportCostTRY+internalCostsTRY;
+  const sellingPriceTRY=totalCostWithInternalTRY*(1+profitMargin);
+  const profitPerTonTRY=(totalCostWithInternalTRY*profitMargin)/qty;
+
+  const costPerTonTRY=totalImportCostTRY/qty;
+  const costPerKgTRY=costPerTonTRY/1000;
+  const sellingPricePerTonTRY=sellingPriceTRY/qty;
+  const sellingPricePerKgTRY=sellingPricePerTonTRY/1000;
+  const profitPerKgTRY=profitPerTonTRY/1000;
+
+  // Steps
+  document.getElementById('stepsContainer').innerHTML=`
+    <div class="step"><div class="step-num">1</div><div class="step-content"><span class="step-label">FOB Toplam (${fmt(fobPerTon)} USD/ton × ${fmt(qty)} ton)</span><span class="step-value">$${fmt(fobTotal)}</span></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><span class="step-label">Navlun (${fmt(freightPerTon)} USD/ton × ${fmt(qty)} ton)</span><span class="step-value">$${fmt(freightTotal)}</span></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><span class="step-label">Sigorta (${fmt(insuranceRate*100)}% × (FOB+Navlun))</span><span class="step-value">$${fmt(insuranceTotal)}</span></div></div>
+    <div class="step highlight"><div class="step-num">4</div><div class="step-content"><span class="step-label bold">CIF Değeri (FOB + Navlun + Sigorta)</span><span class="step-value bold">$${fmt(cifTotal)}</span></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-content"><span class="step-label">Gümrük Vergisi (${fmt(customsDutyRate*100)}% × CIF)</span><span class="step-value">$${fmt(customsDuty)}</span></div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-content"><span class="step-label">KDV Matrahı (CIF + Gümrük Vergisi)</span><span class="step-value">$${fmt(vatBase)}</span></div></div>
+    <div class="step"><div class="step-num">7</div><div class="step-content"><span class="step-label">KDV (${fmt(vatRate*100)}% × Matrah)</span><span class="step-value">$${fmt(vatAmount)}</span></div></div>
+    <div class="step highlight"><div class="step-num">8</div><div class="step-content"><span class="step-label bold">Toplam İthalat Maliyeti (USD)</span><span class="step-value bold">$${fmt(totalImportCostUSD)}</span></div></div>`;
+
+  // TRY Results
+  document.getElementById('tryResults').innerHTML=`
+    <div class="result-row"><span class="result-label">CIF Değeri</span><span class="result-value">₺${fmt(cifTRY)}</span></div>
+    <div class="result-row"><span class="result-label">Gümrük Vergisi</span><span class="result-value">₺${fmt(customsDutyTRY)}</span></div>
+    <div class="result-row"><span class="result-label">KDV Tutarı</span><span class="result-value">₺${fmt(vatAmountTRY)}</span></div>
+    <div class="divider"></div>
+    <div class="result-row"><span class="result-label bold">Toplam İthalat Maliyeti</span><span class="result-value bold">₺${fmt(totalImportCostTRY)}</span></div>
+    <div class="result-row"><span class="result-label">İç Masraflar</span><span class="result-value">₺${fmt(internalCostsTRY)}</span></div>
+    <div class="divider"></div>
+    <div class="total-box"><span class="total-label">TOPLAM MALİYET</span><span class="total-value">₺${fmt(totalCostWithInternalTRY)}</span></div>`;
+
+  // Unit Results
+  document.getElementById('unitResults').innerHTML=`
+    <div class="unit-item"><div class="unit-label">Maliyet / ton</div><div class="unit-value">₺${fmt(costPerTonTRY)}</div></div>
+    <div class="unit-item"><div class="unit-label">Maliyet / kg</div><div class="unit-value">₺${fmt(costPerKgTRY)}</div></div>`;
+
+  // Selling Results
+  document.getElementById('sellingResults').innerHTML=`
+    <div class="selling-grid">
+      <div class="selling-item"><div class="selling-label">Satış Fiyatı / ton</div><div class="selling-value">₺${fmt(sellingPricePerTonTRY)}</div></div>
+      <div class="selling-item"><div class="selling-label">Satış Fiyatı / kg</div><div class="selling-value">₺${fmt(sellingPricePerKgTRY)}</div></div>
+    </div>
+    <div class="profit-box">
+      <div class="selling-label">Tahmini Kar / ton</div><div class="profit-value">₺${fmt(profitPerTonTRY)}</div>
+      <div style="margin-top:8px"><div class="selling-label">Tahmini Kar / kg</div><div class="profit-value" style="font-size:20px">₺${fmt(profitPerKgTRY)}</div></div>
+    </div>`;
+}
+
+// Initial
+calculate();
+</script>
+</body>
+</html>
