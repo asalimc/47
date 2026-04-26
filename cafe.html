@@ -3,122 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ASCAFÉ | Mobile Source 25.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <title>ASCAFÉ | Mobile Executive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #f8fafc; --primary: #0f172a; --gold: #92400e; --blue: #1d4ed8; --border: #e2e8f0; --success: #10b981; }
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--primary); font-family: 'Inter', sans-serif; padding-bottom: 100px; }
+        :root { --bg: #f8fafc; --primary: #0f172a; --gold: #92400e; --blue: #2563eb; --border: #e2e8f0; --red: #dc2626; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background: var(--bg); color: var(--primary); padding: 10px; line-height: 1.4; }
+        .app-container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
 
-        /* Mobile Header */
-        header { background: var(--primary); color: white; padding: 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .live-bar { display: flex; justify-content: space-between; align-items: center; }
-        .live-item { text-align: center; }
-        .live-item label { display: block; font-size: 8px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 2px; }
-        .live-item b { font-family: 'JetBrains Mono'; font-size: 14px; color: #fff; }
-
-        .container { padding: 15px; max-width: 800px; margin: 0 auto; }
-
-        /* Cards */
-        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        h2 { font-size: 11px; margin-bottom: 15px; color: var(--gold); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 800; border-left: 3px solid var(--gold); padding-left: 10px; }
-
-        /* Input Styles */
-        .field { margin-bottom: 15px; }
-        .field label { display: block; font-size: 10px; font-weight: 700; color: #64748b; margin-bottom: 6px; }
-        .field input { width: 100%; padding: 14px; border-radius: 12px; border: 2.2px solid #f1f5f9; font-family: 'JetBrains Mono'; font-size: 16px; font-weight: 700; outline: none; background: #f8fafc; }
-        .field input:focus { border-color: var(--blue); background: #fff; }
-
-        /* Selector Grid */
-        .selector-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-        .sel-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid #f1f5f9; background: #fff; font-weight: 700; font-size: 10px; cursor: pointer; transition: 0.2s; }
-        .sel-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-        /* Price Comparison Cards */
-        .price-card { border: 2px solid #f1f5f9; border-radius: 12px; padding: 15px; margin-bottom: 10px; position: relative; cursor: pointer; transition: 0.2s; }
-        .price-card.active { border-color: var(--blue); background: #f0f7ff; }
-        .price-card.active::after { content: '✓'; position: absolute; top: 10px; right: 15px; color: var(--blue); font-weight: 900; }
-        .price-card .type { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; }
-        .price-card .main-val { display: block; font-size: 22px; font-weight: 900; color: var(--primary); font-family: 'JetBrains Mono'; margin: 5px 0; }
-        .price-card .sub-vals { display: flex; gap: 10px; font-size: 11px; color: #475569; }
-
-        /* Floating Action Button */
-        .fab-container { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; border-top: 1px solid var(--border); box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 100; }
-        .btn-pdf { width: 100%; padding: 18px; border-radius: 14px; border: none; background: var(--blue); color: white; font-size: 16px; font-weight: 800; cursor: pointer; }
-
-        @media (min-width: 600px) {
-            .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        /* Dashboard: Mobilde 2 kolon, Masaüstünde 4 kolon */
+        .market-header { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 8px; 
         }
+        @media (min-width: 768px) { .market-header { grid-template-columns: repeat(4, 1fr); } }
+
+        .m-box { background: white; padding: 12px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+        .m-box label { font-size: 8px; font-weight: 800; color: #64748b; display: block; margin-bottom: 4px; text-transform: uppercase; }
+        .m-box b { font-family: 'JetBrains Mono'; font-size: 1rem; }
+
+        .workspace { background: white; border-radius: 20px; padding: 15px; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        h2 { font-size: 9px; margin-bottom: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 900; border-bottom: 2px solid #f1f5f9; padding-bottom: 6px; }
+
+        /* Input Grid: Mobilde tek kolon */
+        .input-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+        @media (min-width: 768px) { .input-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .field { display: flex; flex-direction: column; gap: 4px; }
+        .field label { font-size: 9px; font-weight: 800; color: #475569; }
+        .field input { 
+            padding: 14px; 
+            border-radius: 10px; 
+            border: 2px solid #e2e8f0; 
+            font-family: 'JetBrains Mono'; 
+            font-size: 16px; /* Mobilde zoom yapmaması için en az 16px */
+            font-weight: 700; 
+            outline: none;
+            width: 100%;
+        }
+
+        /* Lojistik Butonları: Mobilde dikey, Masaüstünde yatay */
+        .btn-group-container { margin-bottom: 20px; }
+        .btn-group { display: grid; grid-template-columns: 1fr; gap: 6px; }
+        @media (min-width: 600px) { .btn-group { grid-template-columns: repeat(3, 1fr); } }
+
+        .btn-l { 
+            padding: 14px; 
+            border-radius: 10px; 
+            border: 2px solid #e2e8f0; 
+            background: white; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 11px;
+            transition: 0.2s;
+        }
+        .btn-l.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Tablo: Mobilde yatay kaydırma zorunlu */
+        .table-res { border-radius: 12px; border: 1px solid #e2e8f0; overflow-x: auto; margin-bottom: 20px; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; background: white; min-width: 600px; }
+        th { background: #f8fafc; padding: 12px; font-size: 8px; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; text-align: center; }
+        td { padding: 14px; text-align: center; border-bottom: 1px solid #f1f5f9; font-weight: 700; font-size: 13px; }
+        .active-row { background: #eff6ff !important; box-shadow: inset 4px 0 0 var(--blue); }
+
+        /* Analiz Paneli: Mobilde tablo altına tam genişlik */
+        .comparison-zone { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+        @media (min-width: 1000px) { .comparison-zone { grid-template-columns: 1fr 300px; } }
+
+        .analysis-panel { background: #f0fdf4; border: 1px dotted #16a34a; border-radius: 12px; padding: 15px; }
+        .analysis-item { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px; }
+        
+        .btn-action { 
+            width: 100%; 
+            padding: 20px; 
+            border-radius: 15px; 
+            border: none; 
+            background: #0044ff; 
+            color: white; 
+            font-size: 16px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            position: sticky; /* Mobilde altta kalması için */
+            bottom: 10px;
+            box-shadow: 0 8px 20px rgba(0, 68, 255, 0.3);
+        }
+
+        .diff-val { font-family: 'JetBrains Mono'; font-size: 1.4rem; color: var(--red); font-weight: 900; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="live-bar">
-        <div class="live-item"><label>USD/TRY</label><b id="v-usd">45.015</b></div>
-        <div class="live-item"><label>ICE NY</label><b>294.90</b></div>
-        <div class="live-item"><label>SYNC</label><b style="color:var(--success)">LIVE</b></div>
+<div class="app-container">
+    <div class="market-header">
+        <div class="m-box"><label>USD/TRY</label><b id="v-usd">32.45</b></div>
+        <div class="m-box"><label>ICE INDEX</label><b>294.90</b></div>
+        <div class="m-box"><label>KALİTE</label><b>MINA 17/18</b></div>
+        <div class="m-box"><label>VERGİ</label><b>%16</b></div>
     </div>
-</header>
 
-<div class="container">
-    <div class="card">
-        <h2>I. Contract Parameters</h2>
+    <div class="workspace">
+        <h2>I. SÖZLEŞME BİLGİLERİ</h2>
         <div class="input-grid">
-            <div class="field"><label>Müşteri</label><input type="text" id="inp-client" value="OSMAN ECE MERSİN"></div>
-            <div class="field"><label>Toptancı ($/TON)</label><input type="number" id="inp-whol-ton" value="4800" oninput="hesapla()"></div>
-            <div class="field"><label>Kâr Marjı (%)</label><input type="number" id="inp-kar-perc" value="10" oninput="hesapla()"></div>
+            <div class="field"><label>MÜŞTERİ</label><input type="text" id="inp-client" value="OSMAN ECE MERSİN"></div>
+            <div class="field"><label>TOPTAN FİYAT ($/TON)</label><input type="number" id="inp-whol-ton" value="5100" oninput="hesapla()"></div>
+            <div class="field"><label>KÂR MARJI (%)</label><input type="number" id="inp-kar-perc" value="10" oninput="hesapla()"></div>
         </div>
-    </div>
 
-    <div class="card">
-        <h2>II. Logistics Selection</h2>
-        <div class="selector-grid">
-            <button class="sel-btn active" onclick="setL(19200, 3500, 550, this, '20DC')"><b>20' DC</b>19.2T</button>
-            <button class="sel-btn" onclick="setL(38400, 6200, 980, this, '40HC')"><b>40' HC</b>38.4T</button>
-            <button class="sel-btn" onclick="setL(1000, 250, 100, this, 'LCL')"><b>LCL</b>1T</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>III. Select Price Mode</h2>
-        <div id="row-whol" class="price-card active" onclick="selectMode('wholesale')">
-            <span class="type">Wholesale Based (DDP)</span>
-            <span class="main-val" id="w-ddp-v">$0.000</span>
-            <div class="sub-vals">
-                <span>FOB: <b id="w-fob-v">0</b></span>
-                <span>CIF: <b id="w-cif-v">0</b></span>
+        <div class="btn-group-container">
+            <label style="font-size: 9px; font-weight: 800; color: #475569; display: block; margin-bottom: 8px;">LOJİSTİK / TONAJ SEÇİMİ</label>
+            <div class="btn-group">
+                <button class="btn-l active" onclick="setL(19.2, 3600, 700, this, '20DC')">20DC (19.2 Ton)</button>
+                <button class="btn-l" onclick="setL(38.4, 6400, 1200, this, '40HC')">40HC (38.4 Ton)</button>
+                <button class="btn-l" onclick="setL(1, 300, 150, this, 'LCL')">LCL (1 Ton)</button>
             </div>
         </div>
 
-        <div id="row-exch" class="price-card" onclick="selectMode('exchange')">
-            <span class="type">ICE Index Based (DDP)</span>
-            <span class="main-val" id="b-ddp-v">$0.000</span>
-            <div class="sub-vals">
-                <span>FOB: <b id="b-fob-v">0</b></span>
-                <span>CIF: <b id="b-cif-v">0</b></span>
+        <h2>II. MALİYET VE FARKLAR</h2>
+        <div class="comparison-zone">
+            <div class="table-res">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>MODEL</th>
+                            <th>FOB/TON</th>
+                            <th>CIF/TON</th>
+                            <th>DDP/TON</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="row-exch" onclick="selectMode('exchange')">
+                            <td style="text-align:left; font-size:9px;">BORSA (NY)</td>
+                            <td id="b-fob">-</td><td id="b-cif">-</td><td id="b-ddp">-</td>
+                        </tr>
+                        <tr id="row-whol" class="active-row" onclick="selectMode('wholesale')">
+                            <td style="text-align:left; font-size:9px;">TOPTANCI</td>
+                            <td id="w-fob">-</td><td id="w-cif">-</td><td id="w-ddp">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="analysis-panel">
+                <div class="analysis-item"><span>Navlun/Ton:</span><span id="an-nav" style="color:var(--blue)">-</span></div>
+                <div class="analysis-item"><span>Vergi/Ton:</span><span id="an-tax" style="color:var(--red)">-</span></div>
+                <div style="text-align: center; border-top: 1px solid #dcfce7; padding-top: 8px; margin-top: 5px;">
+                    <label style="font-size: 8px; font-weight: 800; color: #166534;">MODLAR ARASI FARK (TON)</label>
+                    <div class="diff-val" id="res-diff">$0</div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="fab-container">
-    <button class="btn-pdf" onclick="generatePDF()">GENERATE PROFORMA INVOICE</button>
+        <button class="btn-action" onclick="generatePDF()">PROFORMA OLUŞTUR</button>
+    </div>
 </div>
 
 <script>
-    let state = { mode: 'wholesale', qty: 19200, nav: 3500, port: 550, unit: '20DC', tax: 0.16, ins: 0.004, cur: 45.015, b3: 294.90 };
+    let state = { mode: 'wholesale', qty: 19.2, nav: 3600, port: 700, unit: '20DC', tax: 0.16, ins: 0.005, ice: 294.90, usd: 32.45 };
+
+    async function fetchLiveRates() {
+        try {
+            const res = await fetch('https://open.er-api.com/v6/latest/USD');
+            const data = await res.json();
+            state.usd = data.rates.TRY;
+            document.getElementById('v-usd').innerText = state.usd.toFixed(3);
+        } catch (e) { document.getElementById('v-usd').innerText = "32.45"; }
+        hesapla();
+    }
 
     function selectMode(m) {
         state.mode = m;
-        document.getElementById('row-whol').className = m === 'wholesale' ? 'price-card active' : 'price-card';
-        document.getElementById('row-exch').className = m === 'exchange' ? 'price-card active' : 'price-card';
+        document.getElementById('row-exch').className = m === 'exchange' ? 'active-row' : '';
+        document.getElementById('row-whol').className = m === 'wholesale' ? 'active-row' : '';
         hesapla();
     }
 
     function setL(q, n, p, btn, u) {
         state.qty = q; state.nav = n; state.port = p; state.unit = u;
-        document.querySelectorAll('.sel-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.btn-l').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         hesapla();
     }
@@ -128,84 +192,70 @@
         const wholTon = parseFloat(document.getElementById('inp-whol-ton').value) || 0;
         
         const calc = (raw) => {
-            const navKg = state.nav / state.qty;
-            const portKg = state.port / state.qty;
+            const navTon = state.nav / state.qty;
+            const portTon = state.port / state.qty;
             const fob = raw * (1 + kar);
-            const cif = fob + navKg + (raw * state.ins);
-            const ddp = ((raw + navKg + portKg) * (1 + state.tax)) + (raw * kar);
-            return { fob, cif, ddp };
+            const cif = fob + navTon + (fob * state.ins);
+            const ddp = (cif * (1 + state.tax)) + portTon;
+            return { fob, cif, ddp, navTon, taxAmt: (cif * state.tax) };
         };
 
-        const w = calc(wholTon / 1000);
-        const b = calc((state.b3 + 15) / 60);
+        const b = calc(((state.ice + 15) / 60) * 1000);
+        const w = calc(wholTon);
 
-        const ui = (pre, d) => {
-            document.getElementById(`${pre}-ddp-v`).innerText = "$" + d.ddp.toFixed(3);
-            document.getElementById(`${pre}-fob-v`).innerText = "$" + d.fob.toFixed(2);
-            document.getElementById(`${pre}-cif-v`).innerText = "$" + d.cif.toFixed(2);
+        const fill = (pre, d) => {
+            document.getElementById(`${pre}-fob`).innerText = "$" + d.fob.toLocaleString(undefined, {maximumFractionDigits:0});
+            document.getElementById(`${pre}-cif`).innerText = "$" + d.cif.toLocaleString(undefined, {maximumFractionDigits:0});
+            document.getElementById(`${pre}-ddp`).innerText = "$" + d.ddp.toLocaleString(undefined, {maximumFractionDigits:0});
         };
 
-        ui('w', w); ui('b', b);
-        return state.mode === 'wholesale' ? w : b;
+        fill('b', b); fill('w', w);
+        
+        const diff = Math.abs(b.ddp - w.ddp);
+        document.getElementById('res-diff').innerText = "$" + diff.toFixed(0);
+        
+        const activeData = state.mode === 'exchange' ? b : w;
+        document.getElementById('an-nav').innerText = "$" + activeData.navTon.toFixed(2);
+        document.getElementById('an-tax').innerText = "$" + activeData.taxAmt.toFixed(2);
+
+        return activeData;
     }
 
     function generatePDF() {
         const d = hesapla();
-        const client = document.getElementById('inp-client').value || "CLIENT";
+        const client = document.getElementById('inp-client').value || "MÜŞTERİ";
+        const refNo = "ASC-" + Math.floor(100000 + Math.random() * 900000);
         const win = window.open("", "_blank");
+        
         win.document.write(`
-            <html><head><style>
-                @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
-                body { font-family: 'Montserrat', sans-serif; padding: 40px; color: #1a1a1a; line-height: 1.4; }
-                .header { border-bottom: 8px solid #1a1a1a; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-                .brand h1 { margin:0; font-size: 38px; font-weight:900; letter-spacing:-1px; }
-                .section { margin-top: 35px; }
-                .label { font-size: 10px; font-weight:900; color: #92400e; text-transform:uppercase; border-bottom: 1px solid #eee; margin-bottom: 10px; }
-                table { width: 100%; border-collapse: collapse; }
-                th { background: #1a1a1a; color: #fff; padding: 12px; font-size: 11px; text-align: left; }
-                td { padding: 15px; border-bottom: 1px solid #eee; font-weight:700; font-size: 14px; }
-                .ddp-box { background: #f8fafc; border: 3px solid #1a1a1a; padding: 40px; text-align: center; margin-top: 35px; }
-                .stamp { width: 150px; height: 150px; border: 5px double #1d4ed8; border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: rotate(-15deg); margin-left: auto; color: #1d4ed8; font-weight: 900; font-size: 12px; text-align: center; }
+            <html><head><title>Proforma_${refNo}</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body { font-family: sans-serif; padding: 20px; color: #333; font-size: 14px; }
+                .header { border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+                .total-card { background: #000; color: #fff; padding: 20px; border-radius: 10px; margin-top: 20px; }
             </style></head>
             <body>
-                <div class="header">
-                    <div class="brand"><h1>ASCAFÉ BRAZIL</h1><p>Santos Port Logistics | Global Division</p></div>
-                    <div style="text-align:right"><h2>PROFORMA</h2><p>${new Date().toLocaleDateString()}</p></div>
-                </div>
-                <div class="section"><div class="label">Consignee</div><div style="font-size: 22px; font-weight:900;">${client.toUpperCase()}</div></div>
-                <div class="section">
-                    <div class="label">Product Details</div>
-                    <table>
-                        <thead><tr><th>Commodity</th><th>Weight</th><th>Load</th><th>Origin</th></tr></thead>
-                        <tbody><tr><td>Green Arabica Beans</td><td>${(state.qty/1000).toLocaleString()}T</td><td>${state.unit}</td><td>BRAZIL</td></tr></tbody>
-                    </table>
-                </div>
-                <div class="section">
-                    <div class="label">Unit Prices (USD)</div>
-                    <table>
-                        <thead><tr><th>Term</th><th>Price/KG</th><th>Sub-Total</th></tr></thead>
-                        <tbody>
-                            <tr><td>FOB SANTOS</td><td>$ ${d.fob.toFixed(3)}</td><td>$ ${(d.fob * state.qty).toLocaleString()}</td></tr>
-                            <tr><td>CIF MERSIN</td><td>$ ${d.cif.toFixed(3)}</td><td>$ ${(d.cif * state.qty).toLocaleString()}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="ddp-box">
-                    <div style="font-size: 11px; font-weight:900; color:#92400e;">DOOR DELIVERY ALL-IN (DDP)</div>
-                    <div style="font-size: 55px; font-weight: 900; color: #1d4ed8;">$ ${d.ddp.toFixed(3)} / KG</div>
-                    <div style="font-size: 20px; font-weight: 700;">TOTAL: $ ${(d.ddp * state.qty).toLocaleString()}</div>
-                    <p style="font-size: 9px; margin-top: 10px;">Ref Rate: ${state.cur} TRY | Mode: ${state.mode.toUpperCase()}</p>
-                </div>
-                <div style="display:flex; justify-content:space-between; margin-top:40px;">
-                    <p style="font-size: 9px; color:#888; max-width:400px;">Validity: 24h. Official Santos Port Export Document.</p>
-                    <div class="stamp">DIRECT<br>SOURCE<br>BRAZIL</div>
+                <div class="header"><h1>ASCAFÉ BRAZIL</h1><p>Mina Arabica NY 2/3 (17/18)</p></div>
+                <p><b>BUYER:</b> ${client}<br><b>SHIPMENT:</b> ${state.unit} (${state.qty} TONS)</p>
+                <table>
+                    <tr><th>TERM</th><th>UNIT PRICE (TON)</th><th>TOTAL</th></tr>
+                    <tr><td>FOB SANTOS</td><td>$ ${d.fob.toLocaleString()}</td><td>$ ${(d.fob * state.qty).toLocaleString()}</td></tr>
+                    <tr><td>CIF MERSIN</td><td>$ ${d.cif.toLocaleString()}</td><td>$ ${(d.cif * state.qty).toLocaleString()}</td></tr>
+                </table>
+                <div class="total-card">
+                    <p>DDP MERSIN FINAL DELIVERY</p>
+                    <h2 style="color:#fbbf24">$ ${(d.ddp * state.qty).toLocaleString()}</h2>
+                    <p>$ ${d.ddp.toLocaleString()} / TON</p>
                 </div>
                 <script>window.onload = function(){ window.print(); };<\/script>
             </body></html>
         `);
         win.document.close();
     }
-    window.onload = hesapla;
+    window.onload = fetchLiveRates;
 </script>
 </body>
 </html>
