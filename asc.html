@@ -3,676 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="Ahmet Çınarbaş - Jornalista, Pesquisador-Escritor, Editor, Consultor Político e Especialista em Informática. Biografia completa em português.">
-    <meta name="theme-color" content="#1a1612">
-    <title>Ahmet Çınarbaş | Biografia Oficial (Português)</title>
+    <meta name="description" content="Ahmet Çınarbaş - Jornalista, Especialista em TI e Consultor Político. Biografia Oficial.">
+    <meta name="theme-color" content="#0a192f">
+    <title>Ahmet Çınarbaş | Biografia Oficial</title>
 
+    <!-- Fontes de Prestígio -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
+        :root {
+            --navy-deep: #0a192f;
+            --navy-medium: #112240;
+            --navy-light: #233554;
+            --accent-silver: #e6f1ff;
+            --text-main: #ccd6f6;
+            --text-dim: #8892b0;
+            --white: #ffffff;
+            --border-glass: rgba(230, 241, 255, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-deep: #0f0d0a;
-            --bg-card: rgba(22, 20, 18, 0.75);
-            --gold: #c9a96e;
-            --gold-light: #e0c78a;
-            --text-primary: #ede7db;
-            --text-secondary: #bcb09b;
-            --glass-border: rgba(201, 169, 110, 0.18);
-            --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
-
         body {
-            background: var(--bg-deep);
+            background-color: var(--navy-deep);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(100, 255, 218, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(230, 241, 255, 0.05) 0%, transparent 40%);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            color: var(--text-primary);
+            color: var(--text-main);
             line-height: 1.6;
-            min-height: 100vh;
-            padding: 1rem;
-            background-image: radial-gradient(ellipse at 30% 10%, rgba(180, 140, 70, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 85%, rgba(140, 100, 50, 0.07) 0%, transparent 60%),
-                repeating-linear-gradient(45deg, rgba(201, 169, 110, 0.02) 0px, rgba(201, 169, 110, 0.02) 2px, transparent 2px, transparent 8px);
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            overflow-x: hidden;
+            padding: clamp(10px, 3vw, 40px);
         }
 
-        /* Ana Konteyner */
-        .prestige-container {
-            width: 100%;
-            max-width: 1250px;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            background: rgba(18, 16, 13, 0.7);
-            border-radius: clamp(1.5rem, 3vw, 3.5rem);
-            box-shadow: 0 50px 90px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 200, 0.08);
-            border: 1px solid var(--glass-border);
-            overflow: hidden;
-            transition: var(--transition-smooth);
-            position: relative;
+        /* Container Principal */
+        .main-wrapper {
+            max-width: 1200px;
             margin: 0 auto;
+            background: var(--navy-medium);
+            border-radius: 24px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            position: relative;
         }
 
-        /* PDF Araç Çubuğu */
-        .pdf-toolbar {
+        /* Toolbar */
+        .top-actions {
             position: absolute;
-            top: clamp(0.8rem, 2vw, 1.5rem);
-            right: clamp(0.8rem, 2vw, 1.5rem);
-            z-index: 20;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
             display: flex;
-            gap: clamp(0.4rem, 1vw, 0.8rem);
-            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .btn-pdf {
-            background: rgba(201, 169, 110, 0.2);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1.5px solid rgba(201, 169, 110, 0.6);
-            color: #f5ead0;
-            padding: clamp(0.4rem, 1vw, 0.7rem) clamp(0.8rem, 1.5vw, 1.6rem);
-            border-radius: 3rem;
-            font-weight: 650;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+        .btn-action {
+            background: var(--navy-light);
+            color: var(--white);
+            border: 1px solid var(--accent-silver);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
-            letter-spacing: 0.5px;
+            transition: var(--transition);
+            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: clamp(0.2rem, 0.5vw, 0.5rem);
-            transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            text-decoration: none;
-            white-space: nowrap;
+            gap: 8px;
         }
 
-        .btn-pdf:hover {
-            background: #c9a96e;
-            color: #0f0d0a;
-            border-color: #c9a96e;
-            box-shadow: 0 0 25px rgba(201, 169, 110, 0.6);
+        .btn-action:hover {
+            background: var(--white);
+            color: var(--navy-deep);
             transform: translateY(-2px);
         }
-        .btn-pdf i { font-size: clamp(0.9rem, 1.5vw, 1.1rem); }
 
         /* Header */
-        .majestic-header {
+        .hero-header {
+            padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 60px);
+            background: linear-gradient(135deg, var(--navy-medium) 0%, var(--navy-deep) 100%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .profile-box {
             position: relative;
-            padding: clamp(1.5rem, 3vw, 3rem) clamp(1.5rem, 3vw, 3rem) clamp(1.2rem, 2.5vw, 2.2rem);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: clamp(1rem, 2vw, 2rem);
-            background: linear-gradient(135deg, rgba(30, 24, 16, 0.9) 0%, rgba(45, 35, 20, 0.8) 100%);
-            border-bottom: 2px solid rgba(201, 169, 110, 0.3);
-            overflow: hidden;
-        }
-        .majestic-header::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -10%;
-            width: 70%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(220, 180, 100, 0.15) 0%, transparent 70%);
-            filter: blur(30px);
-            pointer-events: none;
-        }
-
-        .profile-identity {
-            display: flex;
-            align-items: center;
-            gap: clamp(1rem, 2vw, 2.2rem);
-            z-index: 3;
-            flex-wrap: wrap;
-        }
-
-        .ornament-frame {
-            width: clamp(100px, 15vw, 150px);
-            height: clamp(100px, 15vw, 150px);
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #dabc82, #7a5c38);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 45px rgba(201, 169, 110, 0.35), 0 12px 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.4);
-            border: 3px solid rgba(201, 169, 110, 0.7);
-            transition: 0.5s;
-            overflow: hidden;
             flex-shrink: 0;
         }
-        .ornament-frame img {
-            width: 100%;
-            height: 100%;
+
+        .avatar {
+            width: clamp(120px, 18vw, 180px);
+            height: clamp(120px, 18vw, 180px);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            border: 4px solid var(--white);
             object-fit: cover;
-            border-radius: 50%;
-            display: block;
-        }
-        .ornament-frame:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 0 70px rgba(220, 190, 110, 0.55);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            background: var(--navy-light);
         }
 
-        .name-title h1 {
-            font-family: 'Cinzel', 'Playfair Display', serif;
-            font-size: clamp(2rem, 5vw, 3.8rem);
-            font-weight: 600;
-            color: #f5ead0;
-            letter-spacing: 3px;
-            text-shadow: 0 6px 18px black;
-            line-height: 1.1;
-        }
-        .name-title .designation {
-            display: inline-block;
-            background: rgba(201, 169, 110, 0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(201, 169, 110, 0.4);
-            padding: clamp(0.3rem, 0.8vw, 0.5rem) clamp(1rem, 2vw, 2rem);
-            border-radius: 40px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            color: #e4cd9b;
-            margin-top: 0.7rem;
-            font-size: clamp(0.8rem, 1.5vw, 1.05rem);
-        }
-
-        .lang-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(10, 8, 5, 0.7);
-            backdrop-filter: blur(16px);
-            border-radius: 50px;
-            padding: clamp(0.4rem, 1vw, 0.7rem) clamp(1rem, 2vw, 2rem);
-            border: 1px solid rgba(201, 169, 110, 0.35);
-            z-index: 3;
-            color: #c9a96e;
-            font-weight: 600;
-            letter-spacing: 1px;
-            font-size: clamp(0.7rem, 1.2vw, 0.9rem);
-        }
-
-        /* Grid İçerik */
-        .biography-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-            gap: clamp(1rem, 2vw, 2rem);
-            padding: clamp(1.2rem, 2.5vw, 2.8rem) clamp(1rem, 2.5vw, 3rem);
-        }
-
-        .glass-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid var(--glass-border);
-            border-radius: clamp(1.2rem, 2vw, 2.2rem);
-            padding: clamp(1.2rem, 2vw, 2rem);
-            box-shadow: 0 30px 45px -20px rgba(0, 0, 0, 0.7);
-            transition: var(--transition-smooth);
-            display: flex;
-            flex-direction: column;
-        }
-        .glass-card:hover {
-            border-color: rgba(201, 169, 110, 0.5);
-            box-shadow: 0 40px 60px -20px rgba(140, 110, 30, 0.3);
-            transform: translateY(-5px);
-        }
-
-        .span-2-col { grid-column: span 2; }
-
-        .card-heading {
+        .hero-text h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.3rem, 2.5vw, 1.9rem);
-            font-weight: 500;
-            color: #cfb67c;
-            margin-bottom: clamp(0.8rem, 1.5vw, 1.5rem);
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .badge {
+            background: rgba(230, 241, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--accent-silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Grid de Conteúdo */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 25px;
+            padding: clamp(20px, 5vw, 50px);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--accent-silver);
+        }
+
+        .col-8 { grid-column: span 8; }
+        .col-4 { grid-column: span 4; }
+        .col-12 { grid-column: span 12; }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: clamp(0.4rem, 0.8vw, 0.8rem);
-            border-bottom: 1px dashed rgba(201, 169, 110, 0.4);
-            padding-bottom: 0.6rem;
-        }
-        .card-heading i {
-            color: #b38b4a;
-            font-size: clamp(1.2rem, 2vw, 1.7rem);
-            text-shadow: 0 0 12px #b38b4a;
+            gap: 12px;
         }
 
-        .info-cluster {
-            display: flex;
-            flex-wrap: wrap;
-            gap: clamp(0.6rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 2rem);
-        }
-        .info-unit {
-            display: flex;
-            align-items: baseline;
-            gap: 0.4rem;
-            min-width: clamp(150px, 40%, 190px);
-            flex-wrap: wrap;
-        }
-        .info-unit strong {
-            color: #c9a96e;
-            font-weight: 600;
-            width: clamp(100px, 20vw, 130px);
-            letter-spacing: 0.3px;
-            font-size: clamp(0.8rem, 1.2vw, 0.95rem);
-        }
-        .info-unit span {
-            color: #ede7db;
-            font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+        .section-title i { color: var(--accent-silver); opacity: 0.8; }
+
+        /* Estilo das Obras */
+        .work-item {
+            margin-bottom: 25px;
+            padding-left: 20px;
+            border-left: 2px solid var(--accent-silver);
         }
 
-        .opus-list {
-            display: flex;
-            flex-direction: column;
-            gap: clamp(0.8rem, 1.5vw, 1.5rem);
+        .work-item h4 {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
         }
-        .opus-item {
-            background: rgba(30, 25, 18, 0.7);
-            border-left: 5px solid #c9a96e;
-            padding: clamp(0.7rem, 1.2vw, 1rem) clamp(0.8rem, 1.5vw, 1.5rem);
-            border-radius: 0 clamp(12px, 2vw, 22px) clamp(12px, 2vw, 22px) 0;
-            transition: 0.3s;
+
+        .work-item span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            font-style: italic;
         }
-        .opus-item h4 {
+
+        /* Quote */
+        .quote-block {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
-            font-weight: 700;
-            color: #e8cf94;
-        }
-        .opus-sub {
-            font-size: clamp(0.7rem, 1.2vw, 0.9rem);
-            color: #b8a16a;
-            margin: 0.2rem 0 0.5rem;
+            font-size: 1.2rem;
+            color: var(--accent-silver);
             font-style: italic;
-        }
-        .opus-item p {
-            font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+            position: relative;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
         }
 
-        .golden-quote {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            background: rgba(201, 169, 110, 0.08);
-            border-left: 5px solid #c9a96e;
-            padding: clamp(0.8rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 1.8rem);
-            border-radius: 18px;
-            margin: clamp(0.4rem, 0.8vw, 0.8rem) 0;
-            color: #dacaa2;
-            font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+        /* Info List */
+        .info-list div {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-glass);
         }
 
-        .tag-cloud {
+        .info-list strong { color: var(--accent-silver); }
+
+        /* Tags */
+        .tags-container {
             display: flex;
             flex-wrap: wrap;
-            gap: clamp(0.4rem, 0.8vw, 0.7rem);
-            margin-top: 0.5rem;
-        }
-        .tag {
-            background: rgba(201, 169, 110, 0.12);
-            border: 0.5px solid rgba(201, 169, 110, 0.4);
-            padding: clamp(0.3rem, 0.7vw, 0.5rem) clamp(0.7rem, 1.2vw, 1.4rem);
-            border-radius: 30px;
-            font-weight: 500;
-            color: #dac292;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: clamp(0.7rem, 1.1vw, 0.9rem);
+            gap: 10px;
         }
 
-        .footnote {
-            margin-top: auto;
-            color: #9b8b72;
-            font-size: clamp(0.7rem, 1vw, 0.85rem);
-            border-top: 1px solid rgba(255, 255, 200, 0.1);
-            padding-top: 1rem;
-            font-style: italic;
+        .tag-pill {
+            background: var(--navy-light);
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-glass);
         }
 
-        .glass-card p {
-            font-size: clamp(0.85rem, 1.3vw, 1rem);
+        /* Responsividade Extrema */
+        @media (max-width: 1024px) {
+            .col-8, .col-4 { grid-column: span 12; }
         }
 
-        /* PDF Modal */
-        .pdf-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
-        }
-        .pdf-modal.active { display: flex; }
-
-        .pdf-modal iframe {
-            width: 100%;
-            height: 85%;
-            max-width: 1100px;
-            border: 2px solid #c9a96e;
-            border-radius: 1.5rem;
-            background: white;
-        }
-
-        .close-modal {
-            background: #c9a96e;
-            border: none;
-            color: #0f0d0a;
-            padding: clamp(0.6rem, 1vw, 0.8rem) clamp(1.2rem, 2vw, 2rem);
-            border-radius: 3rem;
-            font-weight: 700;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: 0.3s;
-            font-size: clamp(0.8rem, 1.2vw, 0.95rem);
-        }
-        .close-modal:hover { background: #e0c78a; }
-
-        /* Responsive kurallar */
-        @media (max-width: 900px) {
-            .biography-grid {
-                grid-template-columns: 1fr;
-                gap: 1.2rem;
-            }
-            .span-2-col { grid-column: span 1; }
-            .majestic-header {
+        @media (max-width: 768px) {
+            .hero-header {
                 flex-direction: column;
                 text-align: center;
-                align-items: center;
+                padding-top: 80px;
             }
-            .profile-identity {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
+            .top-actions {
+                width: 100%;
+                justify-content: center;
+                right: 0;
             }
-            .name-title h1 { font-size: 2.2rem; }
-            .lang-badge { margin-top: 0.5rem; }
-            .pdf-toolbar { top: 0.5rem; right: 0.5rem; }
+            .badge-list { justify-content: center; }
         }
 
         @media (max-width: 480px) {
-            body { padding: 0.3rem; }
-            .prestige-container { border-radius: 1.2rem; }
-            .biography-grid { padding: 1rem 0.8rem; }
-            .ornament-frame {
-                width: 90px; height: 90px;
-            }
-            .name-title h1 { font-size: 1.7rem; letter-spacing: 1px; }
-            .btn-pdf { padding: 0.35rem 0.7rem; font-size: 0.7rem; }
-            .pdf-toolbar { gap: 0.3rem; }
+            body { padding: 0; }
+            .main-wrapper { border-radius: 0; border: none; }
+            .card { padding: 20px; }
+            .hero-text h1 { font-size: 1.8rem; }
         }
 
-        @media print {
-            body { background: white; padding: 0; display: block; }
-            .pdf-toolbar, .pdf-modal { display: none !important; }
-            .prestige-container {
-                box-shadow: none; border: 1px solid #ccc; background: white;
-                border-radius: 0; max-width: 100%; backdrop-filter: none; -webkit-backdrop-filter: none;
-            }
-            .glass-card { background: #fafafa; box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
-            .majestic-header { background: #eee; border-bottom: 2px solid #c9a96e; }
-            .name-title h1 { color: #222; text-shadow: none; }
-            .card-heading { color: #5c432b; }
-            .opus-item { background: #f9f9f9; }
-            .lang-badge { background: #ddd; color: #333; }
+        /* Modal Preview */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--navy-deep);
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-content {
+            width: 100%; height: 90%;
+            border: 1px solid var(--accent-silver);
+            border-radius: 10px;
+            background: white;
         }
     </style>
 </head>
 <body>
-    <div class="prestige-container" id="biographyContent">
-        <!-- PDF Butonları -->
-        <div class="pdf-toolbar">
-            <button class="btn-pdf" onclick="previewPDF()" title="Visualizar PDF"><i class="fas fa-eye"></i> Pré-visualizar</button>
-            <button class="btn-pdf" onclick="downloadPDF()" title="Baixar PDF"><i class="fas fa-download"></i> Baixar PDF</button>
+
+    <div class="main-wrapper" id="printableArea">
+        <!-- Botões de Ação -->
+        <div class="top-actions">
+            <button class="btn-action" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
+            <button class="btn-action" onclick="downloadHTML()"><i class="fas fa-download"></i> Salvar</button>
         </div>
 
-        <!-- HEADER -->
-        <div class="majestic-header">
-            <div class="profile-identity">
-                <div class="ornament-frame">
-                    <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" alt="Ahmet Çınarbaş" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-feather-pointed\' style=\'font-size: clamp(3rem, 10vw, 4.8rem); color:#f7efd6;\'></i>';">
-                </div>
-                <div class="name-title">
-                    <h1>Ahmet ÇINARBAŞ</h1>
-                    <span class="designation">Jornalista • Pesquisador-Escritor • Editor • Consultor Político • Especialista em Informática</span>
+        <!-- Cabeçalho -->
+        <header class="hero-header">
+            <div class="profile-box">
+                <img src="https://pbs.twimg.com/profile_images/1559852899303317504/pjkJwYHb_400x400.jpg" alt="Ahmet Çınarbaş" class="avatar">
+            </div>
+            <div class="hero-text">
+                <h1>Ahmet ÇINARBAŞ</h1>
+                <div class="badge-list">
+                    <span class="badge">Jornalista</span>
+                    <span class="badge">Escritor</span>
+                    <span class="badge">Consultor Político</span>
+                    <span class="badge">Especialista em TI</span>
                 </div>
             </div>
-            <div class="lang-badge">
-                <i class="fas fa-globe"></i> Português (BR)
-            </div>
+        </header>
+
+        <!-- Grid de Conteúdo -->
+        <div class="content-grid">
+            
+            <!-- Biografia Longa -->
+            <section class="card col-8">
+                <h2 class="section-title"><i class="fas fa-feather-pointed"></i> Perfil Profissional</h2>
+                <p>Ahmet Çınarbaş é um pesquisador e cronista dedicado à preservação do patrimônio cultural de Mardin, Turquia. Com uma trajetória que une a precisão da Tecnologia da Informação à sensibilidade do jornalismo cultural, Çınarbaş resgata a memória oral e as tradições musicais da sua terra natal. Sua atuação como consultor político e editor reflete um compromisso profundo com a comunicação estratégica e a identidade histórica regional.</p>
+            </section>
+
+            <!-- Dados Rápidos -->
+            <section class="card col-4">
+                <h2 class="section-title"><i class="fas fa-info-circle"></i> Fatos</h2>
+                <div class="info-list">
+                    <div><strong>Nascimento:</strong> <span>1979, Mardin</span></div>
+                    <div><strong>Formação:</strong> <span>Lise (Ensino Médio)</span></div>
+                    <div><strong>Base:</strong> <span>Mardin, Turquia</span></div>
+                </div>
+            </section>
+
+            <!-- Obras -->
+            <section class="card col-12">
+                <h2 class="section-title"><i class="fas fa-book-open"></i> Obras em Destaque</h2>
+                <div class="work-item">
+                    <h4>Músicos de Mardin: Do Passado ao Presente</h4>
+                    <span>5 anos de pesquisa sistemática</span>
+                    <p>O mais completo registro da história musical civil da região, catalogando 167 músicos desde 1860, unindo diferentes crenças e idiomas sob a harmonia da arte.</p>
+                </div>
+                <div class="work-item">
+                    <h4>Os que Ficaram no Passado (Mazide Kalanlar)</h4>
+                    <span>Memória e Nostalgia</span>
+                    <p>Uma cápsula do tempo literária que retrata o cotidiano, as tradições e a vida social da antiga Mardin.</p>
+                </div>
+            </section>
+
+            <!-- Citação -->
+            <section class="card col-6">
+                <h2 class="section-title"><i class="fas fa-quote-left"></i> Filosofia</h2>
+                <div class="quote-block">
+                    "A música de Mardin é tão antiga quanto sua própria história. Nossa missão é identificar os donos das vozes que o tempo tentou silenciar."
+                </div>
+            </section>
+
+            <!-- Plataformas -->
+            <section class="card col-6">
+                <h2 class="section-title"><i class="fas fa-network-wired"></i> Ecossistema</h2>
+                <div class="tags-container">
+                    <span class="tag-pill">Associação Musical de Mardin</span>
+                    <span class="tag-pill">Mardin Life Yayınları</span>
+                    <span class="tag-pill">Mardin Time</span>
+                    <span class="tag-pill">Consultoria Estratégica</span>
+                    <span class="tag-pill">Especialista em TI</span>
+                </div>
+            </section>
+
         </div>
-
-        <!-- İÇERİK GRID -->
-        <div class="biography-grid">
-
-            <!-- Sobre -->
-            <div class="glass-card">
-                <div class="card-heading"><i class="fas fa-scroll"></i> Sobre</div>
-                <p>Ahmet Çınarbaş é um jornalista, pesquisador-escritor, editor, consultor político e especialista em informática dedicado ao patrimônio cultural de Mardin. Nascido em 1979, em Mardin, Turquia, concluiu o ensino médio e desde então mergulhou no universo da história oral, música, memória da sua terra natal, além de atuar como consultor político e dominar tecnologias da informação. Há anos, resgata valores esquecidos por meio de biografias e crônicas, revelando a riqueza multicultural da região. Colabora com jornais locais e plataformas digitais, sendo uma voz ativa na preservação da identidade mardinense e na comunicação estratégica.</p>
-            </div>
-
-            <!-- Identidade -->
-            <div class="glass-card">
-                <div class="card-heading"><i class="fas fa-id-card"></i> Identidade</div>
-                <div class="info-cluster">
-                    <div class="info-unit"><strong>Nome completo:</strong> <span>Ahmet ÇINARBAŞ</span></div>
-                    <div class="info-unit"><strong>Nascimento:</strong> <span>1979, Mardin, Turquia</span></div>
-                    <div class="info-unit"><strong>Formação:</strong> <span>Ensino Médio (Lise)</span></div>
-                    <div class="info-unit"><strong>Profissão:</strong> <span>Jornalista, Escritor, Editor, Consultor Político, Especialista em Informática</span></div>
-                    <div class="info-unit"><strong>Especialidade:</strong> <span>História, música, cultura de Mardin, consultoria política, TI</span></div>
-                    <div class="info-unit"><strong>Cidade atual:</strong> <span>Mardin, Turquia</span></div>
-                </div>
-            </div>
-
-            <!-- Obras (geniş kart) -->
-            <div class="glass-card span-2-col">
-                <div class="card-heading"><i class="fas fa-book-open"></i> Obras Destacadas</div>
-                <div class="opus-list">
-                    <div class="opus-item">
-                        <h4>Geçmişten Günümüze Mardin Müzisyenleri <span style="font-size:0.9rem; font-weight:400;">(Músicos de Mardin do Passado ao Presente)</span></h4>
-                        <div class="opus-sub">5 anos de pesquisa • 167 músicos • Desde 1860 até hoje</div>
-                        <p>Primeiro estudo abrangente da história musical civil de Mardin, abarcando artistas de diferentes religiões e idiomas, com apoio da Associação Musical de Mardin.</p>
-                    </div>
-                    <div class="opus-item">
-                        <h4>Mazide Kalanlar <span style="font-size:0.9rem; font-weight:400;">(Os que Ficaram no Passado)</span></h4>
-                        <div class="opus-sub">Nostalgia · Tradições · Memórias</div>
-                        <p>Obra nostálgica que retrata a vida social e as lembranças da infância deixada em Mardin, funcionando como uma cápsula do tempo.</p>
-                    </div>
-                    <div class="opus-item">
-                        <h4>İşte Ecdat <span style="font-size:0.9rem; font-weight:400;">(Eis os Ancestrais)</span></h4>
-                        <div class="opus-sub">Pesquisa biográfica · Fotografias de época</div>
-                        <p>Histórias de vida de personalidades que marcaram a história de Mardin, acompanhadas de registros fotográficos históricos.</p>
-                    </div>
-                    <div class="opus-item">
-                        <h4>Mardin'den Atın Sözler <span style="font-size:0.9rem; font-weight:400;">(Palavras Atiradas de Mardin)</span></h4>
-                        <div class="opus-sub">Crônicas · Reflexões · Sabedoria popular</div>
-                        <p>Coletânea de textos, ditados e reflexões que capturam a essência da sabedoria ancestral e do cotidiano de Mardin.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Citações -->
-            <div class="glass-card">
-                <div class="card-heading"><i class="fas fa-quote-right"></i> Citações</div>
-                <div class="golden-quote">"Percebemos que a música de Mardin possui uma cultura tão antiga quanto sua história. Não sabíamos a quem pertenciam aquelas belas obras que ouvíamos, e partimos dessa lacuna."</div>
-                <div class="golden-quote">"Não podemos pagar nossa dívida de gratidão aos nossos ancestrais, que sacrificaram suas vidas de bom grado para que vivêssemos confortavelmente, nem mesmo com este livro que escrevi."</div>
-            </div>
-
-            <!-- Conexões -->
-            <div class="glass-card">
-                <div class="card-heading"><i class="fas fa-link"></i> Conexões & Plataformas</div>
-                <div class="tag-cloud">
-                    <span class="tag"><i class="fas fa-music"></i> Associação Musical de Mardin</span>
-                    <span class="tag"><i class="fas fa-newspaper"></i> Mardin Life Yayınları</span>
-                    <span class="tag"><i class="fas fa-pen-fancy"></i> Mardin Time</span>
-                    <span class="tag"><i class="fas fa-pen-fancy"></i> Mardin Söz</span>
-                    <span class="tag"><i class="fas fa-book"></i> Mardin'den Atın Sözler</span>
-                    <span class="tag"><i class="fas fa-landmark"></i> Consultoria Política</span>
-                    <span class="tag"><i class="fas fa-laptop-code"></i> Especialista em TI</span>
-                </div>
-                <div class="footnote">* Para contato ou informações adicionais, buscar através das publicações locais de Mardin.</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PDF Modal -->
-    <div class="pdf-modal" id="pdfModal">
-        <iframe id="pdfPreviewIframe" src="" title="PDF Preview"></iframe>
-        <button class="close-modal" onclick="closePDFModal()"><i class="fas fa-times"></i> Fechar Pré-visualização</button>
     </div>
 
     <script>
-        function getBiographyHTML() {
-            const container = document.getElementById('biographyContent');
-            const cloneContainer = container.cloneNode(true);
-            // PDF araç çubuğunu kaldır
-            const toolbar = cloneContainer.querySelector('.pdf-toolbar');
-            if (toolbar) toolbar.remove();
-            return cloneContainer.outerHTML;
-        }
-
-        function buildFullHTML() {
-            const bioHTML = getBiographyHTML();
-            return `<!DOCTYPE html>
-        <html lang="pt-BR">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Ahmet Çınarbaş | Biografia</title>
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-            <style>
-                * { margin:0; padding:0; box-sizing:border-box; }
-                body {
-                    background: #0f0d0a; font-family: 'Plus Jakarta Sans', sans-serif;
-                    color: #ede7db; padding: 1.5rem; display: flex; justify-content: center;
-                }
-                .prestige-container {
-                    max-width: 1100px; width: 100%; background: rgba(18,16,13,0.9);
-                    border-radius: 2rem; border: 1px solid rgba(201,169,110,0.3);
-                    overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.7);
-                }
-                .majestic-header {
-                    background: linear-gradient(135deg, #1e1810, #2d2314);
-                    padding: 2rem; display: flex; flex-wrap: wrap; align-items: center;
-                    gap: 1.5rem; border-bottom: 2px solid rgba(201,169,110,0.4);
-                }
-                .ornament-frame {
-                    width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
-                    border: 3px solid #c9a96e; flex-shrink: 0;
-                }
-                .ornament-frame img { width:100%; height:100%; object-fit:cover; }
-                .name-title h1 {
-                    font-family: 'Cinzel', serif; font-size: 2.8rem;
-                    color: #f5ead0; letter-spacing: 2px;
-                }
-                .designation {
-                    background: rgba(201,169,110,0.2); padding: 0.3rem 1.5rem;
-                    border-radius: 30px; color: #e4cd9b; font-size: 0.9rem;
-                }
-                .biography-grid {
-                    display: grid; grid-template-columns: 1fr 1fr;
-                    gap: 1.5rem; padding: 2rem;
-                }
-                .glass-card {
-                    background: rgba(22,20,18,0.7); border: 1px solid rgba(201,169,110,0.2);
-                    border-radius: 1.5rem; padding: 1.5rem;
-                }
-                .span-2-col { grid-column: span 2; }
-                .card-heading {
-                    font-family: 'Cinzel', serif; font-size: 1.5rem;
-                    color: #cfb67c; border-bottom: 1px dashed rgba(201,169,110,0.4);
-                    padding-bottom: 0.4rem; margin-bottom: 1rem;
-                }
-                .info-cluster { display:flex; flex-wrap:wrap; gap:0.8rem 1.5rem; }
-                .info-unit strong { color:#c9a96e; }
-                .opus-item {
-                    border-left: 4px solid #c9a96e; padding: 0.8rem 1rem;
-                    background: rgba(30,25,18,0.7); border-radius: 0 16px 16px 0; margin-bottom:0.8rem;
-                }
-                .opus-item h4 { color:#e8cf94; font-family:'Playfair Display',serif; }
-                .golden-quote {
-                    font-family:'Playfair Display',serif; font-style:italic;
-                    border-left:4px solid #c9a96e; padding:0.8rem 1.2rem; margin:0.5rem 0;
-                    background:rgba(201,169,110,0.08); border-radius:12px; color:#dacaa2;
-                }
-                .tag-cloud { display:flex; flex-wrap:wrap; gap:0.5rem; }
-                .tag {
-                    background:rgba(201,169,110,0.12); border:0.5px solid rgba(201,169,110,0.4);
-                    padding:0.4rem 1rem; border-radius:30px; color:#dac292;
-                }
-                .footnote { color:#9b8b72; font-size:0.85rem; border-top:1px solid rgba(255,255,200,0.1); padding-top:1rem; margin-top:0.5rem; }
-                @media (max-width: 700px) {
-                    .biography-grid { grid-template-columns: 1fr; }
-                    .span-2-col { grid-column: span 1; }
-                    .majestic-header { flex-direction: column; text-align: center; }
-                    .name-title h1 { font-size: 2rem; }
-                }
-            </style>
-        </head>
-        <body>${bioHTML}</body>
-        </html>`;
-        }
-
-        function previewPDF() {
-            const fullHTML = buildFullHTML();
-            const blob = new Blob([fullHTML], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const iframe = document.getElementById('pdfPreviewIframe');
-            iframe.src = url;
-            document.getElementById('pdfModal').classList.add('active');
-        }
-
-        function downloadPDF() {
-            const fullHTML = buildFullHTML();
-            const blob = new Blob([fullHTML], { type: 'text/html' });
+        function downloadHTML() {
+            const element = document.documentElement.outerHTML;
+            const blob = new Blob([element], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'Ahmet_Cinarbas_Biografia_Completa.html';
-            document.body.appendChild(a);
+            a.download = 'Ahmet_Cinarbas_Bio_Navy.html';
             a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
         }
-
-        function closePDFModal() {
-            document.getElementById('pdfModal').classList.remove('active');
-            const iframe = document.getElementById('pdfPreviewIframe');
-            iframe.src = '';
-        }
-
-        // Klavye ile kapatma
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closePDFModal();
-        });
-
-        // Modal dışına tıklayarak kapatma
-        document.getElementById('pdfModal').addEventListener('click', function(e) {
-            if (e.target === this) closePDFModal();
-        });
     </script>
 </body>
 </html>
